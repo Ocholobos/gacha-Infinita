@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prólogo: Gacha Infinito | Gacha Infinita</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            line-height: 1.8;
+            background: #faf9f7;
+            color: #2c2b28;
+        }
+        [data-theme="dark"] body {
+            background: #1a1a1a;
+            color: #e5e5e5;
+        }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 0.25rem;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] h1 {
+            color: #5a9e8c;
+        }
+        .chapter-number {
+            color: #6b6a68;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #e5e0d8;
+            padding-bottom: 0.5rem;
+        }
+        [data-theme="dark"] .chapter-number {
+            color: #a0a0a0;
+            border-bottom-color: #404040;
+        }
+        .back-link {
+            margin-bottom: 2rem;
+            display: inline-block;
+            color: #1a4d5f;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        [data-theme="dark"] .back-link {
+            color: #5a9e8c;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .story-content {
+            margin-top: 1.5rem;
+        }
+        .story-content p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+        hr {
+            margin: 2rem 0;
+            border: none;
+            border-top: 1px solid #e5e0d8;
+        }
+        [data-theme="dark"] hr {
+            border-top-color: #404040;
+        }
+        .capitulo-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e5e0d8;
+        }
+        [data-theme="dark"] .capitulo-nav {
+            border-top-color: #404040;
+        }
+        .nav-link {
+            color: #1a4d5f;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        [data-theme="dark"] .nav-link {
+            color: #5a9e8c;
+        }
+        .nav-link:hover {
+            text-decoration: underline;
+        }
+        .nav-disabled {
+            color: #cbd5e0;
+        }
+        footer {
+            margin-top: 3rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #9ca3af;
+        }
+        .options-bar {
+            position: sticky;
+            top: 0;
+            background: #faf9f7;
+            border-bottom: 1px solid #e5e0d8;
+            padding: 0.5rem 1rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+            z-index: 100;
+        }
+        [data-theme="dark"] .options-bar {
+            background: #1a1a1a;
+            border-bottom-color: #404040;
+        }
+        .options-bar button {
+            background: #eef2f0;
+            border: none;
+            padding: 0.3rem 0.6rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.75rem;
+        }
+        [data-theme="dark"] .options-bar button {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+    </style>
+    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+    <script>
+        // Ko-fi
+        window.addEventListener('load', function() {
+            kofiWidgetOverlay.draw('ocholobos', {
+                'type': 'floating-chat',
+                'floating-chat.donateButton.text': 'Apóyame',
+                'floating-chat.donateButton.background-color': '#1a4d5f',
+                'floating-chat.donateButton.text-color': '#ffffff'
+            });
+        });
+        
+        // Tema y tamaño de letra
+        function initSettings() {
+            const savedTheme = localStorage.getItem('gacha_theme');
+            if (savedTheme === 'dark') document.body.parentElement.setAttribute('data-theme', 'dark');
+            const savedFont = localStorage.getItem('gacha_fontsize');
+            if (savedFont) document.body.style.fontSize = savedFont + '%';
+        }
+        initSettings();
+    </script>
+</head>
+<body>
+    <div class="options-bar">
+        <button id="fontMinus">A-</button>
+        <button id="fontPlus">A+</button>
+        <button id="themeToggle">🌙 Modo oscuro</button>
+    </div>
+
+    <a href="index.html" class="back-link">← Volver al índice</a>
+    
+    <h1>Gacha Infinito</h1>
+    <div class="chapter-number">Prólogo | Capítulo 0</div>
+    
+    <div class="story-content">
+        <p>En lo profundo del <strong>calabozo</strong> conocido como el <strong>Abismo</strong>, un hombre yacía tendido en el suelo.</p>
+        <p>Su cuerpo estaba cubierto de heridas. La sangre se mezclaba con el polvo, tiñendo el suelo de un rojo oscuro.</p>
+        <p>—Así que… esto es el final…</p>
+        <p>Su nombre era <strong>Light</strong>. Un humano. Y hasta hace apenas unos minutos, había sido miembro de la <strong>Reunión de Razas</strong>, un grupo que reunía a guerreros de distintas especies con el ideal de eliminar la discriminación entre razas.</p>
+        <p>Pero ese ideal era solo una fachada.</p>
+        <p>—Nos deshicimos de la escoria. Ahora el grupo será más fuerte sin él.</p>
+        <p>—Jaja, pobre humano. Ni siquiera pudo defenderse.</p>
+        <p>Las risas de sus excompañeros aún resonaban en sus oídos.</p>
+        <p>Lo habían llamado a una misión especial. Lo llevaron a las profundidades del calabozo, donde los monstruos eran más peligrosos. Y cuando bajaron la guardia, lo atacaron por la espalda.</p>
+        <p>Light no entendía por qué. Había confiado en ellos. Había luchado junto a ellos. Pero al final, para ellos, él solo era un humano desechable.</p>
+        <p>—Maldición… no quiero morir así…</p>
+        <p>Sus dedos temblorosos rozaron el panel que flotaba ante sus ojos. Era su única habilidad: el <strong>Gacha Infinito</strong>.</p>
+        <p>Hasta ahora, solo había obtenido objetos inservibles. Piedras podridas. Hierba marchita. Chatarra oxidada.</p>
+        <p>Pero ya no tenía nada que perder.</p>
+        <p>—Gacha…</p>
+        <p>Susurró la palabra, y una luz cegadora envolvió su cuerpo.</p>
+        <p>Cuando la luz se desvaneció, una figura estaba de pie frente a él.</p>
+        <p>Era una mujer. Vestía un uniforme de sirvienta negro y blanco, pero en su cinturón colgaban dos espadas que emitían un brillo amenazante. Su cabello plateado caía sobre sus hombros, y sus ojos rojos miraban fijamente a Light.</p>
+        <p>—Soy <strong>Mei</strong>. Mi nivel es 9999. He sido invocada para servirle, mi señor.</p>
+        <p>Light no podía creer lo que veía.</p>
+        <p>—¿N-nivel 9999? Eso es… imposible. El límite para los humanos es 100…</p>
+        <p>—Ese límite no aplica para quienes rompen las reglas de este mundo. Usted, mi señor, ha obtenido el Gacha Infinito. Un poder que desafía el orden establecido.</p>
+        <p>Mei se arrodilló con gracia.</p>
+        <p>—Ordenaré lo que desee. ¿Venganza? ¿Destrucción? ¿O quizás… crear su propio reino?</p>
+        <p>Light permaneció en silencio por un momento. Luego, una sonrisa torcida apareció en su rostro.</p>
+        <p>—Primero, cúrame. Luego… hablemos de esa venganza.</p>
+        <p>Así comenzó la historia de Light, el humano que fue traicionado y que, con el poder del Gacha Infinito, se convertiría en el Señor Supremo del Abismo.</p>
+        <p>Y tres años después, ascendería a la superficie para cobrar venganza.</p>
+        <p>—Esperen, mis queridos excompañeros. Pronto nos veremos de nuevo.</p>
+        <p>La risa de Light resonó en las profundidades del calabozo, mientras Mei observaba con una sonrisa serena.</p>
+        <p>El destino del mundo estaba a punto de cambiar.</p>
+    </div>
+
+    <hr>
+
+    <div class="capitulo-nav">
+        <span class="nav-disabled">← Capítulo anterior</span>
+        <a href="capitulo-1.html" class="nav-link">Siguiente capítulo →</a>
+    </div>
+
+    <footer>
+        <p>Gacha Infinita © 明鏡シスイ (Meikyō Shisui) | Traducción: Ocholobos</p>
+    </footer>
+
+    <script>
+        // Guardar historial
+        const CHAPTER_NUM = 0;
+        function addToHistory() {
+            const user = localStorage.getItem('gacha_user');
+            if (!user) return;
+            let history = localStorage.getItem(`gacha_history_${user}`);
+            let historyObj = history ? JSON.parse(history) : { chapters: [] };
+            if (!historyObj.chapters) historyObj.chapters = [];
+            historyObj.chapters = historyObj.chapters.filter(c => c !== CHAPTER_NUM);
+            historyObj.chapters.unshift(CHAPTER_NUM);
+            if (historyObj.chapters.length > 20) historyObj.chapters.pop();
+            localStorage.setItem(`gacha_history_${user}`, JSON.stringify(historyObj));
+        }
+        addToHistory();
+        
+        // Controles de tema y fuente
+        document.getElementById('fontPlus').onclick = () => {
+            let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+            size = Math.min(150, size + 10);
+            document.body.style.fontSize = size + '%';
+            localStorage.setItem('gacha_fontsize', size);
+        };
+        document.getElementById('fontMinus').onclick = () => {
+            let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+            size = Math.max(70, size - 10);
+            document.body.style.fontSize = size + '%';
+            localStorage.setItem('gacha_fontsize', size);
+        };
+        document.getElementById('themeToggle').onclick = () => {
+            const html = document.body.parentElement;
+            const isDark = html.hasAttribute('data-theme');
+            if (isDark) {
+                html.removeAttribute('data-theme');
+                localStorage.setItem('gacha_theme', 'light');
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                localStorage.setItem('gacha_theme', 'dark');
+            }
+        };
+    </script>
+</body>
+</html>
