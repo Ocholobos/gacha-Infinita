@@ -66,7 +66,6 @@
         .info-badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin: 1rem 0; }
         .badge { background: var(--accent-light); padding: 0.3rem 0.8rem; border-radius: 30px; font-size: 0.75rem; color: var(--accent); }
         
-        /* Información de la serie */
         .other-titles, .synopsis, .user-panel, .comments-section {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
@@ -76,6 +75,7 @@
         }
         .synopsis { padding: 1.5rem; }
         .synopsis h2 { font-size: 1.2rem; color: var(--accent); margin-bottom: 1rem; border-left: 4px solid var(--accent); padding-left: 1rem; }
+        
         .stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -114,36 +114,52 @@
         .history-item { padding: 0.2rem 0; font-size: 0.85rem; }
         .history-item a { color: var(--accent); text-decoration: none; }
         
-        /* Tabla de capítulos */
-        .chapter-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1rem 0;
+        /* Índice de capítulos */
+        .chapter-group {
+            margin: 2rem 0 1.5rem;
         }
-        .chapter-table th, .chapter-table td {
-            padding: 0.6rem 0.3rem;
-            text-align: left;
-            border-bottom: 1px solid var(--border-color);
-        }
-        .chapter-table th { color: var(--secondary-text); font-weight: normal; font-size: 0.75rem; }
-        .chapter-table td a { color: var(--accent); text-decoration: none; }
-        .chapter-status {
-            font-size: 0.7rem;
-            padding: 0.2rem 0.5rem;
-            border-radius: 20px;
-            background: var(--accent-light);
+        .chapter-title {
+            font-size: 1.3rem;
+            font-weight: bold;
             color: var(--accent);
+            border-left: 4px solid var(--accent);
+            padding-left: 1rem;
+            margin-bottom: 1rem;
         }
-        .chapter-status.pending { background: var(--border-color); color: var(--secondary-text); }
+        .episode-list {
+            list-style: none;
+            padding-left: 1rem;
+        }
+        .episode-item {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 0.5rem;
+        }
+        .episode-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .episode-link:hover {
+            text-decoration: underline;
+        }
+        .episode-date {
+            font-size: 0.75rem;
+            color: var(--secondary-text);
+            font-family: monospace;
+        }
         
         /* Paginación */
         .chapter-nav {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
             flex-wrap: wrap;
             gap: 0.5rem;
-            margin: 1rem 0;
+            margin: 2rem 0;
         }
         .chapter-nav a, .chapter-nav button {
             background: var(--accent-light);
@@ -187,7 +203,7 @@
         .comment-name { font-weight: bold; color: var(--accent); }
         .comment-date { font-size: 0.7rem; color: var(--secondary-text); margin-left: 0.5rem; }
         
-        /* Botón flotante subir */
+        /* Botón flotante */
         .floating-scroll-top {
             position: fixed;
             bottom: 90px;
@@ -220,14 +236,13 @@
         
         @media (max-width: 600px) {
             .container { padding: 0.5rem 1rem; }
-            .chapter-nav { flex-direction: column; align-items: stretch; }
+            .episode-item { flex-direction: column; gap: 0.2rem; }
             .floating-scroll-top { width: 40px; height: 40px; font-size: 1.2rem; bottom: 70px; right: 15px; }
         }
     </style>
     <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
 </head>
 <body>
-    <!-- Barra de opciones -->
     <div class="options-bar">
         <div class="font-size-control">
             <button id="fontMinus">A-</button>
@@ -237,7 +252,6 @@
     </div>
 
     <div class="container">
-        <!-- Header -->
         <div class="series-header">
             <h1>Gacha Infinita</h1>
             <div class="author">Autor: <a href="https://ncode.syosetu.com/n9584gd/" target="_blank">明鏡シスイ (Meikyō Shisui)</a></div>
@@ -250,30 +264,25 @@
             </div>
         </div>
 
-        <!-- Títulos alternativos -->
         <div class="other-titles">
             <h3>📌 También conocido como</h3>
             <p><strong>日本語:</strong> 【連載版】信じていた仲間達にダンジョン奥地で殺されかけたがギフト『無限ガチャ』でレベル９９９９の仲間達を手に入れて元パーティーメンバーと世界に復讐＆『ざまぁ！』します！</p>
             <p><strong>English:</strong> <em>Backstabbed in a Backwater Dungeon: My Trusted Companions Tried to Kill Me, But Thanks to the Gift of an Unlimited Gacha I Got Lvl 9999 Friends and Am Out for Revenge on My Former Party Members and the World</em></p>
-            <p><strong>Español:</strong> <em>Estuve a punto de ser asesinado en lo profundo del calabozo por mis compañeros en quienes confiaba, pero con el regalo "Gacha Infinito" conseguí aliados de nivel 9999 y ahora me vengaré de mis excompañeros y del mundo entero.</em></p>
         </div>
 
-        <!-- Sinopsis -->
         <div class="synopsis">
             <h2>📖 Sinopsis</h2>
             <p>Light, un humano, es expulsado del grupo <strong>"Reunión de Razas"</strong> en lo profundo de un <strong>calabozo</strong>. En este mundo existen seis razas: humana, bestia, dragón, elfo, enano y demonio. Los humanos son discriminados por las demás razas.</p>
             <p>Tras ser traicionado, Light activa su habilidad <strong>Gacha Infinito</strong>, obteniendo a <strong>Mei</strong>, una luchadora de nivel 9999. Tres años después, Light ha creado su propio reino en el calabozo y planea vengarse de sus traidores.</p>
         </div>
 
-        <!-- Estadísticas -->
         <div class="stats">
-            <div class="stat-card"><div class="stat-number" id="totalChapters">576</div><div class="stat-label">Capítulos (Web)</div></div>
+            <div class="stat-card"><div class="stat-number" id="totalChapters">0</div><div class="stat-label">Episodios totales</div></div>
             <div class="stat-card"><div class="stat-number">14</div><div class="stat-label">LN Volúmenes</div></div>
             <div class="stat-card"><div class="stat-number">21</div><div class="stat-label">Manga Volúmenes</div></div>
             <div class="stat-card"><div class="stat-number" id="translatedCount">0</div><div class="stat-label">Traducidos</div></div>
         </div>
 
-        <!-- Panel de usuario -->
         <div class="user-panel" id="userPanel">
             <h3>📚 Mi historial de lectura</h3>
             <div id="loginSection">
@@ -289,12 +298,10 @@
             </div>
         </div>
 
-        <!-- Índice -->
-        <h2 style="margin: 1rem 0 0.5rem; color: var(--accent);">📑 Índice de capítulos</h2>
+        <h2 style="margin: 1rem 0 0.5rem; color: var(--accent);">📑 Índice de episodios</h2>
         <div id="chapterIndex"></div>
         <div class="chapter-nav" id="pagination"></div>
 
-        <!-- Comentarios -->
         <div class="comments-section">
             <h3>💬 Comentarios</h3>
             <div class="comment-form">
@@ -311,97 +318,54 @@
         </footer>
     </div>
 
-    <!-- Botón flotante subir -->
     <button class="floating-scroll-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">⬆</button>
 
     <script src="data.js"></script>
     <script>
         // ========== CONFIGURACIÓN ==========
-        const ITEMS_PER_PAGE = 15;
+        let allEpisodes = [];
+        let totalEpisodes = 0;
+        const ITEMS_PER_PAGE = 20;
         let currentPage = 1;
-        let allChapters = [];
-        let totalTranslated = 0;
         
         // ========== CARGAR DATOS ==========
         function loadData() {
             if (typeof GACHA_DATA !== 'undefined') {
-                allChapters = GACHA_DATA.getOrderedChapters();
-                totalTranslated = allChapters.length;
-                document.getElementById('translatedCount').textContent = totalTranslated;
+                allEpisodes = GACHA_DATA.getAllEpisodesOrdered();
+                totalEpisodes = allEpisodes.length;
+                document.getElementById('totalChapters').textContent = totalEpisodes;
+                // Contar traducidos (por ahora todos los que tienen archivo)
+                // Esto se puede actualizar manualmente o con un marcador
+                document.getElementById('translatedCount').textContent = totalEpisodes; // Temporal
                 return true;
             }
             return false;
         }
         
-        const totalPages = Math.ceil(totalTranslated / ITEMS_PER_PAGE);
-        
-        // ========== RENDERIZAR TABLA ==========
-        function renderTable(page) {
-            const start = (page - 1) * ITEMS_PER_PAGE;
-            const pageChapters = allChapters.slice(start, start + ITEMS_PER_PAGE);
-            
-            let html = '<table class="chapter-table"><thead><tr><th>#</th><th>Título</th><th></th></tr></thead><tbody>';
-            for (const ch of pageChapters) {
-                html += `
-                    <tr>
-                        <td>${ch.num}</td>
-                        <td><a href="capitulo-${ch.num}.html">${ch.title}</a></td>
-                        <td><span class="chapter-status">✅ Traducido</span></td>
-                    </tr>
-                `;
-            }
-            html += '</tbody></table>';
-            document.getElementById('chapterIndex').innerHTML = html;
-        }
-        
-        // ========== PAGINACIÓN ==========
-        function renderPagination() {
-            const total = Math.ceil(totalTranslated / ITEMS_PER_PAGE);
+        // ========== RENDERIZAR ÍNDICE ==========
+        function renderIndex() {
+            const chapters = GACHA_DATA.chapters;
             let html = '';
             
-            if (currentPage > 1) {
-                html += `<a href="#" data-page="${currentPage-1}">← Anterior</a>`;
-            } else {
-                html += `<span class="disabled" style="background:var(--border-color);padding:0.4rem 0.8rem;border-radius:8px;">← Anterior</span>`;
+            for (const chapter of chapters) {
+                html += `<div class="chapter-group">`;
+                html += `<div class="chapter-title">${chapter.title}</div>`;
+                html += `<ul class="episode-list">`;
+                
+                for (const ep of chapter.episodes) {
+                    const fileName = `capitulo${chapter.num}e${ep.num}.html`;
+                    html += `
+                        <li class="episode-item">
+                            <a href="${fileName}" class="episode-link">Episodio ${ep.num}: ${ep.title}</a>
+                            <span class="episode-date">${ep.date}</span>
+                        </li>
+                    `;
+                }
+                
+                html += `</ul></div>`;
             }
             
-            html += `<span style="margin:0 1rem;">Página ${currentPage} de ${total}</span>`;
-            
-            if (currentPage < total) {
-                html += `<a href="#" data-page="${currentPage+1}">Siguiente →</a>`;
-            } else {
-                html += `<span class="disabled" style="background:var(--border-color);padding:0.4rem 0.8rem;border-radius:8px;">Siguiente →</span>`;
-            }
-            
-            html += `<div class="page-input">
-                        <span>Ir a:</span>
-                        <input type="number" id="pageInput" min="1" max="${total}" value="${currentPage}">
-                        <button id="goPageBtn">Ir</button>
-                     </div>`;
-            
-            document.getElementById('pagination').innerHTML = html;
-            
-            document.querySelectorAll('#pagination a[data-page]').forEach(a => {
-                a.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    goToPage(parseInt(a.dataset.page));
-                });
-            });
-            
-            const goBtn = document.getElementById('goPageBtn');
-            const input = document.getElementById('pageInput');
-            if (goBtn) goBtn.onclick = () => goToPage(parseInt(input.value));
-            if (input) input.onkeypress = (e) => { if (e.key === 'Enter') goToPage(parseInt(input.value)); };
-        }
-        
-        function goToPage(page) {
-            const total = Math.ceil(totalTranslated / ITEMS_PER_PAGE);
-            if (page >= 1 && page <= total) {
-                currentPage = page;
-                renderTable(currentPage);
-                renderPagination();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
+            document.getElementById('chapterIndex').innerHTML = html;
         }
         
         // ========== HISTORIAL ==========
@@ -428,10 +392,11 @@
                 return;
             }
             let html = '';
-            userHistory.chapters.slice(0, 10).forEach(ch => {
-                const chapter = allChapters.find(c => c.num === ch);
-                const title = chapter ? chapter.title : `Capítulo ${ch}`;
-                html += `<div class="history-item">📖 <a href="capitulo-${ch}.html">${title}</a></div>`;
+            userHistory.chapters.slice(0, 10).forEach(item => {
+                const episode = allEpisodes.find(ep => ep.chapter == item.chapter && ep.episodeNum == item.episode);
+                if (episode) {
+                    html += `<div class="history-item">📖 <a href="capitulo${episode.chapter}e${episode.episodeNum}.html">${episode.chapterTitle} - Episodio ${episode.episodeNum}: ${episode.title}</a></div>`;
+                }
             });
             div.innerHTML = html;
         }
@@ -460,7 +425,7 @@
             document.getElementById('commentText').value = '';
         }
         
-        // ========== CONFIGURACIÓN ==========
+        // ========== CONTROLES ==========
         function initControls() {
             const savedTheme = localStorage.getItem('gacha_theme');
             if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
@@ -499,8 +464,7 @@
         // ========== INICIALIZACIÓN ==========
         document.addEventListener('DOMContentLoaded', () => {
             if (loadData()) {
-                renderTable(1);
-                renderPagination();
+                renderIndex();
             }
             initControls();
             loadUser();
