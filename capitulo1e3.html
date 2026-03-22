@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¿Cómo vengarse de la elfa Sasha? | Gacha Infinita</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem;
+            line-height: 1.8;
+            background: #faf9f7;
+            color: #2c2b28;
+            transition: all 0.3s ease;
+        }
+        [data-theme="dark"] body {
+            background: #1a1a1a;
+            color: #e5e5e5;
+        }
+        
+        .options-bar {
+            position: sticky;
+            top: 0;
+            background: #faf9f7;
+            border-bottom: 1px solid #e5e0d8;
+            padding: 0.6rem 1rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.8rem;
+            z-index: 100;
+            flex-wrap: wrap;
+        }
+        [data-theme="dark"] .options-bar {
+            background: #1a1a1a;
+            border-bottom-color: #404040;
+        }
+        .options-bar button {
+            background: #eef2f0;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: #1a4d5f;
+            transition: all 0.2s;
+        }
+        [data-theme="dark"] .options-bar button {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .options-bar button:hover {
+            background: #e5e0d8;
+        }
+        .font-size-control {
+            display: flex;
+            gap: 0.3rem;
+            align-items: center;
+        }
+        .font-size-control button {
+            width: 32px;
+            padding: 0.2rem;
+        }
+        
+        .nav-container {
+            margin: 1rem 0;
+        }
+        .nav-center, .nav-bottom {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+        .nav-bottom {
+            margin-top: 1rem;
+        }
+        .nav-btn {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            color: #1a4d5f;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .nav-btn {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .nav-btn:hover {
+            background: #e5e0d8;
+        }
+        .nav-btn.disabled {
+            background: #e5e0d8;
+            color: #9ca3af;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .chapter-counter {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] .chapter-counter {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        .chapter-selector {
+            margin: 0.5rem 0;
+            text-align: center;
+        }
+        .chapter-selector select {
+            background: #eef2f0;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-family: inherit;
+            color: #1a4d5f;
+            cursor: pointer;
+            width: 300px;
+            max-width: 90%;
+        }
+        [data-theme="dark"] .chapter-selector select {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin: 1rem 0 0.25rem;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] h1 {
+            color: #5a9e8c;
+        }
+        .episode-number {
+            color: #6b6a68;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #e5e0d8;
+            padding-bottom: 0.5rem;
+        }
+        [data-theme="dark"] .episode-number {
+            color: #a0a0a0;
+            border-bottom-color: #404040;
+        }
+        .story-content {
+            margin: 1.5rem 0;
+        }
+        .story-content p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+        hr {
+            margin: 2rem 0;
+            border: none;
+            border-top: 1px solid #e5e0d8;
+        }
+        [data-theme="dark"] hr {
+            border-top-color: #404040;
+        }
+        
+        .floating-scroll-top {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            background: #1a4d5f;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.8;
+        }
+        [data-theme="dark"] .floating-scroll-top {
+            background: #5a9e8c;
+        }
+        .floating-scroll-top:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            border-top: 1px solid #e5e0d8;
+            padding-top: 1.5rem;
+        }
+        [data-theme="dark"] footer {
+            border-top-color: #404040;
+        }
+        
+        @media (max-width: 600px) {
+            body { padding: 0.5rem; }
+            .nav-center, .nav-bottom { flex-direction: column; gap: 0.5rem; }
+            .floating-scroll-top {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                bottom: 70px;
+                right: 15px;
+            }
+        }
+    </style>
+    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+</head>
+<body>
+    <div class="options-bar">
+        <div class="font-size-control">
+            <button id="fontMinus">A-</button>
+            <button id="fontPlus">A+</button>
+        </div>
+        <button id="themeToggle">🌙 Modo oscuro</button>
+    </div>
+
+    <div class="nav-container">
+        <div class="nav-center">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo1e2.html" id="prevLinkTop" class="nav-btn">← Planes de futuro</a>
+            <span class="chapter-counter" id="chapterCounterTop">Capítulo 1 - Episodio 3</span>
+            <a href="capitulo1e4.html" id="nextLinkTop" class="nav-btn">Interrupción →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelect">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <h1>¿Cómo vengarse de la elfa Sasha?</h1>
+    <div class="episode-number">Capítulo 1 - Episodio 3</div>
+
+    <div class="story-content">
+        <p>—El tiempo retrocede un poco.</p>
+        
+        <p>Unos días después de terminar la venganza contra Garou, el hombre bestia.</p>
+        
+        <p>Nos reunimos en la sala de trabajo que habíamos construido al remodelar el "Abismo".</p>
+        
+        <p>Yo, sentado solo en mi asiento, me dirigí a mis compañeros de nivel 9999 que estaban frente a mí: Mei, la "Doncella Buscadora", con su cabello negro en cola de caballo y uniforme de sirvienta; Aoyuki, la "Genio Domadora de Monstruos", baja de estatura con una sudadera de orejas de gato; Ellie, la "Bruja Prohibida", con su cabello rubio recogido en dos coletas y vestido gótico; y Nazuna, la "Caballera Vampiro Verdadero", de ojos rojos, cabello plateado y armadura.</p>
+        
+        <p>—Hemos terminado con éxito la venganza contra Garou. El siguiente paso es… recopilar información.</p>
+        
+        <p>Aunque había hablado con tanto ímpetu frente a Garou, lanzarse a una guerra contra el mundo sin pensar sería una estupidez.</p>
+        
+        <p>Primero necesitaba recopilar información sobre qué tipo de poder tiene el enemigo.</p>
+        
+        <p>—Por supuesto, no olvido la venganza. Pero si descuidamos la recopilación de información, la venganza contra los cuatro restantes, la información sobre el "Maestro", por qué estuve a punto de ser asesinado, y quién destruyó mi aldea natal… en el peor de los casos, podríamos no lograr nada e incluso ser derrotados.</p>
+        
+        <p>Ante mis palabras, Ellie, con su hermoso cabello rubio recogido en dos coletas, su sombrero de bruja y su vestido gótico negro, bajó la cabeza.</p>
+        
+        <p>Ella era una carta SUR, la "Bruja Prohibida Ellie, nivel 9999".</p>
+        
+        <p>Había dominado todo tipo de magia y artes espirituales, y era la subcomandante encargada de planificar y dirigir las operaciones.</p>
+        
+        <p>—Lo siento mucho. Si hubiera terminado de ajustar el "Núcleo del Calabozo" un poco antes, tal vez podría haber salvado la aldea natal de Light-sama…</p>
+        
+        <p>—No es tu culpa, Ellie. Más bien, el "Abismo" era tan extenso, tomó tanto tiempo conquistarlo, y además al principio no se podía usar la carta de teletransportación… Fue por demasiadas circunstancias imprevistas.</p>
+        
+        <p>En la época de la "Reunión de Razas", hablaban de "las capas medias del Abismo" y cosas así, pero eso ni siquiera era la superficie.</p>
+        
+        <p>Si lo expresamos en pisos de calabozo, el nivel más bajo sería el piso 100. El lugar que llamaban "capas medias" era apenas el piso 10.</p>
+        
+        <p>Además, incluso después de conquistar el "Abismo", no se podía usar la carta de teletransportación para moverse.</p>
+        
+        <p>La causa estaba en el "Núcleo del Calabozo".</p>
+        
+        <p>Entonces, ¿qué es el "Núcleo del Calabozo"?</p>
+        
+        <p>Para explicarlo, primero debemos hablar del mito de la creación de este mundo.</p>
+        
+        <p>***</p>
+        
+        <p>Al principio, el mundo era un torbellino negro y viscoso donde no existía nada.</p>
+        
+        <p>Cuando la diosa proyectó su luz, surgieron los continentes y nacieron las seis razas.</p>
+        
+        <p>Los humanos, los hombres bestia, los dragones, los elfos, los enanos y los demonios.</p>
+        
+        <p>Los sedimentos que se separaron del torbellino negro se solidificaron, formando al dios maligno.</p>
+        
+        <p>El dios maligno amaba a la diosa e intentó hacerla suya, pero la tierra se interpuso y no pudo salir a la superficie.</p>
+        
+        <p>Por eso, desde los agujeros oscuros (comúnmente usados como metáfora de los calabozos), expulsaba monstruos creados con su propio cuerpo hacia la superficie.</p>
+        
+        <p>Planeaba apilar monstruos para poder alcanzar a la diosa.</p>
+        
+        <p>Los humanos, hombres bestia, dragones, elfos, enanos y demonios, creados a partir de la luz de la diosa, luchaban contra los monstruos para protegerla.</p>
+        
+        <p>Los monstruos intentaban eliminar a los humanos, hombres bestia, dragones, elfos, enanos y demonios que estorbaban.</p>
+        
+        <p>Esta lucha ha continuado hasta el presente.</p>
+        
+        <p>***</p>
+        
+        <p>Ese es el mito de la creación de este mundo.</p>
+        
+        <p>Se dice que por la noche los monstruos se vuelven más fuertes porque el poder del dios maligno subterráneo aumenta.</p>
+        
+        <p>Y que cuanto más se desciende al subsuelo, más fuertes son los monstruos porque uno se acerca al poder del dios maligno.</p>
+        
+        <p>Hacía tiempo que pensaba en convertir el "Abismo" en nuestra base.</p>
+        
+        <p>Como se le llama el calabozo más grande, más fuerte y más peligroso del mundo, llegar al nivel más bajo es extremadamente difícil.</p>
+        
+        <p>En cambio, para nosotros, usando el poder de la carta "Teletransportación" obtenida de la "Gacha Infinita", no es difícil ir y venir entre la superficie y el subsuelo.</p>
+        
+        <p>Pero para llevar a cabo mi plan había numerosos problemas.</p>
+        
+        <p>Primero, no podíamos entender qué era exactamente el "Núcleo del Calabozo".</p>
+        
+        <p>En general, se dice que el "Núcleo del Calabozo" es un fragmento del poder del dios maligno, o una parte de su vida.</p>
+        
+        <p>Si se destruye el núcleo del calabozo, el calabozo se detiene. También se cree que quien lo destruye obtiene poder y puede debilitar al dios maligno.</p>
+        
+        <p>Después de unir nuestras fuerzas para tomar el control del "Abismo", Ellie, la "Bruja Prohibida", que era la más experta en magia entre nosotros, investigó el núcleo del calabozo del "Abismo", pero no era algo que pudiera comprender.</p>
+        
+        <p>Según Ellie, el núcleo del calabozo absorbe la energía y el poder mágico del planeta en el que estamos, forma calabozos de alguna manera, atrae minerales y materiales para crear cofres y objetos, produce monstruos, crea trampas, y genera una gran variedad de entornos… es decir, crea un mundo entero.</p>
+        
+        <p>Pero ni siquiera Ellie sabía por qué podía hacer eso. Si ella, que tanto sabe de magia, no lo entendía, entonces nadie entre mis subordinados podría entenderlo.</p>
+        
+        <p>Finalmente, gracias a los esfuerzos de Ellie, logramos reducir su función al mínimo para mantener el calabozo, sortear de alguna manera la interferencia de teletransportación, y convertirlo en una fortaleza.</p>
+        
+        <p>En el proceso, dejó de producir objetos y monstruos, así que actualmente compensamos esa falta con mi "Gacha Infinita".</p>
+        
+        <p>Perdí a mis compañeros, busqué los cuerpos de mis padres, vi la aldea destruida y me vengué de Garou. Aun así, esa cosa negra que se enredaba en lo más profundo de mi corazón no desapareció.</p>
+        
+        <p>Más bien, después de terminar la venganza contra Garou, sentí que esa cosa negra se había hinchado aún más.</p>
+        
+        <p>Y hace unos seis meses, cuando por fin pude salir y fui a ver cómo estaba mi aldea natal… estaba completamente destruida.</p>
+        
+        <p>—Tanto si quien destruyó mi aldea fueron monstruos, bandidos… o si fueron aquellos que intentaron matarme por precaución después de determinar que no era el "Maestro", es muy posible que usaran diversos medios para emplear monstruos y bandidos y así llegar hasta mi aldea. Aunque los responsables fueran países, haré que paguen por poner sus manos sobre mi familia y destruir mi aldea.</p>
+        
+        <p>—¡…!</p>
+        
+        <p>Los rostros de Mei y las demás frente a mí palidecieron.</p>
+        
+        <p>Parecía que mi aura asesina se había desbordado y las estaba afectando.</p>
+        
+        <p>El aire de la sala de trabajo crujía físicamente bajo la presión del aura asesina.</p>
+        
+        <p>—…</p>
+        
+        <p>Me tranquilicé.</p>
+        
+        <p>Por mucho que me dejara llevar por la ira, no podría identificar a los responsables.</p>
+        
+        <p>Por ahora, solo me quedaba recopilar información.</p>
+        
+        <p>—…Paralelamente a la recopilación de información, también estoy pensando en el próximo objetivo de venganza. El próximo será Sasha, la elfa.</p>
+        
+        <p>Sasha, miembro de la antigua "Reunión de Razas". Una elfa que me engañó a mí, un humano, se burló de mi estupidez y al final intentó matarme con sus propias manos.</p>
+        
+        <p>Ante mis palabras, las otras jóvenes, excepto Mei, se animaron y ofrecieron su ayuda.</p>
+        
+        <p>—¡Light-sama! Si vamos a atraer a la elfa traidora como hicimos con Garou, ¡por favor, esta vez encárguemelo a mí!</p>
+        
+        <p>—¡No, deja que yo haga ese papel!</p>
+        
+        <p>—¡Nya!</p>
+        
+        <p>Apreciaba su entusiasmo, pero negué con la cabeza.</p>
+        
+        <p>—Me alegra que estén tan motivadas, pero no haremos lo mismo que con Garou. En su caso, además de la venganza, también era para comprobar nuestro poder, porque provenía del país bestia que es el más débil después de los humanos, y porque era el más fácil de atraer entre los cinco objetivos de venganza, por eso usamos a Mei como cebo.</p>
+        
+        <p>A través del combate con Garou y sus reacciones, pude comprender nuestro poder.</p>
+        
+        <p>Tuve la sensación de que, incluso si el mundo fuera nuestro enemigo, nuestro poder sería suficiente.</p>
+        
+        <p>Pero no soy tan tonto como para declararle la guerra al mundo sin recopilar información.</p>
+        
+        <p>—Será difícil atraer a Sasha al "Abismo" como hicimos con Garou. Además, ¿no sería aburrido vengarme de ella de la misma manera? Quiero que ella experimente la misma desesperación que yo.</p>
+        
+        <p>—¿La misma desesperación que Light-sama?</p>
+        
+        <p>Mei inclinó la cabeza con curiosidad. Su larga cola de caballo negra se balanceó como una cola.</p>
+        
+        <p>Respondí a su pregunta con una sonrisa angelical.</p>
+        
+        <p>—Según mis subordinados que están recopilando información en la superficie, parece que Sasha pronto celebrará su boda con el subcomandante de los Caballeros Blancos, que tiene parentesco con la familia real. En su momento de máxima felicidad, como excompañera de grupo, creo que debo ofrecerle una gran celebración de venganza.</p>
+        
+        <p>Al pensar en mi venganza contra Sasha, esbocé una sonrisa tan amplia que era evidente incluso para mí.</p>
+        
+        <p>—Por eso he pensado en este método de celebración de venganza para ella.</p>
+        
+        <p>Les conté a Mei y a las demás el plan de venganza que había ideado para Sasha.</p>
+        
+        <p>Cuando terminaron de escuchar, Ellie fue la primera en aplaudir con ambas manos.</p>
+        
+        <p>—¡Es un plan maravilloso! ¡Como era de esperar de Light-sama! Pero si me lo confía a mí, puedo asegurar un resultado más cercano a lo que Light-sama desea.</p>
+        
+        <p>—Oh… ¿me lo cuentas?</p>
+        
+        <p>—¡Sí! Entonces…</p>
+        
+        <p>Ellie modificó el plan que acababa de escuchar y presentó un nuevo plan de venganza.</p>
+        
+        <p>El contenido seguía la línea del plan original, pero estaba más cerca de lo que yo deseaba y tenía más ventajas.</p>
+        
+        <p>Ellie terminó de explicarlo.</p>
+        
+        <p>—Todavía no tengo los detalles, pero el esquema sería algo así. ¿Qué le parece, Light-sama?</p>
+        
+        <p>—¡Excelente! ¡Es excelente! ¡Como era de esperar de Ellie! ¡Es incluso mejor que mi idea!</p>
+        
+        <p>—No, es gracias a que tenía la idea de Light-sama.</p>
+        
+        <p>Cuando la elogié sin reservas, Ellie hizo una reverencia con modestia.</p>
+        
+        <p>—Para llevar a cabo este plan, necesitaré el poder de la "Gacha Infinita" de Light-sama y muchas personas. Me disculpo por la impertinencia, pero ¿podría contar con su ayuda?</p>
+        
+        <p>—Por supuesto. Puedes usar sin límites los materiales, personas, información y cualquier otra cosa que necesites para este plan. Te doy permiso en mi nombre.</p>
+        
+        <p>—¡Muchas gracias!</p>
+        
+        <p>Con el permiso concedido, Ellie hizo una profunda reverencia.</p>
+        
+        <p>Al levantar la cabeza, esbozó una expresión triunfante hacia Mei.</p>
+        
+        <p>Sabía que Ellie veía a Mei como su rival, así que fingí no darme cuenta.</p>
+        
+        <p>——…</p>
+        
+        <p>Mei tampoco dijo nada.</p>
+        
+        <p>Aoyuki, que también se había dado cuenta, solo murmuró "nyaa".</p>
+        
+        <p>La única que no pareció notar su actitud fue Nazuna.</p>
+        
+        <p>—¡Si este plan sale bien, parece que también tendré mi oportunidad! ¡Oh, me estoy emocionando! ¡Ellie! ¡Prepáralo rápido!</p>
+        
+        <p>—¡Lo sé, pequeña! ¡Aunque no me lo digas, lo prepararé rápido y perfecto por Light-sama!</p>
+        
+        <p>La atmósfera amenazaba con volverse tensa, pero la actitud de Nazuna cambió el ambiente.</p>
+        
+        <p>Aunque no piensa en las cosas, reconocí de nuevo que es un personaje muy importante como animadora.</p>
+        
+        <p>Aclare mi garganta y llamé su atención.</p>
+        
+        <p>—Yo llevaré a cabo el "Plan Aventurero", una de las formas de recopilar información que había propuesto antes, hasta que estén listos los preparativos. Ellie, concéntrate al máximo en el "Plan de Venganza contra Sasha". Si necesitas ayuda o tienes algún problema y quieres consultarme, no dudes en decírmelo. Ese plan tiene mayor prioridad.</p>
+        
+        <p>—Entendido.</p>
+        
+        <p>—Light-sama, si va a registrarse de nuevo como aventurero, por favor, permítame acompañarle.</p>
+        
+        <p>Cuando terminé de dar instrucciones a Ellie, Mei inmediatamente hizo la petición.</p>
+        
+        <p>Estimuladas por ella, las otras dos también alzaron la voz.</p>
+        
+        <p>—¡Nya!</p>
+        
+        <p>—¡Yo soy más fuerte que Mei y Aoyuki! ¡Así que, mi señor, elígeme a mí como compañera!</p>
+        
+        <p>—Me alegra que las tres estén tan motivadas, pero como Ellie estará concentrada en la operación, le pediré a Mei que se encargue de la gestión del calabozo. Matamos y capturamos a Garou y los suyos, así que seguramente vendrá un grupo a buscarlos. Como no quiero que el "Abismo" llame la atención todavía, mata a la mitad de los buscadores y deja que la otra mitad regrese.</p>
+        
+        <p>—Entendido. Por mi camino como sirvienta, juro ofrecerle a Light-sama lo mejor y más excelente que desea.</p>
+        
+        <p>Con solo esa explicación, Mei lo entendió.</p>
+        
+        <p>Había que matar brutalmente a la mitad del grupo de búsqueda de Garou y hacer que la otra mitad también sufriera para que se fueran, para que así durante un tiempo sirvieran como "canarios" que anunciaran: "El calabozo más grande, más fuerte y más peligroso del mundo, el 'Abismo', sigue siendo peligroso".</p>
+        
+        <p>—Aoyuki, continúa con la investigación del bosque virgen alrededor del "Abismo". No queremos que haya personas peligrosas o monstruos por ahí.</p>
+        
+        <p>—Nya~</p>
+        
+        <p>Aoyuki movió su característica sudadera de orejas de gato como señal de aceptación.</p>
+        
+        <p>—Nazuna…</p>
+        
+        <p>Ella me miró con sus grandes ojos brillantes, preguntándose qué trabajo le asignaría.</p>
+        
+        <p>Nazuna era la más fuerte en combate cuerpo a cuerpo, y si le dábamos los objetos mágicos de más alto nivel para protegerse de ataques mágicos, sería la más fuerte de todas nosotras.</p>
+        
+        <p>Pero era demasiado fuerte para llevarla como aventurera, y no era adecuada para situaciones que requerían adaptación sobre la marcha.</p>
+        
+        <p>Aunque la valoraba mucho como animadora del calabozo, hay personas adecuadas y no adecuadas para ciertas tareas.</p>
+        
+        <p>Pero tampoco podía decirle "nada" aquí.</p>
+        
+        <p>—Nazuna… quiero que protejas el calabozo mientras no estoy. Creo que no llegará nadie al nivel más bajo del "Abismo", pero no está de más prevenir.</p>
+        
+        <p>—¡Entendido! ¡Déjamelo a mí, mi señor! ¡Protegeré a todos!</p>
+        
+        <p>Nazuna respondió enérgicamente a mis indicaciones.</p>
+        
+        <p>Como compañeros aventureros, llevaré a Gold, el "Caballero Dorado", una carta UR de nivel 5000, como escudo.</p>
+        
+        <p>Si queremos hacernos un nombre en este mundo, lo más rápido es adentrarse en calabozos.</p>
+        
+        <p>Por eso, también llevaré a Nemumu, la "Hoja Asesina", una carta UR de nivel 5000, especializada en exploración, desactivación de trampas y detección de enemigos.</p>
+        
+        <p>Así se decidieron los planes para el futuro.</p>
+    </div>
+
+    <hr>
+
+    <div class="nav-container">
+        <div class="nav-bottom">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo1e2.html" id="prevLinkBottom" class="nav-btn">← Planes de futuro</a>
+            <span class="chapter-counter" id="chapterCounterBottom">Capítulo 1 - Episodio 3</span>
+            <a href="capitulo1e4.html" id="nextLinkBottom" class="nav-btn">Interrupción →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelectBottom">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <footer>
+        <p>Gacha Infinita © 明鏡シスイ (Meikyō Shisui) | Traducción: Ocholobos</p>
+        <p>Apoya al autor comprando los volúmenes oficiales</p>
+    </footer>
+
+    <button class="floating-scroll-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">⬆</button>
+
+    <script src="data.js"></script>
+    <script>
+        const CHAPTER_NUM = 1;
+        const EPISODE_NUM = 3;
+        
+        let currentEpisode = null;
+        let prevEpisode = null;
+        let nextEpisode = null;
+        let allEpisodes = [];
+        
+        function loadEpisodeData() {
+            if (typeof GACHA_DATA !== 'undefined') {
+                currentEpisode = GACHA_DATA.getEpisode(CHAPTER_NUM, EPISODE_NUM);
+                prevEpisode = GACHA_DATA.getPrevEpisode(CHAPTER_NUM, EPISODE_NUM);
+                nextEpisode = GACHA_DATA.getNextEpisode(CHAPTER_NUM, EPISODE_NUM);
+                allEpisodes = GACHA_DATA.getAllEpisodesOrdered();
+                return true;
+            }
+            return false;
+        }
+        
+        function setupNavLinks() {
+            const prevLinks = [document.getElementById('prevLinkTop'), document.getElementById('prevLinkBottom')];
+            const nextLinks = [document.getElementById('nextLinkTop'), document.getElementById('nextLinkBottom')];
+            const counters = [document.getElementById('chapterCounterTop'), document.getElementById('chapterCounterBottom')];
+            
+            counters.forEach(counter => {
+                if (counter) counter.textContent = `Capítulo 1 - Episodio 3`;
+            });
+            
+            if (prevEpisode) {
+                prevLinks.forEach(link => {
+                    if (link) {
+                        link.href = `capitulo${prevEpisode.chapter}e${prevEpisode.episodeNum}.html`;
+                        link.classList.remove('disabled');
+                        let shortTitle = prevEpisode.title;
+                        if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                        link.textContent = `← ${shortTitle}`;
+                    }
+                });
+            }
+            
+            if (nextEpisode) {
+                nextLinks.forEach(link => {
+                    if (link) {
+                        link.href = `capitulo${nextEpisode.chapter}e${nextEpisode.episodeNum}.html`;
+                        link.classList.remove('disabled');
+                        let shortTitle = nextEpisode.title;
+                        if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                        link.textContent = `${shortTitle} →`;
+                    }
+                });
+            }
+        }
+        
+        function populateSelectors() {
+            const selectors = [document.getElementById('chapterSelect'), document.getElementById('chapterSelectBottom')];
+            
+            selectors.forEach(select => {
+                if (!select) return;
+                let options = '<option value="">📖 Seleccionar episodio...</option>';
+                for (const ep of allEpisodes) {
+                    const selected = (ep.chapter == CHAPTER_NUM && ep.episodeNum == EPISODE_NUM) ? 'selected' : '';
+                    const title = ep.title.length > 45 ? ep.title.substring(0, 42) + '...' : ep.title;
+                    options += `<option value="capitulo${ep.chapter}e${ep.episodeNum}.html" ${selected}>${ep.chapterTitle} - Episodio ${ep.episodeNum}: ${title}</option>`;
+                }
+                select.innerHTML = options;
+                
+                select.addEventListener('change', function() {
+                    if (this.value) window.location.href = this.value;
+                });
+            });
+        }
+        
+        function addToHistory() {
+            const user = localStorage.getItem('gacha_user');
+            if (!user) return;
+            let history = localStorage.getItem(`gacha_history_${user}`);
+            let historyObj = history ? JSON.parse(history) : { chapters: [] };
+            if (!historyObj.chapters) historyObj.chapters = [];
+            
+            historyObj.chapters = historyObj.chapters.filter(item => 
+                !(item.chapter == CHAPTER_NUM && item.episode == EPISODE_NUM)
+            );
+            historyObj.chapters.unshift({ chapter: CHAPTER_NUM, episode: EPISODE_NUM });
+            if (historyObj.chapters.length > 20) historyObj.chapters.pop();
+            localStorage.setItem(`gacha_history_${user}`, JSON.stringify(historyObj));
+        }
+        
+        function initControls() {
+            const savedTheme = localStorage.getItem('gacha_theme');
+            if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+            const savedFont = localStorage.getItem('gacha_fontsize');
+            if (savedFont) document.body.style.fontSize = savedFont + '%';
+            
+            document.getElementById('fontPlus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.min(150, size + 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            document.getElementById('fontMinus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.max(70, size - 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            
+            const themeBtn = document.getElementById('themeToggle');
+            if (document.documentElement.hasAttribute('data-theme')) themeBtn.textContent = '☀️ Modo claro';
+            themeBtn.onclick = () => {
+                const isDark = document.documentElement.hasAttribute('data-theme');
+                if (isDark) {
+                    document.documentElement.removeAttribute('data-theme');
+                    localStorage.setItem('gacha_theme', 'light');
+                    themeBtn.textContent = '🌙 Modo oscuro';
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('gacha_theme', 'dark');
+                    themeBtn.textContent = '☀️ Modo claro';
+                }
+            };
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            if (loadEpisodeData()) {
+                setupNavLinks();
+                populateSelectors();
+            }
+            initControls();
+            addToHistory();
+            
+            kofiWidgetOverlay.draw('ocholobos', {
+                'type': 'floating-chat',
+                'floating-chat.donateButton.text': 'Apóyame',
+                'floating-chat.donateButton.background-color': '#1a4d5f',
+                'floating-chat.donateButton.text-color': '#ffffff'
+            });
+        });
+    </script>
+</body>
+</html>
