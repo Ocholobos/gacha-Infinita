@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gacha Infinita - Parte 2 | Gacha Infinita</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem;
+            line-height: 1.8;
+            background: #faf9f7;
+            color: #2c2b28;
+            transition: all 0.3s ease;
+        }
+        [data-theme="dark"] body {
+            background: #1a1a1a;
+            color: #e5e5e5;
+        }
+        
+        .options-bar {
+            position: sticky;
+            top: 0;
+            background: #faf9f7;
+            border-bottom: 1px solid #e5e0d8;
+            padding: 0.6rem 1rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.8rem;
+            z-index: 100;
+            flex-wrap: wrap;
+        }
+        [data-theme="dark"] .options-bar {
+            background: #1a1a1a;
+            border-bottom-color: #404040;
+        }
+        .options-bar button {
+            background: #eef2f0;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: #1a4d5f;
+            transition: all 0.2s;
+        }
+        [data-theme="dark"] .options-bar button {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .options-bar button:hover {
+            background: #e5e0d8;
+        }
+        .font-size-control {
+            display: flex;
+            gap: 0.3rem;
+            align-items: center;
+        }
+        .font-size-control button {
+            width: 32px;
+            padding: 0.2rem;
+        }
+        
+        .nav-container {
+            margin: 1rem 0;
+        }
+        .nav-center, .nav-bottom {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+        .nav-bottom {
+            margin-top: 1rem;
+        }
+        .nav-btn {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            color: #1a4d5f;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .nav-btn {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .nav-btn:hover {
+            background: #e5e0d8;
+        }
+        .nav-btn.disabled {
+            background: #e5e0d8;
+            color: #9ca3af;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .chapter-counter {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] .chapter-counter {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        .chapter-selector {
+            margin: 0.5rem 0;
+            text-align: center;
+        }
+        .chapter-selector select {
+            background: #eef2f0;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-family: inherit;
+            color: #1a4d5f;
+            cursor: pointer;
+            width: 300px;
+            max-width: 90%;
+        }
+        [data-theme="dark"] .chapter-selector select {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin: 1rem 0 0.25rem;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] h1 {
+            color: #5a9e8c;
+        }
+        .episode-number {
+            color: #6b6a68;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #e5e0d8;
+            padding-bottom: 0.5rem;
+        }
+        [data-theme="dark"] .episode-number {
+            color: #a0a0a0;
+            border-bottom-color: #404040;
+        }
+        .story-content {
+            margin: 1.5rem 0;
+        }
+        .story-content p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+        hr {
+            margin: 2rem 0;
+            border: none;
+            border-top: 1px solid #e5e0d8;
+        }
+        [data-theme="dark"] hr {
+            border-top-color: #404040;
+        }
+        
+        .floating-scroll-top {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            background: #1a4d5f;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.8;
+        }
+        [data-theme="dark"] .floating-scroll-top {
+            background: #5a9e8c;
+        }
+        .floating-scroll-top:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            border-top: 1px solid #e5e0d8;
+            padding-top: 1.5rem;
+        }
+        [data-theme="dark"] footer {
+            border-top-color: #404040;
+        }
+        
+        @media (max-width: 600px) {
+            body { padding: 0.5rem; }
+            .nav-center, .nav-bottom { flex-direction: column; gap: 0.5rem; }
+            .floating-scroll-top {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                bottom: 70px;
+                right: 15px;
+            }
+        }
+    </style>
+    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+</head>
+<body>
+    <div class="options-bar">
+        <div class="font-size-control">
+            <button id="fontMinus">A-</button>
+            <button id="fontPlus">A+</button>
+        </div>
+        <button id="themeToggle">🌙 Modo oscuro</button>
+    </div>
+
+    <div class="nav-container">
+        <div class="nav-center">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo0e0.html" id="prevLinkTop" class="nav-btn">← Gacha Infinita - Parte 1</a>
+            <span class="chapter-counter" id="chapterCounterTop">Capítulo 0 - Episodio 1</span>
+            <a href="capitulo0e2.html" id="nextLinkTop" class="nav-btn">Gacha Infinita - Parte 3 →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelect">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <h1>Gacha Infinita - Parte 2</h1>
+    <div class="episode-number">Capítulo 0 - Episodio 1: Tres años después</div>
+
+    <div class="story-content">
+        <p>Aproximadamente tres años después de que fui traicionado por los amigos en quienes confiaba y conocí a Mei en el fondo del "Abismo".</p>
+        
+        <p>En un rincón de la parte más profunda del calabozo más grande, más fuerte y más peligroso del mundo, el "Abismo".</p>
+        
+        <p>Originalmente era una roca negra y accidentada, pero como resultado de las renovaciones, se había convertido en un corredor con una textura suave similar al mármol.</p>
+        
+        <p>Las paredes estaban revestidas con lámparas mágicas que las hacían más brillantes.</p>
+        
+        <p>Mientras caminaba, Light, las hadas sirvientas de bajo rango que notaron mi presencia se alinearon contra la pared e hicieron una reverencia.</p>
+        
+        <p>Todas eran chicas hermosas de diversas estaturas y estilos. Si tan solo una de ellas apareciera en el mundo exterior, muchos se alborotarían diciendo que querían hacerla su esposa, su amante o su nuera.</p>
+        
+        <p>—Gracias por su arduo trabajo.</p>
+        
+        <p>—Gracias, Maestro.</p>
+        
+        <p>Respondieron felices cuando les hablé.</p>
+        
+        <p>Levanté la mano ligeramente hacia ellas y pasé de largo.</p>
+        
+        <p>La distancia entre nosotros se había ensanchado considerablemente, pero debido a que el pasillo era de piedra y mi nivel había aumentado, aún podía escuchar sus conversaciones.</p>
+        
+        <p>—¡Light-sama, qué día de suerte poder hablar con él!</p>
+        
+        <p>—Quizás hoy hemos gastado toda nuestra suerte.</p>
+        
+        <p>—Oh, Light-sama es tan guapo… Quiero lamer sus dedos de los pies. No, aunque solo sea su cabello caído, lo lameré.</p>
+        
+        <p>—¡Eres una pervertida!</p>
+        
+        <p>—Pero si tuvieras la oportunidad, tú también lo lamerías, ¿verdad?</p>
+        
+        <p>—¿Por qué no lo haría?</p>
+        
+        <p>—Me gusta lamer, pero también quiero que me acaricien.</p>
+        
+        <p>—Quiero que me mire con ojos desdeñosos y me trate como a un cerdo.</p>
+        
+        <p>—Vale, tu nivel es demasiado alto.</p>
+        
+        <p>No pude evitar soltar una risa.</p>
+        
+        <p>La sirvienta que me acompañaba ese día se veía enojada, con una vena en la cara.</p>
+        
+        <p>—Maestro, por favor permítame detener a esas hadas parlanchinas ahora mismo.</p>
+        
+        <p>—Está bien, no me importa. Solo significa que me quieren mucho.</p>
+        
+        <p>—…Me disculpo por haber reaccionado de forma exagerada.</p>
+        
+        <p>Con mi perdón, la vena en su rostro desapareció como si nunca hubiera estado allí.</p>
+        
+        <p>A medida que avanzaba, el pasillo bellamente elaborado terminó y llegué a una zona accidentada que parecía el calabozo original.</p>
+        
+        <p>Este lugar era un campo de entrenamiento que se había dejado intacto.</p>
+        
+        <p>Las personas que buscaba estaban reunidas en el campo de entrenamiento.</p>
+        
+        <p>Había tres personas en ese lugar. Una vampira de baja estatura y cabello plateado levantó las manos hacia el cielo y gritó.</p>
+        
+        <p>—¡Les dije que no soy estúpida! Incluso puedo recitar la tabla de multiplicar como prueba. Mira, 1 x 1 es 1, 1 x 2 es 2, 1 x 3 es 4…</p>
+        
+        <p>—No hay forma de que puedas hacer eso. Y eres tan increíblemente estúpida que ya te equivocaste al principio.</p>
+        
+        <p>—Nya~.</p>
+        
+        <p>La chica de cabello largo y rubio con sombrero de mago se encogió de hombros como si se hubiera rendido con la chica vampiro bajita.</p>
+        
+        <p>La chica con sudadera de orejas de gato, que era más baja que las otras dos, imitaba la voz de un gato.</p>
+        
+        <p>—"Tres mujeres hacen un mercado". Es bueno estar felices y animadas. Es mucho mejor que estar en la oscuridad y la desesperación.</p>
+        
+        <p>Dejé a mi sirvienta esperando allí y me acerqué a las tres chicas.</p>
+        
+        <p>—Entonces, ¿todas están aquí?</p>
+        
+        <p>Cuando les hablé, las tres que habían estado hablando en voz alta se giraron con expresiones radiantes.</p>
+        
+        <p>—¡Light-sama! ¡Has venido a verme! ¡Estoy tan feliz!</p>
+        
+        <p>La chica vampiro bajita de cabello plateado, ella también era una carta que había obtenido de mi "Gacha Infinita".</p>
+        
+        <p>"Caballera Vampiro Verdadero Nazuna, nivel 9999".</p>
+        
+        <p>Tenía ojos rojo sangre y cabello largo y plateado, y a pesar de su baja estatura, su pecho era muy grande. Parecía una hermosa joven, pero era una chica adorable con mucha energía, como se podía ver por sus palabras y acciones.</p>
+        
+        <p>También era una poderosa caballera, llevaba una armadura pesada y sostenía una enorme espada más grande que ella, y enfrentaría a cualquier monstruo que se le acercara.</p>
+        
+        <p>—No hay forma de que Light-sama viniera a ver a una niña como Nazuna que no tiene ni un ápice de elegancia. Light-sama, Elly siempre está lista para concebir al hijo divino de Light-sama. Vamos, vamos a la habitación de Elly. Si es po-po-posible, dame tiempo para bañarme porque he sudado un poco.</p>
+        
+        <p>La mujer de cabello largo y rubio que llevaba un sombrero de bruja me invitó a su habitación. Su rostro se puso rojo y sus ojos se nublaron con lágrimas.</p>
+        
+        <p>Ella también era una carta que había salido de mi don "Gacha Infinita".</p>
+        
+        <p>"Bruja Prohibida Elly, nivel 9999".</p>
+        
+        <p>Era una bruja que había dominado todo tipo de magia, hechicería, artes prohibidas y artes espirituales.</p>
+        
+        <p>Llevaba un sombrero de bruja y tenía su hermoso cabello rubio recogido en dos coletas. Su altura era alrededor de 160 cm, y siempre llevaba un sombrero, lo que la hacía parecer más alta.</p>
+        
+        <p>Su figura era buena, su pecho firme, su cintura curvilínea y sus caderas bien definidas.</p>
+        
+        <p>Por supuesto, era una hermosa joven con un rostro bien desarrollado y parecía más una chica mágica que una bruja.</p>
+        
+        <p>A menudo me invitaba a su habitación, pero no tenía experiencia y aún era virgen. Me halagaban sus sentimientos, pero aún no había alcanzado mi objetivo, así que no quería tener hijos todavía.</p>
+        
+        <p>Por eso siempre la rechazaba.</p>
+        
+        <p>Elly era una chica hermosa y tenía buen cuerpo, así que estaba muy contento con sus sentimientos.</p>
+        
+        <p>—Nya~.</p>
+        
+        <p>La otra chica terminó ronroneando como un gato y frotó su cabeza contra mi cuerpo con facilidad.</p>
+        
+        <p>Por supuesto, ella también era una carta de mi don "Gacha Infinita".</p>
+        
+        <p>"Genio Domadora de Monstruos Aoyuki, nivel 9999".</p>
+        
+        <p>Era una domadora de monstruos que podía controlar cualquier tipo de bestia mágica, bestia divina, bestia fantasma o bestia rara.</p>
+        
+        <p>Era la más baja de las tres y llevaba una sudadera con orejas de gato.</p>
+        
+        <p>Su pecho era pequeño, y sus brazos y piernas eran largos pero esbeltos.</p>
+        
+        <p>Tenía un rostro juvenil, y con su fantástico color de cabello azul, era una joven extremadamente hermosa.</p>
+        
+        <p>A menudo imitaba el ronroneo de un gato y frotaba su cabeza y cuerpo contra el mío así. Era tan linda que no podía evitar acariciarla debajo de la barbilla como si fuera un gato real.</p>
+        
+        <p>Aoyuki también parecía feliz y soltó un "nyaa~♪".</p>
+        
+        <p>—No solo a Nazuna, tengo negocios con ustedes dos también. Elly, por favor invítame a tu habitación en otra ocasión. Aoyuki también, escucha con atención…</p>
+        
+        <p>Un monstruo se acercó sigilosamente desde la oscuridad al fondo de la sala.</p>
+        
+        <p>Era una enorme bestia de cuatro patas, de casi 10 metros de altura, con una serpiente como cola más grande que mi cuerpo.</p>
+        
+        <p>Había notado la presencia del monstruo, pero el trauma del pasado hizo que mi cuerpo se tensara.</p>
+        
+        <p>Las tres, que notaron que me había tensado, rápidamente tomaron posición, listas para atacar al monstruo de cuatro patas, el "Sabueso Infernal Serpiente".</p>
+        
+        <p>—Cómo te atreves a faltarle el respeto a Light-sama frente a mí… No creas que te dejaré morir fácilmente.</p>
+        
+        <p>Sostenía su gran espada con ligereza mientras fulminaba al monstruo.</p>
+        
+        <p>—Te dejé vivir por misericordia y por tu valor, pero no puedo perdonar tu pecado de atreverte a hacer un movimiento contra Light-sama. Esta especie debería ser exterminada de los calabozos, de la superficie y borrada de toda literatura y registro.</p>
+        
+        <p>Elly abrió el libro mágico en su mano y desató una intención asesina.</p>
+        
+        <p>—Así es. Por hacer sentir incómodo al Rey, esa es razón más que suficiente para que tu existencia infernal perezca.</p>
+        
+        <p>Aoyuki, que normalmente solo hablaba como un gato, incluso dijo: "el monstruo debería ser eliminado inmediatamente".</p>
+        
+        <p>Ocultando su mirada con el borde de su capucha, envolviendo una cadena en su mano y golpeando el suelo para prepararse para la batalla.</p>
+        
+        <p>El Sabueso Infernal Serpiente de nivel 1000 se sintió intimidado por tres personas de nivel 9999, y su rostro mostraba miedo.</p>
+        
+        <p>Si yo hiciera una broma aquí y dijera "lo permito", los sabuesos infernales serpiente en este calabozo y en cualquier otro lugar se extinguirían.</p>
+        
+        <p>Aclare mi garganta y luego llamé a las tres.</p>
+        
+        <p>—Ya estoy bien. Las tres, por favor deténganse. Él está asustado. ¿Ven? Es sorprendentemente lindo una vez que nos acostumbramos.</p>
+        
+        <p>Me acerqué al sabueso infernal serpiente y lo acaricié.</p>
+        
+        <p>El sabueso infernal serpiente también quería sobrevivir, así que se revolcó en el suelo y mostró su vientre para que lo acariciaran.</p>
+        
+        <p>La serpiente en su cola también se estiraba coquetamente, dejando que sus escamas frías tocaran mi mejilla.</p>
+        
+        <p>—Si Light-sama lo dice.</p>
+        
+        <p>—La palabra de Light-sama tiene prioridad sobre todo.</p>
+        
+        <p>—Nyaa.</p>
+        
+        <p>Las tres estuvieron de acuerdo con mis instrucciones y bajaron sus armas.</p>
+        
+        <p>Después de un pequeño desvío, finalmente llegué al tema principal.</p>
+        
+        <p>—Acabo de recibir una llamada de Mei. Dijo: "Atrapé a la presa". Por eso vine a pedirles que se preparen.</p>
+        
+        <p>La única razón por la que no usé la "llamada" es que estaba tan feliz que quería decírselo en persona, así que me tomé la molestia de buscarlas.</p>
+        
+        <p>—¡Wooo! ¡Por fin! ¡Felicidades, Light-sama! ¡Haré mi mejor esfuerzo para prepararme!</p>
+        
+        <p>—No me gusta la idea de que Mei esté a cargo de atrapar a la presa. Esta Elly también puede cumplir la misión perfectamente. No, puedo hacerlo incluso mejor que perfecto.</p>
+        
+        <p>—Nya.</p>
+        
+        <p>—Gracias, Elly. Pero Elly no parece humana… En cambio, Mei sí parece humana. Hay que elegir a la persona adecuada para el lugar adecuado.</p>
+        
+        <p>Elly tenía orejas puntiagudas, aunque no tanto como las de los elfos.</p>
+        
+        <p>Era difícil disfrazarse de humana.</p>
+        
+        <p>Por otro lado, Mei solo parecía una hermosa sirvienta humana.</p>
+        
+        <p>Si Elly quisiera, podría engañar a la gente con herramientas mágicas, pero no había garantía de que siempre funcionara, así que había que tener cuidado.</p>
+        
+        <p>—Lo sé, lo sé. Pero no solo Mei, no olvides que Light-sama también tiene a Elly.</p>
+        
+        <p>—Por supuesto. No solo a Elly, cuento con todas ustedes.</p>
+        
+        <p>—¡!!!!!</p>
+        
+        <p>Las tres se sintieron tan conmovidas por mis palabras que sus mejillas se sonrojaron y sus cuerpos temblaban.</p>
+        
+        <p>Era agradable ver su lealtad tan alta, pero a veces reaccionaban de forma exagerada, y no podía evitar soltar una pequeña risa.</p>
+        
+        <p>El momento había llegado.</p>
+        
+        <p>Había estado esperando casi tres años. No podía evitar sonreír feliz porque finalmente podía cumplir una de mis venganzas.</p>
+    </div>
+
+    <hr>
+
+    <div class="nav-container">
+        <div class="nav-bottom">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo0e0.html" id="prevLinkBottom" class="nav-btn">← Gacha Infinita - Parte 1</a>
+            <span class="chapter-counter" id="chapterCounterBottom">Capítulo 0 - Episodio 1</span>
+            <a href="capitulo0e2.html" id="nextLinkBottom" class="nav-btn">Gacha Infinita - Parte 3 →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelectBottom">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <footer>
+        <p>Gacha Infinita © 明鏡シスイ (Meikyō Shisui) | Traducción: Ocholobos</p>
+        <p>Apoya al autor comprando los volúmenes oficiales</p>
+    </footer>
+
+    <button class="floating-scroll-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">⬆</button>
+
+    <script src="data.js"></script>
+    <script>
+        const CHAPTER_NUM = 0;
+        const EPISODE_NUM = 1;
+        
+        let currentEpisode = null;
+        let prevEpisode = null;
+        let nextEpisode = null;
+        let allEpisodes = [];
+        
+        function loadEpisodeData() {
+            if (typeof GACHA_DATA !== 'undefined') {
+                currentEpisode = GACHA_DATA.getEpisode(CHAPTER_NUM, EPISODE_NUM);
+                prevEpisode = GACHA_DATA.getPrevEpisode(CHAPTER_NUM, EPISODE_NUM);
+                nextEpisode = GACHA_DATA.getNextEpisode(CHAPTER_NUM, EPISODE_NUM);
+                allEpisodes = GACHA_DATA.getAllEpisodesOrdered();
+                return true;
+            }
+            return false;
+        }
+        
+        function setupNavLinks() {
+            const prevLinks = [document.getElementById('prevLinkTop'), document.getElementById('prevLinkBottom')];
+            const nextLinks = [document.getElementById('nextLinkTop'), document.getElementById('nextLinkBottom')];
+            const counters = [document.getElementById('chapterCounterTop'), document.getElementById('chapterCounterBottom')];
+            
+            counters.forEach(counter => {
+                if (counter) counter.textContent = `Capítulo 0 - Episodio 1: Tres años después`;
+            });
+            
+            if (prevEpisode) {
+                prevLinks.forEach(link => {
+                    if (link) {
+                        link.href = `capitulo${prevEpisode.chapter}e${prevEpisode.episodeNum}.html`;
+                        link.classList.remove('disabled');
+                        let shortTitle = prevEpisode.title;
+                        if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                        link.textContent = `← ${shortTitle}`;
+                    }
+                });
+            }
+            
+            if (nextEpisode) {
+                nextLinks.forEach(link => {
+                    if (link) {
+                        link.href = `capitulo${nextEpisode.chapter}e${nextEpisode.episodeNum}.html`;
+                        link.classList.remove('disabled');
+                        let shortTitle = nextEpisode.title;
+                        if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                        link.textContent = `${shortTitle} →`;
+                    }
+                });
+            }
+        }
+        
+        function populateSelectors() {
+            const selectors = [document.getElementById('chapterSelect'), document.getElementById('chapterSelectBottom')];
+            
+            selectors.forEach(select => {
+                if (!select) return;
+                let options = '<option value="">📖 Seleccionar episodio...</option>';
+                for (const ep of allEpisodes) {
+                    const selected = (ep.chapter == CHAPTER_NUM && ep.episodeNum == EPISODE_NUM) ? 'selected' : '';
+                    const title = ep.title.length > 45 ? ep.title.substring(0, 42) + '...' : ep.title;
+                    options += `<option value="capitulo${ep.chapter}e${ep.episodeNum}.html" ${selected}>${ep.chapterTitle} - Episodio ${ep.episodeNum}: ${title}</option>`;
+                }
+                select.innerHTML = options;
+                
+                select.addEventListener('change', function() {
+                    if (this.value) window.location.href = this.value;
+                });
+            });
+        }
+        
+        function addToHistory() {
+            const user = localStorage.getItem('gacha_user');
+            if (!user) return;
+            let history = localStorage.getItem(`gacha_history_${user}`);
+            let historyObj = history ? JSON.parse(history) : { chapters: [] };
+            if (!historyObj.chapters) historyObj.chapters = [];
+            
+            historyObj.chapters = historyObj.chapters.filter(item => 
+                !(item.chapter == CHAPTER_NUM && item.episode == EPISODE_NUM)
+            );
+            historyObj.chapters.unshift({ chapter: CHAPTER_NUM, episode: EPISODE_NUM });
+            if (historyObj.chapters.length > 20) historyObj.chapters.pop();
+            localStorage.setItem(`gacha_history_${user}`, JSON.stringify(historyObj));
+        }
+        
+        function initControls() {
+            const savedTheme = localStorage.getItem('gacha_theme');
+            if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+            const savedFont = localStorage.getItem('gacha_fontsize');
+            if (savedFont) document.body.style.fontSize = savedFont + '%';
+            
+            document.getElementById('fontPlus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.min(150, size + 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            document.getElementById('fontMinus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.max(70, size - 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            
+            const themeBtn = document.getElementById('themeToggle');
+            if (document.documentElement.hasAttribute('data-theme')) themeBtn.textContent = '☀️ Modo claro';
+            themeBtn.onclick = () => {
+                const isDark = document.documentElement.hasAttribute('data-theme');
+                if (isDark) {
+                    document.documentElement.removeAttribute('data-theme');
+                    localStorage.setItem('gacha_theme', 'light');
+                    themeBtn.textContent = '🌙 Modo oscuro';
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('gacha_theme', 'dark');
+                    themeBtn.textContent = '☀️ Modo claro';
+                }
+            };
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            if (loadEpisodeData()) {
+                setupNavLinks();
+                populateSelectors();
+            }
+            initControls();
+            addToHistory();
+            
+            kofiWidgetOverlay.draw('ocholobos', {
+                'type': 'floating-chat',
+                'floating-chat.donateButton.text': 'Apóyame',
+                'floating-chat.donateButton.background-color': '#1a4d5f',
+                'floating-chat.donateButton.text-color': '#ffffff'
+            });
+        });
+    </script>
+</body>
+</html>
