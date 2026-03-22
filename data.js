@@ -6,23 +6,24 @@ const GACHA_DATA = {
     chapters: [
         // ========== Capítulo 0 ==========
         {
-            chapter: 0,
+            num: 0,
             title: "Capítulo 0",
             episodes: [
-                { num: 0, title: "Gacha Infinita - Parte 1" },
-                { num: 1, title: "Gacha Infinita - Parte 2: Tres años después" },
-                { num: 2, title: "Gacha Infinita - Parte 3: La venganza contra Garou" }
+                { num: 0, title: "Gacha Infinita - Parte 1", date: "17/04/2020 12:00" },
+                { num: 1, title: "Gacha Infinita - Parte 2: Tres años después", date: "17/04/2020 12:00" },
+                { num: 2, title: "Gacha Infinita - Parte 3: La venganza contra Garou", date: "17/04/2020 12:00" }
             ]
         },
         
         // ========== Capítulo 1 ==========
         {
-            chapter: 1,
+            num: 1,
             title: "Capítulo 1",
             episodes: [
-                { num: 1, title: "El viaje comienza" },
-                { num: 2, title: "Planes de futuro" },
-                { num: 3, title: "¿Cómo vengarse de la elfa Sasha?" }
+                { num: 1, title: "El viaje comienza", date: "17/04/2020 12:00" },
+                { num: 2, title: "Planes de futuro", date: "17/04/2020 17:00" },
+                { num: 3, title: "¿Cómo vengarse de la elfa Sasha?", date: "18/04/2020 12:00" },
+                { num: 4, title: "Interrupción", date: "18/04/2020 17:00" }
             ]
         }
     ],
@@ -35,11 +36,12 @@ const GACHA_DATA = {
         for (const chapter of this.chapters) {
             for (const ep of chapter.episodes) {
                 all.push({
-                    chapter: chapter.chapter,
+                    chapter: chapter.num,
                     chapterTitle: chapter.title,
                     episodeNum: ep.num,
                     title: ep.title,
-                    file: `capitulo${chapter.chapter}e${ep.num}.html`
+                    date: ep.date,
+                    file: `capitulo${chapter.num}e${ep.num}.html`
                 });
             }
         }
@@ -48,16 +50,17 @@ const GACHA_DATA = {
     
     // Obtener episodio por capítulo y número de episodio
     getEpisode: function(chapterNum, episodeNum) {
-        const chapter = this.chapters.find(c => c.chapter == chapterNum);
+        const chapter = this.chapters.find(c => c.num == chapterNum);
         if (!chapter) return null;
         const episode = chapter.episodes.find(e => e.num == episodeNum);
         if (!episode) return null;
         return {
-            chapter: chapter.chapter,
+            chapter: chapter.num,
             chapterTitle: chapter.title,
             episodeNum: episode.num,
             title: episode.title,
-            file: `capitulo${chapter.chapter}e${episode.num}.html`
+            date: episode.date,
+            file: `capitulo${chapter.num}e${episode.num}.html`
         };
     },
     
@@ -67,11 +70,12 @@ const GACHA_DATA = {
         for (const chapter of this.chapters) {
             for (const ep of chapter.episodes) {
                 all.push({
-                    chapter: chapter.chapter,
+                    chapter: chapter.num,
                     chapterTitle: chapter.title,
                     episodeNum: ep.num,
                     title: ep.title,
-                    file: `capitulo${chapter.chapter}e${ep.num}.html`
+                    date: ep.date,
+                    file: `capitulo${chapter.num}e${ep.num}.html`
                 });
             }
         }
