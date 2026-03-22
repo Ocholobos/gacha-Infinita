@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Futura dirección | Gacha Infinita</title>
+    <title>Planes de futuro | Gacha Infinita</title>
     <style>
+        /* Mismo CSS que en los anteriores */
         * {
             margin: 0;
             padding: 0;
@@ -25,7 +26,6 @@
             color: #e5e5e5;
         }
         
-        /* Barra de opciones superior */
         .options-bar {
             position: sticky;
             top: 0;
@@ -69,11 +69,10 @@
             padding: 0.2rem;
         }
         
-        /* Navegación */
         .nav-container {
             margin: 1rem 0;
         }
-        .nav-center {
+        .nav-center, .nav-bottom {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -82,13 +81,7 @@
             margin-bottom: 0.5rem;
         }
         .nav-bottom {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 1rem;
-            flex-wrap: wrap;
             margin-top: 1rem;
-            margin-bottom: 0.5rem;
         }
         .nav-btn {
             background: #eef2f0;
@@ -129,7 +122,6 @@
             color: #5a9e8c;
         }
         
-        /* Selector de capítulos */
         .chapter-selector {
             margin: 0.5rem 0;
             text-align: center;
@@ -151,7 +143,6 @@
             color: #5a9e8c;
         }
         
-        /* Título y contenido */
         h1 {
             font-size: 1.8rem;
             margin: 1rem 0 0.25rem;
@@ -160,13 +151,13 @@
         [data-theme="dark"] h1 {
             color: #5a9e8c;
         }
-        .chapter-number {
+        .episode-number {
             color: #6b6a68;
             margin-bottom: 1rem;
             border-bottom: 1px solid #e5e0d8;
             padding-bottom: 0.5rem;
         }
-        [data-theme="dark"] .chapter-number {
+        [data-theme="dark"] .episode-number {
             color: #a0a0a0;
             border-bottom-color: #404040;
         }
@@ -186,7 +177,6 @@
             border-top-color: #404040;
         }
         
-        /* Botón flotante "Subir" */
         .floating-scroll-top {
             position: fixed;
             bottom: 90px;
@@ -242,37 +232,32 @@
     <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
 </head>
 <body>
-    <!-- Barra de opciones superior -->
     <div class="options-bar">
         <div class="font-size-control">
-            <button id="fontMinus" aria-label="Reducir tamaño">A-</button>
-            <button id="fontPlus" aria-label="Aumentar tamaño">A+</button>
+            <button id="fontMinus">A-</button>
+            <button id="fontPlus">A+</button>
         </div>
-        <button id="themeToggle" aria-label="Modo claro/oscuro">🌙 Modo oscuro</button>
+        <button id="themeToggle">🌙 Modo oscuro</button>
     </div>
 
-    <!-- Navegación superior -->
     <div class="nav-container">
         <div class="nav-center">
             <a href="index.html" class="nav-btn">📚 Índice</a>
-            <a href="capitulo-1.html" id="prevLinkTop" class="nav-btn">← Partida</a>
-            <span class="chapter-counter" id="chapterCounterTop">Capítulo ? de ?</span>
-            <a href="#" id="nextLinkTop" class="nav-btn">Siguiente →</a>
+            <a href="capitulo1e1.html" id="prevLinkTop" class="nav-btn">← La partida</a>
+            <span class="chapter-counter" id="chapterCounterTop">Capítulo 1 - Episodio 2</span>
+            <a href="capitulo1e3.html" id="nextLinkTop" class="nav-btn">¿Cómo vengarse de la elfa Sasha? →</a>
         </div>
     </div>
 
-    <!-- Selector de capítulos (superior) -->
     <div class="chapter-selector">
         <select id="chapterSelect">
-            <option value="">📖 Ir a capítulo...</option>
+            <option value="">📖 Ir a episodio...</option>
         </select>
     </div>
 
-    <!-- Título -->
-    <h1>Futura dirección</h1>
-    <div class="chapter-number">Capítulo 2</div>
+    <h1>Planes de futuro</h1>
+    <div class="episode-number">Capítulo 1 - Episodio 2</div>
 
-    <!-- CONTENIDO DEL CAPÍTULO -->
     <div class="story-content">
         <p>La reunión en el salón principal se extendió hasta el mediodía.</p>
         
@@ -403,84 +388,77 @@
 
     <hr>
 
-    <!-- Navegación inferior -->
     <div class="nav-container">
         <div class="nav-bottom">
             <a href="index.html" class="nav-btn">📚 Índice</a>
-            <a href="capitulo-1.html" id="prevLinkBottom" class="nav-btn">← Partida</a>
-            <span class="chapter-counter" id="chapterCounterBottom">Capítulo ? de ?</span>
-            <a href="capitulo-3.html" id="nextLinkBottom" class="nav-btn">Siguiente →</a>
+            <a href="capitulo1e1.html" id="prevLinkBottom" class="nav-btn">← La partida</a>
+            <span class="chapter-counter" id="chapterCounterBottom">Capítulo 1 - Episodio 2</span>
+            <a href="capitulo1e3.html" id="nextLinkBottom" class="nav-btn">¿Cómo vengarse de la elfa Sasha? →</a>
         </div>
     </div>
 
-    <!-- Selector de capítulos (inferior) -->
     <div class="chapter-selector">
         <select id="chapterSelectBottom">
-            <option value="">📖 Ir a capítulo...</option>
+            <option value="">📖 Ir a episodio...</option>
         </select>
     </div>
 
     <footer>
         <p>Gacha Infinita © 明鏡シスイ (Meikyō Shisui) | Traducción: Ocholobos</p>
-        <p>🌐 <a href="https://ncode.syosetu.com/n9584gd/" target="_blank" style="color: #1a4d5f;">Novela original</a> | Si te gusta, apoya al autor comprando los volúmenes oficiales</p>
+        <p>🌐 <a href="https://ncode.syosetu.com/n9584gd/" target="_blank">Novela original</a> | Apoya al autor comprando los volúmenes oficiales</p>
     </footer>
 
-    <!-- Botón flotante "Subir" -->
-    <button class="floating-scroll-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" aria-label="Subir arriba">⬆</button>
+    <button class="floating-scroll-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">⬆</button>
 
     <script src="data.js"></script>
     <script>
-        // ========== CONFIGURACIÓN DEL CAPÍTULO ==========
-        const CHAPTER_NUM = 2;
+        // ========== CONFIGURACIÓN DEL EPISODIO ==========
+        const CHAPTER_NUM = 1;
+        const EPISODE_NUM = 2;
         
-        // ========== OBTENER DATOS DE data.js ==========
-        let currentChapter = null;
-        let prevChapter = null;
-        let nextChapter = null;
-        let allChapters = [];
-        let totalTranslated = 0;
+        let currentEpisode = null;
+        let prevEpisode = null;
+        let nextEpisode = null;
+        let allEpisodes = [];
         
-        function loadChapterData() {
+        function loadEpisodeData() {
             if (typeof GACHA_DATA !== 'undefined') {
-                currentChapter = GACHA_DATA.getChapter(CHAPTER_NUM);
-                prevChapter = GACHA_DATA.getPrevChapter(CHAPTER_NUM);
-                nextChapter = GACHA_DATA.getNextChapter(CHAPTER_NUM);
-                allChapters = GACHA_DATA.getOrderedChapters();
-                totalTranslated = allChapters.length;
+                currentEpisode = GACHA_DATA.getEpisode(CHAPTER_NUM, EPISODE_NUM);
+                prevEpisode = GACHA_DATA.getPrevEpisode(CHAPTER_NUM, EPISODE_NUM);
+                nextEpisode = GACHA_DATA.getNextEpisode(CHAPTER_NUM, EPISODE_NUM);
+                allEpisodes = GACHA_DATA.getAllEpisodesOrdered();
                 return true;
             }
             return false;
         }
         
-        // ========== FUNCIONES DE NAVEGACIÓN ==========
         function setupNavLinks() {
             const prevLinks = [document.getElementById('prevLinkTop'), document.getElementById('prevLinkBottom')];
             const nextLinks = [document.getElementById('nextLinkTop'), document.getElementById('nextLinkBottom')];
             const counters = [document.getElementById('chapterCounterTop'), document.getElementById('chapterCounterBottom')];
             
-            // Actualizar contadores
             counters.forEach(counter => {
-                if (counter) counter.textContent = `Capítulo ${CHAPTER_NUM} de ${totalTranslated}`;
+                if (counter) counter.textContent = `Capítulo 1 - Episodio 2`;
             });
             
-            // Configurar anterior (ya tiene enlace fijo a capitulo-1.html)
-            // Configurar siguiente
-            if (nextChapter) {
-                nextLinks.forEach(link => {
+            if (prevEpisode) {
+                prevLinks.forEach(link => {
                     if (link) {
-                        link.href = `capitulo-${nextChapter.num}.html`;
+                        link.href = `capitulo${prevEpisode.chapter}e${prevEpisode.episodeNum}.html`;
                         link.classList.remove('disabled');
-                        let shortTitle = nextChapter.title;
-                        if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
-                        link.textContent = `${shortTitle} →`;
+                        link.textContent = `← ${prevEpisode.title}`;
                     }
                 });
-            } else {
+            }
+            
+            if (nextEpisode) {
                 nextLinks.forEach(link => {
                     if (link) {
-                        link.classList.add('disabled');
-                        link.removeAttribute('href');
-                        link.textContent = 'Sin siguiente →';
+                        link.href = `capitulo${nextEpisode.chapter}e${nextEpisode.episodeNum}.html`;
+                        link.classList.remove('disabled');
+                        let shortTitle = nextEpisode.title;
+                        if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                        link.textContent = `${shortTitle} →`;
                     }
                 });
             }
@@ -491,11 +469,11 @@
             
             selectors.forEach(select => {
                 if (!select) return;
-                let options = '<option value="">📖 Seleccionar capítulo...</option>';
-                for (const ch of allChapters) {
-                    const selected = ch.num === CHAPTER_NUM ? 'selected' : '';
-                    const title = ch.title.length > 45 ? ch.title.substring(0, 42) + '...' : ch.title;
-                    options += `<option value="capitulo-${ch.num}.html" ${selected}>${ch.num}: ${title}</option>`;
+                let options = '<option value="">📖 Seleccionar episodio...</option>';
+                for (const ep of allEpisodes) {
+                    const selected = (ep.chapter == CHAPTER_NUM && ep.episodeNum == EPISODE_NUM) ? 'selected' : '';
+                    const title = ep.title.length > 45 ? ep.title.substring(0, 42) + '...' : ep.title;
+                    options += `<option value="capitulo${ep.chapter}e${ep.episodeNum}.html" ${selected}>${ep.chapterTitle} - Episodio ${ep.episodeNum}: ${title}</option>`;
                 }
                 select.innerHTML = options;
                 
@@ -505,20 +483,21 @@
             });
         }
         
-        // ========== REGISTRAR EN HISTORIAL ==========
         function addToHistory() {
             const user = localStorage.getItem('gacha_user');
             if (!user) return;
             let history = localStorage.getItem(`gacha_history_${user}`);
             let historyObj = history ? JSON.parse(history) : { chapters: [] };
             if (!historyObj.chapters) historyObj.chapters = [];
-            historyObj.chapters = historyObj.chapters.filter(c => c !== CHAPTER_NUM);
-            historyObj.chapters.unshift(CHAPTER_NUM);
+            
+            historyObj.chapters = historyObj.chapters.filter(item => 
+                !(item.chapter == CHAPTER_NUM && item.episode == EPISODE_NUM)
+            );
+            historyObj.chapters.unshift({ chapter: CHAPTER_NUM, episode: EPISODE_NUM });
             if (historyObj.chapters.length > 20) historyObj.chapters.pop();
             localStorage.setItem(`gacha_history_${user}`, JSON.stringify(historyObj));
         }
         
-        // ========== CONTROLES DE TEMA Y TAMAÑO ==========
         function initControls() {
             const savedTheme = localStorage.getItem('gacha_theme');
             if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
@@ -554,9 +533,8 @@
             };
         }
         
-        // ========== INICIALIZACIÓN ==========
         document.addEventListener('DOMContentLoaded', () => {
-            if (loadChapterData()) {
+            if (loadEpisodeData()) {
                 setupNavLinks();
                 populateSelectors();
             }
