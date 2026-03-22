@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planes de futuro | Gacha Infinita</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem;
+            line-height: 1.8;
+            background: #faf9f7;
+            color: #2c2b28;
+            transition: all 0.3s ease;
+        }
+        [data-theme="dark"] body {
+            background: #1a1a1a;
+            color: #e5e5e5;
+        }
+        
+        .options-bar {
+            position: sticky;
+            top: 0;
+            background: #faf9f7;
+            border-bottom: 1px solid #e5e0d8;
+            padding: 0.6rem 1rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.8rem;
+            z-index: 100;
+            flex-wrap: wrap;
+        }
+        [data-theme="dark"] .options-bar {
+            background: #1a1a1a;
+            border-bottom-color: #404040;
+        }
+        .options-bar button {
+            background: #eef2f0;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: #1a4d5f;
+            transition: all 0.2s;
+        }
+        [data-theme="dark"] .options-bar button {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .options-bar button:hover {
+            background: #e5e0d8;
+        }
+        .font-size-control {
+            display: flex;
+            gap: 0.3rem;
+            align-items: center;
+        }
+        .font-size-control button {
+            width: 32px;
+            padding: 0.2rem;
+        }
+        
+        .nav-container {
+            margin: 1rem 0;
+        }
+        .nav-center, .nav-bottom {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+        .nav-bottom {
+            margin-top: 1rem;
+        }
+        .nav-btn {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            color: #1a4d5f;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .nav-btn {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .nav-btn:hover {
+            background: #e5e0d8;
+        }
+        .nav-btn.disabled {
+            background: #e5e0d8;
+            color: #9ca3af;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .chapter-counter {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] .chapter-counter {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        .chapter-selector {
+            margin: 0.5rem 0;
+            text-align: center;
+        }
+        .chapter-selector select {
+            background: #eef2f0;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-family: inherit;
+            color: #1a4d5f;
+            cursor: pointer;
+            width: 300px;
+            max-width: 90%;
+        }
+        [data-theme="dark"] .chapter-selector select {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin: 1rem 0 0.25rem;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] h1 {
+            color: #5a9e8c;
+        }
+        .episode-number {
+            color: #6b6a68;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #e5e0d8;
+            padding-bottom: 0.5rem;
+        }
+        [data-theme="dark"] .episode-number {
+            color: #a0a0a0;
+            border-bottom-color: #404040;
+        }
+        .story-content {
+            margin: 1.5rem 0;
+        }
+        .story-content p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+        hr {
+            margin: 2rem 0;
+            border: none;
+            border-top: 1px solid #e5e0d8;
+        }
+        [data-theme="dark"] hr {
+            border-top-color: #404040;
+        }
+        
+        .floating-scroll-top {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            background: #1a4d5f;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.8;
+        }
+        [data-theme="dark"] .floating-scroll-top {
+            background: #5a9e8c;
+        }
+        .floating-scroll-top:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            border-top: 1px solid #e5e0d8;
+            padding-top: 1.5rem;
+        }
+        [data-theme="dark"] footer {
+            border-top-color: #404040;
+        }
+        
+        @media (max-width: 600px) {
+            body { padding: 0.5rem; }
+            .nav-center, .nav-bottom { flex-direction: column; gap: 0.5rem; }
+            .floating-scroll-top {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                bottom: 70px;
+                right: 15px;
+            }
+        }
+    </style>
+    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+</head>
+<body>
+    <div class="options-bar">
+        <div class="font-size-control">
+            <button id="fontMinus">A-</button>
+            <button id="fontPlus">A+</button>
+        </div>
+        <button id="themeToggle">🌙 Modo oscuro</button>
+    </div>
+
+    <div class="nav-container">
+        <div class="nav-center">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo1e1.html" id="prevLinkTop" class="nav-btn">← El viaje comienza</a>
+            <span class="chapter-counter" id="chapterCounterTop">Capítulo 1 - Episodio 2</span>
+            <a href="capitulo1e3.html" id="nextLinkTop" class="nav-btn">¿Cómo vengarse de la elfa Sasha? →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelect">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <h1>Planes de futuro</h1>
+    <div class="episode-number">Capítulo 1 - Episodio 2</div>
+
+    <div class="story-content">
+        <p>Nuestro destino era una ciudad en el Reino Enano, ubicada bastante al suroeste de mi antigua aldea.</p>
+        
+        <p>Esta ciudad estaba cerca de la frontera con el Reino Elfo —más bien, construida justo en el límite de la frontera.</p>
+        
+        <p>¿La razón de que se construyera justo en la frontera? Porque allí apareció un calabozo útil. Como resultado, la gente se reunió y formó una ciudad.</p>
+        
+        <p>Parece que el Reino Enano y el Reino Elfo han tenido disputas desde hace tiempo debido a lo cerca que está la frontera.</p>
+        
+        <p>Al ser una ciudad famosa por su calabozo, la población principal son enanos, pero también hay muchas otras razas, como hombres bestia. Entre ellos, también hay humanos, que suelen ser discriminados por otras razas, en un número considerable como aventureros.</p>
+        
+        <p>Elegí esta ciudad como base para mis actividades como aventurero porque es un lugar animado gracias al calabozo y porque está a cierta distancia de la ciudad donde operaba como miembro de la "Reunión de Razas" hace tres años.</p>
+        
+        <p>Logramos completar el registro como aventureros y ocupamos el último piso de la posada más lujosa de la ciudad.</p>
+        
+        <p>—"Gacha Infinita", liberar "R, Silencio".</p>
+        
+        <p>También liberé "R, Detección" y "SR, Interferencia Mágica" para limpiar la habitación.</p>
+        
+        <p>Después de comprobar que no había espías, vigilantes ni objetos mágicos de ese tipo, Gold exclamó con auténtica alegría.</p>
+        
+        <p>—¡Jajajajaja! ¡No esperaba que nos atacaran bandidos en tan poco tiempo! ¡La superficie está muy peligrosa! ¡Hasta el "Abismo" donde estábamos está más ordenado!</p>
+        
+        <p>—Quizás deberíamos haber tomado un carruaje en lugar de ir caminando a la ciudad…</p>
+        
+        <p>Me dejé caer en el sofá y suspiré.</p>
+        
+        <p>Después de visitar la tumba, usé una carta de la "Gacha Infinita" para acercarme a la ciudad. En lugar de llegar directamente, nos detuvimos a cierta distancia y caminamos hasta allí. Pensé que sería más natural.</p>
+        
+        <p>El resultado fue que en el corto trayecto hasta la ciudad nos atacaron unos bandidos enanos y tuvimos que pelear innecesariamente…</p>
+        
+        <p>Nemumu intentó consolarme.</p>
+        
+        <p>—¡En absoluto! ¡Fue porque la seguridad en la superficie es mala y la armadura de Gold era innecesariamente llamativa! ¡La decisión de Light-sama no fue errónea! ¡Gracias a eso pudimos entrar en la ciudad con naturalidad, como planeaba!</p>
+        
+        <p>—¡Jajajaja! Ciertamente, como dice Nemumu, logramos entrar en la ciudad y registrarnos como aventureros. ¿No deberíamos considerarlo un éxito?</p>
+        
+        <p>—…Sí, tienes razón. Logramos registrarnos como aventureros, así que está bien.</p>
+        
+        <p>Me animé y esbocé una sonrisa. Entonces Nemumu hinchó las mejillas.</p>
+        
+        <p>—No entiendo por qué ustedes están bien, pero Light-sama tuvo que empezar desde el rango F, no desde el A. La recepcionista no tiene buen ojo.</p>
+        
+        <p>—Jajaja, no hay remedio. Dejando de lado a ustedes, yo, oficialmente, soy un humano de doce años. Es normal que empiece desde el rango más bajo de aventureros, el rango F.</p>
+        
+        <p>En este mundo existe el Gremio de Aventureros, que clasifica a los aventureros en seis rangos.</p>
+        
+        <p>Los rangos de aventureros son los siguientes:</p>
+        
+        <p>Rango A: Élite<br>
+        Rango B: Primera clase<br>
+        Rango C: Profesionales expertos<br>
+        Rango D: Competentes<br>
+        Rango E: Aprendices<br>
+        Rango F: Novatos</p>
+        
+        <p>Ocasionalmente existe el rango S, pero es una excepción. Básicamente, estos son los rangos habituales.</p>
+        
+        <p>El rango F es el más bajo, el nivel de principiante.</p>
+        
+        <p>Antes de que me acogiera la "Reunión de Razas", yo siempre había estado en el rango F. Por eso, no me importa que mi nueva placa de aventurero sea de rango F.</p>
+        
+        <p>—Además, Nemumu, ahora en la superficie no soy Light, sino "Dark". He verificado esta habitación con cartas, así que es un espacio limpio sin riesgo de escuchas, pero mientras estemos en la superficie, ten cuidado.</p>
+        
+        <p>—¡L-lo siento, señor Dark!</p>
+        
+        <p>Nemumu corrigió apresuradamente.</p>
+        
+        <p>Al principio pensé en hacerme aventurero con mi nombre real, Light, pero si los antiguos miembros de la "Reunión de Razas" se enteraban y tomaban precauciones, mi plan de venganza podría fracasar. Por eso decidí usar un nombre falso y ponerme la "Máscara del Bufón", una carta SSR con efectos de ilusión y distorsión del reconocimiento, para registrarme de nuevo como aventurero en la superficie.</p>
+        
+        <p>Me senté en el sofá y repasé nuestros objetivos.</p>
+        
+        <p>—Quiero confirmar de nuevo por qué hemos salido a la superficie para hacernos aventureros.</p>
+        
+        <p>• Investigar y contactar con individuos como Garou, que buscan al "Maestro" por orden de los países.<br>
+        • Recopilar información sobre los más fuertes.<br>
+        • Aumentar nuestro rango para obtener información y contactos de mayor nivel.<br>
+        • Si es posible, localizar al "Maestro" antes de que los países lo encuentren.<br>
+        • Recopilar otro tipo de información.</p>
+        
+        <p>Esos eran los puntos.</p>
+        
+        <p>Después de esta confirmación, Gold levantó la mano.</p>
+        
+        <p>—Mi señor, ¿no necesitamos ganar dinero? Si vamos a actuar en la superficie, lo necesitaremos.</p>
+        
+        <p>—No te preocupes por eso. Los nuestros que están recopilando información en la superficie están ganando dinero como comerciantes. Si falta, haremos más moneda falsa. El dinero es importante, pero no creo que tengamos que preocuparnos tanto.</p>
+        
+        <p>Hace seis meses, mis subordinados se dispersaron por la superficie disfrazados de comerciantes para recopilar información. En ese momento, para obtener capital inicial, hice que unos subordinados especializados en falsificación fabricaran monedas de oro y plata de cada país utilizando lingotes de oro y plata obtenidos de la "Gacha Infinita".</p>
+        
+        <p>Al estar especializados en la falsificación, lograron crear monedas de oro y plata indistinguibles de las auténticas.</p>
+        
+        <p>Al escuchar que habíamos hecho moneda falsa, Gold exclamó con admiración.</p>
+        
+        <p>—¡Como era de esperar de mi señor! ¡No esperaba que consiguieras fondos de esa manera! ¡Qué idea tan ingeniosa! Además, es una buena manera de devolverles la jugada a esas otras razas que menosprecian a mi señor. ¡Dos pájaros de un tiro! …Pero si se descubre que es moneda falsa, sería un problema. ¿Estás seguro de que no hay riesgo?</p>
+        
+        <p>—Tranquilo. La calidad es perfecta y como nuestro objetivo no es desestabilizar la economía de la superficie, solo hemos introducido una cantidad mínima.</p>
+        
+        <p>A menos que nuestro objetivo fuera arruinar la economía de la superficie, el impacto de lo que usamos es prácticamente nulo.</p>
+        
+        <p>A continuación, Nemumu levantó la mano.</p>
+        
+        <p>—Entiendo por qué queremos actuar como aventureros en la superficie. Pero, ¿es realmente necesario que Dark-sama se exponga personalmente? Por muy fuerte que sea, la posibilidad de un accidente no es cero. Si consideramos el peor escenario, sería más seguro que se quedara en el "Abismo" y nos diera órdenes desde allí…</p>
+        
+        <p>No pudo terminar la frase.</p>
+        
+        <p>—…¿Acaso Nemumu pretende quitarme mi venganza?</p>
+        
+        <p>—¡N-no… y-yo…</p>
+        
+        <p>—¿O acaso Nemumu quiere estorbarme?</p>
+        
+        <p>—¡Ah…! ¡L-lo siento, lo siento mucho! ¡Me he extralimitado!</p>
+        
+        <p>Nemumu sudaba por todo el cuerpo, no solo el rostro, y cayó de rodillas en el suelo.</p>
+        
+        <p>Juntó las manos como si estuviera rezando a un dios, temblando y derramando lágrimas.</p>
+        
+        <p>—¡Jajajaja! ¡Hay cosas que un hombre debe hacer con sus propias manos, aunque sepa que son peligrosas! ¡Mi señor quiere llevar a cabo su venganza con sus propias manos, sin delegar en otros! ¡Eso es digno de un hombre! ¡Como era de esperar de mi señor, del Caballero Dorado Gold! ¡Jajajajajajajajajajajaja!</p>
+        
+        <p>La risa de Gold me devolvió la calma.</p>
+        
+        <p>Cuando se trata de venganza, pierdo la compostura por la ira. Debería alegrarme de que, después de casi tres años, la llama de la venganza no se haya apagado, o debería considerarlo algo negativo.</p>
+        
+        <p>Me levanté del sofá y acaricié suavemente el cabello plateado de Nemumu, que seguía rezando.</p>
+        
+        <p>—Lo siento, me dejé llevar por la emoción. Perdón por dudar de tu lealtad, ¿de acuerdo?</p>
+        
+        <p>—¡No, fui yo quien se extralimitó! ¡Permítame renovar mi juramento de lealtad a Light-sama!</p>
+        
+        <p>—Ah… sí, bueno…</p>
+        
+        <p>Volvió a llamarme "Light", pero no era el momento de corregirla, así que lo dejé pasar.</p>
+        
+        <p>Me volví a sentar en el sofá, me quité la bota derecha y la extendí hacia Nemumu.</p>
+        
+        <p>—Con permiso.</p>
+        
+        <p>Nemumu, con el rostro sonrojado, tomó mi pie derecho con la delicadeza de quien maneja una joya de caramelo y acercó sus labios con ternura.</p>
+        
+        <p>Sentí el calor de Nemumu a través del calcetín.</p>
+        
+        <p>El beso en el empeine significa "sometimiento".</p>
+        
+        <p>Por eso a menudo me lo piden como recompensa.</p>
+        
+        <p>Personalmente, me da vergüenza y no es algo que me guste…</p>
+        
+        <p>Al ver el intercambio entre Nemumu y yo, Gold murmuró.</p>
+        
+        <p>—…¿Es esto un juego?</p>
+        
+        <p>—¡Tú! ¡No llames con un nombre tan indecente a la noble lealtad que siento por Light-sama!</p>
+        
+        <p>—Pero es que no se ve de otra manera que una mujer madura excitándose con el pie de un niño de doce o trece años. Como ya te dije antes, no es apropiado presumir tanto la lealtad.</p>
+        
+        <p>—¡No es que presuma! ¡Es que mi lealtad hacia el noble Light-sama rebosa! ¡Y no es que me ex-excite! ¡Solo estoy jurando mi noble lealtad a Light-sama!</p>
+        
+        <p>—Tranquila, Nemumu. Nunca dudaría de tu lealtad.</p>
+        
+        <p>—¡Light-sama…!</p>
+        
+        <p>Conmovida por mis palabras, Nemumu se ruborizó y tembló.</p>
+        
+        <p>Gold, como diciendo "no hay remedio", extendió las palmas hacia arriba y se encogió de hombros.</p>
+        
+        <p>Sonreí ligeramente ante la escena y continué hablando.</p>
+        
+        <p>—Bueno, mañana entraremos al calabozo para subir de rango como aventureros. Pero cuando Ellie termine de preparar el "Plan de venganza contra Sasha, la elfa", le daremos prioridad. Ténganlo en cuenta.</p>
+        
+        <p>—¡Entendido, Light-sama!</p>
+        
+        <p>—¡Mañana en el calabozo, le mostraré la esencia del Caballero Dorado!</p>
+        
+        <p>Asentí, satisfecho con sus respuestas.</p>
+    </div>
+
+    <hr>
+
+    <div class="nav-container">
+        <div class="nav-bottom">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo1e1.html" id="prevLinkBottom" class="nav-btn">← El viaje comienza</a>
+            <span class="chapter-counter" id="chapterCounterBottom">Capítulo 1 - Episodio 2</span>
+            <a href="capitulo1e3.html" id="nextLinkBottom" class="nav-btn">¿Cómo vengarse de la elfa Sasha? →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelectBottom">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <footer>
+        <p>Gacha Infinita © 明鏡シスイ (Meikyō Shisui) | Traducción: Ocholobos</p>
+        <p>🌐 <a href="https://ncode.syosetu.com/n9584gd/" target="_blank">Novela original</a> | Apoya al autor comprando los volúmenes oficiales</p>
+    </footer>
+
+    <button class="floating-scroll-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">⬆</button>
+
+    <script src="data.js"></script>
+    <script>
+        // ========== CONFIGURACIÓN DEL EPISODIO ==========
+        const CHAPTER_NUM = 1;
+        const EPISODE_NUM = 2;
+        
+        let currentEpisode = null;
+        let prevEpisode = null;
+        let nextEpisode = null;
+        let allEpisodes = [];
+        
+        function loadEpisodeData() {
+            if (typeof GACHA_DATA !== 'undefined') {
+                currentEpisode = GACHA_DATA.getEpisode(CHAPTER_NUM, EPISODE_NUM);
+                prevEpisode = GACHA_DATA.getPrevEpisode(CHAPTER_NUM, EPISODE_NUM);
+                nextEpisode = GACHA_DATA.getNextEpisode(CHAPTER_NUM, EPISODE_NUM);
+                allEpisodes = GACHA_DATA.getAllEpisodesOrdered();
+                return true;
+            }
+            return false;
+        }
+        
+        function setupNavLinks() {
+            const prevLinks = [document.getElementById('prevLinkTop'), document.getElementById('prevLinkBottom')];
+            const nextLinks = [document.getElementById('nextLinkTop'), document.getElementById('nextLinkBottom')];
+            const counters = [document.getElementById('chapterCounterTop'), document.getElementById('chapterCounterBottom')];
+            
+            counters.forEach(counter => {
+                if (counter) counter.textContent = `Capítulo 1 - Episodio 2`;
+            });
+            
+            if (prevEpisode) {
+                prevLinks.forEach(link => {
+                    if (link) {
+                        link.href = `capitulo${prevEpisode.chapter}e${prevEpisode.episodeNum}.html`;
+                        link.classList.remove('disabled');
+                        let shortTitle = prevEpisode.title;
+                        if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                        link.textContent = `← ${shortTitle}`;
+                    }
+                });
+            }
+            
+            if (nextEpisode) {
+                nextLinks.forEach(link => {
+                    if (link) {
+                        link.href = `capitulo${nextEpisode.chapter}e${nextEpisode.episodeNum}.html`;
+                        link.classList.remove('disabled');
+                        let shortTitle = nextEpisode.title;
+                        if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                        link.textContent = `${shortTitle} →`;
+                    }
+                });
+            }
+        }
+        
+        function populateSelectors() {
+            const selectors = [document.getElementById('chapterSelect'), document.getElementById('chapterSelectBottom')];
+            
+            selectors.forEach(select => {
+                if (!select) return;
+                let options = '<option value="">📖 Seleccionar episodio...</option>';
+                for (const ep of allEpisodes) {
+                    const selected = (ep.chapter == CHAPTER_NUM && ep.episodeNum == EPISODE_NUM) ? 'selected' : '';
+                    const title = ep.title.length > 45 ? ep.title.substring(0, 42) + '...' : ep.title;
+                    options += `<option value="capitulo${ep.chapter}e${ep.episodeNum}.html" ${selected}>${ep.chapterTitle} - Episodio ${ep.episodeNum}: ${title}</option>`;
+                }
+                select.innerHTML = options;
+                
+                select.addEventListener('change', function() {
+                    if (this.value) window.location.href = this.value;
+                });
+            });
+        }
+        
+        function addToHistory() {
+            const user = localStorage.getItem('gacha_user');
+            if (!user) return;
+            let history = localStorage.getItem(`gacha_history_${user}`);
+            let historyObj = history ? JSON.parse(history) : { chapters: [] };
+            if (!historyObj.chapters) historyObj.chapters = [];
+            
+            historyObj.chapters = historyObj.chapters.filter(item => 
+                !(item.chapter == CHAPTER_NUM && item.episode == EPISODE_NUM)
+            );
+            historyObj.chapters.unshift({ chapter: CHAPTER_NUM, episode: EPISODE_NUM });
+            if (historyObj.chapters.length > 20) historyObj.chapters.pop();
+            localStorage.setItem(`gacha_history_${user}`, JSON.stringify(historyObj));
+        }
+        
+        function initControls() {
+            const savedTheme = localStorage.getItem('gacha_theme');
+            if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+            const savedFont = localStorage.getItem('gacha_fontsize');
+            if (savedFont) document.body.style.fontSize = savedFont + '%';
+            
+            document.getElementById('fontPlus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.min(150, size + 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            document.getElementById('fontMinus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.max(70, size - 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            
+            const themeBtn = document.getElementById('themeToggle');
+            if (document.documentElement.hasAttribute('data-theme')) themeBtn.textContent = '☀️ Modo claro';
+            themeBtn.onclick = () => {
+                const isDark = document.documentElement.hasAttribute('data-theme');
+                if (isDark) {
+                    document.documentElement.removeAttribute('data-theme');
+                    localStorage.setItem('gacha_theme', 'light');
+                    themeBtn.textContent = '🌙 Modo oscuro';
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('gacha_theme', 'dark');
+                    themeBtn.textContent = '☀️ Modo claro';
+                }
+            };
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            if (loadEpisodeData()) {
+                setupNavLinks();
+                populateSelectors();
+            }
+            initControls();
+            addToHistory();
+            
+            kofiWidgetOverlay.draw('ocholobos', {
+                'type': 'floating-chat',
+                'floating-chat.donateButton.text': 'Apóyame',
+                'floating-chat.donateButton.background-color': '#1a4d5f',
+                'floating-chat.donateButton.text-color': '#ffffff'
+            });
+        });
+    </script>
+</body>
+</html>
