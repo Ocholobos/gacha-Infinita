@@ -30,8 +30,8 @@ const GACHA_DATA = {
     
     // ========== FUNCIONES AUXILIARES ==========
     
-    // Obtener todos los episodios en orden
-    getAllEpisodes: function() {
+    // Obtener todos los episodios en orden (para el índice)
+    getAllEpisodesOrdered: function() {
         const all = [];
         for (const chapter of this.chapters) {
             for (const ep of chapter.episodes) {
@@ -62,24 +62,6 @@ const GACHA_DATA = {
             date: episode.date,
             file: `capitulo${chapter.num}e${episode.num}.html`
         };
-    },
-    
-    // Obtener todos los episodios en orden (para navegación secuencial)
-    getAllEpisodesOrdered: function() {
-        const all = [];
-        for (const chapter of this.chapters) {
-            for (const ep of chapter.episodes) {
-                all.push({
-                    chapter: chapter.num,
-                    chapterTitle: chapter.title,
-                    episodeNum: ep.num,
-                    title: ep.title,
-                    date: ep.date,
-                    file: `capitulo${chapter.num}e${ep.num}.html`
-                });
-            }
-        }
-        return all;
     },
     
     // Obtener índice de un episodio en la lista ordenada
