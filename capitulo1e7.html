@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jóvenes aventureros | Gacha Infinita</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem;
+            line-height: 1.8;
+            background: #faf9f7;
+            color: #2c2b28;
+            transition: all 0.3s ease;
+        }
+        [data-theme="dark"] body {
+            background: #1a1a1a;
+            color: #e5e5e5;
+        }
+        
+        .options-bar {
+            position: sticky;
+            top: 0;
+            background: #faf9f7;
+            border-bottom: 1px solid #e5e0d8;
+            padding: 0.6rem 1rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.8rem;
+            z-index: 100;
+            flex-wrap: wrap;
+        }
+        [data-theme="dark"] .options-bar {
+            background: #1a1a1a;
+            border-bottom-color: #404040;
+        }
+        .options-bar button {
+            background: #eef2f0;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: #1a4d5f;
+            transition: all 0.2s;
+        }
+        [data-theme="dark"] .options-bar button {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .options-bar button:hover {
+            background: #e5e0d8;
+        }
+        .font-size-control {
+            display: flex;
+            gap: 0.3rem;
+            align-items: center;
+        }
+        .font-size-control button {
+            width: 32px;
+            padding: 0.2rem;
+        }
+        
+        .nav-container {
+            margin: 1rem 0;
+        }
+        .nav-center, .nav-bottom {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+        .nav-bottom {
+            margin-top: 1rem;
+        }
+        .nav-btn {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            color: #1a4d5f;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .nav-btn {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .nav-btn:hover {
+            background: #e5e0d8;
+        }
+        .nav-btn.disabled {
+            background: #e5e0d8;
+            color: #9ca3af;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .chapter-counter {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] .chapter-counter {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        .chapter-selector {
+            margin: 0.5rem 0;
+            text-align: center;
+        }
+        .chapter-selector select {
+            background: #eef2f0;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-family: inherit;
+            color: #1a4d5f;
+            cursor: pointer;
+            width: 300px;
+            max-width: 90%;
+        }
+        [data-theme="dark"] .chapter-selector select {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin: 1rem 0 0.25rem;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] h1 {
+            color: #5a9e8c;
+        }
+        .episode-number {
+            color: #6b6a68;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #e5e0d8;
+            padding-bottom: 0.5rem;
+        }
+        [data-theme="dark"] .episode-number {
+            color: #a0a0a0;
+            border-bottom-color: #404040;
+        }
+        .story-content {
+            margin: 1.5rem 0;
+        }
+        .story-content p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+        hr {
+            margin: 2rem 0;
+            border: none;
+            border-top: 1px solid #e5e0d8;
+        }
+        [data-theme="dark"] hr {
+            border-top-color: #404040;
+        }
+        
+        .floating-scroll-top {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            background: #1a4d5f;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.8;
+        }
+        [data-theme="dark"] .floating-scroll-top {
+            background: #5a9e8c;
+        }
+        .floating-scroll-top:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            border-top: 1px solid #e5e0d8;
+            padding-top: 1.5rem;
+        }
+        [data-theme="dark"] footer {
+            border-top-color: #404040;
+        }
+        
+        @media (max-width: 600px) {
+            body { padding: 0.5rem; }
+            .nav-center, .nav-bottom { flex-direction: column; gap: 0.5rem; }
+            .floating-scroll-top {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                bottom: 70px;
+                right: 15px;
+            }
+        }
+    </style>
+    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+</head>
+<body>
+    <div class="options-bar">
+        <div class="font-size-control">
+            <button id="fontMinus">A-</button>
+            <button id="fontPlus">A+</button>
+        </div>
+        <button id="themeToggle">🌙 Modo oscuro</button>
+    </div>
+
+    <div class="nav-container">
+        <div class="nav-center">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo1e6.html" id="prevLinkTop" class="nav-btn">← Límites del crecimiento</a>
+            <span class="chapter-counter" id="chapterCounterTop">Capítulo 1 - Episodio 7</span>
+            <a href="capitulo1e8.html" id="nextLinkTop" class="nav-btn">Combate en el calabozo →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelect">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <h1>Jóvenes aventureros</h1>
+    <div class="episode-number">Capítulo 1 - Episodio 7</div>
+
+    <div class="story-content">
+        <p>—¿No son esos los aventureros que ayudamos esta mañana?</p>
+        
+        <p>El primer día que nos adentramos en el calabozo.</p>
+        
+        <p>Habíamos llegado hasta el tercer piso usando el poder de "SSR, Ocultar Presencia" y "SR, Vuelo".</p>
+        
+        <p>En el segundo piso derrotamos a una manada de ogros, y en el tercero a una manada de trolls. Solo recogimos las piedras mágicas y estábamos volando de regreso a la superficie.</p>
+        
+        <p>Por cierto, también pensé en recoger los materiales de los ogros y trolls aparte de las piedras mágicas… pero si se descubría que teníamos una caja de ítems, podría traer problemas. Tener una caja de ítems es algo muy raro.</p>
+        
+        <p>Si el país nos reclutaba por la fuerza antes de subir nuestro rango, sería un fastidio.</p>
+        
+        <p>También pensé en llevarlos al "Abismo", pero actualmente estamos usando un truco para que mi don "Gacha Infinita" siga produciendo cartas sin parar.</p>
+        
+        <p>Así que no hay ninguna preocupación por los suministros.</p>
+        
+        <p>Traer materiales de bajo nivel como los de ogros y trolls solo estorbaría.</p>
+        
+        <p>Por eso, como "prueba de que llegamos hasta el segundo y tercer piso", solo tomamos las piedras mágicas de ogros y trolls y estábamos regresando al Gremio de Aventureros.</p>
+        
+        <p>Mientras volábamos hacia la entrada del primer piso, tres bultos verdes salieron del bosque.</p>
+        
+        <p>Noté que esos tres bultos —probablemente goblins— estaban luchando contra un grupo de jóvenes.</p>
+        
+        <p>Eran los jóvenes humanos a los que Gold había llamado la atención por colarse esa mañana, y que nos habían dado las gracias.</p>
+        
+        <p>Ante mi comentario, Gold y Nemumu también los notaron y observaron el combate desde lo alto.</p>
+        
+        <p>—Mi señor, qué bien se dio cuenta. Ciertamente, son los jóvenes a los que ayudó esta mañana.</p>
+        
+        <p>—…Qué combate tan de bajo nivel. No creo que valga la pena que Dark-sama lo observe.</p>
+        
+        <p>Como señaló Nemumu, estaban tan concentrados que solo prestaban atención a los tres goblins frente a ellos.</p>
+        
+        <p>Los tres chicos peleaban uno contra uno contra los goblins, y la chica, que parecía ser la hermana del líder, se mantenía detrás con un bastón en la mano, en posición de apoyar en cualquier momento.</p>
+        
+        <p>Como los goblins solo tienen el tamaño de un niño, en un combate uno contra uno no deberían perder.</p>
+        
+        <p>Que la chica maga estuviera lista para apoyar en caso de necesidad tampoco estaba mal… pero estaban tan concentrados en lo que tenían delante que no notaban la serpiente de los arbustos que se acercaba sigilosamente por detrás.</p>
+        
+        <p>Si te muerde una serpiente de los arbustos, quedas paralizado temporalmente y no puedes moverte.</p>
+        
+        <p>Aunque no te mata con veneno, si hay otros monstruos alrededor, literalmente no podrías mover ni pies ni manos y terminarías muerto.</p>
+        
+        <p>Por eso, cuando grupos de nivel bajo o medio combaten, lo más común es tener al menos una persona vigilando los ataques por la espalda.</p>
+        
+        <p>—¿Qué hacemos, mi señor? Si las cosas salen mal, la chica de atrás podría ser mordida, y al gritar de asombro, los de delante se preocuparían por ella, su formación se rompería y podrían ser asesinados por los goblins.</p>
+        
+        <p>—No me sentiría bien simplemente mirar… Vamos a darles una mano.</p>
+        
+        <p>Desde lo alto, usando el poder de "SSR, Ocultar Presencia", literalmente sin sonido, ni rastro, ni sombra, descendí detrás de la chica, que tenía toda su atención al frente, y con el bastón que tenía en la mano acabé con la serpiente de los arbustos.</p>
+        
+        <p>Le rompí el cuello en un punto preciso y la maté.</p>
+        
+        <p>Detrás de mí, Nemumu y Gold también descendieron y aterrizaron en la pradera.</p>
+        
+        <p>—Bien, todos derrotaron a los goblins sin problemas. Antes de que vengan otros monstruos, recojan las piedras mágicas y… ¡¿Eh?! ¡El joven de esta mañana!</p>
+        
+        <p>—¡!?</p>
+        
+        <p>—Prestar atención al enemigo de enfrente es básico, pero los enemigos no siempre vienen solo de frente. Si no prestan atención a la espalda, podrían perder la vida, ¿saben?</p>
+        
+        <p>Los jóvenes se sorprendieron al vernos aparecer detrás de ellos sin hacer ruido ni dejar rastro, y alzaron la voz.</p>
+        
+        <p>La hermana pequeña dio un paso atrás de la impresión.</p>
+        
+        <p>Sonreí levemente bajo la máscara y levanté con la punta del bastón la serpiente de los arbustos a la que le había roto el cuello.</p>
+        
+        <p>Con mis palabras y la serpiente que les mostraba, entendieron que los habíamos salvado de un peligro.</p>
+        
+        <p>El líder se apresuró a inclinar la cabeza.</p>
+        
+        <p>—Gracias por salvar a mi hermana. Miya, tú también tienes que dar las gracias.</p>
+        
+        <p>—G-gracias.</p>
+        
+        <p>La hermana llamada Miya tartamudeó mientras inclinaba la cabeza.</p>
+        
+        <p>—Yo también le doy las gracias por salvar a Miya-chan. Pero, ¿cuándo llegaron a nuestra espalda?</p>
+        
+        <p>El chico bromista preguntó mientras agradecía.</p>
+        
+        <p>El único lugar donde podían esconderse era el bosque del frente, de donde salieron los goblins.</p>
+        
+        <p>El resto era pradera, así que si se acercaban, deberían haber notado el sonido de pisar la hierba o las hojas, o el reflejo de la llamativa armadura dorada de Gold.</p>
+        
+        <p>Sin embargo, aparecimos de repente como fantasmas.</p>
+        
+        <p>Era normal que les llamara la atención.</p>
+        
+        <p>Pero no podía decirles honestamente que nos habíamos ocultado con "SSR, Ocultar Presencia" y habíamos volado desde el cielo.</p>
+        
+        <p>Los engañé con una excusa.</p>
+        
+        <p>—Vinimos caminando normalmente. Parece que estaban tan concentrados en el combate que no se dieron cuenta. Más bien, ¿no deberían recoger las piedras mágicas?</p>
+        
+        <p>—Cierto. Gimra, Wady, recojan las piedras rápido. Miya, vigila los alrededores.</p>
+        
+        <p>—Gold, desarma esta serpiente de los arbustos y sácale la piedra mágica.</p>
+        
+        <p>—De acuerdo, déjamelo a mí.</p>
+        
+        <p>Siguiendo las indicaciones del líder, cada uno se movió.</p>
+        
+        <p>Yo también le pasé la serpiente que había matado a Gold para que sacara la piedra mágica.</p>
+        
+        <p>Los goblins no tienen partes que se puedan vender aparte de las piedras mágicas, tanto dentro como fuera del calabozo. La carne de la serpiente de los arbustos se podría vender aunque sea por poco dinero.</p>
+        
+        <p>Pero como estorbaría, solo recogimos las piedras mágicas.</p>
+        
+        <p>—Hermano Elio, como agradecimiento…</p>
+        
+        <p>—Todavía no he usado nada hoy, así que tengo margen. Miya, hazlo.</p>
+        
+        <p>Miya, la hermana de pelo rojo, parecía ser maga como aparentaba. Concentró su atención y comenzó a recitar un conjuro.</p>
+        
+        <p>—Magia, manifiestate, crea agua y dale forma. ¡Bola de Agua!</p>
+        
+        <p>Una masa de agua apareció en el aire.</p>
+        
+        <p>Es una magia de agua básica, pero si se puede usar, no hay problemas de agua en el calabozo.</p>
+        
+        <p>Por eso, los magos que pueden usarla son muy solicitados en los equipos que pasan largas temporadas en el calabozo.</p>
+        
+        <p>El chico llamado Elio, el hermano, le dijo a Gold.</p>
+        
+        <p>—Señor caballero, como hemos creado agua, lávate las manos.</p>
+        
+        <p>—No tenía por qué molestarse.</p>
+        
+        <p>—No es nada. Es solo un pequeño agradecimiento por salvar a mi hermana.</p>
+        
+        <p>—Miya-chan, nosotros también nos aprovechamos.</p>
+        
+        <p>Los dos chicos, Jack, el bromista, y el alto llamado Wady, metieron las manos en la Bola de Agua que flotaba en el aire.</p>
+        
+        <p>Se lavaron bien las manos manchadas de sangre de la serpiente de los arbustos y los goblins.</p>
+        
+        <p>Hacer que una maga importante gastara su poder mágico para ofrecer agua, algo tan valioso en el calabozo, para lavarse las manos.</p>
+        
+        <p>Sentí su sinceridad a su manera.</p>
+        
+        <p>Como alguien con experiencia en calabozos, no pude evitar agradecerles.</p>
+        
+        <p>—Gracias por usar su valioso poder mágico para crear agua.</p>
+        
+        <p>—No, al revés, muchas gracias por salvar a mi hermana. Esta mañana y hace un momento, solo nos han ayudado… Ya no sé qué decir.</p>
+        
+        <p>—Lo de esta mañana con el que se coló, también nos afectaba a nosotros, y esta vez fue casualidad que lo viéramos y me pareció mal pasar por alto, así que intervine. En realidad debería haberles avisado, pero como estaban tan concentrados, pensé que molestaría, así que actué por mi cuenta.</p>
+        
+        <p>—Muchas gracias por su consideración.</p>
+        
+        <p>—Dark-sama, parece que vienen enemigos.</p>
+        
+        <p>Mientras Elio y yo, como líderes, conversábamos, Nemumu interrumpió.</p>
+        
+        <p>Si la asesina de nivel 5000, Nemumu, lo decía, seguro que venían "enemigos".</p>
+        
+        <p>Yo también dejé la conversación y concentré mi atención en la búsqueda, y pronto los encontré.</p>
+        
+        <p>Los enemigos se acercaban desde el fondo del bosque sobre cuatro patas.</p>
+        
+        <p>Su velocidad era muy superior a la de los jóvenes que teníamos delante.</p>
+        
+        <p>—¡Grrr!</p>
+        
+        <p>—¡¿L-lobo Grande de los Arbustos?!</p>
+        
+        <p>Un lobo de hierba de unos dos metros, un Lobo Grande de los Arbustos, asomó la cabeza.</p>
+        
+        <p>También lo acompañaban varios Lobos de los Arbustos.</p>
+        
+        <p>—¡¿Qué hace un Lobo Grande de los Arbustos, que debería estar en la parte media o profunda del primer piso, en una zona tan superficial?!</p>
+        
+        <p>Elio, que hasta hacía un momento conversaba tranquilamente conmigo, gritó alarmado.</p>
+        
+        <p>—¡No podemos con ellos! ¡Retirémonos por ahora! ¡Señores caballeros, por favor ayúdennos a retirarnos!</p>
+        
+        <p>—Si se retiran, ¿significa que no van a enfrentarse a ellos? Entonces, ¿nos dejan hacernos cargo?</p>
+        
+        <p>—S-sí, no hay problema.</p>
+        
+        <p>Tomé sus palabras como una aceptación.</p>
+        
+        <p>—Gold, Nemumu, cacería de lobos.</p>
+        
+        <p>Ante mis palabras, los dos empuñaron sus armas.</p>
+    </div>
+
+    <hr>
+
+    <div class="nav-container">
+        <div class="nav-bottom">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo1e6.html" id="prevLinkBottom" class="nav-btn">← Límites del crecimiento</a>
+            <span class="chapter-counter" id="chapterCounterBottom">Capítulo 1 - Episodio 7</span>
+            <a href="capitulo1e8.html" id="nextLinkBottom" class="nav-btn">Combate en el calabozo →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelectBottom">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <footer>
+        <p>Gacha Infinita © 明鏡シスイ (Meikyō Shisui) | Traducción: Ocholobos</p>
+        <p>Apoya al autor comprando los volúmenes oficiales</p>
+    </footer>
+
+    <button class="floating-scroll-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">⬆</button>
+
+    <script src="data.js"></script>
+    <script>
+        const CHAPTER_NUM = 1;
+        const EPISODE_NUM = 7;
+        
+        let currentEpisode = null;
+        let prevEpisode = null;
+        let nextEpisode = null;
+        let allEpisodes = [];
+        
+        function loadEpisodeData() {
+            if (typeof GACHA_DATA !== 'undefined') {
+                currentEpisode = GACHA_DATA.getEpisode(CHAPTER_NUM, EPISODE_NUM);
+                prevEpisode = GACHA_DATA.getPrevEpisode(CHAPTER_NUM, EPISODE_NUM);
+                nextEpisode = GACHA_DATA.getNextEpisode(CHAPTER_NUM, EPISODE_NUM);
+                allEpisodes = GACHA_DATA.getAllEpisodesOrdered();
+                return true;
+            }
+            return false;
+        }
+        
+        function setupNavLinks() {
+            const prevLinks = [document.getElementById('prevLinkTop'), document.getElementById('prevLinkBottom')];
+            const nextLinks = [document.getElementById('nextLinkTop'), document.getElementById('nextLinkBottom')];
+            const counters = [document.getElementById('chapterCounterTop'), document.getElementById('chapterCounterBottom')];
+            
+            counters.forEach(counter => {
+                if (counter) counter.textContent = `Capítulo 1 - Episodio 7`;
+            });
+            
+            if (prevEpisode) {
+                prevLinks.forEach(link => {
+                    if (link) {
+                        link.href = `capitulo${prevEpisode.chapter}e${prevEpisode.episodeNum}.html`;
+                        link.classList.remove('disabled');
+                        let shortTitle = prevEpisode.title;
+                        if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                        link.textContent = `← ${shortTitle}`;
+                    }
+                });
+            }
+            
+            if (nextEpisode) {
+                nextLinks.forEach(link => {
+                    if (link) {
+                        link.href = `capitulo${nextEpisode.chapter}e${nextEpisode.episodeNum}.html`;
+                        link.classList.remove('disabled');
+                        let shortTitle = nextEpisode.title;
+                        if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                        link.textContent = `${shortTitle} →`;
+                    }
+                });
+            }
+        }
+        
+        function populateSelectors() {
+            const selectors = [document.getElementById('chapterSelect'), document.getElementById('chapterSelectBottom')];
+            
+            selectors.forEach(select => {
+                if (!select) return;
+                let options = '<option value="">📖 Seleccionar episodio...</option>';
+                for (const ep of allEpisodes) {
+                    const selected = (ep.chapter == CHAPTER_NUM && ep.episodeNum == EPISODE_NUM) ? 'selected' : '';
+                    const title = ep.title.length > 45 ? ep.title.substring(0, 42) + '...' : ep.title;
+                    options += `<option value="capitulo${ep.chapter}e${ep.episodeNum}.html" ${selected}>${ep.chapterTitle} - Episodio ${ep.episodeNum}: ${title}</option>`;
+                }
+                select.innerHTML = options;
+                
+                select.addEventListener('change', function() {
+                    if (this.value) window.location.href = this.value;
+                });
+            });
+        }
+        
+        function addToHistory() {
+            const user = localStorage.getItem('gacha_user');
+            if (!user) return;
+            let history = localStorage.getItem(`gacha_history_${user}`);
+            let historyObj = history ? JSON.parse(history) : { chapters: [] };
+            if (!historyObj.chapters) historyObj.chapters = [];
+            
+            historyObj.chapters = historyObj.chapters.filter(item => 
+                !(item.chapter == CHAPTER_NUM && item.episode == EPISODE_NUM)
+            );
+            historyObj.chapters.unshift({ chapter: CHAPTER_NUM, episode: EPISODE_NUM });
+            if (historyObj.chapters.length > 20) historyObj.chapters.pop();
+            localStorage.setItem(`gacha_history_${user}`, JSON.stringify(historyObj));
+        }
+        
+        function initControls() {
+            const savedTheme = localStorage.getItem('gacha_theme');
+            if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+            const savedFont = localStorage.getItem('gacha_fontsize');
+            if (savedFont) document.body.style.fontSize = savedFont + '%';
+            
+            document.getElementById('fontPlus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.min(150, size + 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            document.getElementById('fontMinus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.max(70, size - 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            
+            const themeBtn = document.getElementById('themeToggle');
+            if (document.documentElement.hasAttribute('data-theme')) themeBtn.textContent = '☀️ Modo claro';
+            themeBtn.onclick = () => {
+                const isDark = document.documentElement.hasAttribute('data-theme');
+                if (isDark) {
+                    document.documentElement.removeAttribute('data-theme');
+                    localStorage.setItem('gacha_theme', 'light');
+                    themeBtn.textContent = '🌙 Modo oscuro';
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('gacha_theme', 'dark');
+                    themeBtn.textContent = '☀️ Modo claro';
+                }
+            };
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            if (loadEpisodeData()) {
+                setupNavLinks();
+                populateSelectors();
+            }
+            initControls();
+            addToHistory();
+            
+            kofiWidgetOverlay.draw('ocholobos', {
+                'type': 'floating-chat',
+                'floating-chat.donateButton.text': 'Apóyame',
+                'floating-chat.donateButton.background-color': '#1a4d5f',
+                'floating-chat.donateButton.text-color': '#ffffff'
+            });
+        });
+    </script>
+</body>
+</html>
