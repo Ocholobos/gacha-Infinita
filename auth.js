@@ -25,6 +25,15 @@ const POINTS = {
 // ========== REGISTRO ==========
 async function registerUser(email, password, username) {
     try {
+        // Verificar si el nombre de usuario ya existe
+        const existingUsers = await db.collection('users')
+            .where('username', '==', username)
+            .get();
+        
+        if (!existingUsers.empty) {
+            return { success: false, error: "Este nombre de usuario ya está en uso" };
+        }
+        
         const userCredential = await auth.createUserWithEmailAndPassword(email, password);
         const user = userCredential.user;
         
@@ -132,7 +141,8 @@ async function registerChapterRead(chapterNum, episodeNum) {
         return { success: false, error: "Ya leíste este capítulo", alreadyRead: true };
     }
     
-    const newPoints = (userDoc.data().totalPoints || 0) + POINTS.READ_CHAPTER;
+    const currentPoints = userDoc.data().totalPoints || 0;
+    const newPoints = currentPoints + POINTS.READ_CHAPTER;
     const newStats = { ...(userDoc.data().stats || {}) };
     newStats.chaptersRead = (newStats.chaptersRead || 0) + 1;
     
@@ -143,9 +153,14 @@ async function registerChapterRead(chapterNum, episodeNum) {
         lastActive: firebase.firestore.FieldValue.serverTimestamp()
     });
     
-    await updateUserLevel(user.uid);
+    const newLevel = await updateUserLevel(user.uid);
     
-    return { success: true, pointsGained: POINTS.READ_CHAPTER, newPoints };
+    return { 
+        success: true, 
+        pointsGained: POINTS.READ_CHAPTER, 
+        newPoints,
+        newLevel
+    };
 }
 
 // ========== REGISTRAR CALIFICACIÓN ==========
@@ -161,6 +176,7 @@ async function registerRating(chapterNum, episodeNum, rating) {
         return { success: false, error: "Ya calificaste este capítulo", alreadyRated: true };
     }
     
+    // Guardar calificación en colección independiente
     await db.collection('ratings').add({
         userId: user.uid,
         username: userDoc.data().username,
@@ -170,7 +186,8 @@ async function registerRating(chapterNum, episodeNum, rating) {
         timestamp: firebase.firestore.FieldValue.serverTimestamp()
     });
     
-    const newPoints = (userDoc.data().totalPoints || 0) + POINTS.RATE_CHAPTER;
+    const currentPoints = userDoc.data().totalPoints || 0;
+    const newPoints = currentPoints + POINTS.RATE_CHAPTER;
     const newStats = { ...(userDoc.data().stats || {}) };
     newStats.ratingsGiven = (newStats.ratingsGiven || 0) + 1;
     
@@ -181,19 +198,24 @@ async function registerRating(chapterNum, episodeNum, rating) {
         lastActive: firebase.firestore.FieldValue.serverTimestamp()
     });
     
-    await updateUserLevel(user.uid);
+    const newLevel = await updateUserLevel(user.uid);
     
-    return { success: true, pointsGained: POINTS.RATE_CHAPTER, newPoints };
+    return { 
+        success: true, 
+        pointsGained: POINTS.RATE_CHAPTER, 
+        newPoints,
+        newLevel
+    };
 }
 
 // ========== REGISTRAR COMENTARIO ==========
-async function registerComment(chapterNum, episodeNum, commentText, commentName) {
+async function registerComment(chapterNum, episodeNum, commentText, username) {
     const user = auth.currentUser;
     if (!user) return { success: false, error: "Debes iniciar sesión" };
     
     const commentData = {
         userId: user.uid,
-        username: commentName,
+        username: username,
         chapterNum: chapterNum,
         episodeNum: episodeNum,
         text: commentText,
@@ -204,7 +226,8 @@ async function registerComment(chapterNum, episodeNum, commentText, commentName)
     const commentRef = await db.collection('comments').add(commentData);
     
     const userDoc = await db.collection('users').doc(user.uid).get();
-    const newPoints = (userDoc.data().totalPoints || 0) + POINTS.COMMENT;
+    const currentPoints = userDoc.data().totalPoints || 0;
+    const newPoints = currentPoints + POINTS.COMMENT;
     const newStats = { ...(userDoc.data().stats || {}) };
     newStats.commentsWritten = (newStats.commentsWritten || 0) + 1;
     
@@ -214,9 +237,15 @@ async function registerComment(chapterNum, episodeNum, commentText, commentName)
         lastActive: firebase.firestore.FieldValue.serverTimestamp()
     });
     
-    await updateUserLevel(user.uid);
+    const newLevel = await updateUserLevel(user.uid);
     
-    return { success: true, commentId: commentRef.id, pointsGained: POINTS.COMMENT };
+    return { 
+        success: true, 
+        commentId: commentRef.id, 
+        pointsGained: POINTS.COMMENT,
+        newPoints,
+        newLevel
+    };
 }
 
 // ========== DAR LIKE A COMENTARIO ==========
@@ -237,7 +266,8 @@ async function likeComment(commentId, commentAuthorId) {
     });
     
     const authorDoc = await db.collection('users').doc(commentAuthorId).get();
-    const newPoints = (authorDoc.data().totalPoints || 0) + POINTS.COMMENT_LIKE;
+    const currentPoints = authorDoc.data().totalPoints || 0;
+    const newPoints = currentPoints + POINTS.COMMENT_LIKE;
     const newStats = { ...(authorDoc.data().stats || {}) };
     newStats.likesReceived = (newStats.likesReceived || 0) + 1;
     
@@ -251,7 +281,7 @@ async function likeComment(commentId, commentAuthorId) {
     return { success: true };
 }
 
-// ========== CARGAR COMENTARIOS DE UN CAPÍTULO ==========
+// ========== OBTENER COMENTARIOS DE UN CAPÍTULO ==========
 async function getComments(chapterNum, episodeNum) {
     try {
         const snapshot = await db.collection('comments')
@@ -301,12 +331,41 @@ async function getLeaderboard(limit = 20) {
     }
 }
 
+// ========== OBTENER ESTADÍSTICAS DE USUARIO ==========
+async function getUserStats(uid = null) {
+    const result = await getUserProfile(uid);
+    if (!result.success) return result;
+    
+    const profile = result.profile;
+    const stats = profile.stats || {};
+    
+    return {
+        success: true,
+        stats: {
+            chaptersRead: stats.chaptersRead || 0,
+            ratingsGiven: stats.ratingsGiven || 0,
+            commentsWritten: stats.commentsWritten || 0,
+            likesReceived: stats.likesReceived || 0,
+            totalPoints: profile.totalPoints || 0,
+            level: profile.level,
+            levelBadge: profile.levelBadge,
+            levelColor: profile.levelColor,
+            readChapters: profile.readChapters || [],
+            ratedChapters: profile.ratedChapters || []
+        }
+    };
+}
+
 // ========== VERIFICAR ESTADO DE AUTENTICACIÓN ==========
 function onAuthStateChanged(callback) {
     auth.onAuthStateChanged(user => {
         if (user) {
             getUserProfile(user.uid).then(result => {
-                callback({ loggedIn: true, user, profile: result.success ? result.profile : null });
+                callback({ 
+                    loggedIn: true, 
+                    user, 
+                    profile: result.success ? result.profile : null 
+                });
             });
         } else {
             callback({ loggedIn: false, user: null, profile: null });
