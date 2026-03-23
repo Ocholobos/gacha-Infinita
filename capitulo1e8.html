@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Combate en el calabozo | Gacha Infinita</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem;
+            line-height: 1.8;
+            background: #faf9f7;
+            color: #2c2b28;
+            transition: all 0.3s ease;
+        }
+        [data-theme="dark"] body {
+            background: #1a1a1a;
+            color: #e5e5e5;
+        }
+        
+        .options-bar {
+            position: sticky;
+            top: 0;
+            background: #faf9f7;
+            border-bottom: 1px solid #e5e0d8;
+            padding: 0.6rem 1rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.8rem;
+            z-index: 100;
+            flex-wrap: wrap;
+        }
+        [data-theme="dark"] .options-bar {
+            background: #1a1a1a;
+            border-bottom-color: #404040;
+        }
+        .options-bar button {
+            background: #eef2f0;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: #1a4d5f;
+            transition: all 0.2s;
+        }
+        [data-theme="dark"] .options-bar button {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .options-bar button:hover {
+            background: #e5e0d8;
+        }
+        .font-size-control {
+            display: flex;
+            gap: 0.3rem;
+            align-items: center;
+        }
+        .font-size-control button {
+            width: 32px;
+            padding: 0.2rem;
+        }
+        
+        .nav-container {
+            margin: 1rem 0;
+        }
+        .nav-center, .nav-bottom {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+        .nav-bottom {
+            margin-top: 1rem;
+        }
+        .nav-btn {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            color: #1a4d5f;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .nav-btn {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .nav-btn:hover {
+            background: #e5e0d8;
+        }
+        .nav-btn.disabled {
+            background: #e5e0d8;
+            color: #9ca3af;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .chapter-counter {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] .chapter-counter {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        .chapter-selector {
+            margin: 0.5rem 0;
+            text-align: center;
+        }
+        .chapter-selector select {
+            background: #eef2f0;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-family: inherit;
+            color: #1a4d5f;
+            cursor: pointer;
+            width: 300px;
+            max-width: 90%;
+        }
+        [data-theme="dark"] .chapter-selector select {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin: 1rem 0 0.25rem;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] h1 {
+            color: #5a9e8c;
+        }
+        .episode-number {
+            color: #6b6a68;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #e5e0d8;
+            padding-bottom: 0.5rem;
+        }
+        [data-theme="dark"] .episode-number {
+            color: #a0a0a0;
+            border-bottom-color: #404040;
+        }
+        .story-content {
+            margin: 1.5rem 0;
+        }
+        .story-content p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+        hr {
+            margin: 2rem 0;
+            border: none;
+            border-top: 1px solid #e5e0d8;
+        }
+        [data-theme="dark"] hr {
+            border-top-color: #404040;
+        }
+        
+        /* Botones flotantes */
+        .floating-buttons {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+        .floating-btn {
+            background: #1a4d5f;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.8;
+        }
+        [data-theme="dark"] .floating-btn {
+            background: #5a9e8c;
+        }
+        .floating-btn:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        
+        /* Sección de calificación */
+        .rating-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+        .rating-section h3 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+        .stars {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .star {
+            font-size: 2rem;
+            cursor: pointer;
+            color: #cbd5e0;
+            transition: color 0.2s;
+        }
+        .star:hover, .star.active {
+            color: #f5b042;
+        }
+        [data-theme="dark"] .star {
+            color: #4a5568;
+        }
+        [data-theme="dark"] .star:hover, [data-theme="dark"] .star.active {
+            color: #f5b042;
+        }
+        .rating-message {
+            font-size: 0.85rem;
+            color: var(--secondary-text);
+            margin-top: 0.5rem;
+        }
+        
+        /* Sección de comentarios */
+        .comments-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .comments-section h3 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+        .comment-form {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .comment-form input, .comment-form textarea {
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-family: inherit;
+        }
+        .comment-form textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        .comment-form button {
+            width: 100px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .comment-item {
+            border-bottom: 1px solid var(--border-color);
+            padding: 0.8rem 0;
+        }
+        .comment-name {
+            font-weight: bold;
+            color: var(--accent);
+        }
+        .comment-date {
+            font-size: 0.7rem;
+            color: var(--secondary-text);
+            margin-left: 0.5rem;
+        }
+        .comment-text {
+            margin-top: 0.3rem;
+            font-size: 0.9rem;
+        }
+        
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            border-top: 1px solid #e5e0d8;
+            padding-top: 1.5rem;
+        }
+        [data-theme="dark"] footer {
+            border-top-color: #404040;
+        }
+        
+        @media (max-width: 600px) {
+            body { padding: 0.5rem; }
+            .nav-center, .nav-bottom { flex-direction: column; gap: 0.5rem; }
+            .floating-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+            .star {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+</head>
+<body>
+    <div class="options-bar">
+        <div class="font-size-control">
+            <button id="fontMinus">A-</button>
+            <button id="fontPlus">A+</button>
+        </div>
+        <button id="themeToggle">🌙 Modo oscuro</button>
+    </div>
+
+    <div class="nav-container">
+        <div class="nav-center">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo1e7.html" id="prevLinkTop" class="nav-btn">← Jóvenes aventureros</a>
+            <span class="chapter-counter" id="chapterCounterTop">Capítulo 1 - Episodio 8</span>
+            <a href="capitulo1e9.html" id="nextLinkTop" class="nav-btn">Ducado de Six →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelect">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <h1>Combate en el calabozo</h1>
+    <div class="episode-number">Capítulo 1 - Episodio 8</div>
+
+    <div class="story-content">
+        <p>—Gold, Nemumu, cacería de lobos.</p>
+        
+        <p>—Entendido, Dark-sama.</p>
+        
+        <p>—¡S-señores caballeros, ¿de verdad van a pelear?! ¡El oponente es un Lobo Grande de los Arbustos, que actúa como jefe de este piso!</p>
+        
+        <p>—¡Jajajaja! Para nosotros, monstruos de este nivel no son nada. Más bien, aprovechando la ocasión, ¡les enseñaré a los jóvenes cómo luchar con espada y escudo!</p>
+        
+        <p>Ante nuestra elección de pelear, Elio y los demás pusieron cara de asombro.</p>
+        
+        <p>Gold ignoró su reacción y, con entusiasmo, desenvainó su espada, tomó su escudo dorado y se adelantó.</p>
+        
+        <p>—¡Grrrrr…</p>
+        
+        <p>Los diez Lobos de los Arbustos que acompañaban al Lobo Grande de los Arbustos gruñeron con recelo hacia Gold, que se había adelantado.</p>
+        
+        <p>Sin perder su actitud despreocupada, se dirigió a Elio y los demás que estaban detrás.</p>
+        
+        <p>—He estado observando su combate de antes. Su lucha contra los goblins…</p>
+        
+        <p>—¡Grrraaah!</p>
+        
+        <p>Tres Lobos de los Arbustos corrieron por la pradera y atacaron a Gold.</p>
+        
+        <p>Su pelaje verdoso se camuflaba con la hierba, lo que dificultaba verlos al correr, pero Gold los detuvo con tranquilidad.</p>
+        
+        <p>—Usaban el escudo para defenderse y la espada para atacar. ¡Así se hace!</p>
+        
+        <p>Desvió el ataque de un Lobo de los Arbustos con su escudo, y con un movimiento de su espada contuvo a los otros dos, impidiéndoles atacar.</p>
+        
+        <p>—Defender con el escudo, atacar con la espada. No está mal, pero tampoco es correcto. ¿Entienden? No hay una regla que obligue a usar el escudo solo para defenderse y la espada solo para atacar. Por ejemplo…</p>
+        
+        <p>—¡Aull!</p>
+        
+        <p>Golpeó con el escudo al Lobo de los Arbustos que se abalanzaba.</p>
+        
+        <p>Le dio un golpe de contragolpe en el hocico con el escudo; el lobo soltó un gemido y murió con el cráneo destrozado.</p>
+        
+        <p>—Así se hace, golpeando. El escudo no solo sirve para defenderse. La espada tampoco se trata solo de blandirla; si lees los movimientos del enemigo y la usas con astucia, acertarás. Usa la cabeza: piensa en lo que molesta al enemigo, en cómo sorprenderlo. Si solo blandes la espada y te proteges con el escudo, nunca te harás más fuerte.</p>
+        
+        <p>Mientras daba la lección, Gold fue masacrando a los Lobos de los Arbustos uno tras otro sin perder el aliento.</p>
+        
+        <p>¡Yo tampoco podía quedarme atrás!</p>
+        
+        <p>—¡Flecha de Fuego!</p>
+        
+        <p>—¡Aull!</p>
+        
+        <p>Usé la carta "R, Flecha de Fuego" para acabar con un Lobo de los Arbustos.</p>
+        
+        <p>Luego acabé con dos o tres más de la misma manera con magia de ataque.</p>
+        
+        <p><em>(En la época de la "Reunión de Razas", admiraba a los que podían usar magia, pero usando cartas de la "Gacha Infinita" puedo imitarla de forma simulada. Es divertido.)</em></p>
+        
+        <p>Aunque hay humanos que usan magia, son pocos. También entre los hombres bestia hay pocos.</p>
+        
+        <p>Por eso, que un equipo de principiantes como ellos tenga una maga, aunque sea su hermana, es bastante raro.</p>
+        
+        <p>Miya, la hermana de Elio, estaba tan sorprendida que habló con la voz temblorosa.</p>
+        
+        <p>—Es increíble… A pesar de tener mi edad, puede lanzar magia de nivel de combate sin necesidad de conjuro…</p>
+        
+        <p>Normalmente, al usar magia, como hacía Miya, hay que concentrarse y recitar un conjuro.</p>
+        
+        <p>Cuando uno se vuelve experto, puede usarla sin recitarlo.</p>
+        
+        <p>Como maga, estaba asombrada de que yo, a pesar de tener su misma edad, pudiera lanzar magia sin conjuro como un experto.</p>
+        
+        <p>—¡Auuuuuuu!</p>
+        
+        <p>—¿Un aullido? ¿Está llamando a más compañeros?… No, ¿es la señal para huir?</p>
+        
+        <p>Lo desagradable de los Lobos Grandes de los Arbustos es que tienen la costumbre de reunir a otros Lobos de los Arbustos con su aullido.</p>
+        
+        <p>En la época de la "Reunión de Razas", cuando luché contra una manada de Lobos Grandes de los Arbustos, por más que los derrotara, no paraban de venir más.</p>
+        
+        <p>Pero esta vez, después del aullido, el Lobo Grande de los Arbustos huyó al bosque apresuradamente.</p>
+        
+        <p>Parecía que había entendido que no podía ganar y dio la señal de huida.</p>
+        
+        <p>¡No podía dejar que se escapara!</p>
+        
+        <p>—¡Muro de Fuego!</p>
+        
+        <p>Usé "SR, Muro de Fuego" para crear una barrera de llamas que bloqueara su huida.</p>
+        
+        <p>—¡¿Auuu?!</p>
+        
+        <p>—¡Mentira! ¡Lanzó magia de nivel táctico sin conjuro!</p>
+        
+        <p>—¿M-Miya?</p>
+        
+        <p>Miya alzó la voz con una expresión de asombro tan grande que parecía que se le iban a saltar los ojos.</p>
+        
+        <p>Desde que la conocía, era la primera vez que la tranquila Miya alzaba tanto la voz.</p>
+        
+        <p>Sus hermanos, que estaban a su lado, quizás sorprendidos por su grito, desviaron la mirada hacia su hermana a pesar de que estaban viendo pelear a Gold.</p>
+        
+        <p>Nosotros, sin prestar atención, continuamos el combate.</p>
+        
+        <p>—¡Nemumu!</p>
+        
+        <p>—¡Déjelo en mis manos, Dark-sama!</p>
+        
+        <p>Nemumu, con un cuchillo en cada mano, decapitó rápidamente al Lobo Grande de los Arbustos, que estaba bloqueado.</p>
+        
+        <p>Con esto, todos los lobos de los arbustos, tanto los grandes como los comunes, fueron aniquilados.</p>
+        
+        <p>Cuando terminó el combate, Miya, que hasta ahora había sido la más tranquila, agarró emocionada los hombros de su hermano y lo sacudió.</p>
+        
+        <p>—¡H-hermano, has visto eso? ¡Un chico humano de mi edad ha lanzado sin conjuro no solo magia de nivel de combate, sino también "Muro de Fuego", que es de nivel táctico, aunque sea de rango bajo!</p>
+        
+        <p>—C-cálmate, Miya. ¿Eso es algo increíble?</p>
+        
+        <p>—¡Claro que es increíble! Quizás entre elfos, demonios y dragones de más edad haya quienes puedan, ¡pero nunca he oído hablar de un humano que pueda lanzar magia de nivel táctico sin conjuro! ¡Estamos presenciando un hito en la historia de la magia!</p>
+        
+        <p>—M-Miya-chan, ¿de verdad es un hito en la historia de la magia?</p>
+        
+        <p>—¡Es verdad, es verdad! ¡Increíble, es como un héroe o un campeón!</p>
+        
+        <p>Miya, de carácter tranquilo, me miraba con tal intensidad que parecía que sus ojos brillaban físicamente.</p>
+        
+        <p>Ante su reacción,</p>
+        
+        <p>—Jeje, que entiendas lo maravilloso y grandioso que es Dark-sama demuestra que tienes buen ojo.</p>
+        
+        <p>—Ah, jajaja…</p>
+        
+        <p>Por alguna razón, Nemumu se enorgullecía como si fuera mérito propio, hinchando el pecho.</p>
+        
+        <p>Su reacción era adorable y me alegraba, pero también me daba vergüenza, así que esbocé una leve sonrisa para disimular.</p>
+        
+        <p>—Entiendo que te alegres de que alaben a mi señor, pero no estaría bien que vinieran más refuerzos atraídos por el alboroto. Deja de hinchar ese pecho plano y recojamos las piedras mágicas de una vez. Cambiemos de lugar.</p>
+        
+        <p>—L-lo sé. ¡Y no digas que tengo el pecho plano!</p>
+        
+        <p>—Nemumu, está claro que se refiere a ti.</p>
+        
+        <p>Nemumu, sonrojada, golpeó la espalda de Gold una y otra vez.</p>
+        
+        <p>Él, sin inmutarse, se puso a extraer las piedras mágicas de los Lobos de los Arbustos que había derrotado.</p>
+        
+        <p>Como la opinión de Gold era razonable, esbocé otra leve sonrisa y me puse a trabajar también.</p>
+        
+        <p>—A-ah, nosotros también ayudamos como agradecimiento por salvarnos.</p>
+        
+        <p>—Gracias. Entonces, se lo agradecemos.</p>
+        
+        <p>Gracias a que Elio y los demás se ofrecieron, terminamos el trabajo en menos de diez minutos.</p>
+        
+        <p>Pudimos alejarnos del lugar antes de que llegaran refuerzos.</p>
+    </div>
+
+    <hr>
+
+    <!-- SECCIÓN DE CALIFICACIÓN -->
+    <div class="rating-section">
+        <h3>⭐ Califica este capítulo</h3>
+        <div class="stars" id="starRating">
+            <span class="star" data-value="1">★</span>
+            <span class="star" data-value="2">★</span>
+            <span class="star" data-value="3">★</span>
+            <span class="star" data-value="4">★</span>
+            <span class="star" data-value="5">★</span>
+        </div>
+        <div class="rating-message" id="ratingMessage">Selecciona una puntuación</div>
+    </div>
+
+    <!-- SECCIÓN DE COMENTARIOS -->
+    <div class="comments-section">
+        <h3>💬 Comentarios</h3>
+        <div class="comment-form">
+            <input type="text" id="commentName" placeholder="Tu nombre">
+            <textarea id="commentText" placeholder="Escribe tu comentario sobre este capítulo..."></textarea>
+            <button id="submitComment">Enviar</button>
+        </div>
+        <div id="commentsList"></div>
+    </div>
+
+    <div class="nav-container">
+        <div class="nav-bottom">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo1e7.html" id="prevLinkBottom" class="nav-btn">← Jóvenes aventureros</a>
+            <span class="chapter-counter" id="chapterCounterBottom">Capítulo 1 - Episodio 8</span>
+            <a href="capitulo1e9.html" id="nextLinkBottom" class="nav-btn">Ducado de Six →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelectBottom">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <!-- BOTONES FLOTANTES -->
+    <div class="floating-buttons">
+        <button class="floating-btn" id="scrollToTop" title="Ir arriba">⬆</button>
+        <button class="floating-btn" id="scrollToBottom" title="Ir abajo">⬇</button>
+    </div>
+
+    <footer>
+        <p>Gacha Infinita © 明鏡シスイ (Meikyō Shisui) | Traducción: Ocholobos</p>
+        <p>Apoya al autor comprando los volúmenes oficiales</p>
+    </footer>
+
+    <script src="data.js"></script>
+    <script>
+        const CHAPTER_NUM = 1;
+        const EPISODE_NUM = 8;
+        
+        let currentEpisode = null;
+        let prevEpisode = null;
+        let nextEpisode = null;
+        let allEpisodes = [];
+        
+        function loadEpisodeData() {
+            if (typeof GACHA_DATA !== 'undefined') {
+                currentEpisode = GACHA_DATA.getEpisode(CHAPTER_NUM, EPISODE_NUM);
+                prevEpisode = GACHA_DATA.getPrevEpisode(CHAPTER_NUM, EPISODE_NUM);
+                nextEpisode = GACHA_DATA.getNextEpisode(CHAPTER_NUM, EPISODE_NUM);
+                allEpisodes = GACHA_DATA.getAllEpisodesOrdered();
+                return true;
+            }
+            return false;
+        }
+        
+        function setupNavLinks() {
+            const prevLinks = [document.getElementById('prevLinkTop'), document.getElementById('prevLinkBottom')];
+            const nextLinks = [document.getElementById('nextLinkTop'), document.getElementById('nextLinkBottom')];
+            const counters = [document.getElementById('chapterCounterTop'), document.getElementById('chapterCounterBottom')];
+            
+            counters.forEach(counter => {
+                if (counter) counter.textContent = `Capítulo 1 - Episodio 8`;
+            });
+            
+            if (prevEpisode) {
+                prevLinks.forEach(link => {
+                    if (link) {
+                        link.href = `capitulo${prevEpisode.chapter}e${prevEpisode.episodeNum}.html`;
+                        link.classList.remove('disabled');
+                        let shortTitle = prevEpisode.title;
+                        if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                        link.textContent = `← ${shortTitle}`;
+                    }
+                });
+            }
+            
+            if (nextEpisode) {
+                nextLinks.forEach(link => {
+                    if (link) {
+                        link.href = `capitulo${nextEpisode.chapter}e${nextEpisode.episodeNum}.html`;
+                        link.classList.remove('disabled');
+                        let shortTitle = nextEpisode.title;
+                        if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                        link.textContent = `${shortTitle} →`;
+                    }
+                });
+            }
+        }
+        
+        function populateSelectors() {
+            const selectors = [document.getElementById('chapterSelect'), document.getElementById('chapterSelectBottom')];
+            
+            selectors.forEach(select => {
+                if (!select) return;
+                let options = '<option value="">📖 Seleccionar episodio...</option>';
+                for (const ep of allEpisodes) {
+                    const selected = (ep.chapter == CHAPTER_NUM && ep.episodeNum == EPISODE_NUM) ? 'selected' : '';
+                    const title = ep.title.length > 45 ? ep.title.substring(0, 42) + '...' : ep.title;
+                    options += `<option value="capitulo${ep.chapter}e${ep.episodeNum}.html" ${selected}>${ep.chapterTitle} - Episodio ${ep.episodeNum}: ${title}</option>`;
+                }
+                select.innerHTML = options;
+                
+                select.addEventListener('change', function() {
+                    if (this.value) window.location.href = this.value;
+                });
+            });
+        }
+        
+        function addToHistory() {
+            const user = localStorage.getItem('gacha_user');
+            if (!user) return;
+            let history = localStorage.getItem(`gacha_history_${user}`);
+            let historyObj = history ? JSON.parse(history) : { chapters: [] };
+            if (!historyObj.chapters) historyObj.chapters = [];
+            
+            historyObj.chapters = historyObj.chapters.filter(item => 
+                !(item.chapter == CHAPTER_NUM && item.episode == EPISODE_NUM)
+            );
+            historyObj.chapters.unshift({ chapter: CHAPTER_NUM, episode: EPISODE_NUM });
+            if (historyObj.chapters.length > 20) historyObj.chapters.pop();
+            localStorage.setItem(`gacha_history_${user}`, JSON.stringify(historyObj));
+        }
+        
+        // ========== SISTEMA DE CALIFICACIÓN ==========
+        function initRating() {
+            const storageKey = `rating_${CHAPTER_NUM}_${EPISODE_NUM}`;
+            const savedRating = localStorage.getItem(storageKey);
+            const stars = document.querySelectorAll('.star');
+            
+            if (savedRating) {
+                const rating = parseInt(savedRating);
+                updateStars(rating);
+                document.getElementById('ratingMessage').textContent = `⭐ Calificaste este capítulo con ${rating} estrellas. ¡Gracias!`;
+            }
+            
+            stars.forEach(star => {
+                star.addEventListener('click', function() {
+                    const value = parseInt(this.dataset.value);
+                    localStorage.setItem(storageKey, value);
+                    updateStars(value);
+                    document.getElementById('ratingMessage').textContent = `⭐ Calificaste este capítulo con ${value} estrellas. ¡Gracias!`;
+                });
+                
+                star.addEventListener('mouseenter', function() {
+                    const value = parseInt(this.dataset.value);
+                    highlightStars(value);
+                });
+                
+                star.addEventListener('mouseleave', function() {
+                    const saved = localStorage.getItem(storageKey);
+                    if (saved) {
+                        updateStars(parseInt(saved));
+                    } else {
+                        stars.forEach(s => s.classList.remove('active'));
+                    }
+                });
+            });
+        }
+        
+        function updateStars(rating) {
+            const stars = document.querySelectorAll('.star');
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+        
+        function highlightStars(rating) {
+            const stars = document.querySelectorAll('.star');
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+        
+        // ========== SISTEMA DE COMENTARIOS ==========
+        function loadComments() {
+            const storageKey = `comments_${CHAPTER_NUM}_${EPISODE_NUM}`;
+            const saved = localStorage.getItem(storageKey);
+            return saved ? JSON.parse(saved) : [];
+        }
+        
+        function saveComments(comments) {
+            const storageKey = `comments_${CHAPTER_NUM}_${EPISODE_NUM}`;
+            localStorage.setItem(storageKey, JSON.stringify(comments));
+        }
+        
+        function renderComments() {
+            const comments = loadComments();
+            const div = document.getElementById('commentsList');
+            if (comments.length === 0) {
+                div.innerHTML = '<p style="color:var(--secondary-text);">Sé el primero en comentar este capítulo.</p>';
+                return;
+            }
+            let html = '';
+            comments.slice().reverse().forEach(c => {
+                html += `<div class="comment-item">
+                            <span class="comment-name">${escapeHtml(c.name)}</span>
+                            <span class="comment-date">${c.date}</span>
+                            <div class="comment-text">${escapeHtml(c.text)}</div>
+                         </div>`;
+            });
+            div.innerHTML = html;
+        }
+        
+        function escapeHtml(str) {
+            return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]);
+        }
+        
+        function addComment(name, text) {
+            if (!name.trim() || !text.trim()) return;
+            const comments = loadComments();
+            comments.push({ 
+                name: name.trim(), 
+                text: text.trim(), 
+                date: new Date().toLocaleString() 
+            });
+            saveComments(comments);
+            renderComments();
+            document.getElementById('commentName').value = '';
+            document.getElementById('commentText').value = '';
+        }
+        
+        // ========== CONTROLES ==========
+        function initControls() {
+            const savedTheme = localStorage.getItem('gacha_theme');
+            if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+            const savedFont = localStorage.getItem('gacha_fontsize');
+            if (savedFont) document.body.style.fontSize = savedFont + '%';
+            
+            document.getElementById('fontPlus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.min(150, size + 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            document.getElementById('fontMinus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.max(70, size - 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            
+            const themeBtn = document.getElementById('themeToggle');
+            if (document.documentElement.hasAttribute('data-theme')) themeBtn.textContent = '☀️ Modo claro';
+            themeBtn.onclick = () => {
+                const isDark = document.documentElement.hasAttribute('data-theme');
+                if (isDark) {
+                    document.documentElement.removeAttribute('data-theme');
+                    localStorage.setItem('gacha_theme', 'light');
+                    themeBtn.textContent = '🌙 Modo oscuro';
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('gacha_theme', 'dark');
+                    themeBtn.textContent = '☀️ Modo claro';
+                }
+            };
+        }
+        
+        // ========== BOTONES FLOTANTES ==========
+        function initFloatingButtons() {
+            document.getElementById('scrollToTop').onclick = () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+            document.getElementById('scrollToBottom').onclick = () => {
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            };
+        }
+        
+        // ========== INICIALIZACIÓN ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            if (loadEpisodeData()) {
+                setupNavLinks();
+                populateSelectors();
+            }
+            initControls();
+            initFloatingButtons();
+            addToHistory();
+            initRating();
+            renderComments();
+            
+            document.getElementById('submitComment').onclick = () => addComment(
+                document.getElementById('commentName').value,
+                document.getElementById('commentText').value
+            );
+            
+            kofiWidgetOverlay.draw('ocholobos', {
+                'type': 'floating-chat',
+                'floating-chat.donateButton.text': 'Apóyame',
+                'floating-chat.donateButton.background-color': '#1a4d5f',
+                'floating-chat.donateButton.text-color': '#ffffff'
+            });
+        });
+    </script>
+</body>
+</html>
