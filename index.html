@@ -35,7 +35,6 @@
         }
         .container { max-width: 1000px; margin: 0 auto; padding: 1rem 1.5rem 2rem; }
         
-        /* Barra de opciones */
         .options-bar {
             position: sticky;
             top: 0;
@@ -47,6 +46,7 @@
             gap: 0.8rem;
             z-index: 100;
             flex-wrap: wrap;
+            align-items: center;
         }
         .options-bar button, .options-bar a {
             background: var(--accent-light);
@@ -61,10 +61,16 @@
             align-items: center;
             gap: 0.3rem;
         }
+        .user-info {
+            background: var(--accent);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
         .font-size-control { display: flex; gap: 0.3rem; align-items: center; }
         .font-size-control button { width: 32px; padding: 0.2rem; }
         
-        /* Header */
         .series-header { text-align: center; padding: 1.5rem 0; border-bottom: 3px solid var(--border-color); margin-bottom: 1.5rem; }
         h1 { font-size: 2rem; color: var(--accent); margin-bottom: 0.5rem; }
         .author { font-size: 0.9rem; color: var(--secondary-text); }
@@ -97,7 +103,6 @@
         .stat-number { font-size: 1.5rem; font-weight: bold; color: var(--accent); }
         .stat-label { font-size: 0.7rem; color: var(--secondary-text); }
         
-        /* Panel de usuario (localStorage) */
         .login-form { display: flex; gap: 0.5rem; flex-wrap: wrap; }
         .login-form input {
             padding: 0.5rem;
@@ -119,10 +124,7 @@
         .history-item { padding: 0.2rem 0; font-size: 0.85rem; }
         .history-item a { color: var(--accent); text-decoration: none; }
         
-        /* Índice de capítulos */
-        .chapter-group {
-            margin: 2rem 0 1.5rem;
-        }
+        .chapter-group { margin: 2rem 0 1.5rem; }
         .chapter-title {
             font-size: 1.3rem;
             font-weight: bold;
@@ -131,10 +133,7 @@
             padding-left: 1rem;
             margin-bottom: 1rem;
         }
-        .episode-list {
-            list-style: none;
-            padding-left: 1rem;
-        }
+        .episode-list { list-style: none; padding-left: 1rem; }
         .episode-item {
             display: flex;
             justify-content: space-between;
@@ -150,9 +149,7 @@
             font-weight: 500;
             flex: 1;
         }
-        .episode-link:hover {
-            text-decoration: underline;
-        }
+        .episode-link:hover { text-decoration: underline; }
         .episode-date {
             font-size: 0.75rem;
             color: var(--secondary-text);
@@ -161,7 +158,6 @@
             flex-shrink: 0;
         }
         
-        /* Comentarios (localStorage) */
         .comment-form { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem; }
         .comment-form input, .comment-form textarea {
             padding: 0.5rem;
@@ -177,7 +173,6 @@
         .comment-name { font-weight: bold; color: var(--accent); }
         .comment-date { font-size: 0.7rem; color: var(--secondary-text); margin-left: 0.5rem; }
         
-        /* Botones flotantes */
         .floating-buttons {
             position: fixed;
             bottom: 20px;
@@ -197,16 +192,12 @@
             font-size: 1.5rem;
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
             opacity: 0.8;
         }
-        .floating-btn:hover {
-            opacity: 1;
-            transform: scale(1.05);
-        }
+        .floating-btn:hover { opacity: 1; transform: scale(1.05); }
         
         footer {
             margin-top: 2rem;
@@ -224,6 +215,11 @@
             .floating-btn { width: 40px; height: 40px; font-size: 1.2rem; }
         }
     </style>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="auth.js"></script>
     <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
 </head>
 <body>
@@ -232,7 +228,9 @@
             <button id="fontMinus">A-</button>
             <button id="fontPlus">A+</button>
         </div>
-        <a href="usuario.html">👤 Mi perfil</a>
+        <a href="usuario.html" id="profileLink">👤 Mi perfil</a>
+        <div id="userInfo" style="display: none;" class="user-info"></div>
+        <button id="logoutBtnHeader" style="display: none;">Cerrar sesión</button>
         <button id="themeToggle">🌙 Modo oscuro</button>
     </div>
 
@@ -268,27 +266,39 @@
             <div class="stat-card"><div class="stat-number" id="translatedCount">0</div><div class="stat-label">Traducidos</div></div>
         </div>
 
-        <!-- Panel de usuario con historial (localStorage) -->
+        <!-- Panel de usuario (muestra historial de Firebase si está logueado) -->
         <div class="user-panel" id="userPanel">
             <h3>📚 Mi historial de lectura</h3>
             <div id="loginSection">
                 <div class="login-form">
-                    <input type="text" id="usernameInput" placeholder="Tu nombre o seudónimo">
-                    <button id="loginBtn">Comenzar a leer</button>
+                    <input type="email" id="loginEmail" placeholder="Correo electrónico">
+                    <input type="password" id="loginPassword" placeholder="Contraseña">
+                    <button id="loginBtn">Iniciar sesión</button>
                 </div>
-                <p style="font-size: 0.7rem; margin-top: 0.5rem;">✅ Solo se guarda en tu navegador. Sin registro.</p>
-                <p style="font-size: 0.7rem;">🔗 <a href="usuario.html" style="color: var(--accent);">¿Quieres una cuenta con puntos y niveles? Regístrate aquí</a></p>
+                <p style="font-size: 0.7rem; margin-top: 0.5rem;">¿No tienes cuenta? <a href="#" id="showRegisterLink" style="color: var(--accent);">Regístrate</a></p>
+                <div id="loginMessage"></div>
+            </div>
+            <div id="registerSection" style="display: none;">
+                <div class="login-form">
+                    <input type="text" id="regUsername" placeholder="Nombre de usuario">
+                    <input type="email" id="regEmail" placeholder="Correo electrónico">
+                    <input type="password" id="regPassword" placeholder="Contraseña (mínimo 6 caracteres)">
+                    <input type="password" id="regConfirmPassword" placeholder="Confirmar contraseña">
+                    <button id="registerBtn">Registrarse</button>
+                </div>
+                <p style="margin-top: 0.5rem;"><a href="#" id="showLoginLink" style="color: var(--accent);">← Volver a iniciar sesión</a></p>
+                <div id="registerMessage"></div>
             </div>
             <div id="historySection" style="display: none;">
-                <p>👤 <strong id="displayName"></strong> <button id="logoutBtn" class="logout-btn" style="margin-left: 1rem;">Cerrar sesión</button></p>
-                <div class="history-list"><div id="historyList"></div><a href="#" id="clearHistoryBtn" style="font-size:0.7rem;">Limpiar historial</a></div>
+                <p>👤 <strong id="displayName"></strong> <span id="userLevel" style="font-size:0.7rem; margin-left:0.5rem;"></span></p>
+                <div class="history-list"><div id="historyList"></div></div>
+                <button id="logoutBtn" class="logout-btn" style="margin-top: 0.5rem;">Cerrar sesión</button>
             </div>
         </div>
 
         <h2 style="margin: 1rem 0 0.5rem; color: var(--accent);">📑 Índice de episodios</h2>
         <div id="chapterIndex"></div>
 
-        <!-- Comentarios generales (localStorage) -->
         <div class="comments-section">
             <h3>💬 Comentarios generales</h3>
             <div class="comment-form">
@@ -305,7 +315,6 @@
         </footer>
     </div>
 
-    <!-- Botones flotantes -->
     <div class="floating-buttons">
         <button class="floating-btn" id="scrollToTop" title="Ir arriba">⬆</button>
         <button class="floating-btn" id="scrollToBottom" title="Ir abajo">⬇</button>
@@ -316,6 +325,7 @@
         // ========== CONFIGURACIÓN ==========
         let allEpisodes = [];
         let totalEpisodes = 0;
+        let currentUserProfile = null;
         
         // ========== CARGAR DATOS ==========
         function loadData() {
@@ -333,62 +343,148 @@
         function renderIndex() {
             const chapters = GACHA_DATA.chapters;
             let html = '';
-            
             for (const chapter of chapters) {
                 html += `<div class="chapter-group">`;
                 html += `<div class="chapter-title">${chapter.title}</div>`;
                 html += `<ul class="episode-list">`;
-                
                 for (const ep of chapter.episodes) {
                     const fileName = `capitulo${chapter.num}e${ep.num}.html`;
-                    html += `
-                        <li class="episode-item">
-                            <a href="${fileName}" class="episode-link">Episodio ${ep.num}: ${ep.title}</a>
-                            <span class="episode-date">${ep.date}</span>
-                        </li>
-                    `;
+                    html += `<li class="episode-item">
+                                <a href="${fileName}" class="episode-link" onclick="markAsRead(${chapter.num}, ${ep.num})">Episodio ${ep.num}: ${ep.title}</a>
+                                <span class="episode-date">${ep.date}</span>
+                             </li>`;
                 }
-                
                 html += `</ul></div>`;
             }
-            
             document.getElementById('chapterIndex').innerHTML = html;
         }
         
-        // ========== HISTORIAL (localStorage) ==========
-        let currentUser = null;
-        let userHistory = { chapters: [] };
-        
-        function loadUser() {
-            const saved = localStorage.getItem('gacha_user');
-            if (saved) {
-                currentUser = saved;
-                const hist = localStorage.getItem(`gacha_history_${currentUser}`);
-                if (hist) userHistory = JSON.parse(hist);
-                document.getElementById('loginSection').style.display = 'none';
-                document.getElementById('historySection').style.display = 'block';
-                document.getElementById('displayName').textContent = currentUser;
-                updateHistoryDisplay();
+        // ========== MARCAR CAPÍTULO COMO LEÍDO (Firebase) ==========
+        async function markAsRead(chapterNum, episodeNum) {
+            if (auth.currentUser) {
+                await registerChapterRead(chapterNum, episodeNum);
             }
+            // No hacer nada más, el enlace ya redirige
         }
         
-        function updateHistoryDisplay() {
-            const div = document.getElementById('historyList');
-            if (!userHistory.chapters || userHistory.chapters.length === 0) {
-                div.innerHTML = '<p style="color:var(--secondary-text);">No has leído nada aún.</p>';
+        // ========== CARGAR HISTORIAL DE FIREBASE ==========
+        async function loadHistoryFromFirebase() {
+            if (!auth.currentUser) return;
+            const result = await getUserProfile();
+            if (!result.success) return;
+            
+            currentUserProfile = result.profile;
+            const readChapters = currentUserProfile.readChapters || [];
+            
+            const historyList = document.getElementById('historyList');
+            if (readChapters.length === 0) {
+                historyList.innerHTML = '<p>No has leído ningún capítulo aún.</p>';
                 return;
             }
+            
+            // Obtener los últimos 10 capítulos leídos (más recientes primero)
+            const recent = readChapters.slice(-10).reverse();
             let html = '';
-            userHistory.chapters.slice(0, 10).forEach(item => {
-                const episode = allEpisodes.find(ep => ep.chapter == item.chapter && ep.episodeNum == item.episode);
-                if (episode) {
-                    html += `<div class="history-item">📖 <a href="capitulo${episode.chapter}e${episode.episodeNum}.html">${episode.chapterTitle} - Episodio ${ep.episodeNum}: ${episode.title}</a></div>`;
+            for (const key of recent) {
+                const [chapter, episode] = key.split('_');
+                const episodeData = allEpisodes.find(ep => ep.chapter == chapter && ep.episodeNum == parseInt(episode));
+                if (episodeData) {
+                    html += `<div class="history-item">📖 <a href="capitulo${episodeData.chapter}e${episodeData.episodeNum}.html">${episodeData.chapterTitle} - Episodio ${episodeData.episodeNum}: ${episodeData.title}</a></div>`;
                 }
-            });
-            div.innerHTML = html;
+            }
+            historyList.innerHTML = html;
+            
+            // Actualizar info del usuario en la barra superior
+            const levelText = `${currentUserProfile.levelBadge} (Nivel ${currentUserProfile.level})`;
+            document.getElementById('userInfo').textContent = `${currentUserProfile.username} | ${currentUserProfile.totalPoints} pts | ${levelText}`;
+            document.getElementById('displayName').textContent = currentUserProfile.username;
+            document.getElementById('userLevel').textContent = levelText;
         }
         
-        // ========== COMENTARIOS GENERALES (localStorage) ==========
+        // ========== AUTENTICACIÓN ==========
+        function showLogin() {
+            document.getElementById('loginSection').style.display = 'block';
+            document.getElementById('registerSection').style.display = 'none';
+            document.getElementById('historySection').style.display = 'none';
+        }
+        
+        function showRegister() {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('registerSection').style.display = 'block';
+            document.getElementById('historySection').style.display = 'none';
+        }
+        
+        function showLoggedIn() {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('registerSection').style.display = 'none';
+            document.getElementById('historySection').style.display = 'block';
+            document.getElementById('userInfo').style.display = 'inline-block';
+            document.getElementById('logoutBtnHeader').style.display = 'inline-block';
+        }
+        
+        function showLoggedOut() {
+            document.getElementById('loginSection').style.display = 'block';
+            document.getElementById('registerSection').style.display = 'none';
+            document.getElementById('historySection').style.display = 'none';
+            document.getElementById('userInfo').style.display = 'none';
+            document.getElementById('logoutBtnHeader').style.display = 'none';
+            currentUserProfile = null;
+        }
+        
+        async function handleLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const messageDiv = document.getElementById('loginMessage');
+            
+            if (!email || !password) {
+                messageDiv.innerHTML = '<span style="color:#e53e3e;">Completa todos los campos</span>';
+                return;
+            }
+            
+            const result = await loginUser(email, password);
+            if (result.success) {
+                messageDiv.innerHTML = '<span style="color:#38a169;">Inicio de sesión exitoso</span>';
+                setTimeout(() => location.reload(), 1000);
+            } else {
+                messageDiv.innerHTML = `<span style="color:#e53e3e;">${result.error}</span>`;
+            }
+        }
+        
+        async function handleRegister() {
+            const username = document.getElementById('regUsername').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            const confirm = document.getElementById('regConfirmPassword').value;
+            const messageDiv = document.getElementById('registerMessage');
+            
+            if (!username || !email || !password) {
+                messageDiv.innerHTML = '<span style="color:#e53e3e;">Completa todos los campos</span>';
+                return;
+            }
+            if (password !== confirm) {
+                messageDiv.innerHTML = '<span style="color:#e53e3e;">Las contraseñas no coinciden</span>';
+                return;
+            }
+            if (password.length < 6) {
+                messageDiv.innerHTML = '<span style="color:#e53e3e;">La contraseña debe tener al menos 6 caracteres</span>';
+                return;
+            }
+            
+            const result = await registerUser(email, password, username);
+            if (result.success) {
+                messageDiv.innerHTML = '<span style="color:#38a169;">Registro exitoso. Iniciando sesión...</span>';
+                setTimeout(() => location.reload(), 1500);
+            } else {
+                messageDiv.innerHTML = `<span style="color:#e53e3e;">${result.error}</span>`;
+            }
+        }
+        
+        async function handleLogout() {
+            await logoutUser();
+            location.reload();
+        }
+        
+        // ========== COMENTARIOS (localStorage, independientes) ==========
         function loadComments() { const saved = localStorage.getItem('gacha_comments'); return saved ? JSON.parse(saved) : []; }
         function saveComments(comments) { localStorage.setItem('gacha_comments', JSON.stringify(comments)); }
         function renderComments() {
@@ -460,33 +556,33 @@
             }
             initControls();
             initFloatingButtons();
-            loadUser();
             renderComments();
             
-            document.getElementById('loginBtn').onclick = () => {
-                const name = document.getElementById('usernameInput').value;
-                if (name.trim()) {
-                    localStorage.setItem('gacha_user', name.trim());
-                    loadUser();
+            // Verificar estado de autenticación
+            onAuthStateChanged(async (state) => {
+                if (state.loggedIn) {
+                    showLoggedIn();
+                    await loadHistoryFromFirebase();
+                } else {
+                    showLoggedOut();
                 }
-            };
-            document.getElementById('logoutBtn').onclick = () => {
-                localStorage.removeItem('gacha_user');
-                location.reload();
-            };
-            document.getElementById('clearHistoryBtn').onclick = (e) => {
-                e.preventDefault();
-                if (confirm('¿Borrar todo tu historial de lectura?')) {
-                    userHistory = { chapters: [] };
-                    localStorage.setItem(`gacha_history_${currentUser}`, JSON.stringify(userHistory));
-                    updateHistoryDisplay();
-                }
-            };
+            });
+            
+            // Eventos de autenticación
+            document.getElementById('loginBtn').onclick = handleLogin;
+            document.getElementById('registerBtn').onclick = handleRegister;
+            document.getElementById('logoutBtn').onclick = handleLogout;
+            document.getElementById('logoutBtnHeader').onclick = handleLogout;
+            document.getElementById('showRegisterLink').onclick = (e) => { e.preventDefault(); showRegister(); };
+            document.getElementById('showLoginLink').onclick = (e) => { e.preventDefault(); showLogin(); };
+            
+            // Comentarios
             document.getElementById('submitComment').onclick = () => addComment(
                 document.getElementById('commentName').value,
                 document.getElementById('commentText').value
             );
             
+            // Ko-fi
             kofiWidgetOverlay.draw('ocholobos', {
                 'type': 'floating-chat',
                 'floating-chat.donateButton.text': 'Apóyame',
@@ -494,6 +590,9 @@
                 'floating-chat.donateButton.text-color': '#ffffff'
             });
         });
+        
+        // Exponer markAsRead globalmente
+        window.markAsRead = markAsRead;
     </script>
 </body>
 </html>
