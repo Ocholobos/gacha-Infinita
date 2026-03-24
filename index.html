@@ -117,7 +117,7 @@
         .history-item { padding: 0.2rem 0; font-size: 0.85rem; }
         .history-item a { color: var(--accent); text-decoration: none; }
         
-        .chapter-group { margin: 2rem 0 1.5rem; }
+        .chapter-group { margin: 1.5rem 0 0; }
         .chapter-title {
             font-size: 1.3rem;
             font-weight: bold;
@@ -149,6 +149,56 @@
             font-family: monospace;
             white-space: nowrap;
             flex-shrink: 0;
+        }
+        
+        /* Paginación */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 2rem 0;
+        }
+        .pagination button, .pagination a {
+            background: var(--accent-light);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .pagination button:hover, .pagination a:hover {
+            background: var(--border-color);
+        }
+        .pagination .active {
+            background: var(--accent);
+            color: white;
+        }
+        .pagination .disabled {
+            background: var(--border-color);
+            color: #9ca3af;
+            cursor: not-allowed;
+        }
+        .page-input {
+            display: inline-flex;
+            gap: 0.3rem;
+            align-items: center;
+            background: var(--accent-light);
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+        }
+        .page-input input {
+            width: 60px;
+            padding: 0.2rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background: var(--bg-color);
+            color: var(--text-color);
+            text-align: center;
         }
         
         .floating-buttons {
@@ -191,6 +241,8 @@
             .episode-item { flex-direction: column; align-items: flex-start; }
             .episode-date { align-self: flex-end; }
             .floating-btn { width: 40px; height: 40px; font-size: 1.2rem; }
+            .pagination { gap: 0.3rem; }
+            .pagination button, .pagination a { padding: 0.3rem 0.6rem; font-size: 0.8rem; }
         }
     </style>
     <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
@@ -201,7 +253,6 @@
             <button id="fontMinus">A-</button>
             <button id="fontPlus">A+</button>
         </div>
-        <a href="reglas.html">📜 Reglas</a>
         <button id="themeToggle">🌙 Modo oscuro</button>
     </div>
 
@@ -237,7 +288,7 @@
             <div class="stat-card"><div class="stat-number" id="translatedCount">0</div><div class="stat-label">Traducidos</div></div>
         </div>
 
-        <!-- Panel de usuario con historial (localStorage) -->
+        <!-- Panel de usuario con historial -->
         <div class="user-panel" id="userPanel">
             <h3>📚 Mi historial de lectura</h3>
             <div id="loginSection">
@@ -255,6 +306,9 @@
 
         <h2 style="margin: 1rem 0 0.5rem; color: var(--accent);">📑 Índice de episodios</h2>
         <div id="chapterIndex"></div>
+        
+        <!-- Paginación -->
+        <div class="pagination" id="pagination"></div>
 
         <footer>
             <p>Gacha Infinita © 明鏡シスイ (Meikyō Shisui)</p>
@@ -272,12 +326,16 @@
         // ========== CONFIGURACIÓN ==========
         let allEpisodes = [];
         let totalEpisodes = 0;
+        const ITEMS_PER_PAGE = 20;
+        let currentPage = 1;
+        let totalPages = 1;
         
         // ========== CARGAR DATOS ==========
         function loadData() {
             if (typeof GACHA_DATA !== 'undefined') {
                 allEpisodes = GACHA_DATA.getAllEpisodesOrdered();
                 totalEpisodes = allEpisodes.length;
+                totalPages = Math.ceil(totalEpisodes / ITEMS_PER_PAGE);
                 document.getElementById('totalChapters').textContent = totalEpisodes;
                 document.getElementById('translatedCount').textContent = totalEpisodes;
                 return true;
@@ -285,30 +343,145 @@
             return false;
         }
         
-        // ========== RENDERIZAR ÍNDICE ==========
+        // ========== RENDERIZAR ÍNDICE (solo página actual) ==========
         function renderIndex() {
-            const chapters = GACHA_DATA.chapters;
-            let html = '';
+            const start = (currentPage - 1) * ITEMS_PER_PAGE;
+            const end = Math.min(start + ITEMS_PER_PAGE, totalEpisodes);
+            const pageEpisodes = allEpisodes.slice(start, end);
             
+            // Agrupar por capítulo
+            const chaptersMap = new Map();
+            for (const ep of pageEpisodes) {
+                if (!chaptersMap.has(ep.chapter)) {
+                    chaptersMap.set(ep.chapter, {
+                        chapter: ep.chapter,
+                        title: ep.chapterTitle,
+                        episodes: []
+                    });
+                }
+                chaptersMap.get(ep.chapter).episodes.push(ep);
+            }
+            
+            // Ordenar capítulos
+            const chapters = Array.from(chaptersMap.values()).sort((a, b) => a.chapter - b.chapter);
+            
+            let html = '';
             for (const chapter of chapters) {
                 html += `<div class="chapter-group">`;
                 html += `<div class="chapter-title">${chapter.title}</div>`;
                 html += `<ul class="episode-list">`;
                 
                 for (const ep of chapter.episodes) {
-                    const fileName = `capitulo${chapter.num}e${ep.num}.html`;
+                    const fileName = `capitulo${ep.chapter}e${ep.episodeNum}.html`;
                     html += `
                         <li class="episode-item">
-                            <a href="${fileName}" class="episode-link">Episodio ${ep.num}: ${ep.title}</a>
+                            <a href="${fileName}" class="episode-link" onclick="markAsRead(${ep.chapter}, ${ep.episodeNum})">Episodio ${ep.episodeNum}: ${ep.title}</a>
                             <span class="episode-date">${ep.date}</span>
                         </li>
                     `;
                 }
-                
                 html += `</ul></div>`;
             }
             
             document.getElementById('chapterIndex').innerHTML = html;
+        }
+        
+        // ========== RENDERIZAR PAGINACIÓN ==========
+        function renderPagination() {
+            const container = document.getElementById('pagination');
+            
+            let html = '';
+            
+            // Botón Primero
+            if (currentPage > 1) {
+                html += `<a href="#" data-page="1">« Primero</a>`;
+            } else {
+                html += `<span class="disabled">« Primero</span>`;
+            }
+            
+            // Botón Anterior
+            if (currentPage > 1) {
+                html += `<a href="#" data-page="${currentPage - 1}">‹ Anterior</a>`;
+            } else {
+                html += `<span class="disabled">‹ Anterior</span>`;
+            }
+            
+            // Números de página (mostrar máximo 5)
+            let startPage = Math.max(1, currentPage - 2);
+            let endPage = Math.min(totalPages, startPage + 4);
+            if (endPage - startPage < 4) {
+                startPage = Math.max(1, endPage - 4);
+            }
+            
+            for (let i = startPage; i <= endPage; i++) {
+                if (i === currentPage) {
+                    html += `<span class="active" style="background:var(--accent); color:white; padding:0.5rem 1rem; border-radius:8px;">${i}</span>`;
+                } else {
+                    html += `<a href="#" data-page="${i}">${i}</a>`;
+                }
+            }
+            
+            // Botón Siguiente
+            if (currentPage < totalPages) {
+                html += `<a href="#" data-page="${currentPage + 1}">Siguiente ›</a>`;
+            } else {
+                html += `<span class="disabled">Siguiente ›</span>`;
+            }
+            
+            // Botón Último
+            if (currentPage < totalPages) {
+                html += `<a href="#" data-page="${totalPages}">Último »</a>`;
+            } else {
+                html += `<span class="disabled">Último »</span>`;
+            }
+            
+            // Input para ir a página específica
+            html += `<div class="page-input">
+                        <span>Ir a:</span>
+                        <input type="number" id="pageInput" min="1" max="${totalPages}" value="${currentPage}">
+                        <button id="goToPageBtn">Ir</button>
+                     </div>`;
+            
+            container.innerHTML = html;
+            
+            // Event listeners
+            document.querySelectorAll('#pagination a[data-page]').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const page = parseInt(link.dataset.page);
+                    if (!isNaN(page) && page >= 1 && page <= totalPages) {
+                        goToPage(page);
+                    }
+                });
+            });
+            
+            const goBtn = document.getElementById('goToPageBtn');
+            const pageInput = document.getElementById('pageInput');
+            if (goBtn) {
+                goBtn.addEventListener('click', () => {
+                    const page = parseInt(pageInput.value);
+                    if (!isNaN(page) && page >= 1 && page <= totalPages) {
+                        goToPage(page);
+                    }
+                });
+            }
+            if (pageInput) {
+                pageInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        const page = parseInt(pageInput.value);
+                        if (!isNaN(page) && page >= 1 && page <= totalPages) {
+                            goToPage(page);
+                        }
+                    }
+                });
+            }
+        }
+        
+        function goToPage(page) {
+            currentPage = page;
+            renderIndex();
+            renderPagination();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
         
         // ========== HISTORIAL (localStorage) ==========
@@ -397,6 +570,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             if (loadData()) {
                 renderIndex();
+                renderPagination();
             }
             initControls();
             loadUser();
