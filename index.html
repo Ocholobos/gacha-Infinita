@@ -77,7 +77,7 @@
         .info-badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin: 1rem 0; }
         .badge { background: var(--accent-light); padding: 0.3rem 0.8rem; border-radius: 30px; font-size: 0.75rem; color: var(--accent); }
         
-        .other-titles, .synopsis, .user-panel, .comments-section {
+        .other-titles, .synopsis, .user-panel, .comments-section, .contact-section {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 12px;
@@ -159,7 +159,7 @@
         }
         
         .comment-form { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem; }
-        .comment-form input, .comment-form textarea {
+        .comment-form input, .comment-form textarea, .contact-form input, .contact-form textarea {
             padding: 0.5rem;
             border: 1px solid var(--border-color);
             border-radius: 8px;
@@ -167,11 +167,14 @@
             color: var(--text-color);
             font-family: inherit;
         }
-        .comment-form textarea { min-height: 80px; resize: vertical; }
-        .comment-form button { width: 100px; background: var(--accent); color: white; border: none; padding: 0.5rem; border-radius: 8px; cursor: pointer; }
+        .comment-form textarea, .contact-form textarea { min-height: 80px; resize: vertical; }
+        .comment-form button, .contact-form button { width: 120px; background: var(--accent); color: white; border: none; padding: 0.5rem; border-radius: 8px; cursor: pointer; }
         .comment-item { border-bottom: 1px solid var(--border-color); padding: 0.8rem 0; }
         .comment-name { font-weight: bold; color: var(--accent); }
         .comment-date { font-size: 0.7rem; color: var(--secondary-text); margin-left: 0.5rem; }
+        
+        .contact-section h3 { color: var(--accent); margin-bottom: 0.5rem; }
+        .contact-section p { font-size: 0.85rem; margin-bottom: 1rem; color: var(--secondary-text); }
         
         .floating-buttons {
             position: fixed;
@@ -309,6 +312,19 @@
                 <button id="submitComment">Enviar</button>
             </div>
             <div id="commentsList"></div>
+        </div>
+
+        <!-- Área de contacto con el traductor -->
+        <div class="contact-section">
+            <h3>✉️ Contactar al traductor</h3>
+            <p>¿Encontraste un error, tienes una sugerencia o quieres dejar un mensaje? Escríbeme aquí.</p>
+            <div class="contact-form">
+                <input type="text" id="contactName" placeholder="Tu nombre">
+                <input type="email" id="contactEmail" placeholder="Tu correo (opcional)">
+                <textarea id="contactMessage" rows="4" placeholder="Escribe tu mensaje aquí..."></textarea>
+                <button id="sendContactBtn">📧 Enviar mensaje</button>
+                <div id="contactMessageStatus" style="font-size: 0.8rem; margin-top: 0.5rem;"></div>
+            </div>
         </div>
 
         <footer>
@@ -507,6 +523,50 @@
             document.getElementById('commentText').value = '';
         }
         
+        // ========== CONTACTO ==========
+        function setupContact() {
+            const sendBtn = document.getElementById('sendContactBtn');
+            const nameInput = document.getElementById('contactName');
+            const emailInput = document.getElementById('contactEmail');
+            const messageInput = document.getElementById('contactMessage');
+            const statusDiv = document.getElementById('contactMessageStatus');
+            
+            sendBtn.onclick = () => {
+                const name = nameInput.value.trim();
+                const email = emailInput.value.trim();
+                const message = messageInput.value.trim();
+                
+                if (!name) {
+                    statusDiv.innerHTML = '<span style="color:#e53e3e;">❌ Por favor, ingresa tu nombre.</span>';
+                    return;
+                }
+                if (!message) {
+                    statusDiv.innerHTML = '<span style="color:#e53e3e;">❌ Por favor, escribe un mensaje.</span>';
+                    return;
+                }
+                
+                const subject = encodeURIComponent(`Contacto desde Gacha Infinita - ${name}`);
+                const body = encodeURIComponent(
+                    `Nombre: ${name}\n` +
+                    `Email: ${email || 'No especificado'}\n\n` +
+                    `Mensaje:\n${message}\n\n` +
+                    `---\nEnviado desde Gacha Infinita`
+                );
+                
+                window.location.href = `mailto:ocholobos@gmail.com?subject=${subject}&body=${body}`;
+                statusDiv.innerHTML = '<span style="color:#38a169;">📧 Abriendo tu cliente de correo. ¡Gracias por tu mensaje!</span>';
+                
+                // Limpiar campos
+                nameInput.value = '';
+                emailInput.value = '';
+                messageInput.value = '';
+                
+                setTimeout(() => {
+                    statusDiv.innerHTML = '';
+                }, 5000);
+            };
+        }
+        
         // ========== CONTROLES ==========
         function initControls() {
             const savedTheme = localStorage.getItem('gacha_theme');
@@ -554,6 +614,7 @@
             }
             initControls();
             renderComments();
+            setupContact();
             
             // Verificar estado de autenticación
             onAuthStateChanged(async (state) => {
