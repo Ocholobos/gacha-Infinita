@@ -1,9 +1,6 @@
 // ============================================================
 // CONFIGURACIÓN DE FIREBASE (con variables de entorno)
 // ============================================================
-// Las claves se inyectan automáticamente en Netlify desde las variables de entorno
-// Para desarrollo local, se usan los valores por defecto
-// ============================================================
 
 const firebaseConfig = {
     apiKey: process.env.VITE_FIREBASE_API_KEY || "AIzaSyA-ovAJtWllZAhqgQkmUriCyEI9ad7MqsM",
@@ -21,6 +18,12 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-// Nota: Para que las variables de entorno funcionen en Netlify,
-// debes configurarlas en: Site settings > Environment variables
-// con los nombres: VITE_FIREBASE_API_KEY, VITE_FIREBASE_AUTH_DOMAIN, etc.
+// ============================================================
+// APP CHECK (reCAPTCHA v3)
+// ============================================================
+// La site key de reCAPTCHA v3 (obtenida de Google)
+const RECAPTCHA_SITE_KEY = "6LdsjZUsAAAAAFNogpL5d5UUdiEkLKBxvM2Q6v3c"; // REEMPLAZA CON TU SITE KEY
+
+// Inicializar App Check
+const appCheck = firebase.appCheck();
+appCheck.activate(RECAPTCHA_SITE_KEY, true); // true = token automático
