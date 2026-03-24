@@ -5,11 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jóvenes aventureros | Gacha Infinita</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Georgia', 'Times New Roman', serif;
             max-width: 800px;
@@ -36,12 +32,13 @@
             gap: 0.8rem;
             z-index: 100;
             flex-wrap: wrap;
+            align-items: center;
         }
         [data-theme="dark"] .options-bar {
             background: #1a1a1a;
             border-bottom-color: #404040;
         }
-        .options-bar button {
+        .options-bar button, .options-bar a {
             background: #eef2f0;
             border: none;
             padding: 0.4rem 0.8rem;
@@ -49,39 +46,35 @@
             cursor: pointer;
             font-size: 0.8rem;
             color: #1a4d5f;
-            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
         }
-        [data-theme="dark"] .options-bar button {
+        [data-theme="dark"] .options-bar button, [data-theme="dark"] .options-bar a {
             background: #2a3a35;
             color: #5a9e8c;
         }
-        .options-bar button:hover {
-            background: #e5e0d8;
+        .font-size-control { display: flex; gap: 0.3rem; align-items: center; }
+        .font-size-control button { width: 32px; padding: 0.2rem; }
+        .user-info {
+            background: #1a4d5f;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
         }
-        .font-size-control {
-            display: flex;
-            gap: 0.3rem;
-            align-items: center;
-        }
-        .font-size-control button {
-            width: 32px;
-            padding: 0.2rem;
-        }
+        [data-theme="dark"] .user-info { background: #5a9e8c; }
         
-        .nav-container {
-            margin: 1rem 0;
-        }
+        .nav-container { margin: 1rem 0; }
         .nav-center, .nav-bottom {
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 1rem;
             flex-wrap: wrap;
-            margin-bottom: 0.5rem;
         }
-        .nav-bottom {
-            margin-top: 1rem;
-        }
+        .nav-bottom { margin-top: 1rem; }
         .nav-btn {
             background: #eef2f0;
             padding: 0.5rem 1rem;
@@ -95,13 +88,8 @@
             align-items: center;
             gap: 0.3rem;
         }
-        [data-theme="dark"] .nav-btn {
-            background: #2a3a35;
-            color: #5a9e8c;
-        }
-        .nav-btn:hover {
-            background: #e5e0d8;
-        }
+        [data-theme="dark"] .nav-btn { background: #2a3a35; color: #5a9e8c; }
+        .nav-btn:hover { background: #e5e0d8; }
         .nav-btn.disabled {
             background: #e5e0d8;
             color: #9ca3af;
@@ -116,15 +104,9 @@
             font-weight: 500;
             color: #1a4d5f;
         }
-        [data-theme="dark"] .chapter-counter {
-            background: #2a3a35;
-            color: #5a9e8c;
-        }
+        [data-theme="dark"] .chapter-counter { background: #2a3a35; color: #5a9e8c; }
         
-        .chapter-selector {
-            margin: 0.5rem 0;
-            text-align: center;
-        }
+        .chapter-selector { margin: 0.5rem 0; text-align: center; }
         .chapter-selector select {
             background: #eef2f0;
             border: none;
@@ -137,19 +119,14 @@
             width: 300px;
             max-width: 90%;
         }
-        [data-theme="dark"] .chapter-selector select {
-            background: #2a3a35;
-            color: #5a9e8c;
-        }
+        [data-theme="dark"] .chapter-selector select { background: #2a3a35; color: #5a9e8c; }
         
         h1 {
             font-size: 1.8rem;
             margin: 1rem 0 0.25rem;
             color: #1a4d5f;
         }
-        [data-theme="dark"] h1 {
-            color: #5a9e8c;
-        }
+        [data-theme="dark"] h1 { color: #5a9e8c; }
         .episode-number {
             color: #6b6a68;
             margin-bottom: 1rem;
@@ -160,26 +137,96 @@
             color: #a0a0a0;
             border-bottom-color: #404040;
         }
-        .story-content {
+        .story-content { margin: 1.5rem 0; }
+        .story-content p { margin-bottom: 1.2rem; text-align: justify; }
+        hr { margin: 2rem 0; border: none; border-top: 1px solid #e5e0d8; }
+        [data-theme="dark"] hr { border-top-color: #404040; }
+        
+        .rating-section {
+            background: white;
+            border: 1px solid #e5e0d8;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+        [data-theme="dark"] .rating-section { background: #2d2d2d; border-color: #404040; }
+        .stars { display: flex; justify-content: center; gap: 0.5rem; margin-bottom: 1rem; }
+        .star {
+            font-size: 2rem;
+            cursor: pointer;
+            color: #cbd5e0;
+            transition: color 0.2s;
+        }
+        .star:hover, .star.active { color: #f5b042; }
+        
+        .comments-section {
+            background: white;
+            border: 1px solid #e5e0d8;
+            border-radius: 16px;
+            padding: 1.5rem;
             margin: 1.5rem 0;
         }
-        .story-content p {
-            margin-bottom: 1.2rem;
-            text-align: justify;
+        [data-theme="dark"] .comments-section { background: #2d2d2d; border-color: #404040; }
+        .comment-form {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
         }
-        hr {
-            margin: 2rem 0;
+        .comment-form input, .comment-form textarea {
+            padding: 0.5rem;
+            border: 1px solid #e5e0d8;
+            border-radius: 8px;
+            background: #faf9f7;
+            font-family: inherit;
+        }
+        [data-theme="dark"] .comment-form input, [data-theme="dark"] .comment-form textarea {
+            background: #1a1a1a;
+            border-color: #404040;
+            color: #e5e5e5;
+        }
+        .comment-form textarea { min-height: 80px; resize: vertical; }
+        .comment-form button {
+            width: 100px;
+            background: #1a4d5f;
+            color: white;
             border: none;
-            border-top: 1px solid #e5e0d8;
+            padding: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
         }
-        [data-theme="dark"] hr {
-            border-top-color: #404040;
+        [data-theme="dark"] .comment-form button { background: #5a9e8c; }
+        .comment-item {
+            border-bottom: 1px solid #e5e0d8;
+            padding: 0.8rem 0;
         }
+        .comment-name { font-weight: bold; color: #1a4d5f; }
+        .comment-date { font-size: 0.7rem; color: #6b6a68; margin-left: 0.5rem; }
+        .comment-like, .comment-report, .comment-delete {
+            margin-left: 0.8rem;
+            cursor: pointer;
+            font-size: 0.7rem;
+            display: inline-block;
+            transition: all 0.2s;
+        }
+        .comment-like { color: #9ca3af; }
+        .comment-like:hover { color: #e53e3e; }
+        .comment-report { color: #9ca3af; }
+        .comment-report:hover { color: #e53e3e; }
+        .comment-delete { color: #9ca3af; }
+        .comment-delete:hover { color: #e53e3e; }
         
-        .floating-scroll-top {
+        .floating-buttons {
             position: fixed;
-            bottom: 90px;
+            bottom: 20px;
             right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+        .floating-btn {
             background: #1a4d5f;
             color: white;
             border: none;
@@ -189,19 +236,31 @@
             font-size: 1.5rem;
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
-            z-index: 1000;
             display: flex;
             align-items: center;
             justify-content: center;
             opacity: 0.8;
         }
-        [data-theme="dark"] .floating-scroll-top {
-            background: #5a9e8c;
+        [data-theme="dark"] .floating-btn { background: #5a9e8c; }
+        .floating-btn:hover { opacity: 1; transform: scale(1.05); }
+        
+        .toast-message {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: #1a4d5f;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            z-index: 1000;
+            animation: fadeOut 3s ease forwards;
         }
-        .floating-scroll-top:hover {
-            opacity: 1;
-            transform: scale(1.05);
+        [data-theme="dark"] .toast-message { background: #5a9e8c; }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            70% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
         }
         
         footer {
@@ -212,22 +271,20 @@
             border-top: 1px solid #e5e0d8;
             padding-top: 1.5rem;
         }
-        [data-theme="dark"] footer {
-            border-top-color: #404040;
-        }
+        [data-theme="dark"] footer { border-top-color: #404040; }
         
         @media (max-width: 600px) {
             body { padding: 0.5rem; }
             .nav-center, .nav-bottom { flex-direction: column; gap: 0.5rem; }
-            .floating-scroll-top {
-                width: 40px;
-                height: 40px;
-                font-size: 1.2rem;
-                bottom: 70px;
-                right: 15px;
-            }
+            .floating-btn { width: 40px; height: 40px; font-size: 1.2rem; }
+            .star { font-size: 1.5rem; }
         }
     </style>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="auth.js"></script>
     <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
 </head>
 <body>
@@ -236,6 +293,12 @@
             <button id="fontMinus">A-</button>
             <button id="fontPlus">A+</button>
         </div>
+        <a href="usuario.html">👤 Mi perfil</a>
+        <a href="reglas.html">📜 Reglas</a>
+        <a href="moderacion.html" id="modLink" style="display: none;">🛡️ Moderación</a>
+        <div id="userInfo" class="user-info" style="display: none;"></div>
+        <button id="logoutBtnHeader" style="display: none;">Cerrar sesión</button>
+        <a href="index.html">📚 Índice</a>
         <button id="themeToggle">🌙 Modo oscuro</button>
     </div>
 
@@ -449,6 +512,28 @@
 
     <hr>
 
+    <div class="rating-section">
+        <h3>⭐ Califica este capítulo</h3>
+        <div class="stars" id="starRating">
+            <span class="star" data-value="1">★</span>
+            <span class="star" data-value="2">★</span>
+            <span class="star" data-value="3">★</span>
+            <span class="star" data-value="4">★</span>
+            <span class="star" data-value="5">★</span>
+        </div>
+        <div id="ratingMessage" style="font-size:0.85rem; margin-top:0.5rem;"></div>
+    </div>
+
+    <div class="comments-section">
+        <h3>💬 Comentarios</h3>
+        <div class="comment-form">
+            <input type="text" id="commentName" placeholder="Tu nombre" readonly>
+            <textarea id="commentText" placeholder="Escribe tu comentario... (Inicia sesión para comentar)"></textarea>
+            <button id="submitComment">Enviar</button>
+        </div>
+        <div id="commentsList"></div>
+    </div>
+
     <div class="nav-container">
         <div class="nav-bottom">
             <a href="index.html" class="nav-btn">📚 Índice</a>
@@ -464,100 +549,221 @@
         </select>
     </div>
 
+    <div class="floating-buttons">
+        <button class="floating-btn" id="scrollToTop" title="Ir arriba">⬆</button>
+        <button class="floating-btn" id="scrollToBottom" title="Ir abajo">⬇</button>
+    </div>
+
     <footer>
         <p>Gacha Infinita © 明鏡シスイ (Meikyō Shisui) | Traducción: Ocholobos</p>
         <p>Apoya al autor comprando los volúmenes oficiales</p>
     </footer>
-
-    <button class="floating-scroll-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">⬆</button>
 
     <script src="data.js"></script>
     <script>
         const CHAPTER_NUM = 1;
         const EPISODE_NUM = 7;
         
-        let currentEpisode = null;
-        let prevEpisode = null;
-        let nextEpisode = null;
-        let allEpisodes = [];
+        let pointsAdded = false;
+        let currentUserProfile = null;
         
-        function loadEpisodeData() {
-            if (typeof GACHA_DATA !== 'undefined') {
-                currentEpisode = GACHA_DATA.getEpisode(CHAPTER_NUM, EPISODE_NUM);
-                prevEpisode = GACHA_DATA.getPrevEpisode(CHAPTER_NUM, EPISODE_NUM);
-                nextEpisode = GACHA_DATA.getNextEpisode(CHAPTER_NUM, EPISODE_NUM);
-                allEpisodes = GACHA_DATA.getAllEpisodesOrdered();
-                return true;
-            }
-            return false;
-        }
-        
-        function setupNavLinks() {
-            const prevLinks = [document.getElementById('prevLinkTop'), document.getElementById('prevLinkBottom')];
-            const nextLinks = [document.getElementById('nextLinkTop'), document.getElementById('nextLinkBottom')];
-            const counters = [document.getElementById('chapterCounterTop'), document.getElementById('chapterCounterBottom')];
-            
-            counters.forEach(counter => {
-                if (counter) counter.textContent = `Capítulo 1 - Episodio 7`;
-            });
-            
-            if (prevEpisode) {
-                prevLinks.forEach(link => {
-                    if (link) {
-                        link.href = `capitulo${prevEpisode.chapter}e${prevEpisode.episodeNum}.html`;
-                        link.classList.remove('disabled');
-                        let shortTitle = prevEpisode.title;
-                        if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
-                        link.textContent = `← ${shortTitle}`;
-                    }
-                });
-            }
-            
-            if (nextEpisode) {
-                nextLinks.forEach(link => {
-                    if (link) {
-                        link.href = `capitulo${nextEpisode.chapter}e${nextEpisode.episodeNum}.html`;
-                        link.classList.remove('disabled');
-                        let shortTitle = nextEpisode.title;
-                        if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
-                        link.textContent = `${shortTitle} →`;
-                    }
-                });
-            }
-        }
-        
-        function populateSelectors() {
-            const selectors = [document.getElementById('chapterSelect'), document.getElementById('chapterSelectBottom')];
-            
-            selectors.forEach(select => {
-                if (!select) return;
-                let options = '<option value="">📖 Seleccionar episodio...</option>';
-                for (const ep of allEpisodes) {
-                    const selected = (ep.chapter == CHAPTER_NUM && ep.episodeNum == EPISODE_NUM) ? 'selected' : '';
-                    const title = ep.title.length > 45 ? ep.title.substring(0, 42) + '...' : ep.title;
-                    options += `<option value="capitulo${ep.chapter}e${ep.episodeNum}.html" ${selected}>${ep.chapterTitle} - Episodio ${ep.episodeNum}: ${title}</option>`;
-                }
-                select.innerHTML = options;
-                
-                select.addEventListener('change', function() {
-                    if (this.value) window.location.href = this.value;
-                });
-            });
-        }
-        
-        function addToHistory() {
-            const user = localStorage.getItem('gacha_user');
+        async function registerRead() {
+            if (pointsAdded) return;
+            const user = auth.currentUser;
             if (!user) return;
-            let history = localStorage.getItem(`gacha_history_${user}`);
-            let historyObj = history ? JSON.parse(history) : { chapters: [] };
-            if (!historyObj.chapters) historyObj.chapters = [];
-            
-            historyObj.chapters = historyObj.chapters.filter(item => 
-                !(item.chapter == CHAPTER_NUM && item.episode == EPISODE_NUM)
-            );
-            historyObj.chapters.unshift({ chapter: CHAPTER_NUM, episode: EPISODE_NUM });
-            if (historyObj.chapters.length > 20) historyObj.chapters.pop();
-            localStorage.setItem(`gacha_history_${user}`, JSON.stringify(historyObj));
+            const result = await registerChapterRead(CHAPTER_NUM, EPISODE_NUM);
+            if (result.success && !result.alreadyRead) {
+                pointsAdded = true;
+                showToast(`📚 +${result.pointsGained} puntos por leer este capítulo`);
+                if (result.newLevel && result.newLevel.name !== currentUserProfile?.level) {
+                    showToast(`🎉 ¡Subiste a nivel ${result.newLevel.name}! ${result.newLevel.badge}`);
+                }
+            }
+        }
+        
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast-message';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+        
+        async function initRating() {
+            const stars = document.querySelectorAll('.star');
+            const messageDiv = document.getElementById('ratingMessage');
+            const user = auth.currentUser;
+            if (user) {
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                const rated = userDoc.data()?.ratedChapters?.includes(`${CHAPTER_NUM}_${EPISODE_NUM}`);
+                if (rated) {
+                    const ratingData = await db.collection('ratings')
+                        .where('userId', '==', user.uid)
+                        .where('chapterNum', '==', CHAPTER_NUM)
+                        .where('episodeNum', '==', EPISODE_NUM)
+                        .get();
+                    if (!ratingData.empty) {
+                        const rating = ratingData.docs[0].data().rating;
+                        updateStars(rating);
+                        messageDiv.innerHTML = `✅ Ya calificaste este capítulo con ${rating} estrellas. ¡Gracias!`;
+                    } else {
+                        messageDiv.innerHTML = '✅ Ya calificaste este capítulo. ¡Gracias!';
+                    }
+                }
+            }
+            stars.forEach(star => {
+                star.addEventListener('click', async function() {
+                    const user = auth.currentUser;
+                    if (!user) { messageDiv.innerHTML = '❌ Inicia sesión para calificar'; return; }
+                    const userDoc = await db.collection('users').doc(user.uid).get();
+                    const rated = userDoc.data()?.ratedChapters?.includes(`${CHAPTER_NUM}_${EPISODE_NUM}`);
+                    if (rated) { messageDiv.innerHTML = '⚠️ Ya calificaste este capítulo anteriormente.'; return; }
+                    const value = parseInt(this.dataset.value);
+                    const result = await registerRating(CHAPTER_NUM, EPISODE_NUM, value);
+                    if (result.success) {
+                        updateStars(value);
+                        messageDiv.innerHTML = `⭐ Calificaste este capítulo con ${value} estrellas. +${result.pointsGained} puntos. ¡Gracias!`;
+                        showToast(`⭐ +${result.pointsGained} puntos por calificar`);
+                        if (result.newLevel && result.newLevel.name !== currentUserProfile?.level) {
+                            showToast(`🎉 ¡Subiste a nivel ${result.newLevel.name}! ${result.newLevel.badge}`);
+                        }
+                    } else { messageDiv.innerHTML = `❌ ${result.error}`; }
+                });
+            });
+        }
+        
+        function updateStars(rating) {
+            const stars = document.querySelectorAll('.star');
+            stars.forEach((star, index) => { if (index < rating) star.classList.add('active'); else star.classList.remove('active'); });
+        }
+        
+        async function loadComments() {
+            const result = await getComments(CHAPTER_NUM, EPISODE_NUM);
+            if (!result.success) { document.getElementById('commentsList').innerHTML = '<p>Error al cargar comentarios</p>'; return; }
+            const comments = result.comments;
+            const container = document.getElementById('commentsList');
+            if (comments.length === 0) { container.innerHTML = '<p>No hay comentarios aún. ¡Sé el primero en comentar!</p>'; return; }
+            const user = auth.currentUser;
+            let html = '';
+            for (const comment of comments) {
+                const isOwner = user && user.uid === comment.userId;
+                html += `<div class="comment-item" data-comment-id="${comment.id}" data-author-id="${comment.userId}">
+                            <span class="comment-name">${escapeHtml(comment.username)}</span>
+                            <span class="comment-date">${new Date(comment.timestamp?.toDate()).toLocaleString()}</span>
+                            <span class="comment-like" onclick="handleLike('${comment.id}', '${comment.userId}')">❤️ ${comment.likes || 0}</span>
+                            <span class="comment-report" onclick="handleReport('${comment.id}', '${escapeHtml(comment.text)}')">🚩 Reportar</span>
+                            ${isOwner ? `<span class="comment-delete" onclick="handleDeleteComment('${comment.id}')">🗑️ Eliminar</span>` : ''}
+                            <div class="comment-text">${escapeHtml(comment.text)}</div>
+                         </div>`;
+            }
+            container.innerHTML = html;
+        }
+        
+        async function handleLike(commentId, authorId) {
+            const user = auth.currentUser;
+            if (!user) { alert('Inicia sesión para dar like'); return; }
+            const result = await likeComment(commentId, authorId);
+            if (result.success) { loadComments(); showToast('👍 Like registrado'); } else { alert(result.error); }
+        }
+        
+        async function handleReport(commentId, commentText) {
+            const user = auth.currentUser;
+            if (!user) { alert('Debes iniciar sesión para reportar un comentario'); return; }
+            const reason = prompt('Motivo del reporte:\n\n1. Insulto o acoso\n2. Spoiler sin aviso\n3. Spam o publicidad\n4. Contenido inapropiado\n5. Otro\n\nEscribe el motivo:');
+            if (reason === null) return;
+            const result = await reportComment(commentId, reason, user.uid);
+            if (result.success) { alert('✅ Comentario reportado. Gracias por ayudar a mantener la comunidad.'); } else { alert('❌ Error: ' + result.error); }
+        }
+        
+        async function handleDeleteComment(commentId) {
+            if (!confirm('¿Eliminar tu comentario? Esta acción no se puede deshacer.')) return;
+            const result = await deleteComment(commentId);
+            if (result.success) { alert('✅ Comentario eliminado'); loadComments(); } else { alert('❌ Error: ' + result.error); }
+        }
+        
+        function escapeHtml(str) { return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]); }
+        
+        async function submitComment() {
+            const user = auth.currentUser;
+            if (!user) { alert('Debes iniciar sesión para comentar'); return; }
+            const text = document.getElementById('commentText').value;
+            if (!text.trim()) { alert('Escribe un comentario'); return; }
+            const userProfile = await getUserProfile();
+            if (!userProfile.success) { alert('Error al obtener perfil'); return; }
+            const result = await registerComment(CHAPTER_NUM, EPISODE_NUM, text, userProfile.profile.username);
+            if (result.success) {
+                document.getElementById('commentText').value = '';
+                loadComments();
+                showToast(`💬 +${result.pointsGained} puntos por comentar`);
+                if (result.newLevel && result.newLevel.name !== currentUserProfile?.level) {
+                    showToast(`🎉 ¡Subiste a nivel ${result.newLevel.name}! ${result.newLevel.badge}`);
+                }
+            } else { alert(result.error); }
+        }
+        
+        async function updateUserInfo() {
+            const user = auth.currentUser;
+            const userInfoDiv = document.getElementById('userInfo');
+            const logoutBtn = document.getElementById('logoutBtnHeader');
+            const nameInput = document.getElementById('commentName');
+            const modLink = document.getElementById('modLink');
+            if (user) {
+                const result = await getUserProfile();
+                if (result.success) {
+                    currentUserProfile = result.profile;
+                    userInfoDiv.style.display = 'inline-block';
+                    logoutBtn.style.display = 'inline-block';
+                    userInfoDiv.textContent = `${currentUserProfile.username} | ${currentUserProfile.totalPoints} pts | ${currentUserProfile.levelBadge}`;
+                    nameInput.value = currentUserProfile.username;
+                    nameInput.readonly = true;
+                    document.getElementById('commentText').placeholder = "Escribe tu comentario...";
+                    if (isAdmin(user)) modLink.style.display = 'inline-block';
+                    else modLink.style.display = 'none';
+                }
+            } else {
+                userInfoDiv.style.display = 'none';
+                logoutBtn.style.display = 'none';
+                nameInput.value = "Inicia sesión para comentar";
+                nameInput.readonly = true;
+                document.getElementById('commentText').placeholder = "Inicia sesión para comentar";
+                modLink.style.display = 'none';
+            }
+        }
+        
+        async function handleLogout() { await logoutUser(); location.reload(); }
+        
+        function setupNavigation() {
+            if (typeof GACHA_DATA !== 'undefined') {
+                const currentEpisode = GACHA_DATA.getEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const prevEpisode = GACHA_DATA.getPrevEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const nextEpisode = GACHA_DATA.getNextEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const allEpisodes = GACHA_DATA.getAllEpisodesOrdered();
+                const prevLinks = [document.getElementById('prevLinkTop'), document.getElementById('prevLinkBottom')];
+                const nextLinks = [document.getElementById('nextLinkTop'), document.getElementById('nextLinkBottom')];
+                const counters = [document.getElementById('chapterCounterTop'), document.getElementById('chapterCounterBottom')];
+                counters.forEach(c => { if(c) c.textContent = `${currentEpisode.chapterTitle} - Episodio ${currentEpisode.episodeNum}`; });
+                if (prevEpisode) {
+                    prevLinks.forEach(l => { if(l) { l.href = `capitulo${prevEpisode.chapter}e${prevEpisode.episodeNum}.html`; l.classList.remove('disabled'); l.textContent = `← ${prevEpisode.title}`; } });
+                } else {
+                    prevLinks.forEach(l => { if(l) { l.classList.add('disabled'); l.removeAttribute('href'); l.textContent = '← Sin anterior'; } });
+                }
+                if (nextEpisode) {
+                    nextLinks.forEach(l => { if(l) { l.href = `capitulo${nextEpisode.chapter}e${nextEpisode.episodeNum}.html`; l.classList.remove('disabled'); l.textContent = `${nextEpisode.title} →`; } });
+                } else {
+                    nextLinks.forEach(l => { if(l) { l.classList.add('disabled'); l.removeAttribute('href'); l.textContent = 'Sin siguiente →'; } });
+                }
+                const selects = [document.getElementById('chapterSelect'), document.getElementById('chapterSelectBottom')];
+                selects.forEach(select => {
+                    if (!select) return;
+                    let options = '<option value="">📖 Seleccionar episodio...</option>';
+                    for (const ep of allEpisodes) {
+                        const selected = (ep.chapter == CHAPTER_NUM && ep.episodeNum == EPISODE_NUM) ? 'selected' : '';
+                        options += `<option value="capitulo${ep.chapter}e${ep.episodeNum}.html" ${selected}>${ep.chapterTitle} - Episodio ${ep.episodeNum}: ${ep.title}</option>`;
+                    }
+                    select.innerHTML = options;
+                    select.onchange = function() { if(this.value) window.location.href = this.value; };
+                });
+            }
         }
         
         function initControls() {
@@ -565,7 +771,6 @@
             if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
             const savedFont = localStorage.getItem('gacha_fontsize');
             if (savedFont) document.body.style.fontSize = savedFont + '%';
-            
             document.getElementById('fontPlus').onclick = () => {
                 let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
                 size = Math.min(150, size + 10);
@@ -578,7 +783,6 @@
                 document.body.style.fontSize = size + '%';
                 localStorage.setItem('gacha_fontsize', size);
             };
-            
             const themeBtn = document.getElementById('themeToggle');
             if (document.documentElement.hasAttribute('data-theme')) themeBtn.textContent = '☀️ Modo claro';
             themeBtn.onclick = () => {
@@ -593,22 +797,25 @@
                     themeBtn.textContent = '☀️ Modo claro';
                 }
             };
+            document.getElementById('scrollToTop').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('scrollToBottom').onclick = () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            document.getElementById('logoutBtnHeader').onclick = handleLogout;
         }
         
-        document.addEventListener('DOMContentLoaded', () => {
-            if (loadEpisodeData()) {
-                setupNavLinks();
-                populateSelectors();
-            }
+        document.addEventListener('DOMContentLoaded', async () => {
             initControls();
-            addToHistory();
-            
-            kofiWidgetOverlay.draw('ocholobos', {
-                'type': 'floating-chat',
-                'floating-chat.donateButton.text': 'Apóyame',
-                'floating-chat.donateButton.background-color': '#1a4d5f',
-                'floating-chat.donateButton.text-color': '#ffffff'
+            setupNavigation();
+            await updateUserInfo();
+            await loadComments();
+            await initRating();
+            onAuthStateChanged(async (state) => {
+                await updateUserInfo();
+                if (state.loggedIn) { await registerRead(); await loadComments(); }
             });
+            document.getElementById('submitComment').onclick = submitComment;
+            window.handleLike = handleLike;
+            window.handleReport = handleReport;
+            window.handleDeleteComment = handleDeleteComment;
         });
     </script>
 </body>
