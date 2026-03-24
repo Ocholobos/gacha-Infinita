@@ -22,7 +22,12 @@ const POINTS = {
     COMMENT_LIKE: 1
 };
 
-// ========== REGISTRO ==========
+// Emails de administradores (CAMBIAR POR TU EMAIL)
+const ADMIN_EMAILS = ['carlos8a10@yahoo.com']; // AÑADE TU EMAIL AQUÍ
+
+// ========== FUNCIONES DE AUTENTICACIÓN ==========
+
+// Registrar nuevo usuario
 async function registerUser(email, password, username) {
     try {
         // Verificar si el nombre de usuario ya existe
@@ -63,7 +68,7 @@ async function registerUser(email, password, username) {
     }
 }
 
-// ========== INICIO DE SESIÓN ==========
+// Iniciar sesión
 async function loginUser(email, password) {
     try {
         const userCredential = await auth.signInWithEmailAndPassword(email, password);
@@ -79,7 +84,7 @@ async function loginUser(email, password) {
     }
 }
 
-// ========== CERRAR SESIÓN ==========
+// Cerrar sesión
 async function logoutUser() {
     try {
         await auth.signOut();
@@ -89,7 +94,7 @@ async function logoutUser() {
     }
 }
 
-// ========== OBTENER PERFIL DE USUARIO ==========
+// Obtener perfil de usuario
 async function getUserProfile(uid = null) {
     try {
         const userId = uid || (auth.currentUser ? auth.currentUser.uid : null);
@@ -104,7 +109,15 @@ async function getUserProfile(uid = null) {
     }
 }
 
-// ========== ACTUALIZAR NIVEL SEGÚN PUNTOS ==========
+// Verificar si un usuario es administrador
+function isAdmin(user) {
+    if (!user || !user.email) return false;
+    return ADMIN_EMAILS.includes(user.email);
+}
+
+// ========== FUNCIONES DE NIVELES ==========
+
+// Calcular nivel según puntos
 function calculateLevel(points) {
     for (let i = 0; i < LEVELS.length; i++) {
         if (points >= LEVELS[i].minPoints) {
@@ -114,6 +127,7 @@ function calculateLevel(points) {
     return LEVELS[LEVELS.length - 1];
 }
 
+// Actualizar nivel del usuario
 async function updateUserLevel(uid) {
     const userDoc = await db.collection('users').doc(uid).get();
     const points = userDoc.data().totalPoints;
@@ -128,7 +142,9 @@ async function updateUserLevel(uid) {
     return newLevel;
 }
 
-// ========== REGISTRAR LECTURA DE CAPÍTULO ==========
+// ========== FUNCIONES DE RECOMPENSAS ==========
+
+// Registrar lectura de capítulo
 async function registerChapterRead(chapterNum, episodeNum) {
     const user = auth.currentUser;
     if (!user) return { success: false, error: "Debes iniciar sesión" };
@@ -163,7 +179,7 @@ async function registerChapterRead(chapterNum, episodeNum) {
     };
 }
 
-// ========== REGISTRAR CALIFICACIÓN ==========
+// Registrar calificación
 async function registerRating(chapterNum, episodeNum, rating) {
     const user = auth.currentUser;
     if (!user) return { success: false, error: "Debes iniciar sesión" };
@@ -176,7 +192,7 @@ async function registerRating(chapterNum, episodeNum, rating) {
         return { success: false, error: "Ya calificaste este capítulo", alreadyRated: true };
     }
     
-    // Guardar calificación en colección independiente
+    // Guardar calificación
     await db.collection('ratings').add({
         userId: user.uid,
         username: userDoc.data().username,
@@ -208,7 +224,7 @@ async function registerRating(chapterNum, episodeNum, rating) {
     };
 }
 
-// ========== REGISTRAR COMENTARIO ==========
+// Registrar comentario
 async function registerComment(chapterNum, episodeNum, commentText, username) {
     const user = auth.currentUser;
     if (!user) return { success: false, error: "Debes iniciar sesión" };
@@ -220,6 +236,7 @@ async function registerComment(chapterNum, episodeNum, commentText, username) {
         episodeNum: episodeNum,
         text: commentText,
         likes: 0,
+        reports: 0,
         timestamp: firebase.firestore.FieldValue.serverTimestamp()
     };
     
@@ -248,7 +265,7 @@ async function registerComment(chapterNum, episodeNum, commentText, username) {
     };
 }
 
-// ========== DAR LIKE A COMENTARIO ==========
+// Dar like a comentario
 async function likeComment(commentId, commentAuthorId) {
     const user = auth.currentUser;
     if (!user) return { success: false, error: "Debes iniciar sesión" };
@@ -281,7 +298,7 @@ async function likeComment(commentId, commentAuthorId) {
     return { success: true };
 }
 
-// ========== OBTENER COMENTARIOS DE UN CAPÍTULO ==========
+// Obtener comentarios de un capítulo
 async function getComments(chapterNum, episodeNum) {
     try {
         const snapshot = await db.collection('comments')
@@ -304,7 +321,168 @@ async function getComments(chapterNum, episodeNum) {
     }
 }
 
-// ========== TABLA DE CLASIFICACIÓN ==========
+// ========== FUNCIONES DE MODERACIÓN ==========
+
+// Reportar un comentario
+async function reportComment(commentId, reason, reportedBy) {
+    try {
+        const commentRef = db.collection('comments').doc(commentId);
+        const commentDoc = await commentRef.get();
+        
+        if (!commentDoc.exists) {
+            return { success: false, error: "El comentario no existe" };
+        }
+        
+        // No permitir reportar el propio comentario
+        if (commentDoc.data().userId === reportedBy) {
+            return { success: false, error: "No puedes reportar tu propio comentario" };
+        }
+        
+        // Verificar si el usuario ya reportó este comentario
+        const existingReports = await db.collection('reports')
+            .where('commentId', '==', commentId)
+            .where('reportedBy', '==', reportedBy)
+            .get();
+        
+        if (!existingReports.empty) {
+            return { success: false, error: "Ya reportaste este comentario anteriormente" };
+        }
+        
+        // Incrementar contador de reportes en el comentario
+        const currentReports = commentDoc.data().reports || 0;
+        await commentRef.update({
+            reports: currentReports + 1
+        });
+        
+        // Añadir reporte
+        await db.collection('reports').add({
+            commentId: commentId,
+            commentData: commentDoc.data(),
+            reason: reason,
+            reportedBy: reportedBy,
+            reportedAt: firebase.firestore.FieldValue.serverTimestamp(),
+            status: 'pending' // pending, reviewed, dismissed
+        });
+        
+        return { success: true };
+    } catch (error) {
+        return { success: false, error: error.message };
+    }
+}
+
+// Obtener comentarios reportados (solo admin)
+async function getReportedComments() {
+    try {
+        const snapshot = await db.collection('reports')
+            .where('status', '==', 'pending')
+            .orderBy('reportedAt', 'desc')
+            .get();
+        
+        const reports = [];
+        snapshot.forEach(doc => {
+            reports.push({
+                id: doc.id,
+                ...doc.data()
+            });
+        });
+        
+        return { success: true, reports };
+    } catch (error) {
+        return { success: false, error: error.message };
+    }
+}
+
+// Eliminar un comentario (solo admin)
+async function deleteComment(commentId, reportId = null) {
+    try {
+        // Eliminar el comentario
+        await db.collection('comments').doc(commentId).delete();
+        
+        // Si viene de un reporte, marcarlo como revisado
+        if (reportId) {
+            await db.collection('reports').doc(reportId).update({
+                status: 'reviewed',
+                reviewedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                action: 'deleted'
+            });
+        }
+        
+        // Buscar y marcar otros reportes del mismo comentario
+        const otherReports = await db.collection('reports')
+            .where('commentId', '==', commentId)
+            .where('status', '==', 'pending')
+            .get();
+        
+        const batch = db.batch();
+        otherReports.forEach(doc => {
+            batch.update(doc.ref, { 
+                status: 'reviewed', 
+                action: 'deleted',
+                reviewedAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+        });
+        await batch.commit();
+        
+        return { success: true };
+    } catch (error) {
+        return { success: false, error: error.message };
+    }
+}
+
+// Ignorar un reporte (marcarlo como revisado sin eliminar)
+async function dismissReport(reportId) {
+    try {
+        await db.collection('reports').doc(reportId).update({
+            status: 'reviewed',
+            reviewedAt: firebase.firestore.FieldValue.serverTimestamp(),
+            action: 'dismissed'
+        });
+        return { success: true };
+    } catch (error) {
+        return { success: false, error: error.message };
+    }
+}
+
+// Obtener conteo de reportes pendientes (para notificación)
+async function getPendingReportsCount() {
+    try {
+        const snapshot = await db.collection('reports')
+            .where('status', '==', 'pending')
+            .get();
+        return { success: true, count: snapshot.size };
+    } catch (error) {
+        return { success: false, error: error.message };
+    }
+}
+
+// ========== FUNCIONES DE ESTADÍSTICAS ==========
+
+// Obtener estadísticas del usuario
+async function getUserStats(uid = null) {
+    const result = await getUserProfile(uid);
+    if (!result.success) return result;
+    
+    const profile = result.profile;
+    const stats = profile.stats || {};
+    
+    return {
+        success: true,
+        stats: {
+            chaptersRead: stats.chaptersRead || 0,
+            ratingsGiven: stats.ratingsGiven || 0,
+            commentsWritten: stats.commentsWritten || 0,
+            likesReceived: stats.likesReceived || 0,
+            totalPoints: profile.totalPoints || 0,
+            level: profile.level,
+            levelBadge: profile.levelBadge,
+            levelColor: profile.levelColor,
+            readChapters: profile.readChapters || [],
+            ratedChapters: profile.ratedChapters || []
+        }
+    };
+}
+
+// Tabla de clasificación
 async function getLeaderboard(limit = 20) {
     try {
         const snapshot = await db.collection('users')
@@ -331,32 +509,9 @@ async function getLeaderboard(limit = 20) {
     }
 }
 
-// ========== OBTENER ESTADÍSTICAS DE USUARIO ==========
-async function getUserStats(uid = null) {
-    const result = await getUserProfile(uid);
-    if (!result.success) return result;
-    
-    const profile = result.profile;
-    const stats = profile.stats || {};
-    
-    return {
-        success: true,
-        stats: {
-            chaptersRead: stats.chaptersRead || 0,
-            ratingsGiven: stats.ratingsGiven || 0,
-            commentsWritten: stats.commentsWritten || 0,
-            likesReceived: stats.likesReceived || 0,
-            totalPoints: profile.totalPoints || 0,
-            level: profile.level,
-            levelBadge: profile.levelBadge,
-            levelColor: profile.levelColor,
-            readChapters: profile.readChapters || [],
-            ratedChapters: profile.ratedChapters || []
-        }
-    };
-}
+// ========== ESTADO DE AUTENTICACIÓN ==========
 
-// ========== VERIFICAR ESTADO DE AUTENTICACIÓN ==========
+// Escuchar cambios de autenticación
 function onAuthStateChanged(callback) {
     auth.onAuthStateChanged(user => {
         if (user) {
