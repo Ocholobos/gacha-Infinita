@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gacha Infinita | Novela Web</title>
     <meta name="description" content="Lee Gacha Infinita, una novela web de fantasía y venganza. Light fue traicionado por sus compañeros, pero con el poder del Gacha Infinito reunirá aliados de nivel 9999 para cobrar venganza.">
-    <meta name="keywords" content="Gacha Infinita, novela web, fantasía, venganza, Light, Mei, novela online, leer gratis">
     <style>
         :root {
             --bg-color: #faf9f7;
@@ -226,6 +225,21 @@
         }
         .floating-btn:hover { opacity: 1; transform: scale(1.05); }
         
+        .error-message {
+            background: #ffe0e0;
+            color: #c00;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            text-align: center;
+            border: 1px solid #c00;
+        }
+        [data-theme="dark"] .error-message {
+            background: #2a1a1a;
+            color: #ff8888;
+            border-color: #ff8888;
+        }
+        
         footer {
             margin-top: 2rem;
             padding-top: 1.5rem;
@@ -331,28 +345,43 @@
         
         // ========== CARGAR DATOS ==========
         function loadData() {
-            if (typeof GACHA_DATA !== 'undefined') {
-                // Usar getAllEpisodes que devuelve todos los episodios con chapterTitle
-                allEpisodes = GACHA_DATA.getAllEpisodes();
-                totalEpisodes = allEpisodes.length;
-                totalPages = Math.ceil(totalEpisodes / ITEMS_PER_PAGE);
-                document.getElementById('totalChapters').textContent = totalEpisodes;
-                document.getElementById('translatedCount').textContent = totalEpisodes;
-                
-                // Debug: mostrar primer episodio para verificar
-                if (allEpisodes.length > 0) {
-                    console.log('Primer episodio:', allEpisodes[0]);
-                    console.log('Título del capítulo:', allEpisodes[0].chapterTitle);
-                }
-                return true;
-            } else {
-                console.error('GACHA_DATA no está definido. Verifica que data.js esté cargado correctamente.');
-                document.getElementById('chapterIndex').innerHTML = '<p style="color:red;">Error: No se pudo cargar el archivo data.js. Verifica que exista en la misma carpeta.</p>';
+            // Verificar que GACHA_DATA existe
+            if (typeof GACHA_DATA === 'undefined') {
+                console.error('GACHA_DATA no está definido');
+                document.getElementById('chapterIndex').innerHTML = '<div class="error-message">❌ Error: No se pudo cargar el archivo data.js. Verifica que exista en la misma carpeta.</div>';
                 return false;
             }
+            
+            // Verificar que tiene las funciones necesarias
+            if (typeof GACHA_DATA.getAllEpisodes !== 'function') {
+                console.error('GACHA_DATA.getAllEpisodes no es una función');
+                document.getElementById('chapterIndex').innerHTML = '<div class="error-message">❌ Error: El archivo data.js no tiene la función getAllEpisodes().</div>';
+                return false;
+            }
+            
+            // Obtener episodios
+            allEpisodes = GACHA_DATA.getAllEpisodes();
+            
+            if (!allEpisodes || allEpisodes.length === 0) {
+                console.warn('No hay episodios en GACHA_DATA');
+                document.getElementById('chapterIndex').innerHTML = '<div class="error-message">⚠️ No hay episodios disponibles en data.js.</div>';
+                return false;
+            }
+            
+            totalEpisodes = allEpisodes.length;
+            totalPages = Math.ceil(totalEpisodes / ITEMS_PER_PAGE);
+            document.getElementById('totalChapters').textContent = totalEpisodes;
+            document.getElementById('translatedCount').textContent = totalEpisodes;
+            
+            // Debug: mostrar primer episodio
+            console.log('Primer episodio:', allEpisodes[0]);
+            console.log('Título del capítulo:', allEpisodes[0]?.chapterTitle);
+            console.log(`Total episodios: ${totalEpisodes}`);
+            
+            return true;
         }
         
-        // ========== RENDERIZAR ÍNDICE (solo página actual) ==========
+        // ========== RENDERIZAR ÍNDICE ==========
         function renderIndex() {
             const start = (currentPage - 1) * ITEMS_PER_PAGE;
             const end = Math.min(start + ITEMS_PER_PAGE, totalEpisodes);
@@ -377,14 +406,14 @@
             let html = '';
             for (const chapter of chapters) {
                 html += `<div class="chapter-group">`;
-                html += `<div class="chapter-title">${chapter.title}</div>`;
+                html += `<div class="chapter-title">${escapeHtml(chapter.title)}</div>`;
                 html += `<ul class="episode-list">`;
                 
                 for (const ep of chapter.episodes) {
                     const fileName = `capitulo${ep.chapter}e${ep.episodeNum}.html`;
                     html += `
                         <li class="episode-item">
-                            <a href="${fileName}" class="episode-link" onclick="markAsRead(${ep.chapter}, ${ep.episodeNum})">Episodio ${ep.episodeNum}: ${ep.title}</a>
+                            <a href="${fileName}" class="episode-link" onclick="markAsRead(${ep.chapter}, ${ep.episodeNum})">Episodio ${ep.episodeNum}: ${escapeHtml(ep.title)}</a>
                             <span class="episode-date">${ep.date || ''}</span>
                         </li>
                     `;
@@ -395,27 +424,37 @@
             document.getElementById('chapterIndex').innerHTML = html || '<p>No hay episodios disponibles.</p>';
         }
         
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+                return c;
+            });
+        }
+        
         // ========== RENDERIZAR PAGINACIÓN ==========
         function renderPagination() {
             const container = document.getElementById('pagination');
             
-            let html = '';
-            
-            // Botón Primero
-            if (currentPage > 1) {
-                html += `<a href="#" data-page="1">« Primero</a>`;
-            } else {
-                html += `<span class="disabled">« Primero</span>`;
+            if (totalPages <= 1) {
+                container.innerHTML = '';
+                return;
             }
             
-            // Botón Anterior
+            let html = '';
+            
             if (currentPage > 1) {
+                html += `<a href="#" data-page="1">« Primero</a>`;
                 html += `<a href="#" data-page="${currentPage - 1}">‹ Anterior</a>`;
             } else {
+                html += `<span class="disabled">« Primero</span>`;
                 html += `<span class="disabled">‹ Anterior</span>`;
             }
             
-            // Números de página (mostrar máximo 5)
             let startPage = Math.max(1, currentPage - 2);
             let endPage = Math.min(totalPages, startPage + 4);
             if (endPage - startPage < 4) {
@@ -430,21 +469,14 @@
                 }
             }
             
-            // Botón Siguiente
             if (currentPage < totalPages) {
                 html += `<a href="#" data-page="${currentPage + 1}">Siguiente ›</a>`;
-            } else {
-                html += `<span class="disabled">Siguiente ›</span>`;
-            }
-            
-            // Botón Último
-            if (currentPage < totalPages) {
                 html += `<a href="#" data-page="${totalPages}">Último »</a>`;
             } else {
+                html += `<span class="disabled">Siguiente ›</span>`;
                 html += `<span class="disabled">Último »</span>`;
             }
             
-            // Input para ir a página específica
             html += `<div class="page-input">
                         <span>Ir a:</span>
                         <input type="number" id="pageInput" min="1" max="${totalPages}" value="${currentPage}">
@@ -453,7 +485,6 @@
             
             container.innerHTML = html;
             
-            // Event listeners
             document.querySelectorAll('#pagination a[data-page]').forEach(link => {
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -520,20 +551,21 @@
             userHistory.chapters.slice(0, 10).forEach(item => {
                 const episode = allEpisodes.find(ep => ep.chapter == item.chapter && ep.episodeNum == item.episode);
                 if (episode) {
-                    html += `<div class="history-item">📖 <a href="capitulo${episode.chapter}e${episode.episodeNum}.html">${episode.chapterTitle} - Episodio ${episode.episodeNum}: ${episode.title}</a></div>`;
+                    html += `<div class="history-item">📖 <a href="capitulo${episode.chapter}e${episode.episodeNum}.html">${escapeHtml(episode.chapterTitle)} - Episodio ${episode.episodeNum}: ${escapeHtml(episode.title)}</a></div>`;
                 }
             });
             div.innerHTML = html;
         }
         
         function markAsRead(chapter, episode) {
-            if (!currentUser) return;
+            if (!currentUser) return true;
             const key = { chapter: chapter, episode: episode };
             userHistory.chapters = userHistory.chapters.filter(c => !(c.chapter == chapter && c.episode == episode));
             userHistory.chapters.unshift(key);
             if (userHistory.chapters.length > 20) userHistory.chapters.pop();
             localStorage.setItem(`gacha_history_${currentUser}`, JSON.stringify(userHistory));
             updateHistoryDisplay();
+            return true;
         }
         
         // ========== CONTROLES ==========
@@ -585,9 +617,9 @@
             loadUser();
             
             document.getElementById('loginBtn').onclick = () => {
-                const name = document.getElementById('usernameInput').value;
-                if (name.trim()) {
-                    localStorage.setItem('gacha_user', name.trim());
+                const name = document.getElementById('usernameInput').value.trim();
+                if (name) {
+                    localStorage.setItem('gacha_user', name);
                     loadUser();
                 }
             };
