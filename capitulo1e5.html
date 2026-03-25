@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dentro del calabozo | Gacha Infinita</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             font-family: 'Georgia', 'Times New Roman', serif;
             max-width: 800px;
@@ -55,26 +59,30 @@
             background: #2a3a35;
             color: #5a9e8c;
         }
-        .font-size-control { display: flex; gap: 0.3rem; align-items: center; }
-        .font-size-control button { width: 32px; padding: 0.2rem; }
-        .user-info {
-            background: #1a4d5f;
-            color: white;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
+        .font-size-control {
+            display: flex;
+            gap: 0.3rem;
+            align-items: center;
         }
-        [data-theme="dark"] .user-info { background: #5a9e8c; }
+        .font-size-control button {
+            width: 32px;
+            padding: 0.2rem;
+        }
         
-        .nav-container { margin: 1rem 0; }
+        .nav-container {
+            margin: 1rem 0;
+        }
         .nav-center, .nav-bottom {
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 1rem;
             flex-wrap: wrap;
+            margin-bottom: 0.5rem;
         }
-        .nav-bottom { margin-top: 1rem; }
+        .nav-bottom {
+            margin-top: 1rem;
+        }
         .nav-btn {
             background: #eef2f0;
             padding: 0.5rem 1rem;
@@ -88,8 +96,13 @@
             align-items: center;
             gap: 0.3rem;
         }
-        [data-theme="dark"] .nav-btn { background: #2a3a35; color: #5a9e8c; }
-        .nav-btn:hover { background: #e5e0d8; }
+        [data-theme="dark"] .nav-btn {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .nav-btn:hover {
+            background: #e5e0d8;
+        }
         .nav-btn.disabled {
             background: #e5e0d8;
             color: #9ca3af;
@@ -104,9 +117,15 @@
             font-weight: 500;
             color: #1a4d5f;
         }
-        [data-theme="dark"] .chapter-counter { background: #2a3a35; color: #5a9e8c; }
+        [data-theme="dark"] .chapter-counter {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
         
-        .chapter-selector { margin: 0.5rem 0; text-align: center; }
+        .chapter-selector {
+            margin: 0.5rem 0;
+            text-align: center;
+        }
         .chapter-selector select {
             background: #eef2f0;
             border: none;
@@ -119,14 +138,19 @@
             width: 300px;
             max-width: 90%;
         }
-        [data-theme="dark"] .chapter-selector select { background: #2a3a35; color: #5a9e8c; }
+        [data-theme="dark"] .chapter-selector select {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
         
         h1 {
             font-size: 1.8rem;
             margin: 1rem 0 0.25rem;
             color: #1a4d5f;
         }
-        [data-theme="dark"] h1 { color: #5a9e8c; }
+        [data-theme="dark"] h1 {
+            color: #5a9e8c;
+        }
         .episode-number {
             color: #6b6a68;
             margin-bottom: 1rem;
@@ -137,85 +161,21 @@
             color: #a0a0a0;
             border-bottom-color: #404040;
         }
-        .story-content { margin: 1.5rem 0; }
-        .story-content p { margin-bottom: 1.2rem; text-align: justify; }
-        hr { margin: 2rem 0; border: none; border-top: 1px solid #e5e0d8; }
-        [data-theme="dark"] hr { border-top-color: #404040; }
-        
-        .rating-section {
-            background: white;
-            border: 1px solid #e5e0d8;
-            border-radius: 16px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            text-align: center;
-        }
-        [data-theme="dark"] .rating-section { background: #2d2d2d; border-color: #404040; }
-        .stars { display: flex; justify-content: center; gap: 0.5rem; margin-bottom: 1rem; }
-        .star {
-            font-size: 2rem;
-            cursor: pointer;
-            color: #cbd5e0;
-            transition: color 0.2s;
-        }
-        .star:hover, .star.active { color: #f5b042; }
-        
-        .comments-section {
-            background: white;
-            border: 1px solid #e5e0d8;
-            border-radius: 16px;
-            padding: 1.5rem;
+        .story-content {
             margin: 1.5rem 0;
         }
-        [data-theme="dark"] .comments-section { background: #2d2d2d; border-color: #404040; }
-        .comment-form {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
+        .story-content p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
         }
-        .comment-form input, .comment-form textarea {
-            padding: 0.5rem;
-            border: 1px solid #e5e0d8;
-            border-radius: 8px;
-            background: #faf9f7;
-            font-family: inherit;
-        }
-        [data-theme="dark"] .comment-form input, [data-theme="dark"] .comment-form textarea {
-            background: #1a1a1a;
-            border-color: #404040;
-            color: #e5e5e5;
-        }
-        .comment-form textarea { min-height: 80px; resize: vertical; }
-        .comment-form button {
-            width: 100px;
-            background: #1a4d5f;
-            color: white;
+        hr {
+            margin: 2rem 0;
             border: none;
-            padding: 0.5rem;
-            border-radius: 8px;
-            cursor: pointer;
+            border-top: 1px solid #e5e0d8;
         }
-        [data-theme="dark"] .comment-form button { background: #5a9e8c; }
-        .comment-item {
-            border-bottom: 1px solid #e5e0d8;
-            padding: 0.8rem 0;
+        [data-theme="dark"] hr {
+            border-top-color: #404040;
         }
-        .comment-name { font-weight: bold; color: #1a4d5f; }
-        .comment-date { font-size: 0.7rem; color: #6b6a68; margin-left: 0.5rem; }
-        .comment-like, .comment-report, .comment-delete {
-            margin-left: 0.8rem;
-            cursor: pointer;
-            font-size: 0.7rem;
-            display: inline-block;
-            transition: all 0.2s;
-        }
-        .comment-like { color: #9ca3af; }
-        .comment-like:hover { color: #e53e3e; }
-        .comment-report { color: #9ca3af; }
-        .comment-report:hover { color: #e53e3e; }
-        .comment-delete { color: #9ca3af; }
-        .comment-delete:hover { color: #e53e3e; }
         
         .floating-buttons {
             position: fixed;
@@ -241,8 +201,13 @@
             justify-content: center;
             opacity: 0.8;
         }
-        [data-theme="dark"] .floating-btn { background: #5a9e8c; }
-        .floating-btn:hover { opacity: 1; transform: scale(1.05); }
+        [data-theme="dark"] .floating-btn {
+            background: #5a9e8c;
+        }
+        .floating-btn:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
         
         .toast-message {
             position: fixed;
@@ -256,7 +221,9 @@
             z-index: 1000;
             animation: fadeOut 3s ease forwards;
         }
-        [data-theme="dark"] .toast-message { background: #5a9e8c; }
+        [data-theme="dark"] .toast-message {
+            background: #5a9e8c;
+        }
         @keyframes fadeOut {
             0% { opacity: 1; }
             70% { opacity: 1; }
@@ -271,20 +238,22 @@
             border-top: 1px solid #e5e0d8;
             padding-top: 1.5rem;
         }
-        [data-theme="dark"] footer { border-top-color: #404040; }
+        [data-theme="dark"] footer {
+            border-top-color: #404040;
+        }
         
         @media (max-width: 600px) {
             body { padding: 0.5rem; }
             .nav-center, .nav-bottom { flex-direction: column; gap: 0.5rem; }
-            .floating-btn { width: 40px; height: 40px; font-size: 1.2rem; }
-            .star { font-size: 1.5rem; }
+            .floating-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                bottom: 70px;
+                right: 15px;
+            }
         }
     </style>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="firebase-config.js"></script>
-    <script src="auth.js"></script>
     <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
 </head>
 <body>
@@ -293,11 +262,6 @@
             <button id="fontMinus">A-</button>
             <button id="fontPlus">A+</button>
         </div>
-        <a href="usuario.html">👤 Mi perfil</a>
-        <a href="reglas.html">📜 Reglas</a>
-        <a href="moderacion.html" id="modLink" style="display: none;">🛡️ Moderación</a>
-        <div id="userInfo" class="user-info" style="display: none;"></div>
-        <button id="logoutBtnHeader" style="display: none;">Cerrar sesión</button>
         <a href="index.html">📚 Índice</a>
         <button id="themeToggle">🌙 Modo oscuro</button>
     </div>
@@ -305,9 +269,9 @@
     <div class="nav-container">
         <div class="nav-center">
             <a href="index.html" class="nav-btn">📚 Índice</a>
-            <a href="capitulo1e4.html" id="prevLinkTop" class="nav-btn">← Interrupción</a>
+            <a href="capitulo1e4.html" id="prevLinkTop" class="nav-btn ">← Interrupción</a>
             <span class="chapter-counter" id="chapterCounterTop">Capítulo 1 - Episodio 5</span>
-            <a href="capitulo1e6.html" id="nextLinkTop" class="nav-btn">Límites del crecimiento →</a>
+            <a href="capitulo1e6.html" id="nextLinkTop" class="nav-btn ">Límites del crecimiento →</a>
         </div>
     </div>
 
@@ -321,231 +285,112 @@
     <div class="episode-number">Capítulo 1 - Episodio 5</div>
 
     <div class="story-content">
-        <p>Hoy está previsto subir el capítulo 5 al mediodía y el capítulo 6 a las 5 de la tarde (este es el capítulo 5).</p>
-        
         <p>—Ohhh…</p>
-        
-        <p>Al adentrarme en el calabozo tipo cueva al pie de la montaña, se extendía ante mí una pradera.</p>
-        
-        <p>A lo lejos había un bosque, e incluso un río.</p>
-        
-        <p>Al levantar la vista, se veía un cielo hermoso que parecía más azul que el exterior.</p>
-        
-        <p>A pesar de que se suponía que estábamos dentro de una cueva, no pude evitar sorprenderme ante la pradera que se extendía hasta donde alcanzaba la vista.</p>
-        
-        <p><em>(Es un calabozo con un ambiente diferente al del "Abismo"…)</em></p>
-        
-        <p>Comparé mentalmente con el calabozo que actualmente usamos como base.</p>
-        
-        <p>El "Abismo" es básicamente un calabozo tipo cueva, y no importa cuánto se descienda, no hay praderas, volcanes ni glaciares.</p>
-        
-        <p>En la época de la "Reunión de Razas", los calabozos en los que me adentré también eran tipo cueva, así que ver una pradera que se extendía como en el exterior fue una sorpresa refrescante.</p>
-        
-        <p>Hay varios tipos de calabozos. Algunos son de cuevas como el "Abismo", otros tienen praderas que no se diferencian del mundo exterior como este, y también los hay laberínticos.</p>
-        
-        <p>Entonces, ¿por qué ocurre esto? La verdad es que incluso para los expertos es un misterio, y entre los investigadores incluso se extiende la teoría simplista de que "es el poder del dios maligno". Así es como existen múltiples tipos de calabozos.</p>
-        
-        <p>—Dark-sama.</p>
-        
-        <p>—Después vendrán otros aventureros. Vámonos ya.</p>
-        
-        <p>Al ser llamado por Nemumu, que estaba detrás de mí, comencé a caminar.</p>
-        
-        <p>Nos movimos para no molestar a los aventureros que vendrían después.</p>
-        
-        <p>Caminamos hacia un lugar apartado de miradas ajenas —el bosque que se veía a lo lejos.</p>
-        
-        <p>Gold, que iba al frente, también miraba a su alrededor con interés.</p>
-        
-        <p>—Realmente es enorme. ¿No será más grande que la ciudad?</p>
-        
-        <p>—Probablemente. Pero en la época de la "Reunión de Razas", había oído que era un buen calabozo donde se podía ganar dinero y obtener cofres fácilmente… Pero lo que se dice y lo que se ve son cosas muy diferentes. Si es tan extenso, es imprescindible llevar equipo para acampar, pero por otro lado, si te quedas un tiempo y derrotas monstruos, puedes obtener materiales y piedras mágicas en cantidad. Como se reduce el tiempo de entrada y salida, también aumenta la probabilidad de encontrarse con cofres.</p>
-        
-        <p>La razón por la que elegí este calabozo en esta ciudad fue porque está bastante lejos de la ciudad donde estaba en la época de la "Reunión de Razas", y hay pocos que puedan reconocerme.</p>
-        
-        <p>También porque pensé que sería fácil subir de rango, ya que los aventureros lo valoran bien.</p>
-        
-        <p>Pero una vez dentro, resultó ser un calabozo que presupone acampar al aire libre…</p>
-        
-        <p>—Dark-sama, ¿cambiamos de lugar?</p>
-        
-        <p>Nemumu me llamó desde detrás.</p>
-        
-        <p>Una vez dentro del calabozo, había quitado sus manos de mi hombro, manteniendo cierta distancia y atenta a los alrededores.</p>
-        
-        <p>Como no estábamos muy lejos de la entrada, se veían otros aventureros, pero en una situación en la que no se sabe cuándo te atacará un monstruo, aunque estaban atentos a nosotros, no había nadie que intentara escuchar nuestra conversación.</p>
-        
-        <p>Ante la propuesta de Nemumu, negué con la cabeza.</p>
-        
-        <p>—Me sorprendió que cada piso fuera tan extenso, pero dicho eso, no es más que eso. Lo que tenemos que hacer no cambia.</p>
-        
-        <p>Nuestro objetivo era aumentar nuestro rango de aventureros para infiltrarnos en niveles más altos y obtener todo tipo de información.</p>
-        
-        <p>Solo tenemos que derrotar monstruos, avanzar por los pisos y subir de rango.</p>
-        
-        <p>Lo que hay que hacer no cambia.</p>
-        
-        <p>—Además, este tipo de calabozo es nuevo e interesante. Ya que estamos, ¿por qué no subimos nuestro rango aquí por un tiempo?</p>
-        
-        <p>—¡Jajajaja! Ciertamente, normalmente donde mires solo ves piedras.</p>
-        
-        <p>—A mí me gusta. Porque es el calabozo que Dark-sama domina.</p>
-        
-        <p>Hasta ahora solo había entrado en calabozos tipo cueva, así que este calabozo con praderas, bosques y hasta un río era realmente nuevo e interesante.</p>
-        
-        <p>Gold y Nemumu tampoco se opusieron a mi opinión, y aceptaron subir nuestro rango en este calabozo.</p>
-        
-        <p>Caminábamos con paso ligero, como si hubiéramos venido de picnic.</p>
-        
-        <p>***</p>
-        
-        <p>Sin ser atacados por ningún monstruo, llegamos al bosque.</p>
-        
-        <p>Para evitar miradas ajenas, nos adentramos más.</p>
-        
-        <p>—Nemumu.</p>
-        
-        <p>—…No hay monstruos ni presencia humana en un radio de cien metros.</p>
-        
-        <p>—Liberar "R, Detección", "R, Silencio", "SR, Interferencia Mágica".</p>
-        
-        <p>No es que desconfíe de Nemumu, pero por precaución usé cartas de la "Gacha Infinita" para explorar los alrededores.</p>
-        
-        <p>Después de confirmar que no había presencia humana, usé "Silencio" para que la voz no saliera al exterior, e "Interferencia Mágica" para impedir la vigilancia con magia.</p>
-        
-        <p>Una vez asegurada la seguridad, pasamos a la siguiente acción.</p>
-        
-        <p>—Bueno, encontremos rápido las escaleras de este piso y pasemos al segundo.</p>
-        
-        <p>—Mi señor, ¿no tenemos que derrotar monstruos en este piso?</p>
-        
-        <p>—¿No es más fácil subir de rango derrotando monstruos del segundo piso, o del tercero si es posible?</p>
-        
-        <p>—¡Entonces, iré a buscar las escaleras de este piso con todas mis fuerzas!</p>
-        
-        <p>Nemumu, con la emoción de "ser su turno", tenía los ojos brillantes y la respiración agitada, pero yo esbocé una leve sonrisa y le hice un gesto con la mano.</p>
-        
-        <p>Por muy extenso que sea el piso, si Nemumu tiene nivel 5000, debería poder encontrar las escaleras en una hora aproximadamente.</p>
-        
-        <p>Pero incluso con su poder, tomaría alrededor de una hora.</p>
-        
-        <p>Como ese tiempo también sería una pérdida, usaré una carta de la "Gacha Infinita" para localizar la posición e ir directamente.</p>
-        
-        <p>Para eso, habíamos venido hasta lo profundo del bosque, donde no hubiera miradas ajenas.</p>
-        
-        <p>—Nemumu, lamento cortar tu entusiasmo, pero pienso encontrarlas con la carta "SSR, Vista Lejana" de la "Gacha Infinita".</p>
-        
-        <p>—Lo siento, me he extralimitado…</p>
-        
-        <p>—No tienes por qué disculparte. Más bien, me alegra ver tu motivación.</p>
-        
-        <p>—¡Dark-sama!</p>
-        
-        <p>Nemumu, visiblemente feliz por haber recibido un elogio, se ruborizó hasta el punto de notarse incluso en su piel morena, y tembló con los ojos húmedos.</p>
-        
-        <p>Ignorándola, Gold se asomó con interés a mis manos.</p>
-        
-        <p>—Oh, es la primera vez que veo esa carta. ¿Con eso vas a encontrar las escaleras de este piso?</p>
-        
-        <p>—Sí, se llama "SSR, Vista Lejana"…</p>
-        
-        <p>"SSR, Vista Lejana" —una carta que permite encontrar y ver cosas lejanas que el usuario desea. Sin embargo, tiene condiciones desconocidas y no puede ver cosas que el usuario no conozca o estén demasiado lejos.</p>
-        
-        <p>—Es una carta muy útil. Me sorprende la cantidad de cartas que tienes. ¡Como era de esperar de mi señor! ¡Jajajajajaja!</p>
-        
-        <p>—Es útil, pero tiene varias limitaciones. No es algo que se pueda alabar sin reservas.</p>
-        
-        <p>Ante la estruendosa risa de Gold, imité su gesto y me encogí de hombros.</p>
-        
-        <p>Me encogí de hombros y usé la carta.</p>
-        
-        <p>—¡Liberar "Vista Lejana"!</p>
-        
-        <p>Imaginando las escaleras, usé "SSR, Vista Lejana".</p>
-        
-        <p>Aunque tenía los ojos cerrados, podía ver el interior de una cueva excavada en una gran pared rocosa, bastante alejada del bosque.</p>
-        
-        <p>La vista avanzaba sola y encontré unas escaleras en el fondo de una cueva excavada en la enorme pared de la montaña.</p>
-        
-        <p>Al mismo tiempo, la carta de vista lejana desapareció de mis manos.</p>
-        
-        <p>—Bien, pude confirmar la ubicación.</p>
-        
-        <p>Expliqué a Gold y Nemumu dónde estaban las escaleras al segundo piso.</p>
-        
-        <p>Les dije que si avanzaban en línea recta desde este bosque, llegarían a una cueva excavada en una pared de montaña que parecía un callejón sin salida.</p>
-        
-        <p>—Me alegra que estuviera en un lugar fácil de encontrar. Entonces, vayamos rápidamente al segundo piso.</p>
-        
-        <p>—Ciertamente, es fácil de encontrar. ¡Si usamos el método que usamos para llegar a esta ciudad, podríamos ir en un instante sin tener que caminar por la superficie!</p>
-        
-        <p>Desde mi antigua aldea natal hasta esta ciudad hay una distancia considerable.</p>
-        
-        <p>Normalmente, habría que bajar por el río y luego viajar en carruaje durante dos o tres meses.</p>
-        
-        <p>Pero usando la combinación de las cartas "SSR, Ocultar Presencia" y "SR, Vuelo", pudimos llegar a esta ciudad sin ser vistos, volando rápidamente por el aire.</p>
-        
-        <p>Así que podríamos llegar literalmente de un salto a las escaleras del primer piso.</p>
-        
-        <p>—Calculó todo hasta llegar a lo profundo del bosque. ¡Como era de esperar de Dark-sama! ¡Qué perspicacia tan magnífica!</p>
-        
-        <p>—Gracias, Nemumu. Entonces, vámonos ya.</p>
-        
-        <p>Me alegra que me alaben sin reservas, pero que me elogien tan directamente me da vergüenza.</p>
-        
-        <p>Para disimular mi vergüenza, usé la carta rápidamente.</p>
-        
-        <p>—¡Liberar "SSR, Ocultar Presencia", "SR, Vuelo"!</p>
-        
-        <p>Primero, con "SSR, Ocultar Presencia", oculté nuestra presencia. Así, ni los sentidos, ni el poder mágico, ni los objetos mágicos podrían detectarnos.</p>
-        
-        <p>"SR, Vuelo" es, como su nombre indica, una carta que permite volar durante 24 horas.</p>
-        
-        <p>Al pensar "vuela" en mi mente, mi cuerpo flotó suavemente hacia el cielo.</p>
-        
-        <p>Una vez que alcancé cierta altura, pensé en la dirección a avanzar y comencé a volar.</p>
-        
-        <p>—¡Qué vista tan magnífica, qué vista tan magnífica! ¡El poder de mi señor es realmente asombroso! ¡La gente de la superficie probablemente no podría contemplar un paisaje como este en toda su vida!</p>
-        
-        <p>—Aunque me da rabia estar de acuerdo con Gold, sin duda no se puede disfrutar de esta vista sin ser un pájaro o un dragón. Solo por esto, valió la pena salir a la superficie… aunque ahora estamos dentro de un calabozo. Realmente, me alegro de que Dark-sama nos haya invocado.</p>
-        
-        <p>—Me alegra que ustedes dos estén contentos. Entonces, vayamos de una vez a las escaleras que llevan al segundo piso.</p>
-        
-        <p>Al escuchar las respuestas de Gold y Nemumu, tomé la delantera, que conocía la ubicación de las escaleras al segundo piso, y volé al frente.</p>
-        
-        <p>Mientras observaba con el rabillo del ojo las escenas bajo nuestros pies: aventureros caminando por la superficie, combatiendo monstruos, ríos, bosques, montañas, continuamos volando hacia nuestro destino.</p>
+<p>Al adentrarme en el calabozo tipo cueva al pie de la montaña, se extendía ante mí una pradera.</p>
+<p>A lo lejos había un bosque, e incluso un río.</p>
+<p>Al levantar la vista, se veía un cielo hermoso que parecía más azul que el exterior.</p>
+<p>A pesar de que se suponía que estábamos dentro de una cueva, no pude evitar sorprenderme ante la pradera que se extendía hasta donde alcanzaba la vista.</p>
+<p><em>(Es un calabozo con un ambiente diferente al del "Abismo"…)</em></p>
+<p>Comparé mentalmente con el calabozo que actualmente usamos como base.</p>
+<p>El "Abismo" es básicamente un calabozo tipo cueva, y no importa cuánto se descienda, no hay praderas, volcanes ni glaciares.</p>
+<p>En la época de la "Reunión de Razas", los calabozos en los que me adentré también eran tipo cueva, así que ver una pradera que se extendía como en el exterior fue una sorpresa refrescante.</p>
+<p>Hay varios tipos de calabozos. Algunos son de cuevas como el "Abismo", otros tienen praderas que no se diferencian del mundo exterior como este, y también los hay laberínticos.</p>
+<p>Entonces, ¿por qué ocurre esto? La verdad es que incluso para los expertos es un misterio, y entre los investigadores incluso se extiende la teoría simplista de que "es el poder del dios maligno". Así es como existen múltiples tipos de calabozos.</p>
+<p>—Dark-sama.</p>
+<p>—Después vendrán otros aventureros. Vámonos ya.</p>
+<p>Al ser llamado por Nemumu, que estaba detrás de mí, comencé a caminar.</p>
+<p>Nos movimos para no molestar a los aventureros que vendrían después.</p>
+<p>Caminamos hacia un lugar apartado de miradas ajenas —el bosque que se veía a lo lejos.</p>
+<p>Gold, que iba al frente, también miraba a su alrededor con interés.</p>
+<p>—Realmente es enorme. ¿No será más grande que la ciudad?</p>
+<p>—Probablemente. Pero en la época de la "Reunión de Razas", había oído que era un buen calabozo donde se podía ganar dinero y obtener cofres fácilmente… Pero lo que se dice y lo que se ve son cosas muy diferentes. Si es tan extenso, es imprescindible llevar equipo para acampar, pero por otro lado, si te quedas un tiempo y derrotas monstruos, puedes obtener materiales y piedras mágicas en cantidad. Como se reduce el tiempo de entrada y salida, también aumenta la probabilidad de encontrarse con cofres.</p>
+<p>La razón por la que elegí este calabozo en esta ciudad fue porque está bastante lejos de la ciudad donde estaba en la época de la "Reunión de Razas", y hay pocos que puedan reconocerme.</p>
+<p>También porque pensé que sería fácil subir de rango, ya que los aventureros lo valoran bien.</p>
+<p>Pero una vez dentro, resultó ser un calabozo que presupone acampar al aire libre…</p>
+<p>—Dark-sama, ¿cambiamos de lugar?</p>
+<p>Nemumu me llamó desde detrás.</p>
+<p>Una vez dentro del calabozo, había quitado sus manos de mi hombro, manteniendo cierta distancia y atenta a los alrededores.</p>
+<p>Como no estábamos muy lejos de la entrada, se veían otros aventureros, pero en una situación en la que no se sabe cuándo te atacará un monstruo, aunque estaban atentos a nosotros, no había nadie que intentara escuchar nuestra conversación.</p>
+<p>Ante la propuesta de Nemumu, negué con la cabeza.</p>
+<p>—Me sorprendió que cada piso fuera tan extenso, pero dicho eso, no es más que eso. Lo que tenemos que hacer no cambia.</p>
+<p>Nuestro objetivo era aumentar nuestro rango de aventureros para infiltrarnos en niveles más altos y obtener todo tipo de información.</p>
+<p>Solo tenemos que derrotar monstruos, avanzar por los pisos y subir de rango.</p>
+<p>Lo que hay que hacer no cambia.</p>
+<p>—Además, este tipo de calabozo es nuevo e interesante. Ya que estamos, ¿por qué no subimos nuestro rango aquí por un tiempo?</p>
+<p>—¡Jajajaja! Ciertamente, normalmente donde mires solo ves piedras.</p>
+<p>—A mí me gusta. Porque es el calabozo que Dark-sama domina.</p>
+<p>Hasta ahora solo había entrado en calabozos tipo cueva, así que este calabozo con praderas, bosques y hasta un río era realmente nuevo e interesante.</p>
+<p>Gold y Nemumu tampoco se opusieron a mi opinión, y aceptaron subir nuestro rango en este calabozo.</p>
+<p>Caminábamos con paso ligero, como si hubiéramos venido de picnic.</p>
+<p>***</p>
+<p>Sin ser atacados por ningún monstruo, llegamos al bosque.</p>
+<p>Para evitar miradas ajenas, nos adentramos más.</p>
+<p>—Nemumu.</p>
+<p>—…No hay monstruos ni presencia humana en un radio de cien metros.</p>
+<p>—Liberar "R, Detección", "R, Silencio", "SR, Interferencia Mágica".</p>
+<p>No es que desconfíe de Nemumu, pero por precaución usé cartas de la "Gacha Infinita" para explorar los alrededores.</p>
+<p>Después de confirmar que no había presencia humana, usé "Silencio" para que la voz no saliera al exterior, e "Interferencia Mágica" para impedir la vigilancia con magia.</p>
+<p>Una vez asegurada la seguridad, pasamos a la siguiente acción.</p>
+<p>—Bueno, encontremos rápido las escaleras de este piso y pasemos al segundo.</p>
+<p>—Mi señor, ¿no tenemos que derrotar monstruos en este piso?</p>
+<p>—¿No es más fácil subir de rango derrotando monstruos del segundo piso, o del tercero si es posible?</p>
+<p>—¡Entonces, iré a buscar las escaleras de este piso con todas mis fuerzas!</p>
+<p>Nemumu, con la emoción de "ser su turno", tenía los ojos brillantes y la respiración agitada, pero yo esbocé una leve sonrisa y le hice un gesto con la mano.</p>
+<p>Por muy extenso que sea el piso, si Nemumu tiene nivel 5000, debería poder encontrar las escaleras en una hora aproximadamente.</p>
+<p>Pero incluso con su poder, tomaría alrededor de una hora.</p>
+<p>Como ese tiempo también sería una pérdida, usaré una carta de la "Gacha Infinita" para localizar la posición e ir directamente.</p>
+<p>Para eso, habíamos venido hasta lo profundo del bosque, donde no hubiera miradas ajenas.</p>
+<p>—Nemumu, lamento cortar tu entusiasmo, pero pienso encontrarlas con la carta "SSR, Vista Lejana" de la "Gacha Infinita".</p>
+<p>—Lo siento, me he extralimitado…</p>
+<p>—No tienes por qué disculparte. Más bien, me alegra ver tu motivación.</p>
+<p>—¡Dark-sama!</p>
+<p>Nemumu, visiblemente feliz por haber recibido un elogio, se ruborizó hasta el punto de notarse incluso en su piel morena, y tembló con los ojos húmedos.</p>
+<p>Ignorándola, Gold se asomó con interés a mis manos.</p>
+<p>—Oh, es la primera vez que veo esa carta. ¿Con eso vas a encontrar las escaleras de este piso?</p>
+<p>—Sí, se llama "SSR, Vista Lejana"…</p>
+<p>"SSR, Vista Lejana" —una carta que permite encontrar y ver cosas lejanas que el usuario desea. Sin embargo, tiene condiciones desconocidas y no puede ver cosas que el usuario no conozca o estén demasiado lejos.</p>
+<p>—Es una carta muy útil. Me sorprende la cantidad de cartas que tienes. ¡Como era de esperar de mi señor! ¡Jajajajajaja!</p>
+<p>—Es útil, pero tiene varias limitaciones. No es algo que se pueda alabar sin reservas.</p>
+<p>Ante la estruendosa risa de Gold, imité su gesto y me encogí de hombros.</p>
+<p>Me encogí de hombros y usé la carta.</p>
+<p>—¡Liberar "Vista Lejana"!</p>
+<p>Imaginando las escaleras, usé "SSR, Vista Lejana".</p>
+<p>Aunque tenía los ojos cerrados, podía ver el interior de una cueva excavada en una gran pared rocosa, bastante alejada del bosque.</p>
+<p>La vista avanzaba sola y encontré unas escaleras en el fondo de una cueva excavada en la enorme pared de la montaña.</p>
+<p>Al mismo tiempo, la carta de vista lejana desapareció de mis manos.</p>
+<p>—Bien, pude confirmar la ubicación.</p>
+<p>Expliqué a Gold y Nemumu dónde estaban las escaleras al segundo piso.</p>
+<p>Les dije que si avanzaban en línea recta desde este bosque, llegarían a una cueva excavada en una pared de montaña que parecía un callejón sin salida.</p>
+<p>—Me alegra que estuviera en un lugar fácil de encontrar. Entonces, vayamos rápidamente al segundo piso.</p>
+<p>—Ciertamente, es fácil de encontrar. ¡Si usamos el método que usamos para llegar a esta ciudad, podríamos ir en un instante sin tener que caminar por la superficie!</p>
+<p>Desde mi antigua aldea natal hasta esta ciudad hay una distancia considerable.</p>
+<p>Normalmente, habría que bajar por el río y luego viajar en carruaje durante dos o tres meses.</p>
+<p>Pero usando la combinación de las cartas "SSR, Ocultar Presencia" y "SR, Vuelo", pudimos llegar a esta ciudad sin ser vistos, volando rápidamente por el aire.</p>
+<p>Así que podríamos llegar literalmente de un salto a las escaleras del primer piso.</p>
+<p>—Calculó todo hasta llegar a lo profundo del bosque. ¡Como era de esperar de Dark-sama! ¡Qué perspicacia tan magnífica!</p>
+<p>—Gracias, Nemumu. Entonces, vámonos ya.</p>
+<p>Me alegra que me alaben sin reservas, pero que me elogien tan directamente me da vergüenza.</p>
+<p>Para disimular mi vergüenza, usé la carta rápidamente.</p>
+<p>—¡Liberar "SSR, Ocultar Presencia", "SR, Vuelo"!</p>
+<p>Primero, con "SSR, Ocultar Presencia", oculté nuestra presencia. Así, ni los sentidos, ni el poder mágico, ni los objetos mágicos podrían detectarnos.</p>
+<p>"SR, Vuelo" es, como su nombre indica, una carta que permite volar durante 24 horas.</p>
+<p>Al pensar "vuela" en mi mente, mi cuerpo flotó suavemente hacia el cielo.</p>
+<p>Una vez que alcancé cierta altura, pensé en la dirección a avanzar y comencé a volar.</p>
+<p>—¡Qué vista tan magnífica, qué vista tan magnífica! ¡El poder de mi señor es realmente asombroso! ¡La gente de la superficie probablemente no podría contemplar un paisaje como este en toda su vida!</p>
+<p>—Aunque me da rabia estar de acuerdo con Gold, sin duda no se puede disfrutar de esta vista sin ser un pájaro o un dragón. Solo por esto, valió la pena salir a la superficie… aunque ahora estamos dentro de un calabozo. Realmente, me alegro de que Dark-sama nos haya invocado.</p>
+<p>—Me alegra que ustedes dos estén contentos. Entonces, vayamos de una vez a las escaleras que llevan al segundo piso.</p>
+<p>Al escuchar las respuestas de Gold y Nemumu, tomé la delantera, que conocía la ubicación de las escaleras al segundo piso, y volé al frente.</p>
+<p>Mientras observaba con el rabillo del ojo las escenas bajo nuestros pies: aventureros caminando por la superficie, combatiendo monstruos, ríos, bosques, montañas, continuamos volando hacia nuestro destino.</p>
     </div>
 
     <hr>
 
-    <div class="rating-section">
-        <h3>⭐ Califica este capítulo</h3>
-        <div class="stars" id="starRating">
-            <span class="star" data-value="1">★</span>
-            <span class="star" data-value="2">★</span>
-            <span class="star" data-value="3">★</span>
-            <span class="star" data-value="4">★</span>
-            <span class="star" data-value="5">★</span>
-        </div>
-        <div id="ratingMessage" style="font-size:0.85rem; margin-top:0.5rem;"></div>
-    </div>
-
-    <div class="comments-section">
-        <h3>💬 Comentarios</h3>
-        <div class="comment-form">
-            <input type="text" id="commentName" placeholder="Tu nombre" readonly>
-            <textarea id="commentText" placeholder="Escribe tu comentario... (Inicia sesión para comentar)"></textarea>
-            <button id="submitComment">Enviar</button>
-        </div>
-        <div id="commentsList"></div>
-    </div>
-
     <div class="nav-container">
         <div class="nav-bottom">
             <a href="index.html" class="nav-btn">📚 Índice</a>
-            <a href="capitulo1e4.html" id="prevLinkBottom" class="nav-btn">← Interrupción</a>
+            <a href="capitulo1e4.html" id="prevLinkBottom" class="nav-btn ">← Interrupción</a>
             <span class="chapter-counter" id="chapterCounterBottom">Capítulo 1 - Episodio 5</span>
-            <a href="capitulo1e6.html" id="nextLinkBottom" class="nav-btn">Límites del crecimiento →</a>
+            <a href="capitulo1e6.html" id="nextLinkBottom" class="nav-btn ">Límites del crecimiento →</a>
         </div>
     </div>
 
@@ -567,197 +412,64 @@
 
     <script src="data.js"></script>
     <script>
+        // ========== CONFIGURACIÓN DEL CAPÍTULO ==========
         const CHAPTER_NUM = 1;
         const EPISODE_NUM = 5;
         
-        let pointsAdded = false;
-        let currentUserProfile = null;
-        
-        async function registerRead() {
-            if (pointsAdded) return;
-            const user = auth.currentUser;
-            if (!user) return;
-            const result = await registerChapterRead(CHAPTER_NUM, EPISODE_NUM);
-            if (result.success && !result.alreadyRead) {
-                pointsAdded = true;
-                showToast(`📚 +${result.pointsGained} puntos por leer este capítulo`);
-                if (result.newLevel && result.newLevel.name !== currentUserProfile?.level) {
-                    showToast(`🎉 ¡Subiste a nivel ${result.newLevel.name}! ${result.newLevel.badge}`);
-                }
-            }
-        }
-        
-        function showToast(message) {
-            const toast = document.createElement('div');
-            toast.className = 'toast-message';
-            toast.textContent = message;
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 3000);
-        }
-        
-        async function initRating() {
-            const stars = document.querySelectorAll('.star');
-            const messageDiv = document.getElementById('ratingMessage');
-            const user = auth.currentUser;
-            if (user) {
-                const userDoc = await db.collection('users').doc(user.uid).get();
-                const rated = userDoc.data()?.ratedChapters?.includes(`${CHAPTER_NUM}_${EPISODE_NUM}`);
-                if (rated) {
-                    const ratingData = await db.collection('ratings')
-                        .where('userId', '==', user.uid)
-                        .where('chapterNum', '==', CHAPTER_NUM)
-                        .where('episodeNum', '==', EPISODE_NUM)
-                        .get();
-                    if (!ratingData.empty) {
-                        const rating = ratingData.docs[0].data().rating;
-                        updateStars(rating);
-                        messageDiv.innerHTML = `✅ Ya calificaste este capítulo con ${rating} estrellas. ¡Gracias!`;
-                    } else {
-                        messageDiv.innerHTML = '✅ Ya calificaste este capítulo. ¡Gracias!';
-                    }
-                }
-            }
-            stars.forEach(star => {
-                star.addEventListener('click', async function() {
-                    const user = auth.currentUser;
-                    if (!user) { messageDiv.innerHTML = '❌ Inicia sesión para calificar'; return; }
-                    const userDoc = await db.collection('users').doc(user.uid).get();
-                    const rated = userDoc.data()?.ratedChapters?.includes(`${CHAPTER_NUM}_${EPISODE_NUM}`);
-                    if (rated) { messageDiv.innerHTML = '⚠️ Ya calificaste este capítulo anteriormente.'; return; }
-                    const value = parseInt(this.dataset.value);
-                    const result = await registerRating(CHAPTER_NUM, EPISODE_NUM, value);
-                    if (result.success) {
-                        updateStars(value);
-                        messageDiv.innerHTML = `⭐ Calificaste este capítulo con ${value} estrellas. +${result.pointsGained} puntos. ¡Gracias!`;
-                        showToast(`⭐ +${result.pointsGained} puntos por calificar`);
-                        if (result.newLevel && result.newLevel.name !== currentUserProfile?.level) {
-                            showToast(`🎉 ¡Subiste a nivel ${result.newLevel.name}! ${result.newLevel.badge}`);
-                        }
-                    } else { messageDiv.innerHTML = `❌ ${result.error}`; }
-                });
-            });
-        }
-        
-        function updateStars(rating) {
-            const stars = document.querySelectorAll('.star');
-            stars.forEach((star, index) => { if (index < rating) star.classList.add('active'); else star.classList.remove('active'); });
-        }
-        
-        async function loadComments() {
-            const result = await getComments(CHAPTER_NUM, EPISODE_NUM);
-            if (!result.success) { document.getElementById('commentsList').innerHTML = '<p>Error al cargar comentarios</p>'; return; }
-            const comments = result.comments;
-            const container = document.getElementById('commentsList');
-            if (comments.length === 0) { container.innerHTML = '<p>No hay comentarios aún. ¡Sé el primero en comentar!</p>'; return; }
-            const user = auth.currentUser;
-            let html = '';
-            for (const comment of comments) {
-                const isOwner = user && user.uid === comment.userId;
-                html += `<div class="comment-item" data-comment-id="${comment.id}" data-author-id="${comment.userId}">
-                            <span class="comment-name">${escapeHtml(comment.username)}</span>
-                            <span class="comment-date">${new Date(comment.timestamp?.toDate()).toLocaleString()}</span>
-                            <span class="comment-like" onclick="handleLike('${comment.id}', '${comment.userId}')">❤️ ${comment.likes || 0}</span>
-                            <span class="comment-report" onclick="handleReport('${comment.id}', '${escapeHtml(comment.text)}')">🚩 Reportar</span>
-                            ${isOwner ? `<span class="comment-delete" onclick="handleDeleteComment('${comment.id}')">🗑️ Eliminar</span>` : ''}
-                            <div class="comment-text">${escapeHtml(comment.text)}</div>
-                         </div>`;
-            }
-            container.innerHTML = html;
-        }
-        
-        async function handleLike(commentId, authorId) {
-            const user = auth.currentUser;
-            if (!user) { alert('Inicia sesión para dar like'); return; }
-            const result = await likeComment(commentId, authorId);
-            if (result.success) { loadComments(); showToast('👍 Like registrado'); } else { alert(result.error); }
-        }
-        
-        async function handleReport(commentId, commentText) {
-            const user = auth.currentUser;
-            if (!user) { alert('Debes iniciar sesión para reportar un comentario'); return; }
-            const reason = prompt('Motivo del reporte:\n\n1. Insulto o acoso\n2. Spoiler sin aviso\n3. Spam o publicidad\n4. Contenido inapropiado\n5. Otro\n\nEscribe el motivo:');
-            if (reason === null) return;
-            const result = await reportComment(commentId, reason, user.uid);
-            if (result.success) { alert('✅ Comentario reportado. Gracias por ayudar a mantener la comunidad.'); } else { alert('❌ Error: ' + result.error); }
-        }
-        
-        async function handleDeleteComment(commentId) {
-            if (!confirm('¿Eliminar tu comentario? Esta acción no se puede deshacer.')) return;
-            const result = await deleteComment(commentId);
-            if (result.success) { alert('✅ Comentario eliminado'); loadComments(); } else { alert('❌ Error: ' + result.error); }
-        }
-        
-        function escapeHtml(str) { return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]); }
-        
-        async function submitComment() {
-            const user = auth.currentUser;
-            if (!user) { alert('Debes iniciar sesión para comentar'); return; }
-            const text = document.getElementById('commentText').value;
-            if (!text.trim()) { alert('Escribe un comentario'); return; }
-            const userProfile = await getUserProfile();
-            if (!userProfile.success) { alert('Error al obtener perfil'); return; }
-            const result = await registerComment(CHAPTER_NUM, EPISODE_NUM, text, userProfile.profile.username);
-            if (result.success) {
-                document.getElementById('commentText').value = '';
-                loadComments();
-                showToast(`💬 +${result.pointsGained} puntos por comentar`);
-                if (result.newLevel && result.newLevel.name !== currentUserProfile?.level) {
-                    showToast(`🎉 ¡Subiste a nivel ${result.newLevel.name}! ${result.newLevel.badge}`);
-                }
-            } else { alert(result.error); }
-        }
-        
-        async function updateUserInfo() {
-            const user = auth.currentUser;
-            const userInfoDiv = document.getElementById('userInfo');
-            const logoutBtn = document.getElementById('logoutBtnHeader');
-            const nameInput = document.getElementById('commentName');
-            const modLink = document.getElementById('modLink');
-            if (user) {
-                const result = await getUserProfile();
-                if (result.success) {
-                    currentUserProfile = result.profile;
-                    userInfoDiv.style.display = 'inline-block';
-                    logoutBtn.style.display = 'inline-block';
-                    userInfoDiv.textContent = `${currentUserProfile.username} | ${currentUserProfile.totalPoints} pts | ${currentUserProfile.levelBadge}`;
-                    nameInput.value = currentUserProfile.username;
-                    nameInput.readonly = true;
-                    document.getElementById('commentText').placeholder = "Escribe tu comentario...";
-                    if (isAdmin(user)) modLink.style.display = 'inline-block';
-                    else modLink.style.display = 'none';
-                }
-            } else {
-                userInfoDiv.style.display = 'none';
-                logoutBtn.style.display = 'none';
-                nameInput.value = "Inicia sesión para comentar";
-                nameInput.readonly = true;
-                document.getElementById('commentText').placeholder = "Inicia sesión para comentar";
-                modLink.style.display = 'none';
-            }
-        }
-        
-        async function handleLogout() { await logoutUser(); location.reload(); }
-        
+        // ========== NAVEGACIÓN ==========
         function setupNavigation() {
             if (typeof GACHA_DATA !== 'undefined') {
                 const currentEpisode = GACHA_DATA.getEpisode(CHAPTER_NUM, EPISODE_NUM);
                 const prevEpisode = GACHA_DATA.getPrevEpisode(CHAPTER_NUM, EPISODE_NUM);
                 const nextEpisode = GACHA_DATA.getNextEpisode(CHAPTER_NUM, EPISODE_NUM);
                 const allEpisodes = GACHA_DATA.getAllEpisodesOrdered();
+                
                 const prevLinks = [document.getElementById('prevLinkTop'), document.getElementById('prevLinkBottom')];
                 const nextLinks = [document.getElementById('nextLinkTop'), document.getElementById('nextLinkBottom')];
                 const counters = [document.getElementById('chapterCounterTop'), document.getElementById('chapterCounterBottom')];
+                
                 counters.forEach(c => { if(c) c.textContent = `${currentEpisode.chapterTitle} - Episodio ${currentEpisode.episodeNum}`; });
+                
                 if (prevEpisode) {
-                    prevLinks.forEach(l => { if(l) { l.href = `capitulo${prevEpisode.chapter}e${prevEpisode.episodeNum}.html`; l.classList.remove('disabled'); l.textContent = `← ${prevEpisode.title}`; } });
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${prevEpisode.chapter}e${prevEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = prevEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `← ${shortTitle}`;
+                        }
+                    });
                 } else {
-                    prevLinks.forEach(l => { if(l) { l.classList.add('disabled'); l.removeAttribute('href'); l.textContent = '← Sin anterior'; } });
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = '← Sin anterior';
+                        }
+                    });
                 }
+                
                 if (nextEpisode) {
-                    nextLinks.forEach(l => { if(l) { l.href = `capitulo${nextEpisode.chapter}e${nextEpisode.episodeNum}.html`; l.classList.remove('disabled'); l.textContent = `${nextEpisode.title} →`; } });
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${nextEpisode.chapter}e${nextEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = nextEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `${shortTitle} →`;
+                        }
+                    });
                 } else {
-                    nextLinks.forEach(l => { if(l) { l.classList.add('disabled'); l.removeAttribute('href'); l.textContent = 'Sin siguiente →'; } });
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = 'Sin siguiente →';
+                        }
+                    });
                 }
+                
                 const selects = [document.getElementById('chapterSelect'), document.getElementById('chapterSelectBottom')];
                 selects.forEach(select => {
                     if (!select) return;
@@ -772,11 +484,31 @@
             }
         }
         
+        // ========== REGISTRAR LECTURA EN HISTORIAL ==========
+        function markAsRead() {
+            const user = localStorage.getItem('gacha_user');
+            if (!user) return;
+            
+            let history = localStorage.getItem(`gacha_history_${user}`);
+            let historyObj = history ? JSON.parse(history) : { chapters: [] };
+            
+            const readKey = { chapter: CHAPTER_NUM, episode: EPISODE_NUM };
+            historyObj.chapters = historyObj.chapters.filter(item => 
+                !(item.chapter == CHAPTER_NUM && item.episode == EPISODE_NUM)
+            );
+            historyObj.chapters.unshift(readKey);
+            if (historyObj.chapters.length > 20) historyObj.chapters.pop();
+            
+            localStorage.setItem(`gacha_history_${user}`, JSON.stringify(historyObj));
+        }
+        
+        // ========== CONTROLES ==========
         function initControls() {
             const savedTheme = localStorage.getItem('gacha_theme');
             if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
             const savedFont = localStorage.getItem('gacha_fontsize');
             if (savedFont) document.body.style.fontSize = savedFont + '%';
+            
             document.getElementById('fontPlus').onclick = () => {
                 let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
                 size = Math.min(150, size + 10);
@@ -789,6 +521,7 @@
                 document.body.style.fontSize = size + '%';
                 localStorage.setItem('gacha_fontsize', size);
             };
+            
             const themeBtn = document.getElementById('themeToggle');
             if (document.documentElement.hasAttribute('data-theme')) themeBtn.textContent = '☀️ Modo claro';
             themeBtn.onclick = () => {
@@ -803,25 +536,23 @@
                     themeBtn.textContent = '☀️ Modo claro';
                 }
             };
+            
             document.getElementById('scrollToTop').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
             document.getElementById('scrollToBottom').onclick = () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-            document.getElementById('logoutBtnHeader').onclick = handleLogout;
         }
         
-        document.addEventListener('DOMContentLoaded', async () => {
+        // ========== INICIALIZACIÓN ==========
+        document.addEventListener('DOMContentLoaded', () => {
             initControls();
             setupNavigation();
-            await updateUserInfo();
-            await loadComments();
-            await initRating();
-            onAuthStateChanged(async (state) => {
-                await updateUserInfo();
-                if (state.loggedIn) { await registerRead(); await loadComments(); }
+            markAsRead();
+            
+            kofiWidgetOverlay.draw('ocholobos', {
+                'type': 'floating-chat',
+                'floating-chat.donateButton.text': 'Apóyame',
+                'floating-chat.donateButton.background-color': '#1a4d5f',
+                'floating-chat.donateButton.text-color': '#ffffff'
             });
-            document.getElementById('submitComment').onclick = submitComment;
-            window.handleLike = handleLike;
-            window.handleReport = handleReport;
-            window.handleDeleteComment = handleDeleteComment;
         });
     </script>
 </body>
