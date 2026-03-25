@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El asesino de aventureros | Gacha Infinita</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem;
+            line-height: 1.8;
+            background: #faf9f7;
+            color: #2c2b28;
+            transition: all 0.3s ease;
+        }
+        [data-theme="dark"] body {
+            background: #1a1a1a;
+            color: #e5e5e5;
+        }
+        
+        .options-bar {
+            position: sticky;
+            top: 0;
+            background: #faf9f7;
+            border-bottom: 1px solid #e5e0d8;
+            padding: 0.6rem 1rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.8rem;
+            z-index: 100;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        [data-theme="dark"] .options-bar {
+            background: #1a1a1a;
+            border-bottom-color: #404040;
+        }
+        .options-bar button, .options-bar a {
+            background: #eef2f0;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: #1a4d5f;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .options-bar button, [data-theme="dark"] .options-bar a {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .font-size-control {
+            display: flex;
+            gap: 0.3rem;
+            align-items: center;
+        }
+        .font-size-control button {
+            width: 32px;
+            padding: 0.2rem;
+        }
+        
+        .nav-container {
+            margin: 1rem 0;
+        }
+        .nav-center, .nav-bottom {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+        .nav-bottom {
+            margin-top: 1rem;
+        }
+        .nav-btn {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            color: #1a4d5f;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .nav-btn {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .nav-btn:hover {
+            background: #e5e0d8;
+        }
+        .nav-btn.disabled {
+            background: #e5e0d8;
+            color: #9ca3af;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .chapter-counter {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] .chapter-counter {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        .chapter-selector {
+            margin: 0.5rem 0;
+            text-align: center;
+        }
+        .chapter-selector select {
+            background: #eef2f0;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-family: inherit;
+            color: #1a4d5f;
+            cursor: pointer;
+            width: 300px;
+            max-width: 90%;
+        }
+        [data-theme="dark"] .chapter-selector select {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin: 1rem 0 0.25rem;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] h1 {
+            color: #5a9e8c;
+        }
+        .episode-number {
+            color: #6b6a68;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #e5e0d8;
+            padding-bottom: 0.5rem;
+        }
+        [data-theme="dark"] .episode-number {
+            color: #a0a0a0;
+            border-bottom-color: #404040;
+        }
+        .story-content {
+            margin: 1.5rem 0;
+        }
+        .story-content p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+        hr {
+            margin: 2rem 0;
+            border: none;
+            border-top: 1px solid #e5e0d8;
+        }
+        [data-theme="dark"] hr {
+            border-top-color: #404040;
+        }
+        
+        .floating-buttons {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+        .floating-btn {
+            background: #1a4d5f;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.8;
+        }
+        [data-theme="dark"] .floating-btn {
+            background: #5a9e8c;
+        }
+        .floating-btn:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        
+        .toast-message {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: #1a4d5f;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            z-index: 1000;
+            animation: fadeOut 3s ease forwards;
+        }
+        [data-theme="dark"] .toast-message {
+            background: #5a9e8c;
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            70% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+        
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            border-top: 1px solid #e5e0d8;
+            padding-top: 1.5rem;
+        }
+        [data-theme="dark"] footer {
+            border-top-color: #404040;
+        }
+        
+        @media (max-width: 600px) {
+            body { padding: 0.5rem; }
+            .nav-center, .nav-bottom { flex-direction: column; gap: 0.5rem; }
+            .floating-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                bottom: 70px;
+                right: 15px;
+            }
+        }
+    </style>
+    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+</head>
+<body>
+    <div class="options-bar">
+        <div class="font-size-control">
+            <button id="fontMinus">A-</button>
+            <button id="fontPlus">A+</button>
+        </div>
+        <a href="index.html">📚 Índice</a>
+        <button id="themeToggle">🌙 Modo oscuro</button>
+    </div>
+
+    <div class="nav-container">
+        <div class="nav-center">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo1e17.html" id="prevLinkTop" class="nav-btn ">← El cambio de actitud</a>
+            <span class="chapter-counter" id="chapterCounterTop">Capítulo 1 - Episodio 18</span>
+            <a href="capitulo1e19.html" id="nextLinkTop" class="nav-btn ">La Bruja Prohibida Ellie →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelect">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <h1>El asesino de aventureros</h1>
+    <div class="episode-number">Capítulo 1 - Episodio 18</div>
+
+    <div class="story-content">
+        <p>Finalmente, solo Gold se quedó a beber con los hombres bestia. Nemumu y yo tomamos el dinero del cambio y regresamos a la posada donde nos alojábamos. Como siempre, limpiamos la habitación con las cartas de la "Gacha Infinita", nos quitamos el equipo y nos relajamos.</p>
+<p>Nemumu seguía enfadada por lo ocurrido antes.</p>
+<p>—¡Por todos los dioses! ¿Por qué la gente de la superficie es tan vulgar? ¡No es un entorno adecuado para Dark-sama!</p>
+<p>—Entiendo cómo te sientes, pero cálmate. Dejando de lado el incidente con los aventureros, todo va según lo planeado. No te enfades tanto.</p>
+<p>Actualmente, habíamos llegado hasta el quinto piso, la llanura nevada. Al entregar una gran cantidad de piedras de hielo, que tenían una gran demanda, nuestro rango de aventureros había ascendido del rango F de principiante al rango D de aventurero competente. Según decían, era el ascenso más rápido desde la fundación de la ciudad. Los enanos del gremio se mostraban asombrados de que unos humanos lo hubieran logrado. Además, teníamos otra buena noticia.</p>
+<p>—Al principio pensé que sería demasiado grande para nosotros, pero gracias a que podemos regresar al "Abismo" con la carta "Teletransportación", todo va sobre ruedas.</p>
+<p>Gracias a que el calabozo era muy grande y a que eran pocos los aventureros que llegaban al quinto piso, apenas teníamos que preocuparnos por las miradas ajenas. Era tan vasto que no había necesidad de preocuparse por otros. Dejaba a Gold y a los demás la caza de yetis en la llanura nevada, y yo regresaba al "Abismo" por mi cuenta.</p>
+<p>Podía usar la Gacha Infinita, comprobar el progreso del "Plan de Venganza contra Sasha, la elfa" que había encargado a Ellie, reunirme y conversar con los que se encargaban del "Abismo". Este calabozo nos resultaba muy conveniente, así que aunque el comportamiento de los aventureros de la superficie fuera algo reprobable, estaba dentro de lo tolerable.</p>
+<p><em>(…Bueno, no estoy seguro de si calificar de "reprobable" que vinieran a pedir "golpéenme"…) </em></p>
+<p>Recordé lo ocurrido en la taberna y volví a sonreír.</p>
+<p>Sin embargo, no todo era perfecto. Había problemas.</p>
+<p>—El problema es que con solo entregar piedras de hielo va a ser difícil seguir subiendo de rango.</p>
+<p>—Con lo bien que se ha portado Dark-sama, no subirlo al rango A es de ser unos miopes.</p>
+<p>—Bueno, que los empleados del gremio sean miopes o no, si dicen que no podemos subir de rango por llevar poco tiempo como aventureros, no nos queda más remedio que aceptarlo.</p>
+<p>El rango de aventureros lo decide el gremio. Por lo general, parece que se sube de rango teniendo en cuenta la fuerza, las contribuciones, la trayectoria como aventurero y la conducta. Gracias a la entrega de las piedras de hielo, nuestras contribuciones eran altas, pero nos dijeron que llevábamos muy poco tiempo como aventureros.</p>
+<p>"Nosotras también querríamos ascenderlos al rango C de aventureros expertos, pero llevan tan poco tiempo que es difícil. Si tuvieran algún mérito que los demás reconocieran, podríamos forzarlo, pero…"</p>
+<p>Aunque entregáramos piedras de hielo, seguía siendo un trabajo de aventurero común, aunque de distinta dificultad. Con solo eso era difícil ascender al rango C.</p>
+<p>"Normalmente se tarda tres o cuatro años, pero si continúan un año más como aventureros, podríamos ascenderlos al rango C. Más que eso, nosotras no podemos hacer nada… ¿No están enfadados? ¿Verdad que no están enfadados? ¡No se irán a otra ciudad, verdad! ¡Se lo ruego! ¡No nos abandonen! ¡Haremos lo que sea!"</p>
+<p>La recepcionista enana terminó suplicando con lágrimas en los ojos. Como era un problema institucional, no podíamos oponernos, así que aceptamos. Nemumu recordó aquella conversación e hizo rechinar los dientes.</p>
+<p>—Esa recepcionista… haciendo ojitos a Dark-sama… qué vergüenza.</p>
+<p>—No creo que me hiciera ojitos… Solo tenía miedo de que nos fuéramos a otro calabozo.</p>
+<p>—No, yo soy mujer y lo sé. Esa recepcionista le estaba haciendo ojitos. Aunque se cubra el rostro con la máscara, Dark-sama tiene un cabello negro como la noche, una piel blanca como la nieve y una voz más hermosa que un arpa celestial. ¡Es imposible que una mujer no le haga ojitos! Debería ser más consciente de lo adorable que es. No solo la recepcionista, tampoco debe dejarse llevar fácilmente si lo invitan las aventureras.</p>
+<p>Me habló como una hermana que aconseja a su hermano pequeño. En efecto, para no olvidar la venganza, mi cuerpo estaba fijado en doce años, y Nemumu aparentaba unos dieciocho. Por eso, a los ojos de un tercero, podríamos parecer "hermana y hermano", pero en realidad ya tenía quince años. No era una edad para que me dijeran que no fuera con extraños, pero ciertamente me estaba dando un consejo por mi seguridad. Mejor lo aceptaba.</p>
+<p>—Sí, tendré cuidado.</p>
+<p>—Gracias por escucharme. Además, para garantizar su seguridad, yo estaré siempre a su lado. Con mi vida, le protegeré.</p>
+<p>Parecía contenta de que la hubiera escuchado y de tener la oportunidad de mostrar su lealtad. Por supuesto, me alegraba su lealtad, pero a veces era demasiado teatral.</p>
+<p><em>(Ojalá se relajara un poco…)</em></p>
+<p>Pero no era algo que pudiera ordenar. Suspiré suavemente y cambié de tema.</p>
+<p>—Nemumu, ya es hora. ¿Podrías pedir la cena como siempre?</p>
+<p>—Entendido. Aunque sé que es necesario, tener que pagar por comida peor que la del "Abismo" me hace sentir que salgo perdiendo.</p>
+<p>—Ja, ja, ja, es verdad. Pero no podemos dejar de comer.</p>
+<p>Si quisiéramos, podríamos regresar al "Abismo" o comer de las cartas de la Gacha Infinita. Pero "alojarse en una posada de lujo y no comer allí" sería demasiado sospechoso. Por eso, cuando volvíamos a la posada, procurábamos pedir la cena.</p>
+<p>—Como dice Nemumu, la comida en el "Abismo" es más rica, gracias a los ingredientes, condimentos y al chef que la prepara, pero comparado con cuando era campesino pobre, esto es el paraíso.</p>
+<p>Recordé mi hogar y continué:</p>
+<p>—Papá y mamá cedían su parte a mi hermano mayor, a mí y a mi hermana pequeña, Yume. Aun así, no era suficiente y tenían que beber agua o buscar algo de comer en el bosque. Pero ni eso saciaba el hambre. ¿Sabes, Nemumu? Cuando tienes mucha hambre, dejas de sentirla. Comparado con aquellos tiempos, poder comer es de agradecer.</p>
+<p>—Dark-sama, qué penoso…</p>
+<p>Por alguna razón, Nemumu se llevó un pañuelo a los ojos. No era mi intención entristecerla… ¿Quizás fue demasiado fuerte para una chica como ella?</p>
+<p>De repente, llamaron a la puerta. Nemumu guardó rápidamente el pañuelo y adoptó una postura de alerta. Por la presencia, sabíamos que era Gold, pero por precaución, me volví a poner la máscara. Cuando estuvimos listos, asentí para que Nemumu abriera la puerta. Al abrir, la familiar armadura dorada entró en la habitación. Caminaba algo más deprisa de lo normal. Nemumu cerró la puerta, esperamos un momento y me quité la máscara.</p>
+<p>—Has vuelto pronto para ser una juerga. ¿Pasó algo?</p>
+<p>—Como era de esperar de mi señor, qué perspicaz. Resulta que en el gremio salió un tema interesante.</p>
+<p>Según Gold, durante la bebida con los hombres bestia, el gremio anunció que estaba circulando un "asesino de aventureros" que atacaba dentro del calabozo. No tenían información sobre su especie, edad o rasgos, pero parecía que se cebaba con los humanos. Las piedras mágicas, materiales, minerales y hierbas que se obtenían en el calabozo eran recursos valiosos. El gremio no podía permitir que se redujera el número de aventureros que se adentraban en él. Por eso, iban a poner una recompensa por el "asesino de aventureros".</p>
+<p>—Con solo información ya dan una buena suma, pero a nosotros nos da igual el dinero. Más bien…</p>
+<p>—Si somos los primeros en atrapar al "asesino de aventureros", nos ayudaría a subir de rango, ¿por eso volviste tan rápido?</p>
+<p>—Exacto. Con el don de mi señor, identificar al "asesino de aventureros" no debería ser difícil, ¿no?</p>
+<p>—Hmm, no sé. Las cartas que salen de la "Gacha Infinita" son muy variadas y muchas son poderosas, pero no creo que haya ninguna que identifique directamente al culpable. Pero con la ayuda de todos y usando bien las cartas, no creo que sea difícil identificarlo.</p>
+<p>Por ejemplo, podríamos regresar al "Abismo" para pedir ayuda. Si nos ocultamos con "SSR, Ocultar Presencia" y volamos con "SR, Vuelo", sería muy probable encontrar al "asesino de aventureros".</p>
+<p>—Entonces, volvamos ahora mismo al "Abismo"… ¡¿!? ¡Dark-sama!</p>
+<p>Nemumu interrumpió su opinión y gritó. Casi al mismo tiempo que ella, nosotros también notamos el cambio. Me volví a poner la máscara y Gold se puso en posición de protegerme con el escudo, en guardia.</p>
+<p>El espacio de la habitación se distorsionó y algo apareció. Al principio era una forma borrosa, pero poco a poco se fue convirtiendo en una figura humana manchada de sangre, que cayó lentamente al suelo…</p>
+<p>—…¿Miya-chan?</p>
+<p>La muchacha que yacía inconsciente en el suelo era la misma a la que había regalado la "SSR, Pulsera de la Oración". La pulsera atada a su muñeca izquierda, como si hubiera cumplido su cometido, se rompió y cayó de su brazo.</p>
+    </div>
+
+    <hr>
+
+    <div class="nav-container">
+        <div class="nav-bottom">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo1e17.html" id="prevLinkBottom" class="nav-btn ">← El cambio de actitud</a>
+            <span class="chapter-counter" id="chapterCounterBottom">Capítulo 1 - Episodio 18</span>
+            <a href="capitulo1e19.html" id="nextLinkBottom" class="nav-btn ">La Bruja Prohibida Ellie →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelectBottom">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <div class="floating-buttons">
+        <button class="floating-btn" id="scrollToTop" title="Ir arriba">⬆</button>
+        <button class="floating-btn" id="scrollToBottom" title="Ir abajo">⬇</button>
+    </div>
+
+    <footer>
+        <p>Gacha Infinita © 明鏡シスイ (Meikyō Shisui) | Traducción: Ocholobos</p>
+        <p>Apoya al autor comprando los volúmenes oficiales</p>
+    </footer>
+
+    <script src="data.js"></script>
+    <script>
+        // ========== CONFIGURACIÓN DEL CAPÍTULO ==========
+        const CHAPTER_NUM = 1;
+        const EPISODE_NUM = 18;
+        
+        // ========== NAVEGACIÓN ==========
+        function setupNavigation() {
+            if (typeof GACHA_DATA !== 'undefined') {
+                const currentEpisode = GACHA_DATA.getEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const prevEpisode = GACHA_DATA.getPrevEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const nextEpisode = GACHA_DATA.getNextEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const allEpisodes = GACHA_DATA.getAllEpisodesOrdered();
+                
+                const prevLinks = [document.getElementById('prevLinkTop'), document.getElementById('prevLinkBottom')];
+                const nextLinks = [document.getElementById('nextLinkTop'), document.getElementById('nextLinkBottom')];
+                const counters = [document.getElementById('chapterCounterTop'), document.getElementById('chapterCounterBottom')];
+                
+                counters.forEach(c => { if(c) c.textContent = `${currentEpisode.chapterTitle} - Episodio ${currentEpisode.episodeNum}`; });
+                
+                if (prevEpisode) {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${prevEpisode.chapter}e${prevEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = prevEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `← ${shortTitle}`;
+                        }
+                    });
+                } else {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = '← Sin anterior';
+                        }
+                    });
+                }
+                
+                if (nextEpisode) {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${nextEpisode.chapter}e${nextEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = nextEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `${shortTitle} →`;
+                        }
+                    });
+                } else {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = 'Sin siguiente →';
+                        }
+                    });
+                }
+                
+                const selects = [document.getElementById('chapterSelect'), document.getElementById('chapterSelectBottom')];
+                selects.forEach(select => {
+                    if (!select) return;
+                    let options = '<option value="">📖 Seleccionar episodio...</option>';
+                    for (const ep of allEpisodes) {
+                        const selected = (ep.chapter == CHAPTER_NUM && ep.episodeNum == EPISODE_NUM) ? 'selected' : '';
+                        options += `<option value="capitulo${ep.chapter}e${ep.episodeNum}.html" ${selected}>${ep.chapterTitle} - Episodio ${ep.episodeNum}: ${ep.title}</option>`;
+                    }
+                    select.innerHTML = options;
+                    select.onchange = function() { if(this.value) window.location.href = this.value; };
+                });
+            }
+        }
+        
+        // ========== REGISTRAR LECTURA EN HISTORIAL ==========
+        function markAsRead() {
+            const user = localStorage.getItem('gacha_user');
+            if (!user) return;
+            
+            let history = localStorage.getItem(`gacha_history_${user}`);
+            let historyObj = history ? JSON.parse(history) : { chapters: [] };
+            
+            const readKey = { chapter: CHAPTER_NUM, episode: EPISODE_NUM };
+            historyObj.chapters = historyObj.chapters.filter(item => 
+                !(item.chapter == CHAPTER_NUM && item.episode == EPISODE_NUM)
+            );
+            historyObj.chapters.unshift(readKey);
+            if (historyObj.chapters.length > 20) historyObj.chapters.pop();
+            
+            localStorage.setItem(`gacha_history_${user}`, JSON.stringify(historyObj));
+        }
+        
+        // ========== CONTROLES ==========
+        function initControls() {
+            const savedTheme = localStorage.getItem('gacha_theme');
+            if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+            const savedFont = localStorage.getItem('gacha_fontsize');
+            if (savedFont) document.body.style.fontSize = savedFont + '%';
+            
+            document.getElementById('fontPlus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.min(150, size + 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            document.getElementById('fontMinus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.max(70, size - 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            
+            const themeBtn = document.getElementById('themeToggle');
+            if (document.documentElement.hasAttribute('data-theme')) themeBtn.textContent = '☀️ Modo claro';
+            themeBtn.onclick = () => {
+                const isDark = document.documentElement.hasAttribute('data-theme');
+                if (isDark) {
+                    document.documentElement.removeAttribute('data-theme');
+                    localStorage.setItem('gacha_theme', 'light');
+                    themeBtn.textContent = '🌙 Modo oscuro';
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('gacha_theme', 'dark');
+                    themeBtn.textContent = '☀️ Modo claro';
+                }
+            };
+            
+            document.getElementById('scrollToTop').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('scrollToBottom').onclick = () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+        
+        // ========== INICIALIZACIÓN ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            initControls();
+            setupNavigation();
+            markAsRead();
+            
+            kofiWidgetOverlay.draw('ocholobos', {
+                'type': 'floating-chat',
+                'floating-chat.donateButton.text': 'Apóyame',
+                'floating-chat.donateButton.background-color': '#1a4d5f',
+                'floating-chat.donateButton.text-color': '#ffffff'
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Bruja Prohibida Ellie | Gacha Infinita</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem;
+            line-height: 1.8;
+            background: #faf9f7;
+            color: #2c2b28;
+            transition: all 0.3s ease;
+        }
+        [data-theme="dark"] body {
+            background: #1a1a1a;
+            color: #e5e5e5;
+        }
+        
+        .options-bar {
+            position: sticky;
+            top: 0;
+            background: #faf9f7;
+            border-bottom: 1px solid #e5e0d8;
+            padding: 0.6rem 1rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.8rem;
+            z-index: 100;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        [data-theme="dark"] .options-bar {
+            background: #1a1a1a;
+            border-bottom-color: #404040;
+        }
+        .options-bar button, .options-bar a {
+            background: #eef2f0;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: #1a4d5f;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .options-bar button, [data-theme="dark"] .options-bar a {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .font-size-control {
+            display: flex;
+            gap: 0.3rem;
+            align-items: center;
+        }
+        .font-size-control button {
+            width: 32px;
+            padding: 0.2rem;
+        }
+        
+        .nav-container {
+            margin: 1rem 0;
+        }
+        .nav-center, .nav-bottom {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+        .nav-bottom {
+            margin-top: 1rem;
+        }
+        .nav-btn {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            color: #1a4d5f;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .nav-btn {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .nav-btn:hover {
+            background: #e5e0d8;
+        }
+        .nav-btn.disabled {
+            background: #e5e0d8;
+            color: #9ca3af;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .chapter-counter {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] .chapter-counter {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        .chapter-selector {
+            margin: 0.5rem 0;
+            text-align: center;
+        }
+        .chapter-selector select {
+            background: #eef2f0;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-family: inherit;
+            color: #1a4d5f;
+            cursor: pointer;
+            width: 300px;
+            max-width: 90%;
+        }
+        [data-theme="dark"] .chapter-selector select {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin: 1rem 0 0.25rem;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] h1 {
+            color: #5a9e8c;
+        }
+        .episode-number {
+            color: #6b6a68;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #e5e0d8;
+            padding-bottom: 0.5rem;
+        }
+        [data-theme="dark"] .episode-number {
+            color: #a0a0a0;
+            border-bottom-color: #404040;
+        }
+        .story-content {
+            margin: 1.5rem 0;
+        }
+        .story-content p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+        hr {
+            margin: 2rem 0;
+            border: none;
+            border-top: 1px solid #e5e0d8;
+        }
+        [data-theme="dark"] hr {
+            border-top-color: #404040;
+        }
+        
+        .floating-buttons {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+        .floating-btn {
+            background: #1a4d5f;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.8;
+        }
+        [data-theme="dark"] .floating-btn {
+            background: #5a9e8c;
+        }
+        .floating-btn:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        
+        .toast-message {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: #1a4d5f;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            z-index: 1000;
+            animation: fadeOut 3s ease forwards;
+        }
+        [data-theme="dark"] .toast-message {
+            background: #5a9e8c;
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            70% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+        
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            border-top: 1px solid #e5e0d8;
+            padding-top: 1.5rem;
+        }
+        [data-theme="dark"] footer {
+            border-top-color: #404040;
+        }
+        
+        @media (max-width: 600px) {
+            body { padding: 0.5rem; }
+            .nav-center, .nav-bottom { flex-direction: column; gap: 0.5rem; }
+            .floating-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                bottom: 70px;
+                right: 15px;
+            }
+        }
+    </style>
+    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+</head>
+<body>
+    <div class="options-bar">
+        <div class="font-size-control">
+            <button id="fontMinus">A-</button>
+            <button id="fontPlus">A+</button>
+        </div>
+        <a href="index.html">📚 Índice</a>
+        <button id="themeToggle">🌙 Modo oscuro</button>
+    </div>
+
+    <div class="nav-container">
+        <div class="nav-center">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo1e18.html" id="prevLinkTop" class="nav-btn ">← El asesino de aventureros</a>
+            <span class="chapter-counter" id="chapterCounterTop">Capítulo 1 - Episodio 19</span>
+            <a href="capitulo1e20.html" id="nextLinkTop" class="nav-btn ">Retirada y encuentro →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelect">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <h1>La Bruja Prohibida Ellie</h1>
+    <div class="episode-number">Capítulo 1 - Episodio 19</div>
+
+    <div class="story-content">
+        <p>"El lugar donde estoy es este… si el Reino Elfo está aquí, un poco más adentro sería más adecuado para la operación".</p>
+<p>La "Bruja Prohibida" Ellie caminaba por el denso bosque virgen mientras comparaba el mapa que tenía en la mano con su ubicación actual.</p>
+<p>Llevaba un sombrero de ala ancha propio de una maga, su hermoso cabello rubio recogido en dos coletas. Medía alrededor de 160 cm, pero como siempre llevaba el sombrero y tacones, parecía más alta de lo que era. Su figura era esbelta, con un pecho firme, cintura estrecha y caderas bien formadas. Su rostro era tan hermoso que haría huir a cualquier belleza que pudiera derribar un reino. Por eso, más que una bruja, se parecía más a una chica mágica con un sombrero de tres picos.</p>
+<p>En ese momento, se había desplazado por su propia voluntad para inspeccionar el lugar donde ejecutaría el "Plan de Venganza contra la elfa Sasha" que le había encomendado su señor, Light.</p>
+<p>El lugar era una zona boscosa alejada de la capital del Reino Elfo.</p>
+<p>Si se iba al norte, se topaba con la cordillera que hacía frontera con el Reino Enano; si se iba al sur, llegaba al mar. El verdor de los árboles era denso, y las hierbas y raíces crecían enredadas bajo sus pies. Era un lugar donde incluso los aventureros y cazadores más experimentados debían avanzar con cuidado para no tropezar.</p>
+<p>"No solo para esta operación, pensando en el futuro… un poco más al norte sería mejor".</p>
+<p>A pesar de ello, Ellie caminaba con soltura como si fuera por un camino pavimentado, sin que las hierbas, raíces, desniveles o musgo le impidieran el paso. Su vestido gótico ondeaba suavemente, y varios libros de magia giraban lentamente a su alrededor. Sin embargo, ninguno se enganchaba con los árboles ni estorbaba.</p>
+<p>Ambas cosas se debían a que Ellie se había aplicado a sí misma una "magia de no impedimento de movimiento". Por eso los árboles no la estorbaban y podía caminar sin problemas. Después de avanzar un rato con el mapa en la mano, se detuvo en un punto.</p>
+<p>Comparó el lugar con el mapa y exclamó alegremente.</p>
+<p>"¡Es aquí! ¡Este es el lugar perfecto para cumplir los deseos de Light-sama!"</p>
+<p>Al pronunciar el nombre de Light, Ellie entornó los ojos embelesada.</p>
+<p>"Ahhh, Light-sama… Si consigo llevar a cabo este plan a la perfección, seguro que me dará más cariño que a esa sirvienta engreída".</p>
+<p>Con "esa sirvienta" se refería a Mei, la "Sirvienta Buscadora", del mismo rango SÚR, nivel 9999, que Ellie. Por cierto, Mei tenía el cabello negro recogido en una cola de caballo y siempre vestía uniforme de sirvienta. Que Ellie considerara a Mei su rival era un hecho conocido por todos en el "Abismo".</p>
+<p>"¡Ay, no! ¡Me saca de quicio esa actitud de 'yo soy la más importante para Light-sama'! ¡La verdad es que no la soporto! …Pero si Mei no hubiera sido invocada y no hubiera ayudado a Light-sama, él habría muerto, eso es cierto".</p>
+<p>Por eso, aunque la consideraba su rival, nunca había dejado de estar agradecida. Pero al mismo tiempo, no podía evitar lamentar que "si me hubieran invocado a mí primero…".</p>
+<p>"Al final, fui la tercera en ser invocada. Después de Aoyuki-san… Si al menos hubiera sido la segunda, quizás habría tenido más oportunidades… La verdad es que no sale nada como uno quiere".</p>
+<p>Por cierto, la primera en ser invocada fue Mei; la segunda fue Aoyuki, la "Genio Domadora de Monstruos", con su sudadera de orejas de gato, baja estatura y poco pecho, nivel 9999; la tercera fue Ellie; y la última fue Nazuna, la "Caballera Vampiro Verdadero", de ojos rojos, cabello plateado y armadura, nivel 9999.</p>
+<p>"Aoyuki-san y esa tonta de Nazuna-san también parecen querer el favor de Light-sama, pero eso es aún más imposible que con Mei-san. Aoyuki-san tiene un cuerpo de niña, así que Light-sama la ve más como una hermana pequeña que como una mujer; y Nazuna-san es directamente una niña tonta…"</p>
+<p>Ellie no pudo evitar poner los ojos en blanco. Normalmente en el "Abismo", cada vez que se encontraba con Nazuna, se burlaba de ella y discutían. Las discusiones entre ambas eran famosas. Pero no es que Ellie odiara a Nazuna. Más bien, hasta sentía cierto respeto por ella.</p>
+<p>"Ciertamente es una cabeza muy ligera, pero Light-sama valora eso. Su tontería y su alegría sostienen el ambiente del 'Abismo' como animadora. Por mucho que yo intente, no podría sustituir a Nazuna-san".</p>
+<p>Como Ellie suponía, Light valoraba mucho la alegría de Nazuna. Era algo natural, e incluso Ellie, con su mente prodigiosa, no podía imitarlo.</p>
+<p>"Pero para ganarse el favor de Light-sama, el que sea demasiado tonta también es un hecho. Al final, mi único rival es Mei-san. …En el amor y en la guerra no hay reglas, y en la guerra, cuantos más aliados capaces, mejor. Si me pongo seria, ¿podría aliarme con Aoyuki-san? Pero a veces ella me mira como si fuera una causa perdida, y eso me preocupa. ¿Estará tramando algo?"</p>
+<p>Aoyuki, con su cuerpo infantil, no podía ser su rival. Como aliada sería una gran ayuda, pero le preocupaba esa mirada que a veces le dirigía. También pensó en los demás habitantes del "Abismo", que tenían nivel 9999, y empezó a considerar a quién podría reclutar para tener ventaja.</p>
+<p>"Por lo pronto, Nazuna-san es imposible. Su capacidad de combate es insuperable, pero es demasiado tonta como para tenerla de aliada".</p>
+<p>Esa misma cualidad era la mejor de Nazuna, pero también era demasiado peligrosa para reclutarla a la ligera.</p>
+<p>"En ese sentido, Light-sama es realmente increíble. Es capaz de controlar a Nazuna-san".</p>
+<p>Volvió a sentir admiración por su señor, el dios al que merecía la pena entregar su vida. Su lealtad se disparó de nuevo.</p>
+<p>"—En fin, primero lo primero: lo importante es llevar a cabo este plan a la perfección. Si ejecuto el 'Plan de Venganza contra Sasha' sin fallos, seguro que Light-sama me elogiará. ¡Y entonces me dará su favor y concebiré a su hijo! ¡Ahhh! ¡No puede haber mayor felicidad para una mujer! Uf, ufufufufufu… Light-sama, le adoro".</p>
+<p>Ellie se sujetó las mejillas con ambas manos y susurró un amor obsesivo y desquiciado hacia Light.</p>
+<p>—¡Kiki kiki!</p>
+<p>Quien respondió a aquellos susurros de amor fue una manada de monstruos simios. Se había adentrado tanto en el bosque virgen, donde ni los aventureros de alto rango se atrevían a pisar, que se había topado con ellos. Eran de nivel 50 aproximadamente, más de cien individuos. Medían más de metro y medio, tenían gran fuerza y, para un aventurero normal, incluso uno solo era peligroso.</p>
+<p>El monstruo simio, de ojos rojos y una boca enorme en el vientre, al ver a Ellie absorta en su éxtasis, la había tomado por "buena comida". Ellie, por su parte…</p>
+<p>—Interrumpir mis susurros de amor a Light-sama por culpa de unas bestias de tan bajo nivel… No lo permitiré.</p>
+<p>—¡Kiki?!</p>
+<p>Los monstruos simios sintieron miedo ante sus ojos, más oscuros que la misma negrura. Incluso su manada, que se alimentaba de monstruos de mayor nivel usando su superioridad numérica y trabajo en equipo, sintió miedo. Al comprender que se enfrentaban a un peligro, se abalanzaron sobre Ellie como flechas, antes de que el peligro las alcanzara.</p>
+<p>—¡Kiki kiki!</p>
+<p>Aunque mataran a unos cuantos, no se detendrían, dispuestos a sacrificarse para acabar con ella. Llenaban casi todo el espacio, excepto el suelo, y se abalanzaban más rápido que el viento. Era un nivel de ataque que haría sucumbir a cualquier aventurero de alto rango.</p>
+<p>Pero… eligieron mal a su oponente.</p>
+<p>—Agujero Negro del Vacío.</p>
+<p>Al chasquear los dedos y pronunciar el conjuro, aparecieron tantos "agujeros negros" como monstruos simios, atrapándolos a todos.</p>
+<p>—¡Kiki! ¿¡Uki kiki!? ¿¡Uki kiki!?</p>
+<p>Los agujeros se adhirieron a sus cuerpos y empezaron a absorberlos como una aspiradora. La fuerza era tal que solo absorbía a los monstruos, sin dejar escapar a ninguno. Los simios se resistían con todas sus fuerzas, pero no pudieron oponerse, y fueron absorbidos uno tras otro por los negros y vacíos agujeros, donde no penetraba ni un rayo de luz. La propia Ellie no sabía a dónde conducían aquellos agujeros. Pero sabía que, sin excepción, quien caía en ellos nunca podía escapar, y solo le quedaba morir en la desesperación. En cuestión de segundos, la manada de más de cien monstruos desapareció como si nunca hubiera estado allí.</p>
+<p>Ellie se alisó el cabello rubio con desgana.</p>
+<p>"Una magia demasiado llamativa podría llamar la atención antes de que empecemos el plan, así que he elegido una discreta… pero es demasiado discreta. Desde luego, esta magia no es adecuada para mí".</p>
+<p>Se quejó con aburrimiento, pero el "Agujero Negro del Vacío" era una magia de aniquilación de nivel estratégico superior. Y la había desplegado al instante, con un chasquido de dedos, sin necesidad de conjuro. Para Ellie, una magia así era como un juego de manos que podía realizar tarareando, sin la ayuda de los libros de magia que la rodeaban. No en vano era la "SÚR, Bruja Prohibida Ellie, nivel 9999".</p>
+<p>"Bueno, me han interrumpido, pero vamos a retomar los preparativos del plan".</p>
+<p>Olvidándose de los monstruos simios que acababa de aniquilar, reanudó su trabajo para su amado señor.</p>
+<p>***</p>
+<p>"Ellie, has vuelto. Me alegra verte".</p>
+<p>"¡Light-sama…!"</p>
+<p>Cuando regresó al "Abismo" tras inspeccionar los preparativos del plan, apareció Light, que estaba en la superficie como aventurero. Por los informes previos sabía que podía regresar al "Abismo" desde el calabozo donde se encontraba usando la carta "Teletransportación", pero no esperaba que viniera a verla a ella. Ante aquella sorpresa, la voz de Ellie se elevó un tono.</p>
+<p>"Quería saber cómo va el plan que te encomendé. ¿Puedo preguntarte ahora?"</p>
+<p>En la superficie llevaba máscara fingiendo tener quemaduras en el rostro, pero en el "Abismo" no hacía falta, así que mostraba su verdadero rostro. Con doce años y su crecimiento detenido, su rostro era andrógino. Era tan bello que uno podía confundirlo con una chica antes que con un chico. Ellie estuvo a punto de extasiarse, pero su fuerte voluntad y lealtad le permitieron responder.</p>
+<p>"Por supuesto. Justo acabo de terminar de inspeccionar el escenario para el 'Plan de Venganza contra Sasha'. Al contrario, ¡quiero que me escuche, Light-sama!"</p>
+<p>"¿Ah, sí? Qué buena suerte. Entonces, ¿puedes contármelo?"</p>
+<p>"¡Sí! Aprovechando, ¿le parece si le informo mientras tomamos el té, solos?"</p>
+<p>Light aceptó la propuesta de Ellie con una sonrisa. Aquella sonrisa hizo que Ellie se derritiera por completo y tuviera que esforzarse por no derrumbarse.</p>
+<p>(¡Ay, Dios! Light-sama con esos ojos brillantes es lo máximo, demasiado sagrado. ¡Tanto que voy a echarme a sangrar! ¡Solo estar al lado de Light-sama hace que mi corazón de doncella lata, late, late! ¡Ahhh, me alegro tanto de estar viva!)</p>
+<p>Aunque Ellie intentó disimularlo, su corazón estaba desbocado de alegría. Aquel día, Ellie, completamente feliz, le informó del progreso del "Plan de Venganza contra Sasha".</p>
+    </div>
+
+    <hr>
+
+    <div class="nav-container">
+        <div class="nav-bottom">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo1e18.html" id="prevLinkBottom" class="nav-btn ">← El asesino de aventureros</a>
+            <span class="chapter-counter" id="chapterCounterBottom">Capítulo 1 - Episodio 19</span>
+            <a href="capitulo1e20.html" id="nextLinkBottom" class="nav-btn ">Retirada y encuentro →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelectBottom">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <div class="floating-buttons">
+        <button class="floating-btn" id="scrollToTop" title="Ir arriba">⬆</button>
+        <button class="floating-btn" id="scrollToBottom" title="Ir abajo">⬇</button>
+    </div>
+
+    <footer>
+        <p>Gacha Infinita © 明鏡シスイ (Meikyō Shisui) | Traducción: Ocholobos</p>
+        <p>Apoya al autor comprando los volúmenes oficiales</p>
+    </footer>
+
+    <script src="data.js"></script>
+    <script>
+        // ========== CONFIGURACIÓN DEL CAPÍTULO ==========
+        const CHAPTER_NUM = 1;
+        const EPISODE_NUM = 19;
+        
+        // ========== NAVEGACIÓN ==========
+        function setupNavigation() {
+            if (typeof GACHA_DATA !== 'undefined') {
+                const currentEpisode = GACHA_DATA.getEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const prevEpisode = GACHA_DATA.getPrevEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const nextEpisode = GACHA_DATA.getNextEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const allEpisodes = GACHA_DATA.getAllEpisodesOrdered();
+                
+                const prevLinks = [document.getElementById('prevLinkTop'), document.getElementById('prevLinkBottom')];
+                const nextLinks = [document.getElementById('nextLinkTop'), document.getElementById('nextLinkBottom')];
+                const counters = [document.getElementById('chapterCounterTop'), document.getElementById('chapterCounterBottom')];
+                
+                counters.forEach(c => { if(c) c.textContent = `${currentEpisode.chapterTitle} - Episodio ${currentEpisode.episodeNum}`; });
+                
+                if (prevEpisode) {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${prevEpisode.chapter}e${prevEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = prevEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `← ${shortTitle}`;
+                        }
+                    });
+                } else {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = '← Sin anterior';
+                        }
+                    });
+                }
+                
+                if (nextEpisode) {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${nextEpisode.chapter}e${nextEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = nextEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `${shortTitle} →`;
+                        }
+                    });
+                } else {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = 'Sin siguiente →';
+                        }
+                    });
+                }
+                
+                const selects = [document.getElementById('chapterSelect'), document.getElementById('chapterSelectBottom')];
+                selects.forEach(select => {
+                    if (!select) return;
+                    let options = '<option value="">📖 Seleccionar episodio...</option>';
+                    for (const ep of allEpisodes) {
+                        const selected = (ep.chapter == CHAPTER_NUM && ep.episodeNum == EPISODE_NUM) ? 'selected' : '';
+                        options += `<option value="capitulo${ep.chapter}e${ep.episodeNum}.html" ${selected}>${ep.chapterTitle} - Episodio ${ep.episodeNum}: ${ep.title}</option>`;
+                    }
+                    select.innerHTML = options;
+                    select.onchange = function() { if(this.value) window.location.href = this.value; };
+                });
+            }
+        }
+        
+        // ========== REGISTRAR LECTURA EN HISTORIAL ==========
+        function markAsRead() {
+            const user = localStorage.getItem('gacha_user');
+            if (!user) return;
+            
+            let history = localStorage.getItem(`gacha_history_${user}`);
+            let historyObj = history ? JSON.parse(history) : { chapters: [] };
+            
+            const readKey = { chapter: CHAPTER_NUM, episode: EPISODE_NUM };
+            historyObj.chapters = historyObj.chapters.filter(item => 
+                !(item.chapter == CHAPTER_NUM && item.episode == EPISODE_NUM)
+            );
+            historyObj.chapters.unshift(readKey);
+            if (historyObj.chapters.length > 20) historyObj.chapters.pop();
+            
+            localStorage.setItem(`gacha_history_${user}`, JSON.stringify(historyObj));
+        }
+        
+        // ========== CONTROLES ==========
+        function initControls() {
+            const savedTheme = localStorage.getItem('gacha_theme');
+            if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+            const savedFont = localStorage.getItem('gacha_fontsize');
+            if (savedFont) document.body.style.fontSize = savedFont + '%';
+            
+            document.getElementById('fontPlus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.min(150, size + 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            document.getElementById('fontMinus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.max(70, size - 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            
+            const themeBtn = document.getElementById('themeToggle');
+            if (document.documentElement.hasAttribute('data-theme')) themeBtn.textContent = '☀️ Modo claro';
+            themeBtn.onclick = () => {
+                const isDark = document.documentElement.hasAttribute('data-theme');
+                if (isDark) {
+                    document.documentElement.removeAttribute('data-theme');
+                    localStorage.setItem('gacha_theme', 'light');
+                    themeBtn.textContent = '🌙 Modo oscuro';
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('gacha_theme', 'dark');
+                    themeBtn.textContent = '☀️ Modo claro';
+                }
+            };
+            
+            document.getElementById('scrollToTop').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('scrollToBottom').onclick = () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+        
+        // ========== INICIALIZACIÓN ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            initControls();
+            setupNavigation();
+            markAsRead();
+            
+            kofiWidgetOverlay.draw('ocholobos', {
+                'type': 'floating-chat',
+                'floating-chat.donateButton.text': 'Apóyame',
+                'floating-chat.donateButton.background-color': '#1a4d5f',
+                'floating-chat.donateButton.text-color': '#ffffff'
+            });
+        });
+    </script>
+</body>
+</html>

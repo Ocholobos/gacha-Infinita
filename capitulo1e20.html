@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retirada y encuentro | Gacha Infinita</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem;
+            line-height: 1.8;
+            background: #faf9f7;
+            color: #2c2b28;
+            transition: all 0.3s ease;
+        }
+        [data-theme="dark"] body {
+            background: #1a1a1a;
+            color: #e5e5e5;
+        }
+        
+        .options-bar {
+            position: sticky;
+            top: 0;
+            background: #faf9f7;
+            border-bottom: 1px solid #e5e0d8;
+            padding: 0.6rem 1rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.8rem;
+            z-index: 100;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        [data-theme="dark"] .options-bar {
+            background: #1a1a1a;
+            border-bottom-color: #404040;
+        }
+        .options-bar button, .options-bar a {
+            background: #eef2f0;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: #1a4d5f;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .options-bar button, [data-theme="dark"] .options-bar a {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .font-size-control {
+            display: flex;
+            gap: 0.3rem;
+            align-items: center;
+        }
+        .font-size-control button {
+            width: 32px;
+            padding: 0.2rem;
+        }
+        
+        .nav-container {
+            margin: 1rem 0;
+        }
+        .nav-center, .nav-bottom {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+        .nav-bottom {
+            margin-top: 1rem;
+        }
+        .nav-btn {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            color: #1a4d5f;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .nav-btn {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .nav-btn:hover {
+            background: #e5e0d8;
+        }
+        .nav-btn.disabled {
+            background: #e5e0d8;
+            color: #9ca3af;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .chapter-counter {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] .chapter-counter {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        .chapter-selector {
+            margin: 0.5rem 0;
+            text-align: center;
+        }
+        .chapter-selector select {
+            background: #eef2f0;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-family: inherit;
+            color: #1a4d5f;
+            cursor: pointer;
+            width: 300px;
+            max-width: 90%;
+        }
+        [data-theme="dark"] .chapter-selector select {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin: 1rem 0 0.25rem;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] h1 {
+            color: #5a9e8c;
+        }
+        .episode-number {
+            color: #6b6a68;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #e5e0d8;
+            padding-bottom: 0.5rem;
+        }
+        [data-theme="dark"] .episode-number {
+            color: #a0a0a0;
+            border-bottom-color: #404040;
+        }
+        .story-content {
+            margin: 1.5rem 0;
+        }
+        .story-content p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+        hr {
+            margin: 2rem 0;
+            border: none;
+            border-top: 1px solid #e5e0d8;
+        }
+        [data-theme="dark"] hr {
+            border-top-color: #404040;
+        }
+        
+        .floating-buttons {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+        .floating-btn {
+            background: #1a4d5f;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.8;
+        }
+        [data-theme="dark"] .floating-btn {
+            background: #5a9e8c;
+        }
+        .floating-btn:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        
+        .toast-message {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: #1a4d5f;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            z-index: 1000;
+            animation: fadeOut 3s ease forwards;
+        }
+        [data-theme="dark"] .toast-message {
+            background: #5a9e8c;
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            70% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+        
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            border-top: 1px solid #e5e0d8;
+            padding-top: 1.5rem;
+        }
+        [data-theme="dark"] footer {
+            border-top-color: #404040;
+        }
+        
+        @media (max-width: 600px) {
+            body { padding: 0.5rem; }
+            .nav-center, .nav-bottom { flex-direction: column; gap: 0.5rem; }
+            .floating-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                bottom: 70px;
+                right: 15px;
+            }
+        }
+    </style>
+    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+</head>
+<body>
+    <div class="options-bar">
+        <div class="font-size-control">
+            <button id="fontMinus">A-</button>
+            <button id="fontPlus">A+</button>
+        </div>
+        <a href="index.html">📚 Índice</a>
+        <button id="themeToggle">🌙 Modo oscuro</button>
+    </div>
+
+    <div class="nav-container">
+        <div class="nav-center">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo1e19.html" id="prevLinkTop" class="nav-btn ">← La Bruja Prohibida Ellie</a>
+            <span class="chapter-counter" id="chapterCounterTop">Capítulo 1 - Episodio 20</span>
+            <a href="capitulo1e21.html" id="nextLinkTop" class="nav-btn ">El orgullo del hermano →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelect">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <h1>Retirada y encuentro</h1>
+    <div class="episode-number">Capítulo 1 - Episodio 20</div>
+
+    <div class="story-content">
+        <p>—El tiempo retrocede un poco.</p>
+<p>—Oigan, ¿ustedes piensan quedarse aquí?</p>
+<p>Elio, el aventurero de pelo rojo, y los demás acababan de terminar de preparar el campamento para pasar la noche en el primer piso del calabozo cuando un grupo de aventureros humanos de mediana edad con aspecto veterano se acercó a hablarles. Uno de ellos se acercó lo suficiente para que se oyera su voz, con las manos abiertas en señal de que no tenían intención de pelear. Elio y los demás, ante algo tan inesperado, se pusieron en guardia, desconcertados.</p>
+<p>El aventurero que les había hablado, tratando de no alarmarlos, les dijo con voz calmada:</p>
+<p>—Perdón, no venimos a buscar pelea ni a molestaros. Es que como parece que aún no lo sabéis, he pensado que, como compañeros aventureros, debía advertíroslo.</p>
+<p>Según el aventurero de mediana edad, al parecer varios aventureros habían sido asesinados en el segundo piso y posteriores. No era extraño que los aventureros perdieran la vida dentro del calabozo, pero el problema era que los habían matado no monstruos, sino otros aventureros. Un grupo mixto de enanos y hombres bestia, que había recibido un encargo confidencial del Gremio de Aventureros, había investigado los lugares donde se habían producido los incidentes. Los resultados de la investigación confirmaban que había un aventurero que andaba matando a otros aventureros.</p>
+<p>—Nosotros nos enteramos por casualidad porque estábamos cerca. Seguro que el hombre bestia que ha ido a la superficie ha informado de ello al gremio. Lo más probable es que pongan una recompensa por el "asesino de aventureros". Tarde o temprano lo capturarán o lo matarán. Pero llevará tiempo. Nosotros no queríamos pasar la noche en un calabozo donde hay un loco que mata a sus compañeros, así que hemos vuelto. Por vuestro bien, os aconsejo que esta noche salgáis también del calabozo.</p>
+<p>—G-gracias por avisarnos.</p>
+<p>—Ah, por eso un aventurero hombre bestia iba corriendo hacia la entrada del calabozo.</p>
+<p>Gimra, el bromista, recordó que mientras montaban la tienda, un aventurero hombre bestia había pasado a toda velocidad. Como solo les echó un vistazo y siguió corriendo como si hubiera perdido el interés, no le habían dado importancia. Al oírlo, el aventurero de mediana edad chasqueó la lengua.</p>
+<p>—¿Es que discrimina a los humanos? Ni siquiera nos avisó… Maldición. Que al menos respetara un mínimo de camaradería entre aventureros. Últimamente la discriminación contra los humanos es insoportable.</p>
+<p>—P-pero, ¿cómo saben que los mató un aventurero? Podría haber sido un monstruo.</p>
+<p>Elio, aunque intimidado, preguntó con timidez al aventurero de mediana edad, que había escupido con evidente desagrado. Éste esbozó una sonrisa áspera como si dijera "buena pregunta".</p>
+<p>—Es sencillo. Vimos los cadáveres de los aventureros asesinados y había señales de que habían usado varios tipos de magia de ataque, como quemaduras o congelación. ¿Crees que hay algún monstruo en el segundo o tercer piso que pueda usar varios tipos de magia de ataque? Además, no había huellas de nadie más aparte de los aventureros asesinados. El grupo de enanos y hombres bestia que investigó también está de acuerdo. Es decir, es posible que un mago de nivel táctico que pueda usar varios tipos de magia y volar vaya en grupo a atacar. ¿Entendéis por qué hemos huido con el rabo entre las piernas?</p>
+<p>—H-hermano…</p>
+<p>Miya, su hermana, que había ido a la escuela de magia, comprendió perfectamente la amenaza que suponía si era cierto lo que decía aquel aventurero. Palideció.</p>
+<p>Si era cierto lo que decía, había al menos un mago de primera clase capaz de usar magia de nivel táctico superior, magia de vuelo. Por muchos que fueran, no podían ganar. Si atacaba volando, no podrían hacer nada.</p>
+<p>—Parece que la maga entiende bien la situación. Os aconsejo: no acampéis hoy, salid del calabozo. Y al salir, si veis a algún aventurero que no sepa lo que pasa, avisadle, sea de la raza que sea.</p>
+<p>—E-entendido.</p>
+<p>El aventurero mayor le había pedido un favor, y Elio, aunque se quedó sin palabras, asintió. El aventurero de mediana edad esbozó otra sonrisa varonil y regresó con sus compañeros para continuar hacia la entrada. Los jóvenes que quedaban en el lugar, tras despedirlos con la mirada, comenzaron a discutir.</p>
+<p>—Bueno, ¿qué hacemos, jefe? Habíamos llegado hasta aquí para bajar al segundo piso, pero, ¿seguimos el consejo del viejo y nos retiramos?</p>
+<p>Esta vez, Elio y los demás habían avanzado evitando todo combate para adentrarse en el segundo piso. Estaban justo antes del final del primer piso. Si pasaban la noche y empezaban a andar por la mañana, podrían llegar al segundo piso sobre el mediodía. Si regresaban ahora, seguro que salían perdiendo.</p>
+<p>Las miradas de los miembros del grupo se centraron en Elio, el líder.</p>
+<p>—…Sigamos el consejo y volvamos a la entrada. Es un palo perder lo de hoy, pero no podemos arriesgar la vida.</p>
+<p>—Y-yo también estoy de acuerdo con mi hermano.</p>
+<p>—Yo también, jefe. ¿Tú también, Wady?</p>
+<p>—(Asiente, asiente).</p>
+<p>El callado Wady asintió en silencio. Así que todos estuvieron de acuerdo. Nadie se opuso. Poder tomar la decisión de retirarse sin contratiempos hizo que Elio suspirara aliviado.</p>
+<p>—Entonces, preparemos la retirada. Gimra y Wady, recoged la tienda. Miya y yo recogeremos el equipaje. No tenemos mucho tiempo antes de que anochezca, así que dense prisa.</p>
+<p>Los cuatro asintieron a las indicaciones de Elio y se pusieron manos a la obra. Como eran amigos de la infancia que habían crecido juntos, estaban muy coordinados. Terminaron de recoger todo en una vez y media su velocidad habitual, y se dirigieron a la salida del primer piso.</p>
+<p>—Alejémonos todo lo posible de las escaleras del segundo piso. Si los crímenes se cometen en el segundo piso o más abajo, cuanto más lejos estemos de las escaleras, menos probabilidades tendremos de toparnos con el culpable.</p>
+<p>Los demás estuvieron de acuerdo con Elio y siguieron caminando hacia la salida. Por suerte, no se encontraron con ningún monstruo y pudieron regresar… pero el cansancio del día se había acumulado y no habían avanzado ni la mitad de lo esperado. Ya estaba completamente oscuro, y si seguían avanzando con la fatiga acumulada, no podrían reaccionar bien si los atacaba un monstruo.</p>
+<p>—Jefe, ¿qué hacemos? ¿Seguimos o acampamos por seguridad?</p>
+<p>—…………</p>
+<p>Elio dudaba, sin saber qué era mejor. Entonces, de repente, una voz les llegó desde detrás.</p>
+<p>—¿Qué hacen ustedes en un sitio como este?</p>
+<p>—¡!?</p>
+<p>Alguien les había hablado por la espalda. Estaban vigilando los alrededores por si los atacaba un monstruo, pero sin que lo advirtieran, un aventurero con capucha se había plantado allí y les había hablado. Elio y los demás se sorprendieron tanto que contuvieron la respiración. El aventurero, que por la voz parecía un hombre, volvió a preguntar sin inmutarse.</p>
+<p>—Están parados en medio de la nada. ¿Les ha pasado algo?</p>
+<p>—N-no es eso… solo estábamos descansando porque estábamos cansados de caminar.</p>
+<p>—H-hermano, mira…</p>
+<p>—¿Eh? Ah.</p>
+<p>Su hermana le dio un codazo por la espalda, y Elio, extrañado, se giró y de pronto recordó las palabras del aventurero de mediana edad: "Al salir, si veis a algún aventurero que no sepa lo que pasa, avisadle, sea de la raza que sea". Rápidamente, se lo contó al aventurero que tenían delante.</p>
+<p>—Oiga, ¿sabe lo del "asesino de aventureros"?</p>
+<p>—¿"Asesino de aventureros"?</p>
+<p>El hombre encapuchado inclinó la cabeza. Al ver que no lo sabía, Elio y los demás le explicaron la situación con todo detalle. Había alguien que mataba a sus compañeros en el segundo piso y posteriores. Podía ser más de una persona. Su poder era de nivel de mago táctico. Le advirtieron seriamente que era peligroso pasar la noche en el calabozo hasta que lo capturaran. El otro asintió varias veces, como si estuviera impresionado.</p>
+<p>—Ya veo… Por eso estaban en retirada, porque temían por su seguridad.</p>
+<p>—Sí, así es. ¿Y usted?</p>
+<p>—Yo andaba buscando presa y me fijé en ustedes porque estaban parados en un sitio extraño, así que me acerqué a preguntar.</p>
+<p>—Ya veo, siento haberle preocupado.</p>
+<p>Elio y los demás, pensando que aquel hombre era un aventurero normal, se relajaron. Pero esa sensación de seguridad se desvaneció al instante con las siguientes palabras del encapuchado.</p>
+<p>—No esperaba que el Gremio de Aventureros reaccionara tan rápido. Parece que es una organización más seria de lo que creía. A partir de ahora tendré que tener más cuidado con el sigilo.</p>
+<p>—¿Eh?</p>
+<p>De repente, el hombre encapuchado les dirigió una intensa intención asesina. Lentamente, desenvainó la gran espada que llevaba a la espalda, con una risa siniestra.</p>
+<p>—Por ahora, aplastaré a estos insectos esta noche.</p>
+<p>El elfo Kaito empuñó con ambas manos la espada de nivel Fantasmal 'Grandius', con una alegría siniestra.</p>
+    </div>
+
+    <hr>
+
+    <div class="nav-container">
+        <div class="nav-bottom">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo1e19.html" id="prevLinkBottom" class="nav-btn ">← La Bruja Prohibida Ellie</a>
+            <span class="chapter-counter" id="chapterCounterBottom">Capítulo 1 - Episodio 20</span>
+            <a href="capitulo1e21.html" id="nextLinkBottom" class="nav-btn ">El orgullo del hermano →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelectBottom">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <div class="floating-buttons">
+        <button class="floating-btn" id="scrollToTop" title="Ir arriba">⬆</button>
+        <button class="floating-btn" id="scrollToBottom" title="Ir abajo">⬇</button>
+    </div>
+
+    <footer>
+        <p>Gacha Infinita © 明鏡シスイ (Meikyō Shisui) | Traducción: Ocholobos</p>
+        <p>Apoya al autor comprando los volúmenes oficiales</p>
+    </footer>
+
+    <script src="data.js"></script>
+    <script>
+        // ========== CONFIGURACIÓN DEL CAPÍTULO ==========
+        const CHAPTER_NUM = 1;
+        const EPISODE_NUM = 20;
+        
+        // ========== NAVEGACIÓN ==========
+        function setupNavigation() {
+            if (typeof GACHA_DATA !== 'undefined') {
+                const currentEpisode = GACHA_DATA.getEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const prevEpisode = GACHA_DATA.getPrevEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const nextEpisode = GACHA_DATA.getNextEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const allEpisodes = GACHA_DATA.getAllEpisodesOrdered();
+                
+                const prevLinks = [document.getElementById('prevLinkTop'), document.getElementById('prevLinkBottom')];
+                const nextLinks = [document.getElementById('nextLinkTop'), document.getElementById('nextLinkBottom')];
+                const counters = [document.getElementById('chapterCounterTop'), document.getElementById('chapterCounterBottom')];
+                
+                counters.forEach(c => { if(c) c.textContent = `${currentEpisode.chapterTitle} - Episodio ${currentEpisode.episodeNum}`; });
+                
+                if (prevEpisode) {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${prevEpisode.chapter}e${prevEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = prevEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `← ${shortTitle}`;
+                        }
+                    });
+                } else {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = '← Sin anterior';
+                        }
+                    });
+                }
+                
+                if (nextEpisode) {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${nextEpisode.chapter}e${nextEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = nextEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `${shortTitle} →`;
+                        }
+                    });
+                } else {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = 'Sin siguiente →';
+                        }
+                    });
+                }
+                
+                const selects = [document.getElementById('chapterSelect'), document.getElementById('chapterSelectBottom')];
+                selects.forEach(select => {
+                    if (!select) return;
+                    let options = '<option value="">📖 Seleccionar episodio...</option>';
+                    for (const ep of allEpisodes) {
+                        const selected = (ep.chapter == CHAPTER_NUM && ep.episodeNum == EPISODE_NUM) ? 'selected' : '';
+                        options += `<option value="capitulo${ep.chapter}e${ep.episodeNum}.html" ${selected}>${ep.chapterTitle} - Episodio ${ep.episodeNum}: ${ep.title}</option>`;
+                    }
+                    select.innerHTML = options;
+                    select.onchange = function() { if(this.value) window.location.href = this.value; };
+                });
+            }
+        }
+        
+        // ========== REGISTRAR LECTURA EN HISTORIAL ==========
+        function markAsRead() {
+            const user = localStorage.getItem('gacha_user');
+            if (!user) return;
+            
+            let history = localStorage.getItem(`gacha_history_${user}`);
+            let historyObj = history ? JSON.parse(history) : { chapters: [] };
+            
+            const readKey = { chapter: CHAPTER_NUM, episode: EPISODE_NUM };
+            historyObj.chapters = historyObj.chapters.filter(item => 
+                !(item.chapter == CHAPTER_NUM && item.episode == EPISODE_NUM)
+            );
+            historyObj.chapters.unshift(readKey);
+            if (historyObj.chapters.length > 20) historyObj.chapters.pop();
+            
+            localStorage.setItem(`gacha_history_${user}`, JSON.stringify(historyObj));
+        }
+        
+        // ========== CONTROLES ==========
+        function initControls() {
+            const savedTheme = localStorage.getItem('gacha_theme');
+            if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+            const savedFont = localStorage.getItem('gacha_fontsize');
+            if (savedFont) document.body.style.fontSize = savedFont + '%';
+            
+            document.getElementById('fontPlus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.min(150, size + 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            document.getElementById('fontMinus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.max(70, size - 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            
+            const themeBtn = document.getElementById('themeToggle');
+            if (document.documentElement.hasAttribute('data-theme')) themeBtn.textContent = '☀️ Modo claro';
+            themeBtn.onclick = () => {
+                const isDark = document.documentElement.hasAttribute('data-theme');
+                if (isDark) {
+                    document.documentElement.removeAttribute('data-theme');
+                    localStorage.setItem('gacha_theme', 'light');
+                    themeBtn.textContent = '🌙 Modo oscuro';
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('gacha_theme', 'dark');
+                    themeBtn.textContent = '☀️ Modo claro';
+                }
+            };
+            
+            document.getElementById('scrollToTop').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('scrollToBottom').onclick = () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+        
+        // ========== INICIALIZACIÓN ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            initControls();
+            setupNavigation();
+            markAsRead();
+            
+            kofiWidgetOverlay.draw('ocholobos', {
+                'type': 'floating-chat',
+                'floating-chat.donateButton.text': 'Apóyame',
+                'floating-chat.donateButton.background-color': '#1a4d5f',
+                'floating-chat.donateButton.text-color': '#ffffff'
+            });
+        });
+    </script>
+</body>
+</html>

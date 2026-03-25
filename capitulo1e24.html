@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cacería del "Asesino de aventureros" 2 | Gacha Infinita</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem;
+            line-height: 1.8;
+            background: #faf9f7;
+            color: #2c2b28;
+            transition: all 0.3s ease;
+        }
+        [data-theme="dark"] body {
+            background: #1a1a1a;
+            color: #e5e5e5;
+        }
+        
+        .options-bar {
+            position: sticky;
+            top: 0;
+            background: #faf9f7;
+            border-bottom: 1px solid #e5e0d8;
+            padding: 0.6rem 1rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.8rem;
+            z-index: 100;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        [data-theme="dark"] .options-bar {
+            background: #1a1a1a;
+            border-bottom-color: #404040;
+        }
+        .options-bar button, .options-bar a {
+            background: #eef2f0;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: #1a4d5f;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .options-bar button, [data-theme="dark"] .options-bar a {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .font-size-control {
+            display: flex;
+            gap: 0.3rem;
+            align-items: center;
+        }
+        .font-size-control button {
+            width: 32px;
+            padding: 0.2rem;
+        }
+        
+        .nav-container {
+            margin: 1rem 0;
+        }
+        .nav-center, .nav-bottom {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+        .nav-bottom {
+            margin-top: 1rem;
+        }
+        .nav-btn {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            color: #1a4d5f;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .nav-btn {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .nav-btn:hover {
+            background: #e5e0d8;
+        }
+        .nav-btn.disabled {
+            background: #e5e0d8;
+            color: #9ca3af;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .chapter-counter {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] .chapter-counter {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        .chapter-selector {
+            margin: 0.5rem 0;
+            text-align: center;
+        }
+        .chapter-selector select {
+            background: #eef2f0;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-family: inherit;
+            color: #1a4d5f;
+            cursor: pointer;
+            width: 300px;
+            max-width: 90%;
+        }
+        [data-theme="dark"] .chapter-selector select {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin: 1rem 0 0.25rem;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] h1 {
+            color: #5a9e8c;
+        }
+        .episode-number {
+            color: #6b6a68;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #e5e0d8;
+            padding-bottom: 0.5rem;
+        }
+        [data-theme="dark"] .episode-number {
+            color: #a0a0a0;
+            border-bottom-color: #404040;
+        }
+        .story-content {
+            margin: 1.5rem 0;
+        }
+        .story-content p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+        hr {
+            margin: 2rem 0;
+            border: none;
+            border-top: 1px solid #e5e0d8;
+        }
+        [data-theme="dark"] hr {
+            border-top-color: #404040;
+        }
+        
+        .floating-buttons {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+        .floating-btn {
+            background: #1a4d5f;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.8;
+        }
+        [data-theme="dark"] .floating-btn {
+            background: #5a9e8c;
+        }
+        .floating-btn:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        
+        .toast-message {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: #1a4d5f;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            z-index: 1000;
+            animation: fadeOut 3s ease forwards;
+        }
+        [data-theme="dark"] .toast-message {
+            background: #5a9e8c;
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            70% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+        
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            border-top: 1px solid #e5e0d8;
+            padding-top: 1.5rem;
+        }
+        [data-theme="dark"] footer {
+            border-top-color: #404040;
+        }
+        
+        @media (max-width: 600px) {
+            body { padding: 0.5rem; }
+            .nav-center, .nav-bottom { flex-direction: column; gap: 0.5rem; }
+            .floating-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                bottom: 70px;
+                right: 15px;
+            }
+        }
+    </style>
+    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+</head>
+<body>
+    <div class="options-bar">
+        <div class="font-size-control">
+            <button id="fontMinus">A-</button>
+            <button id="fontPlus">A+</button>
+        </div>
+        <a href="index.html">📚 Índice</a>
+        <button id="themeToggle">🌙 Modo oscuro</button>
+    </div>
+
+    <div class="nav-container">
+        <div class="nav-center">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo1e23.html" id="prevLinkTop" class="nav-btn ">← Cacería del "Asesino de aventureros" 1</a>
+            <span class="chapter-counter" id="chapterCounterTop">Capítulo 1 - Episodio 24</span>
+            <a href="capitulo1e25.html" id="nextLinkTop" class="nav-btn ">Cacería del "Asesino de aventureros" 3 →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelect">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <h1>Cacería del "Asesino de aventureros" 2</h1>
+    <div class="episode-number">Capítulo 1 - Episodio 24</div>
+
+    <div class="story-content">
+        <p>—¡Maldición! ¡Maldición! ¡Maldita sea! ¿¡Dónde se metió esa maldita niña!?</p>
+<p>El elfo Kaito estaba desesperado. Había estado matando aventureros, incluidos humanos, aferrándose a los rumores para superar su límite de crecimiento. Hoy también se había acercado a los aventureros humanos Elio y los demás para matarlos, pero uno de ellos había escapado. Kaito era un elfo de nivel 1500, y sus oponentes eran humanos que probablemente ni siquiera llegaban al nivel 20. A pesar de eso, tras herir su orgullo, se enfureció y atacó con la espada preciada "Grandius", pero de repente una luz brilló ante sus ojos, y cuando reaccionó, su espada cortaba el aire. Cuando la luz desapareció, la muchacha a la que había acorralado no estaba por ningún lado.</p>
+<p>Ante un fenómeno tan inesperado e incomprensible, se quedó paralizado más de un minuto. Cuando se dio cuenta de que había dejado escapar a una muchacha que conocía su rostro, especie, rasgos y método de combate, ya era tarde.</p>
+<p>Con la espada preciada "Grandius", separó las hojas, montó en una y voló alrededor buscando algún rastro, pero no encontró ni rastro de la chica que había escapado, ni siquiera de otros aventureros. Volando en el aire, se mordía la uña del pulgar con frustración.</p>
+<p>—No hay rastro de nadie por aquí. Aunque se hubiera escondido con algún objeto mágico, no podría escapar a mi percepción. Entonces, ¿se teletransportó con algún objeto? ¿Ya estará fuera del calabozo? ¡No, no, no! ¡Es imposible! ¡Una niña humana tan sucia no puede tener un objeto mágico de tan alto nivel! ¡Si lo tuviera, por qué no lo habría usado antes!</p>
+<p>Estaba en una situación de vida o muerte. Si él mismo estuviera en esa situación, no dudaría en usar cualquier objeto, por raro que fuera. "Quizás esa luz solo fue para despistarme, y escapó por otro lado. Viendo lo de la bomba de humo, es posible. Pero entonces, ¿por qué no hay rastro de ella? ¡Ah! ¿¡Habrá vuelto con sus compañeros!?"</p>
+<p>Kaito había estado buscando en dirección a la salida del calabozo, asumiendo inconscientemente que, si él estuviera en su lugar, iría hacia allí. "¿¡Pretende hacerme creer que va a la salida para volver con sus compañeros, curarlos si están al borde de la muerte, conseguir algún objeto útil y luego intentar escapar!? ¡Maldición! Los humanos inferiores son débiles como insectos, pero son muy astutos".</p>
+<p>Pensándolo bien, como había dejado escapar a Miya y pensaba que los demás estaban a punto de morir, no los había rematado. Kaito cambió rápidamente de rumbo y se dirigió al lugar donde yacían Elio y los demás. Era difícil imaginar que unos jóvenes aventureros novatos, que apenas merodeaban por el primer piso, tuvieran un objeto de teletransportación de largo alcance. Normalmente, los reyes, nobles, aventureros de alto nivel y grandes comerciantes los llevaban para escapar de situaciones de peligro. Eran muy escasos y no solían salir a subasta. Si se vendiera, daría suficiente dinero para que una familia común viviera durante décadas. Por su rareza, era imposible que unos aventureros novatos tuvieran uno. Era más natural pensar que la había perdido de vista y que había escapado por sus propios medios.</p>
+<p>En pocos minutos, gracias a las hojas de Grandius, pudo regresar al lugar donde ocurrió todo.</p>
+<p>—Tsk, no están.</p>
+<p>Mirando hacia abajo, los jóvenes seguían tendidos. A juzgar por el estado del joven con el que había luchado, que no había rematado, aún respiraba débilmente. Era el hermano de la chica que había escapado. Aunque moriría pronto, podría servir de cebo. Dio vueltas por los alrededores desde el aire, pero no había nadie. Por si acaso, bajó al suelo y, concentrándose, observó atentamente los alrededores para ver si se escondían, pero no había ni rastro de humanos, ni siquiera de monstruos.</p>
+<p>—No hay nadie… No hay nadie. Entonces, ¿dónde se ha metido esa maldita chica? ¿Realmente escapó con un objeto mágico de teletransportación? ¡Es imposible! ¿¡Cómo puede una niña tan sucia tener un objeto tan raro que ni siquiera los miembros de la Orden de los Caballeros Blancos poseen!?</p>
+<p>Pero si no la encontraba después de buscar tanto, solo cabía pensar que había escapado con un objeto de teletransportación. Es decir, era cuestión de tiempo que se supiera en su país natal que él era el "asesino de aventureros" dentro del calabozo.</p>
+<p>Su país natal era el Reino Elfo, gobernado por la Reina Elfa durante generaciones. Originalmente, había robado la espada preciada "Grandius" para superar su límite de crecimiento. El Reino Elfo estaba buscando a Kaito, que había robado la espada, con todas sus fuerzas. Por eso, para escapar de los investigadores, había elegido este calabozo, cerca de la frontera en conflicto entre elfos y enanos. Pretendía encerrarse en el calabozo hasta superar su nivel. Pero al dejar escapar a Miya, seguro que llegaría a su país natal la noticia de que él era el "asesino de aventureros". Para recuperar la espada "Grandius", evitar que se manchara el nombre de su país y que otros lo usaran políticamente, el Reino Elfo enviaría a sus fuerzas más poderosas.</p>
+<p>—¡¿!? ¡La Orden de los Caballeros Blancos… no, el odioso comandante podría venir!</p>
+<p>Recordó la cara engreída de su antiguo jefe, su antiguo hogar, y chasqueó la lengua con rabia, pero también sintió miedo. Según los rumores, el comandante de la Orden de los Caballeros Blancos tenía un nivel superior a 3000. Y vendría con miembros de nivel 2000 y 1500, armados con armas y armaduras del mismo nivel que la espada preciada "Grandius". Kaito sería asesinado sin poder resistirse, para eliminar las pruebas.</p>
+<p>—¡Maldición! ¡Maldición! ¡Maldita sea! ¡Que me maten aquí, a mí, el futuro héroe! ¡No! Tengo que salir del calabozo e irme a otro país. Con la capacidad de vuelo de "Grandius", las fronteras no son un problema. ¿Me voy al Reino Humano, lleno de ellos? No, mejor me voy al territorio de los demonios, para alejarme del Reino Elfo.</p>
+<p>—No, ya no tienes escapatoria.</p>
+<p>—¿¡!?</p>
+<p>Mientras Kaito cavilaba solo, una voz, clara pero lúgubre, como alquitrán, le contradijo. Sobresaltado, se alejó de donde provenía la voz. Sin darse cuenta, había unos humanos conocidos.</p>
+<p>Uno era un humano con una armadura dorada que le cubría todo el cuerpo, una cabeza más alto que Kaito. Otro era una joven bellísima, con la boca cubierta por una bufanda, cuya belleza se notaba incluso en la oscuridad. El último era un muchacho humano, vestido de negro de pies a cabeza, como si se fundiera con la noche, con una máscara de bufón.</p>
+<p>(¿C-cómo se acercaron a mí sin que me diera cuenta? Es una pradera abierta. Si hubiera un caballero con esa armadura dorada tan llamativa, lo habría visto enseguida. ¿Se acercaron desde el aire sin hacer ruido? Pero aunque así fuera, yo, con nivel 1500, no debería haberlo notado. Entonces, ¿cómo…)</p>
+<p>Le habían hecho exactamente lo mismo que él había hecho con los aventureros, acercándose sin hacer ruido ni dejar rastro, pero no tenía ni idea de cómo lo habían hecho. Jamás se enteraría de que lo habían superado con una técnica más avanzada que la suya: la combinación de las cartas de la Gacha Infinita "SR, Vuelo" y "SSR, Ocultar Presencia".</p>
+<p>El muchacho de la máscara, ante él, habló:</p>
+<p>—Ahora que te veo de cerca, eres el que se coló la primera vez que intentamos entrar al calabozo. Quién iba a decir que tú eras el "asesino de aventureros".</p>
+<p>—¡Oh! ¡Pensaba que me sonaba tu forma de ser! ¡Mi señor, qué buena memoria tiene, recordando algo de hace casi un mes!</p>
+<p>—¡Como era de esperar de Dark-sama! ¡Qué memoria tan prodigiosa!</p>
+<p>El caballero dorado y la joven de belleza increíble, como una princesa hada, alababan a coro al muchacho al que llamaban "Dark". Kaito también recordó quiénes eran.</p>
+<p>(¡Ah! ¿Son aquellos insolentes humanos inferiores que me llamaron la atención la primera vez que vine al calabozo?)</p>
+<p>Al recordar, sintió la humillación de hace un mes, y también recordó el deseo lujurioso que había sentido por aquella joven de belleza sin igual, ni siquiera en su país. La joven de piel morena y cabello plateado a la que pensaba "tomar como sirvienta personal". Por un momento, su cuerpo se calentó, pero no tenía tiempo para andarse con rodeos.</p>
+<p>—Parece que me confunden, pero yo no hice esto. Me acerqué a investigar porque noté algo raro y ya estaba así. No me acusen sin pruebas.</p>
+<p>—No necesitas mentirnos tan mal. Ya tenemos a Miya-chan a salvo, y ella nos contó todo. Solo hemos venido a capturarte.</p>
+<p>—¡Miya…!?</p>
+<p>Hasta Kaito recordaba el nombre de la humana que había escapado. Al oír las palabras del muchacho de la máscara negra, cambió de expresión. Pero de la sorpresa pasó a una sonrisa de puro placer.</p>
+<p>—¡Qué… qué suerte tengo! ¡Kukuku, jajajaja! ¡Que un imbécil que sabe dónde está esa zorra humana se presente ante mí! ¡Qué suerte! ¡Está claro que la diosa me quiere, que soy el futuro héroe!</p>
+<p>—¿Héroe? ¿Futuro héroe? No, no lo eres.</p>
+<p>El muchacho de negro negó rotundamente las palabras de Kaito, que se reía de su buena fortuna. Kaito le miró, y el muchacho, a través de la máscara, sentenció:</p>
+<p>—Eres solo un escalón para que nosotros subamos de rango. Ya tenemos suficientes pruebas para declarar ante el gremio que eres el principal responsable del "asesino de aventureros". Ahora, aquí mismo, te mataré con mis propias manos. Jamás dejaré con vida a alguien que atenta contra los humanos y lastimó a Elio y los demás.</p>
+<p>Dicho esto, el muchacho sacó una carta y murmuró "Liberar". Al mismo tiempo, una luz envolvió a Elio y los demás, curándolos y protegiéndolos.</p>
+<p>—Por supuesto, no dejaré que Gold ni Nemumu, los que están detrás, intervengan. ¿De acuerdo? Ah, pero si este "asesino de aventureros" intenta escapar, podéis impedírselo.</p>
+<p>—¡Entendido, mi señor!</p>
+<p>—Como Dark-sama desee.</p>
+<p>Gold y Nemumu, a sus espaldas, respondieron con tranquilidad. Sus palabras hirieron el orgullo de Kaito.</p>
+<p>—¡In-insectos humanos inferiores, que no me dejarán vivir a mí, un elfo, el futuro héroe!… ¡Te mataré! ¡A ti te arrancaré la piel, te la meteré por la boca y te haré pedazos desde los pies!</p>
+<p>Kaito, encendido en cólera, empuñó con ambas manos la espada preciada de nivel Fantasmal "Grandius". El muchacho de negro, con su bastón en la mano, esbozó una sonrisa bajo la máscara.</p>
+    </div>
+
+    <hr>
+
+    <div class="nav-container">
+        <div class="nav-bottom">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo1e23.html" id="prevLinkBottom" class="nav-btn ">← Cacería del "Asesino de aventureros" 1</a>
+            <span class="chapter-counter" id="chapterCounterBottom">Capítulo 1 - Episodio 24</span>
+            <a href="capitulo1e25.html" id="nextLinkBottom" class="nav-btn ">Cacería del "Asesino de aventureros" 3 →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelectBottom">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <div class="floating-buttons">
+        <button class="floating-btn" id="scrollToTop" title="Ir arriba">⬆</button>
+        <button class="floating-btn" id="scrollToBottom" title="Ir abajo">⬇</button>
+    </div>
+
+    <footer>
+        <p>Gacha Infinita © 明鏡シスイ (Meikyō Shisui) | Traducción: Ocholobos</p>
+        <p>Apoya al autor comprando los volúmenes oficiales</p>
+    </footer>
+
+    <script src="data.js"></script>
+    <script>
+        // ========== CONFIGURACIÓN DEL CAPÍTULO ==========
+        const CHAPTER_NUM = 1;
+        const EPISODE_NUM = 24;
+        
+        // ========== NAVEGACIÓN ==========
+        function setupNavigation() {
+            if (typeof GACHA_DATA !== 'undefined') {
+                const currentEpisode = GACHA_DATA.getEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const prevEpisode = GACHA_DATA.getPrevEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const nextEpisode = GACHA_DATA.getNextEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const allEpisodes = GACHA_DATA.getAllEpisodesOrdered();
+                
+                const prevLinks = [document.getElementById('prevLinkTop'), document.getElementById('prevLinkBottom')];
+                const nextLinks = [document.getElementById('nextLinkTop'), document.getElementById('nextLinkBottom')];
+                const counters = [document.getElementById('chapterCounterTop'), document.getElementById('chapterCounterBottom')];
+                
+                counters.forEach(c => { if(c) c.textContent = `${currentEpisode.chapterTitle} - Episodio ${currentEpisode.episodeNum}`; });
+                
+                if (prevEpisode) {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${prevEpisode.chapter}e${prevEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = prevEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `← ${shortTitle}`;
+                        }
+                    });
+                } else {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = '← Sin anterior';
+                        }
+                    });
+                }
+                
+                if (nextEpisode) {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${nextEpisode.chapter}e${nextEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = nextEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `${shortTitle} →`;
+                        }
+                    });
+                } else {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = 'Sin siguiente →';
+                        }
+                    });
+                }
+                
+                const selects = [document.getElementById('chapterSelect'), document.getElementById('chapterSelectBottom')];
+                selects.forEach(select => {
+                    if (!select) return;
+                    let options = '<option value="">📖 Seleccionar episodio...</option>';
+                    for (const ep of allEpisodes) {
+                        const selected = (ep.chapter == CHAPTER_NUM && ep.episodeNum == EPISODE_NUM) ? 'selected' : '';
+                        options += `<option value="capitulo${ep.chapter}e${ep.episodeNum}.html" ${selected}>${ep.chapterTitle} - Episodio ${ep.episodeNum}: ${ep.title}</option>`;
+                    }
+                    select.innerHTML = options;
+                    select.onchange = function() { if(this.value) window.location.href = this.value; };
+                });
+            }
+        }
+        
+        // ========== REGISTRAR LECTURA EN HISTORIAL ==========
+        function markAsRead() {
+            const user = localStorage.getItem('gacha_user');
+            if (!user) return;
+            
+            let history = localStorage.getItem(`gacha_history_${user}`);
+            let historyObj = history ? JSON.parse(history) : { chapters: [] };
+            
+            const readKey = { chapter: CHAPTER_NUM, episode: EPISODE_NUM };
+            historyObj.chapters = historyObj.chapters.filter(item => 
+                !(item.chapter == CHAPTER_NUM && item.episode == EPISODE_NUM)
+            );
+            historyObj.chapters.unshift(readKey);
+            if (historyObj.chapters.length > 20) historyObj.chapters.pop();
+            
+            localStorage.setItem(`gacha_history_${user}`, JSON.stringify(historyObj));
+        }
+        
+        // ========== CONTROLES ==========
+        function initControls() {
+            const savedTheme = localStorage.getItem('gacha_theme');
+            if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+            const savedFont = localStorage.getItem('gacha_fontsize');
+            if (savedFont) document.body.style.fontSize = savedFont + '%';
+            
+            document.getElementById('fontPlus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.min(150, size + 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            document.getElementById('fontMinus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.max(70, size - 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            
+            const themeBtn = document.getElementById('themeToggle');
+            if (document.documentElement.hasAttribute('data-theme')) themeBtn.textContent = '☀️ Modo claro';
+            themeBtn.onclick = () => {
+                const isDark = document.documentElement.hasAttribute('data-theme');
+                if (isDark) {
+                    document.documentElement.removeAttribute('data-theme');
+                    localStorage.setItem('gacha_theme', 'light');
+                    themeBtn.textContent = '🌙 Modo oscuro';
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('gacha_theme', 'dark');
+                    themeBtn.textContent = '☀️ Modo claro';
+                }
+            };
+            
+            document.getElementById('scrollToTop').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('scrollToBottom').onclick = () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+        
+        // ========== INICIALIZACIÓN ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            initControls();
+            setupNavigation();
+            markAsRead();
+            
+            kofiWidgetOverlay.draw('ocholobos', {
+                'type': 'floating-chat',
+                'floating-chat.donateButton.text': 'Apóyame',
+                'floating-chat.donateButton.background-color': '#1a4d5f',
+                'floating-chat.donateButton.text-color': '#ffffff'
+            });
+        });
+    </script>
+</body>
+</html>

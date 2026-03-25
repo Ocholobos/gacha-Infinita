@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charlas de las sirvientas | Gacha Infinita</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem;
+            line-height: 1.8;
+            background: #faf9f7;
+            color: #2c2b28;
+            transition: all 0.3s ease;
+        }
+        [data-theme="dark"] body {
+            background: #1a1a1a;
+            color: #e5e5e5;
+        }
+        
+        .options-bar {
+            position: sticky;
+            top: 0;
+            background: #faf9f7;
+            border-bottom: 1px solid #e5e0d8;
+            padding: 0.6rem 1rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.8rem;
+            z-index: 100;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        [data-theme="dark"] .options-bar {
+            background: #1a1a1a;
+            border-bottom-color: #404040;
+        }
+        .options-bar button, .options-bar a {
+            background: #eef2f0;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: #1a4d5f;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .options-bar button, [data-theme="dark"] .options-bar a {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .font-size-control {
+            display: flex;
+            gap: 0.3rem;
+            align-items: center;
+        }
+        .font-size-control button {
+            width: 32px;
+            padding: 0.2rem;
+        }
+        
+        .nav-container {
+            margin: 1rem 0;
+        }
+        .nav-center, .nav-bottom {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+        .nav-bottom {
+            margin-top: 1rem;
+        }
+        .nav-btn {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            color: #1a4d5f;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .nav-btn {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .nav-btn:hover {
+            background: #e5e0d8;
+        }
+        .nav-btn.disabled {
+            background: #e5e0d8;
+            color: #9ca3af;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .chapter-counter {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] .chapter-counter {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        .chapter-selector {
+            margin: 0.5rem 0;
+            text-align: center;
+        }
+        .chapter-selector select {
+            background: #eef2f0;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-family: inherit;
+            color: #1a4d5f;
+            cursor: pointer;
+            width: 300px;
+            max-width: 90%;
+        }
+        [data-theme="dark"] .chapter-selector select {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin: 1rem 0 0.25rem;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] h1 {
+            color: #5a9e8c;
+        }
+        .episode-number {
+            color: #6b6a68;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #e5e0d8;
+            padding-bottom: 0.5rem;
+        }
+        [data-theme="dark"] .episode-number {
+            color: #a0a0a0;
+            border-bottom-color: #404040;
+        }
+        .story-content {
+            margin: 1.5rem 0;
+        }
+        .story-content p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+        hr {
+            margin: 2rem 0;
+            border: none;
+            border-top: 1px solid #e5e0d8;
+        }
+        [data-theme="dark"] hr {
+            border-top-color: #404040;
+        }
+        
+        .floating-buttons {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+        .floating-btn {
+            background: #1a4d5f;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.8;
+        }
+        [data-theme="dark"] .floating-btn {
+            background: #5a9e8c;
+        }
+        .floating-btn:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        
+        .toast-message {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: #1a4d5f;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            z-index: 1000;
+            animation: fadeOut 3s ease forwards;
+        }
+        [data-theme="dark"] .toast-message {
+            background: #5a9e8c;
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            70% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+        
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            border-top: 1px solid #e5e0d8;
+            padding-top: 1.5rem;
+        }
+        [data-theme="dark"] footer {
+            border-top-color: #404040;
+        }
+        
+        @media (max-width: 600px) {
+            body { padding: 0.5rem; }
+            .nav-center, .nav-bottom { flex-direction: column; gap: 0.5rem; }
+            .floating-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                bottom: 70px;
+                right: 15px;
+            }
+        }
+    </style>
+    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+</head>
+<body>
+    <div class="options-bar">
+        <div class="font-size-control">
+            <button id="fontMinus">A-</button>
+            <button id="fontPlus">A+</button>
+        </div>
+        <a href="index.html">📚 Índice</a>
+        <button id="themeToggle">🌙 Modo oscuro</button>
+    </div>
+
+    <div class="nav-container">
+        <div class="nav-center">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo1e13.html" id="prevLinkTop" class="nav-btn ">← Pulsera de la oración</a>
+            <span class="chapter-counter" id="chapterCounterTop">Capítulo 1 - Episodio 14</span>
+            <a href="capitulo1e15.html" id="nextLinkTop" class="nav-btn ">El nuevo grupo "Bufón Negro" →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelect">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <h1>Charlas de las sirvientas</h1>
+    <div class="episode-number">Capítulo 1 - Episodio 14</div>
+
+    <div class="story-content">
+        <p>En la habitación de las hadas sirvientas subterráneas del "Abismo", se habían reunido las cuatro hadas sirvientas que habitaban allí.</p>
+<p>Las hadas sirvientas normalmente comparten habitaciones de cuatro personas, y cada habitación tiene asignado un turno de trabajo. Hoy era su día libre.</p>
+<p>Las hadas sirvientas tienen nivel 500. Aunque se puede decir que son de las más débiles dentro del "Abismo", su nivel es bastante alto comparado con los aventureros comunes de la superficie. Por eso, la fatiga simple no les preocupa, y su verdadero deseo es trabajar hasta caer muertas por Light, quien las convocó mediante las cartas de la Gacha Infinita. Sin embargo, los días de descanso periódicos están establecidos, e ir en contra de las órdenes de su señor iría contra su propia razón de ser.</p>
+<p>Por eso, sin saber qué hacer con su tiempo libre, se reunieron alrededor de una mesa a charlar desde el mediodía. Sobre la mesa había comida de cartas de rango N (Normal) obtenidas de la Gacha Infinita. Habían creado un sistema donde podían comprar en la cantina estos alimentos de bajo rango.</p>
+<p>El tema, por supuesto, era su amo, su señor, su razón de ser, su dios: Light.</p>
+<p>—Parece que el amo regresará mañana al "Abismo" usando teletransportación.</p>
+<p>Una hada sirvienta, que a pesar de ser increíblemente hermosa quizás por eso parecía carecer de personalidad, dijo mientras tomaba un dulce.</p>
+<p>—Al parecer, en el exterior se puede usar la carta "Teletransportación" sin importar si es dentro o fuera del calabozo. Si la carta hubiera funcionado desde el principio en el "Abismo", nuestro señor no habría tenido que pasar tantas dificultades.</p>
+<p>Una hada sirvienta de aspecto serio que usaba gafas se ajustó inconscientemente la montura y suspiró.</p>
+<p>La hada sirvienta de aspecto juvenil sentada a su lado asintió repetidamente.</p>
+<p>—Lo sé, lo sé. Había oído que los calabozos tienen diferentes características, pero el "Abismo" es especialmente malvado. Como era de esperar del calabozo más grande, más fuerte y más peligroso del mundo. ¡Light-sama, que lo conquistó, es un dios!</p>
+<p>La última de ellas, aunque también tenía un rostro hermoso, llevaba el flequillo largo y tenía un aura un tanto oscura. Pero precisamente por esa sombra, parecía el tipo que podría gustar a los chicos tímidos y de carácter débil.</p>
+<p>—Qu-qué envidia Nemumu-sama, que siempre está al lado del Maestro. Tanta envidia que quiero dar un puñetazo a la pared.</p>
+<p>—Lo sé, lo sé. Entiendo perfectamente ese sentimiento. Si pudiera, me gustaría cambiar con Nemumu-sama y servir al lado de Light-sama.</p>
+<p>—Pero nosotras solo tenemos nivel 500. Incluso si saliéramos a la superficie, solo seríamos una carga para el amo.</p>
+<p>—Ugh... ¿por qué solo tengo nivel 500? Si tuviera un nivel más alto, podría estar en la superficie con mi señor haciendo cosas divertidas, y si surgiera un peligro, podría convertirme en su escudo y caer...</p>
+<p>La hada sirvienta más común se agarró la cabeza y se desplomó sobre la mesa. Su comentario era una forma de pensar muy peligrosa en términos generales, pero para ellas, que habían jurado lealtad absoluta a Light, su invocador, era un pensamiento perfectamente normal. Por eso, nadie le hizo un comentario crítico; al contrario, todos estuvieron muy de acuerdo con la parte de "convertirse en su escudo y caer".</p>
+<p>Básicamente, aquellos que son invocados mediante cartas como ellas no suben de nivel por más monstruos que derroten. Su nivel 500 es fijo.</p>
+<p>Si tuvieran objetos mágicos, podrían aumentar su poder aunque su nivel sea fijo… pero incluso si ellas, hadas sirvientas, aumentaran su poder, sería muy difícil reemplazar a Nemumu, que tiene nivel 5000.</p>
+<p>La hada sirvienta de aspecto más otaku lanzó una bomba aún mayor.</p>
+<p>—Y ademá-á-ás, parece que ahora el Maestro está en una montaña nevada, cazando y matando a unos monstruos llamados yetis. En la montaña nevada, los dos congelándose, abrazándose para calentarse, piel con piel, hombre y mujer, no es normal que no pase nada… ¿No es lo máximo?</p>
+<p>—Si usan una carta de inmunidad total al frío, sería fácil, ¿no?</p>
+<p>La hada sirvienta que se ajustó las gafas destruyó su sueño en un instante.</p>
+<p>—¡No me quites la ilusión! ¡Podría estar abrazada a mi señor! ¡Con solo imaginarlo ya…!</p>
+<p>Imaginando la escena en la que Light la abrazaba, la hada sirvienta que antes estaba desplomada sobre la mesa ahora se abrazó a sí misma, temblando de emoción y placer. Ignorándola, las otras chicas también dijeron lo que pensaban.</p>
+<p>—¡Si pudiera, claro que quiero abrazarme al amo para calentarnos!</p>
+<p>—Yo al revés, me gustaría abrazar a Light-sama por detrás. Así, apretándolo fuerte entre mis brazos, calentando su cuerpo y su corazón helado... sin exagerar, sería lo máximo.</p>
+<p>—A-a-a mí me gustaría que el Maestro me arrancara el uniforme de sirvienta a la fuerza, me dejara desnuda y me abandonara en la montaña nevada.</p>
+<p>—¡¿Eres una pervertida?!</p>
+<p>Las otras tres se unieron para hacerle un comentario crítico. Pero la hada sirvienta de aspecto otaku continuó sin inmutarse.</p>
+<p>—P-pero que el Maestro me quite el uniforme de sirvienta con sus propias manos y me abandone en la montaña nevada, ¿no es una recompensa?</p>
+<p>—Lo entiendo.</p>
+<p>—Lo entiendo.</p>
+<p>—Lo entiendo… pero es demasiado pervertido.</p>
+<p>Después de que todos estuvieran de acuerdo y le hicieran comentarios, la hada sirvienta más común murmuró.</p>
+<p>—Ay… qué pronto volverá el amo al "Abismo". Sé que es imposible que me abrace, pero al menos me gustaría verlo aunque sea una vez. Hace días que no lo veo…</p>
+<p>La hada sirvienta de gafas se ajustó la montura.</p>
+<p>—Ciertamente, aunque sea imposible que nos abrace, al menos nos gustaría verlo, o siquiera oír su voz, para sentir la presencia del amo.</p>
+<p>—Lo sé. Yo también quiero oler el aroma de Light-sama.</p>
+<p>—Me-e-está faltando la dosis de Maestro… ah, ya se acabó. Si no tengo la dosis de Maestro me muero. Que falte el suministro es una violación del tratado militar.</p>
+<p>No sabía qué tratado militar era, pero las otras tres asintieron profundamente como si estuvieran de acuerdo.</p>
+<p>—Por cierto, ¿por qué no eliminan a todos los enemigos de Light-sama en la superficie? Si Light-sama dominara la superficie, todos serían felices, felices. ¿Cuándo llegará ese mundo?</p>
+<p>—¡La verdad! ¡Eso!</p>
+<p>—Que no lo hagan de inmediato es porque el amo tiene sus razones. No es algo que unas sirvientas como nosotras debamos opinar. Nuestra razón de ser es cumplir los deseos del amo.</p>
+<p>La hada sirvienta de gafas corrigió a su compañera, que había hecho un comentario peligroso.</p>
+<p>—Ay, qué pronto quiero ver a mi señor.</p>
+<p>Ante esta frase, las otras tres asintieron con más fuerza que nunca.</p>
+    </div>
+
+    <hr>
+
+    <div class="nav-container">
+        <div class="nav-bottom">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo1e13.html" id="prevLinkBottom" class="nav-btn ">← Pulsera de la oración</a>
+            <span class="chapter-counter" id="chapterCounterBottom">Capítulo 1 - Episodio 14</span>
+            <a href="capitulo1e15.html" id="nextLinkBottom" class="nav-btn ">El nuevo grupo "Bufón Negro" →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelectBottom">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <div class="floating-buttons">
+        <button class="floating-btn" id="scrollToTop" title="Ir arriba">⬆</button>
+        <button class="floating-btn" id="scrollToBottom" title="Ir abajo">⬇</button>
+    </div>
+
+    <footer>
+        <p>Gacha Infinita © 明鏡シスイ (Meikyō Shisui) | Traducción: Ocholobos</p>
+        <p>Apoya al autor comprando los volúmenes oficiales</p>
+    </footer>
+
+    <script src="data.js"></script>
+    <script>
+        // ========== CONFIGURACIÓN DEL CAPÍTULO ==========
+        const CHAPTER_NUM = 1;
+        const EPISODE_NUM = 14;
+        
+        // ========== NAVEGACIÓN ==========
+        function setupNavigation() {
+            if (typeof GACHA_DATA !== 'undefined') {
+                const currentEpisode = GACHA_DATA.getEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const prevEpisode = GACHA_DATA.getPrevEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const nextEpisode = GACHA_DATA.getNextEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const allEpisodes = GACHA_DATA.getAllEpisodesOrdered();
+                
+                const prevLinks = [document.getElementById('prevLinkTop'), document.getElementById('prevLinkBottom')];
+                const nextLinks = [document.getElementById('nextLinkTop'), document.getElementById('nextLinkBottom')];
+                const counters = [document.getElementById('chapterCounterTop'), document.getElementById('chapterCounterBottom')];
+                
+                counters.forEach(c => { if(c) c.textContent = `${currentEpisode.chapterTitle} - Episodio ${currentEpisode.episodeNum}`; });
+                
+                if (prevEpisode) {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${prevEpisode.chapter}e${prevEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = prevEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `← ${shortTitle}`;
+                        }
+                    });
+                } else {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = '← Sin anterior';
+                        }
+                    });
+                }
+                
+                if (nextEpisode) {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${nextEpisode.chapter}e${nextEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = nextEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `${shortTitle} →`;
+                        }
+                    });
+                } else {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = 'Sin siguiente →';
+                        }
+                    });
+                }
+                
+                const selects = [document.getElementById('chapterSelect'), document.getElementById('chapterSelectBottom')];
+                selects.forEach(select => {
+                    if (!select) return;
+                    let options = '<option value="">📖 Seleccionar episodio...</option>';
+                    for (const ep of allEpisodes) {
+                        const selected = (ep.chapter == CHAPTER_NUM && ep.episodeNum == EPISODE_NUM) ? 'selected' : '';
+                        options += `<option value="capitulo${ep.chapter}e${ep.episodeNum}.html" ${selected}>${ep.chapterTitle} - Episodio ${ep.episodeNum}: ${ep.title}</option>`;
+                    }
+                    select.innerHTML = options;
+                    select.onchange = function() { if(this.value) window.location.href = this.value; };
+                });
+            }
+        }
+        
+        // ========== REGISTRAR LECTURA EN HISTORIAL ==========
+        function markAsRead() {
+            const user = localStorage.getItem('gacha_user');
+            if (!user) return;
+            
+            let history = localStorage.getItem(`gacha_history_${user}`);
+            let historyObj = history ? JSON.parse(history) : { chapters: [] };
+            
+            const readKey = { chapter: CHAPTER_NUM, episode: EPISODE_NUM };
+            historyObj.chapters = historyObj.chapters.filter(item => 
+                !(item.chapter == CHAPTER_NUM && item.episode == EPISODE_NUM)
+            );
+            historyObj.chapters.unshift(readKey);
+            if (historyObj.chapters.length > 20) historyObj.chapters.pop();
+            
+            localStorage.setItem(`gacha_history_${user}`, JSON.stringify(historyObj));
+        }
+        
+        // ========== CONTROLES ==========
+        function initControls() {
+            const savedTheme = localStorage.getItem('gacha_theme');
+            if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+            const savedFont = localStorage.getItem('gacha_fontsize');
+            if (savedFont) document.body.style.fontSize = savedFont + '%';
+            
+            document.getElementById('fontPlus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.min(150, size + 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            document.getElementById('fontMinus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.max(70, size - 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            
+            const themeBtn = document.getElementById('themeToggle');
+            if (document.documentElement.hasAttribute('data-theme')) themeBtn.textContent = '☀️ Modo claro';
+            themeBtn.onclick = () => {
+                const isDark = document.documentElement.hasAttribute('data-theme');
+                if (isDark) {
+                    document.documentElement.removeAttribute('data-theme');
+                    localStorage.setItem('gacha_theme', 'light');
+                    themeBtn.textContent = '🌙 Modo oscuro';
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('gacha_theme', 'dark');
+                    themeBtn.textContent = '☀️ Modo claro';
+                }
+            };
+            
+            document.getElementById('scrollToTop').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('scrollToBottom').onclick = () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+        
+        // ========== INICIALIZACIÓN ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            initControls();
+            setupNavigation();
+            markAsRead();
+            
+            kofiWidgetOverlay.draw('ocholobos', {
+                'type': 'floating-chat',
+                'floating-chat.donateButton.text': 'Apóyame',
+                'floating-chat.donateButton.background-color': '#1a4d5f',
+                'floating-chat.donateButton.text-color': '#ffffff'
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cacería del "Asesino de aventureros" 4 | Gacha Infinita</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem;
+            line-height: 1.8;
+            background: #faf9f7;
+            color: #2c2b28;
+            transition: all 0.3s ease;
+        }
+        [data-theme="dark"] body {
+            background: #1a1a1a;
+            color: #e5e5e5;
+        }
+        
+        .options-bar {
+            position: sticky;
+            top: 0;
+            background: #faf9f7;
+            border-bottom: 1px solid #e5e0d8;
+            padding: 0.6rem 1rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.8rem;
+            z-index: 100;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        [data-theme="dark"] .options-bar {
+            background: #1a1a1a;
+            border-bottom-color: #404040;
+        }
+        .options-bar button, .options-bar a {
+            background: #eef2f0;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: #1a4d5f;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .options-bar button, [data-theme="dark"] .options-bar a {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .font-size-control {
+            display: flex;
+            gap: 0.3rem;
+            align-items: center;
+        }
+        .font-size-control button {
+            width: 32px;
+            padding: 0.2rem;
+        }
+        
+        .nav-container {
+            margin: 1rem 0;
+        }
+        .nav-center, .nav-bottom {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+        .nav-bottom {
+            margin-top: 1rem;
+        }
+        .nav-btn {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            color: #1a4d5f;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .nav-btn {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .nav-btn:hover {
+            background: #e5e0d8;
+        }
+        .nav-btn.disabled {
+            background: #e5e0d8;
+            color: #9ca3af;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .chapter-counter {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] .chapter-counter {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        .chapter-selector {
+            margin: 0.5rem 0;
+            text-align: center;
+        }
+        .chapter-selector select {
+            background: #eef2f0;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-family: inherit;
+            color: #1a4d5f;
+            cursor: pointer;
+            width: 300px;
+            max-width: 90%;
+        }
+        [data-theme="dark"] .chapter-selector select {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin: 1rem 0 0.25rem;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] h1 {
+            color: #5a9e8c;
+        }
+        .episode-number {
+            color: #6b6a68;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #e5e0d8;
+            padding-bottom: 0.5rem;
+        }
+        [data-theme="dark"] .episode-number {
+            color: #a0a0a0;
+            border-bottom-color: #404040;
+        }
+        .story-content {
+            margin: 1.5rem 0;
+        }
+        .story-content p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+        hr {
+            margin: 2rem 0;
+            border: none;
+            border-top: 1px solid #e5e0d8;
+        }
+        [data-theme="dark"] hr {
+            border-top-color: #404040;
+        }
+        
+        .floating-buttons {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+        .floating-btn {
+            background: #1a4d5f;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.8;
+        }
+        [data-theme="dark"] .floating-btn {
+            background: #5a9e8c;
+        }
+        .floating-btn:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        
+        .toast-message {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: #1a4d5f;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            z-index: 1000;
+            animation: fadeOut 3s ease forwards;
+        }
+        [data-theme="dark"] .toast-message {
+            background: #5a9e8c;
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            70% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+        
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            border-top: 1px solid #e5e0d8;
+            padding-top: 1.5rem;
+        }
+        [data-theme="dark"] footer {
+            border-top-color: #404040;
+        }
+        
+        @media (max-width: 600px) {
+            body { padding: 0.5rem; }
+            .nav-center, .nav-bottom { flex-direction: column; gap: 0.5rem; }
+            .floating-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                bottom: 70px;
+                right: 15px;
+            }
+        }
+    </style>
+    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+</head>
+<body>
+    <div class="options-bar">
+        <div class="font-size-control">
+            <button id="fontMinus">A-</button>
+            <button id="fontPlus">A+</button>
+        </div>
+        <a href="index.html">📚 Índice</a>
+        <button id="themeToggle">🌙 Modo oscuro</button>
+    </div>
+
+    <div class="nav-container">
+        <div class="nav-center">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo1e25.html" id="prevLinkTop" class="nav-btn ">← Cacería del "Asesino de aventureros" 3</a>
+            <span class="chapter-counter" id="chapterCounterTop">Capítulo 1 - Episodio 26</span>
+            <a href="capitulo1e27.html" id="nextLinkTop" class="nav-btn ">Cacería del "Asesino de aventureros" 5 →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelect">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <h1>Cacería del "Asesino de aventureros" 4</h1>
+    <div class="episode-number">Capítulo 1 - Episodio 26</div>
+
+    <div class="story-content">
+        <p>El elfo Kaito que gritaba frente a mí era, al parecer, un "Sub-Maestro", descendiente de un "Maestro". Al principio pensaba matarlo para subir nuestro rango de aventureros, pero las circunstancias habían cambiado. Que lo matara no cambiaba, pero en lugar de entregar su cadáver al gremio, me lo llevaría al "Abismo". Debía hacer que soltara toda la información sobre los "Maestros" y los "Sub-Maestros".</p>
+<p>Para asegurarme de inmovilizarlo, me dispuse a atacar.</p>
+<p>—¡Hmph!</p>
+<p>Exhalé ligeramente y salté con agilidad. Aunque no tanto como un guerrero, me había estado entrenando en combate directo en el "Abismo" durante años bajo la tutela de Mei. Aprovechando la diferencia de nivel, aunque él estaba en guardia con su espada, volví a golpearle el abdomen con mi bastón.</p>
+<p>—¡Guh!</p>
+<p>Exhaló con fuerza y cayó de rodillas. Aprovechando el momento, le propiné una patada. Concentrado en el dolor del abdomen, al recibir la patada soltó "Grandius", que rodó por el suelo.</p>
+<p>—Nemumu, recoge esa espada.</p>
+<p>—Entendido, Dark-sama.</p>
+<p>Di la orden mientras me acercaba a Kaito, que yacía en el suelo encorvado. De reojo vi cómo Nemumu sacaba un pañuelo para coger el mango de Grandius. Parecía que no quería tocarlo directamente. No se lo había encargado a Gold porque era el escudero y quería que estuviera ligero de equipamiento para poder moverse rápido en caso de necesidad, pero quizás hubiera sido mejor que lo recogiera él.</p>
+<p>Pensando en ello, sujeté a Kaito por el cogote con el pie.</p>
+<p>—¡Gah!</p>
+<p>—Mejor no te muevas. Si te resistes, podría romperte el cuello sin querer.</p>
+<p>Le amenacé para evitar que se resistiera. La amenaza debió de surtir efecto, porque Kaito, aunque gimoteaba de dolor, apenas se movía, limitándose a fulminarme con la mirada desde abajo. Ignorando su mirada, saqué del bolsillo la carta "SSR, Teletransportación".</p>
+<p>—Teletransportación, al Abismo, liberar.</p>
+<p>Mis palabras envolvieron a los cuatro en una luz, desapareciendo del calabozo en un instante. El lugar donde aparecimos era el conocido campo de entrenamiento subterráneo del "Abismo". Un lugar que conservaba el aspecto rocoso y accidentado del calabozo original.</p>
+<p>Kaito, literalmente "sujeto por el cogote", se sorprendió ante el cambio de escenario y preguntó con voz asombrada bajo la suela de mi pie.</p>
+<p>—¿Dónde es esto? ¡Hace un momento estábamos en la pradera del calabozo!</p>
+<p>—Nos hemos trasladado al "Abismo", donde vivimos. Ya sabes, el calabozo más grande, más fuerte y más peligroso del mundo.</p>
+<p>—¿El "Abismo" del que hablan, ese que está en las profundidades del bosque virgen del Imperio Dragón? ¡Imposible! ¿Acabas de decir que nos hemos trasladado desde el calabozo enano hasta el "Abismo" en un instante?</p>
+<p>Kaito, que se había sorprendido al ver el paisaje cambiado de pradera a roca, ahora me miraba a mí con una expresión que mezclaba asombro y algo más.</p>
+<p>—¿¡Fuisteis vosotros los que le disteis ese objeto mágico de teletransportación a la humana!?</p>
+<p>—Objeto mágico de teletransportación… Sí, desde luego es un objeto mágico.</p>
+<p>No hacía falta explicarle más. Esperaba que me reprochara por haberle permitido escapar a Miya, pero su reacción fue distinta.</p>
+<p>—¡¿Cómo se os ocurre darle un objeto de teletransportación a una novata?! ¡¿Sabéis lo que vale un objeto de teletransportación!?</p>
+<p>—…Ah, sí, he oído que valen bastante.</p>
+<p>Recordé que en la época de la "Reunión de Razas" los aventureros se quejaban de que "querían un objeto de teletransportación". Los objetos de teletransportación, que te permiten moverte al instante a otro lugar, son muy raros y normalmente ni siquiera salen a subasta. Suelen estar en posesión de nobles o aventureros de primer nivel para garantizar su seguridad en caso de apuro, y su precio es tan alto que un aventurero normal no podría pagarlo.</p>
+<p>Lo que le había dado a Miya era la "SSR, Pulsera de la Oración", que no era un objeto de teletransportación, y además, como salía en grandes cantidades de la Gacha Infinita, había perdido la noción de que "en la superficie sería un objeto caro". Pero ni se me ocurría vender las cartas de la Gacha Infinita para conseguir dinero. Si quería dinero, podía vender los lingotes de metal que salían de las cartas. Mientras existiera la posibilidad de que las cartas se usaran en mi contra, no iba a venderlas.</p>
+<p>—Mi señor, ¿preparo té para los invitados…? Aunque no parecen invitados.</p>
+<p>Mei, bromeando a su manera de sirvienta, apareció moviendo su larga cola de caballo.</p>
+<p>—Nya~</p>
+<p>—Light-sama, bienvenido. Parece que trae una criatura extraña.</p>
+<p>—¡Maestro, bienvenido! ¿Pasará la noche aquí? ¡Entonces esta noche duerma conmigo!</p>
+<p>Al verme aparecer, las demás fueron llegando una tras otra. Este era uno de los campos de entrenamiento subterráneos del "Abismo", pero como yo lo usaba principalmente para entrenar, solo unos pocos compañeros podían acceder a él. Aoyuki imitó su maullido de siempre. Ellie dirigió una mirada fría hacia mis pies. Nazuna, al verme después de tanto tiempo, me pidió algo con capricho.</p>
+<p>Al oír sus conversaciones de siempre, no pude evitar esbozar una sonrisa.</p>
+<p>—Ya he vuelto. No hace falta té… porque él es el culpable que atacó a Miya-chan, a su hermano Elio y a otros humanos. Al parecer tiene información sobre los "Maestros", así que lo he traído para sacársela antes de matarlo.</p>
+<p>—¡!</p>
+<p>—¡Hii!</p>
+<p>Mis palabras hicieron que las cuatro dirigieran su atención hacia Kaito, a mis pies. Al recibir sus miradas cargadas de intención asesina, este soltó un pequeño grito y empezó a temblar.</p>
+<p>—Un criminal que atacó a humanos… es decir, un insolente que se ha interpuesto en el camino de mi señor. Si me lo ordena, me encargaré de él, incluida la información. Por supuesto, si mi señor lo desea, le prometo hacerle sufrir hasta que se arrepienta de haber nacido. Por mi camino de sirvienta.</p>
+<p>Mei dijo estas aterradoras palabras con total frialdad.</p>
+<p>—No es necesario que Light-sama se ensucie las manos. Déjeme a mí, Ellie. Haré que esta basura experimente todas las prohibiciones que conozco, de la cabeza a los pies.</p>
+<p>Ellie afirmó con una sonrisa más fría que el hielo.</p>
+<p>—El crimen contra el señor absoluto se paga con un sufrimiento desesperado y con la vida.</p>
+<p>Aoyuki, con la mirada oculta por la capucha, dejó entrever su enfado.</p>
+<p>—¿¡Eh!? ¿Este tipo se metió con mi señor? No lo perdonaré, ¡yo mismo lo aplastaré!</p>
+<p>Nazuna, enfurecida, no se quedó solo en palabras y empezó a acercarse a grandes zancadas. Me alegraba que se enfadaran por mí, pero no podía dejar que lo mataran antes de sacarle la información. Levanté ligeramente la mano para darles instrucciones.</p>
+<p>—Nazuna, como he dicho, parece que sabe cosas sobre los "Maestros", así que lo mataremos después de que suelte todo lo que sabe. Todos, absteneos de tocarle.</p>
+<p>—Entendido, mi señor.</p>
+<p>—Nya~</p>
+<p>—Como Light-sama desee.</p>
+<p>—Si mi señor dice que no le toque, no le tocaré. ¡Porque mi señor lo ordena!</p>
+<p>Ya había advertido a Gold y a Nemumu, así que no habría problema. Con esto, los preparativos previos para extraer la información estaban listos.</p>
+<p>Miré hacia abajo, a Kaito, que seguía sujeto por el cogote bajo mi pie, temblando bajo la presión de Mei y las demás.</p>
+<p>—Bien, ahora vas a responder a nuestras preguntas.</p>
+<p>—¡H-hablaré! ¡Hablaré, así que sálvame! ¡Y-yo soy miembro de la Orden de los Caballeros Blancos del Reino Elfo, fui candidato a próximo comandante! ¡Sé muchas cosas! ¡También sé, a grandes rasgos, los planos del castillo, del cuartel de los caballeros y de otras instalaciones importantes! ¡Tengo más información útil! ¡También le daré mi "Grandius", la que tiene esa chica! ¿Vale? ¿Eh? ¿Eh?</p>
+<p>—…………</p>
+<p>En el calabozo, nos había menospreciado llamándonos "humanos inferiores", pero desde que lo trajimos al "Abismo", su actitud había cambiado por completo. Su cambio de postura me irritó profundamente.</p>
+    </div>
+
+    <hr>
+
+    <div class="nav-container">
+        <div class="nav-bottom">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo1e25.html" id="prevLinkBottom" class="nav-btn ">← Cacería del "Asesino de aventureros" 3</a>
+            <span class="chapter-counter" id="chapterCounterBottom">Capítulo 1 - Episodio 26</span>
+            <a href="capitulo1e27.html" id="nextLinkBottom" class="nav-btn ">Cacería del "Asesino de aventureros" 5 →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelectBottom">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <div class="floating-buttons">
+        <button class="floating-btn" id="scrollToTop" title="Ir arriba">⬆</button>
+        <button class="floating-btn" id="scrollToBottom" title="Ir abajo">⬇</button>
+    </div>
+
+    <footer>
+        <p>Gacha Infinita © 明鏡シスイ (Meikyō Shisui) | Traducción: Ocholobos</p>
+        <p>Apoya al autor comprando los volúmenes oficiales</p>
+    </footer>
+
+    <script src="data.js"></script>
+    <script>
+        // ========== CONFIGURACIÓN DEL CAPÍTULO ==========
+        const CHAPTER_NUM = 1;
+        const EPISODE_NUM = 26;
+        
+        // ========== NAVEGACIÓN ==========
+        function setupNavigation() {
+            if (typeof GACHA_DATA !== 'undefined') {
+                const currentEpisode = GACHA_DATA.getEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const prevEpisode = GACHA_DATA.getPrevEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const nextEpisode = GACHA_DATA.getNextEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const allEpisodes = GACHA_DATA.getAllEpisodesOrdered();
+                
+                const prevLinks = [document.getElementById('prevLinkTop'), document.getElementById('prevLinkBottom')];
+                const nextLinks = [document.getElementById('nextLinkTop'), document.getElementById('nextLinkBottom')];
+                const counters = [document.getElementById('chapterCounterTop'), document.getElementById('chapterCounterBottom')];
+                
+                counters.forEach(c => { if(c) c.textContent = `${currentEpisode.chapterTitle} - Episodio ${currentEpisode.episodeNum}`; });
+                
+                if (prevEpisode) {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${prevEpisode.chapter}e${prevEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = prevEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `← ${shortTitle}`;
+                        }
+                    });
+                } else {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = '← Sin anterior';
+                        }
+                    });
+                }
+                
+                if (nextEpisode) {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${nextEpisode.chapter}e${nextEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = nextEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `${shortTitle} →`;
+                        }
+                    });
+                } else {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = 'Sin siguiente →';
+                        }
+                    });
+                }
+                
+                const selects = [document.getElementById('chapterSelect'), document.getElementById('chapterSelectBottom')];
+                selects.forEach(select => {
+                    if (!select) return;
+                    let options = '<option value="">📖 Seleccionar episodio...</option>';
+                    for (const ep of allEpisodes) {
+                        const selected = (ep.chapter == CHAPTER_NUM && ep.episodeNum == EPISODE_NUM) ? 'selected' : '';
+                        options += `<option value="capitulo${ep.chapter}e${ep.episodeNum}.html" ${selected}>${ep.chapterTitle} - Episodio ${ep.episodeNum}: ${ep.title}</option>`;
+                    }
+                    select.innerHTML = options;
+                    select.onchange = function() { if(this.value) window.location.href = this.value; };
+                });
+            }
+        }
+        
+        // ========== REGISTRAR LECTURA EN HISTORIAL ==========
+        function markAsRead() {
+            const user = localStorage.getItem('gacha_user');
+            if (!user) return;
+            
+            let history = localStorage.getItem(`gacha_history_${user}`);
+            let historyObj = history ? JSON.parse(history) : { chapters: [] };
+            
+            const readKey = { chapter: CHAPTER_NUM, episode: EPISODE_NUM };
+            historyObj.chapters = historyObj.chapters.filter(item => 
+                !(item.chapter == CHAPTER_NUM && item.episode == EPISODE_NUM)
+            );
+            historyObj.chapters.unshift(readKey);
+            if (historyObj.chapters.length > 20) historyObj.chapters.pop();
+            
+            localStorage.setItem(`gacha_history_${user}`, JSON.stringify(historyObj));
+        }
+        
+        // ========== CONTROLES ==========
+        function initControls() {
+            const savedTheme = localStorage.getItem('gacha_theme');
+            if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+            const savedFont = localStorage.getItem('gacha_fontsize');
+            if (savedFont) document.body.style.fontSize = savedFont + '%';
+            
+            document.getElementById('fontPlus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.min(150, size + 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            document.getElementById('fontMinus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.max(70, size - 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            
+            const themeBtn = document.getElementById('themeToggle');
+            if (document.documentElement.hasAttribute('data-theme')) themeBtn.textContent = '☀️ Modo claro';
+            themeBtn.onclick = () => {
+                const isDark = document.documentElement.hasAttribute('data-theme');
+                if (isDark) {
+                    document.documentElement.removeAttribute('data-theme');
+                    localStorage.setItem('gacha_theme', 'light');
+                    themeBtn.textContent = '🌙 Modo oscuro';
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('gacha_theme', 'dark');
+                    themeBtn.textContent = '☀️ Modo claro';
+                }
+            };
+            
+            document.getElementById('scrollToTop').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('scrollToBottom').onclick = () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+        
+        // ========== INICIALIZACIÓN ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            initControls();
+            setupNavigation();
+            markAsRead();
+            
+            kofiWidgetOverlay.draw('ocholobos', {
+                'type': 'floating-chat',
+                'floating-chat.donateButton.text': 'Apóyame',
+                'floating-chat.donateButton.background-color': '#1a4d5f',
+                'floating-chat.donateButton.text-color': '#ffffff'
+            });
+        });
+    </script>
+</body>
+</html>

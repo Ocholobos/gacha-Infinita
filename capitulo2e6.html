@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Orden de los Caballeros Blancos 2 | Gacha Infinita</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem;
+            line-height: 1.8;
+            background: #faf9f7;
+            color: #2c2b28;
+            transition: all 0.3s ease;
+        }
+        [data-theme="dark"] body {
+            background: #1a1a1a;
+            color: #e5e5e5;
+        }
+        
+        .options-bar {
+            position: sticky;
+            top: 0;
+            background: #faf9f7;
+            border-bottom: 1px solid #e5e0d8;
+            padding: 0.6rem 1rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.8rem;
+            z-index: 100;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        [data-theme="dark"] .options-bar {
+            background: #1a1a1a;
+            border-bottom-color: #404040;
+        }
+        .options-bar button, .options-bar a {
+            background: #eef2f0;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: #1a4d5f;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .options-bar button, [data-theme="dark"] .options-bar a {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .font-size-control {
+            display: flex;
+            gap: 0.3rem;
+            align-items: center;
+        }
+        .font-size-control button {
+            width: 32px;
+            padding: 0.2rem;
+        }
+        
+        .nav-container {
+            margin: 1rem 0;
+        }
+        .nav-center, .nav-bottom {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+        .nav-bottom {
+            margin-top: 1rem;
+        }
+        .nav-btn {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            color: #1a4d5f;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .nav-btn {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .nav-btn:hover {
+            background: #e5e0d8;
+        }
+        .nav-btn.disabled {
+            background: #e5e0d8;
+            color: #9ca3af;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .chapter-counter {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] .chapter-counter {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        .chapter-selector {
+            margin: 0.5rem 0;
+            text-align: center;
+        }
+        .chapter-selector select {
+            background: #eef2f0;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-family: inherit;
+            color: #1a4d5f;
+            cursor: pointer;
+            width: 300px;
+            max-width: 90%;
+        }
+        [data-theme="dark"] .chapter-selector select {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin: 1rem 0 0.25rem;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] h1 {
+            color: #5a9e8c;
+        }
+        .episode-number {
+            color: #6b6a68;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #e5e0d8;
+            padding-bottom: 0.5rem;
+        }
+        [data-theme="dark"] .episode-number {
+            color: #a0a0a0;
+            border-bottom-color: #404040;
+        }
+        .story-content {
+            margin: 1.5rem 0;
+        }
+        .story-content p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+        hr {
+            margin: 2rem 0;
+            border: none;
+            border-top: 1px solid #e5e0d8;
+        }
+        [data-theme="dark"] hr {
+            border-top-color: #404040;
+        }
+        
+        .floating-buttons {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+        .floating-btn {
+            background: #1a4d5f;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.8;
+        }
+        [data-theme="dark"] .floating-btn {
+            background: #5a9e8c;
+        }
+        .floating-btn:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        
+        .toast-message {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: #1a4d5f;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            z-index: 1000;
+            animation: fadeOut 3s ease forwards;
+        }
+        [data-theme="dark"] .toast-message {
+            background: #5a9e8c;
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            70% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+        
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            border-top: 1px solid #e5e0d8;
+            padding-top: 1.5rem;
+        }
+        [data-theme="dark"] footer {
+            border-top-color: #404040;
+        }
+        
+        @media (max-width: 600px) {
+            body { padding: 0.5rem; }
+            .nav-center, .nav-bottom { flex-direction: column; gap: 0.5rem; }
+            .floating-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                bottom: 70px;
+                right: 15px;
+            }
+        }
+    </style>
+    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+</head>
+<body>
+    <div class="options-bar">
+        <div class="font-size-control">
+            <button id="fontMinus">A-</button>
+            <button id="fontPlus">A+</button>
+        </div>
+        <a href="index.html">📚 Índice</a>
+        <button id="themeToggle">🌙 Modo oscuro</button>
+    </div>
+
+    <div class="nav-container">
+        <div class="nav-center">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo2e5.html" id="prevLinkTop" class="nav-btn ">← La Orden de los Caballeros Blancos 1</a>
+            <span class="chapter-counter" id="chapterCounterTop">Capítulo 2 - Episodio 6</span>
+            <a href="capitulo2e7.html" id="nextLinkTop" class="nav-btn ">La misteriosa torre gigante →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelect">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <h1>La Orden de los Caballeros Blancos 2</h1>
+    <div class="episode-number">Capítulo 2 - Episodio 6</div>
+
+    <div class="story-content">
+        <p>—Nea, Kia. Limpiad esto.</p>
+<p>—Sí, comandante.</p>
+<p>Los gemelos, regañados por armar jaleo torturando al esclavo humano que habían comprado, se dispusieron de mala gana a deshacerse del cadáver. Cortaron la cuerda que lo sujetaba al tronco, cargaron el cuerpo y se dirigieron a la parte trasera de los aposentos. Sōsha temblaba ante Sharphat, que había matado al esclavo humano de un solo golpe, reventándole la cabeza, sin ninguna vacilación, como si fuera una orden. Al darse cuenta, Sharphat se apresuró a tranquilizarla.</p>
+<p>—Lo siento, Sōsha-chan. No quería asustarte. Pero yo también soy miembro de la orden, y no puedo desobedecer al comandante. Espero que lo entiendas.</p>
+<p>—S-sí, está bien.</p>
+<p>No estaba bien en absoluto, pero no podía decir otra cosa. Sharphat, comprendiendo que estaba aterrada, esbozó una sonrisa y le dio una excusa para marcharse.</p>
+<p>—¿Podrías traer más té? Después, puedes volver a la habitación.</p>
+<p>—¡Sí! Con permiso.</p>
+<p>Con la excusa para alejarse, Sōsha bajó de su regazo y se dirigió rápidamente a la cocina de los aposentos. En cuanto ella se alejó lo suficiente, Hardy comentó:</p>
+<p>—…Kaito era un mediocre de malas maneras y pésima educación, pero fue miembro de la Orden de los Caballeros Blancos. No quiero que otras razas nos tomen por débiles. Nosotros mismos nos encargaremos. No permitiré que se manche aún más el honor de Su Majestad la Reina.</p>
+<p>—Sí. Pero Kaito, al principio subía de nivel a toda velocidad, y se le consideraba "candidato a futuro comandante". Al final, enseguida alcanzó su límite. Deberían hacer mejor las pruebas de selección. La reputación de la Orden de los Caballeros Blancos se devalúa.</p>
+<p>—…¿Y tú no aspiras al puesto?</p>
+<p>—¿Aspirar? ¿Al puesto de comandante? Jajajaja. No, no, imposible.</p>
+<p>Sharphat se rió con ganas y negó con la mano.</p>
+<p>—Si es un blanco que puedo derribar con mi arco, no fallo. Pero no voy a apuntar a lo que no puedo alcanzar. El subcomandante aún parece aspirar al puesto, eso sí.</p>
+<p>Después de reírse, bebió un sorbo de té ya frío.</p>
+<p>—Claro que, cuando entré, yo también apuntaba a lo más alto. Es una tontería propia de la juventud. Como quien despierta la sangre de un "Maestro" y se convierte en "Sub-Maestro", es como un capricho pasajero.</p>
+<p>De las seis razas, los elfos son las que tienen la sangre de los "Maestros" más diluida. No porque desciendan de un "Maestro" son necesariamente más fuertes. Si la sangre se diluye con el tiempo, naturalmente se debilita. Pero de vez en cuando aparecen quienes "despiertan" esa sangre. Son aquellos en quienes la sangre del "Maestro" se manifiesta con más fuerza por herencia genética. Los elfos los llaman "Sub-Maestros".</p>
+<p>Se cree que al despertar como "Sub-Maestro", el nivel sube con más facilidad, se supera con creces el límite de crecimiento de los elfos en general, y se puede seguir creciendo indefinidamente. En realidad, se piensa que el límite de nivel depende de la calidad del individuo y de la pureza de la sangre despertada. Como prueba, Sharphat tiene un nivel alrededor de 2000. El subcomandante Michael ronda los 2500. Los hermanos Nea y Kia se han quedado en unos 1800. Por supuesto, estos niveles no son públicos; son un secreto. Kaito, incapaz de aceptar esta realidad, robó la espada preciada "Grandius" y desapareció.</p>
+<p>Por cierto, los límites máximos aproximados que se manejan comúnmente son: nivel 100 para los humanos, 200-300 para los hombres bestia, 500 para los enanos, 300-1000 para los demonios, y 1000 para los elfos y dragones. Son solo límites generales. Y no todo el mundo puede alcanzarlos. Por poner un ejemplo en Japón: que un atleta olímpico corra los 100 metros en menos de 10 segundos no significa que cualquiera pueda hacerlo con entrenamiento. Y además, estos límites son solo orientativos, no absolutos.</p>
+<p>Los miembros de la Orden de los Caballeros Blancos, "Sub-Maestros" descendientes de "Maestros", son una excepción…, en realidad, se puede afirmar que son "entes anormales". Si los "Sub-Maestros" son así, es inimaginable lo descomunal que sería un "Maestro".</p>
+<p>Formar parte de la Orden de los Caballeros Blancos, la más poderosa del Reino Elfo, es el sueño de todos los jóvenes elfos. Las condiciones de ingreso no se hacen públicas. No pueden hacer público que el requisito sea despertar como "Sub-Maestro". La existencia de los "Maestros" y "Sub-Maestros" es información secreta, conocida solo por unos pocos.</p>
+<p>En ese sentido, la Orden de los Caballeros Blancos se parece más a una unidad especial a la que solo unos elegidos pueden pertenecer, más que a un ejército al uso.</p>
+<p>Sharphat había despertado la sangre del "Maestro" e ingresado en la orden como "Sub-Maestro". Al principio, como él mismo dijo, soñaba con lo más alto, pero...</p>
+<p>—Cuando vi la fuerza del comandante, el "Silencioso Hardy", me di cuenta de que era imposible. Aspirar a su puesto sería una locura.</p>
+<p>Sharphat se rió y lo afirmó. Es una de las conclusiones a las que se llega después de ser aclamado como "genio" o "candidato a futuro comandante": conocer tus límites y disfrutar del presente. Kaito, herido en su orgullo, se desbocó, robó la espada y huyó del país. El subcomandante Michael, por su parte, espera pacientemente su oportunidad para superar a Hardy. Sharphat, por su parte, ha renunciado a eso y disfruta de la vida. Al fin y al cabo, solo son diferencias de actitud.</p>
+<p>Cuando la conversación llegó a su fin, Sōsha, la humana, regresó con el té recién hecho. Tras dejarlo en la mesa, se apresuró a volver a la habitación de Sharphat en los aposentos. Él la despidió con la mano.</p>
+<p>—…Como Nea y Kia, pero no me parece de buen gusto tener por amante a una humana inferior. Mancha la sangre.</p>
+<p>A Hardy, que había despertado la sangre del "Maestro" para convertirse en "Sub-Maestro", no le parecía bien que diluyera ese poder. En los últimos milenios, no ha aparecido ningún "Maestro", y no han podido obtener nueva sangre. Por eso, los "Sub-Maestros" son realmente escasos. Contando a Hardy y los demás, el Reino Elfo solo conoce a menos de veinte. Por eso no pudo evitar hacerle un comentario a Sharphat, que diluía su valioso talento y sangre con una humana inferior. Él, sin preocuparse, le sonrió.</p>
+<p>—¿Ah, sí? Aunque son feas, si eliges bien, hay algunas con cierto encanto que las hace tolerables. Y es divertido verlas envalentonadas porque "un elfo las ha elegido". Además, el esfuerzo que hacen por no ser abandonadas es tan gracioso que me parto de risa. Y no voy a tener hijos con una humana inferior, como teme el comandante, para diluir la sangre. Esto es solo un pasatiempo. Ah, pero últimamente ya me he cansado de ella, así que quizá la mate. Lo último será llevarla fuera de la ciudad, dejarla huir como una presa y matarla. La cara que pone mientras huye suplicando por su vida, preguntando "¡¿por qué me has traicionado?!" es para mearse de risa. Comandante, ¿quiere venir alguna vez? Es divertidísimo, de verdad.</p>
+<p>—…No. La orden de matar a Kaito llegará pronto. Hazlo antes.</p>
+<p>—Sí, sí.</p>
+<p>Hardy rechazó con desinterés. Sharphat no insistió y se retiró.</p>
+<p>Pero al final, la "orden de ejecutar a Kaito" fue cancelada. Aquella noche, un gran terremoto derrumbó parte de los edificios. Días después, en lo profundo del bosque virgen, no muy lejos de la capital del Reino Elfo, apareció una "misteriosa torre gigante".</p>
+    </div>
+
+    <hr>
+
+    <div class="nav-container">
+        <div class="nav-bottom">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo2e5.html" id="prevLinkBottom" class="nav-btn ">← La Orden de los Caballeros Blancos 1</a>
+            <span class="chapter-counter" id="chapterCounterBottom">Capítulo 2 - Episodio 6</span>
+            <a href="capitulo2e7.html" id="nextLinkBottom" class="nav-btn ">La misteriosa torre gigante →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelectBottom">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <div class="floating-buttons">
+        <button class="floating-btn" id="scrollToTop" title="Ir arriba">⬆</button>
+        <button class="floating-btn" id="scrollToBottom" title="Ir abajo">⬇</button>
+    </div>
+
+    <footer>
+        <p>Gacha Infinita © 明鏡シスイ (Meikyō Shisui) | Traducción: Ocholobos</p>
+        <p>Apoya al autor comprando los volúmenes oficiales</p>
+    </footer>
+
+    <script src="data.js"></script>
+    <script>
+        // ========== CONFIGURACIÓN DEL CAPÍTULO ==========
+        const CHAPTER_NUM = 2;
+        const EPISODE_NUM = 6;
+        
+        // ========== NAVEGACIÓN ==========
+        function setupNavigation() {
+            if (typeof GACHA_DATA !== 'undefined') {
+                const currentEpisode = GACHA_DATA.getEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const prevEpisode = GACHA_DATA.getPrevEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const nextEpisode = GACHA_DATA.getNextEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const allEpisodes = GACHA_DATA.getAllEpisodesOrdered();
+                
+                const prevLinks = [document.getElementById('prevLinkTop'), document.getElementById('prevLinkBottom')];
+                const nextLinks = [document.getElementById('nextLinkTop'), document.getElementById('nextLinkBottom')];
+                const counters = [document.getElementById('chapterCounterTop'), document.getElementById('chapterCounterBottom')];
+                
+                counters.forEach(c => { if(c) c.textContent = `${currentEpisode.chapterTitle} - Episodio ${currentEpisode.episodeNum}`; });
+                
+                if (prevEpisode) {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${prevEpisode.chapter}e${prevEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = prevEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `← ${shortTitle}`;
+                        }
+                    });
+                } else {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = '← Sin anterior';
+                        }
+                    });
+                }
+                
+                if (nextEpisode) {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${nextEpisode.chapter}e${nextEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = nextEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `${shortTitle} →`;
+                        }
+                    });
+                } else {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = 'Sin siguiente →';
+                        }
+                    });
+                }
+                
+                const selects = [document.getElementById('chapterSelect'), document.getElementById('chapterSelectBottom')];
+                selects.forEach(select => {
+                    if (!select) return;
+                    let options = '<option value="">📖 Seleccionar episodio...</option>';
+                    for (const ep of allEpisodes) {
+                        const selected = (ep.chapter == CHAPTER_NUM && ep.episodeNum == EPISODE_NUM) ? 'selected' : '';
+                        options += `<option value="capitulo${ep.chapter}e${ep.episodeNum}.html" ${selected}>${ep.chapterTitle} - Episodio ${ep.episodeNum}: ${ep.title}</option>`;
+                    }
+                    select.innerHTML = options;
+                    select.onchange = function() { if(this.value) window.location.href = this.value; };
+                });
+            }
+        }
+        
+        // ========== REGISTRAR LECTURA EN HISTORIAL ==========
+        function markAsRead() {
+            const user = localStorage.getItem('gacha_user');
+            if (!user) return;
+            
+            let history = localStorage.getItem(`gacha_history_${user}`);
+            let historyObj = history ? JSON.parse(history) : { chapters: [] };
+            
+            const readKey = { chapter: CHAPTER_NUM, episode: EPISODE_NUM };
+            historyObj.chapters = historyObj.chapters.filter(item => 
+                !(item.chapter == CHAPTER_NUM && item.episode == EPISODE_NUM)
+            );
+            historyObj.chapters.unshift(readKey);
+            if (historyObj.chapters.length > 20) historyObj.chapters.pop();
+            
+            localStorage.setItem(`gacha_history_${user}`, JSON.stringify(historyObj));
+        }
+        
+        // ========== CONTROLES ==========
+        function initControls() {
+            const savedTheme = localStorage.getItem('gacha_theme');
+            if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+            const savedFont = localStorage.getItem('gacha_fontsize');
+            if (savedFont) document.body.style.fontSize = savedFont + '%';
+            
+            document.getElementById('fontPlus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.min(150, size + 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            document.getElementById('fontMinus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.max(70, size - 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            
+            const themeBtn = document.getElementById('themeToggle');
+            if (document.documentElement.hasAttribute('data-theme')) themeBtn.textContent = '☀️ Modo claro';
+            themeBtn.onclick = () => {
+                const isDark = document.documentElement.hasAttribute('data-theme');
+                if (isDark) {
+                    document.documentElement.removeAttribute('data-theme');
+                    localStorage.setItem('gacha_theme', 'light');
+                    themeBtn.textContent = '🌙 Modo oscuro';
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('gacha_theme', 'dark');
+                    themeBtn.textContent = '☀️ Modo claro';
+                }
+            };
+            
+            document.getElementById('scrollToTop').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('scrollToBottom').onclick = () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+        
+        // ========== INICIALIZACIÓN ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            initControls();
+            setupNavigation();
+            markAsRead();
+            
+            kofiWidgetOverlay.draw('ocholobos', {
+                'type': 'floating-chat',
+                'floating-chat.donateButton.text': 'Apóyame',
+                'floating-chat.donateButton.background-color': '#1a4d5f',
+                'floating-chat.donateButton.text-color': '#ffffff'
+            });
+        });
+    </script>
+</body>
+</html>

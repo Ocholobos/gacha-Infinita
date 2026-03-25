@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El fin del "Asesino de aventureros" | Gacha Infinita</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem;
+            line-height: 1.8;
+            background: #faf9f7;
+            color: #2c2b28;
+            transition: all 0.3s ease;
+        }
+        [data-theme="dark"] body {
+            background: #1a1a1a;
+            color: #e5e5e5;
+        }
+        
+        .options-bar {
+            position: sticky;
+            top: 0;
+            background: #faf9f7;
+            border-bottom: 1px solid #e5e0d8;
+            padding: 0.6rem 1rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.8rem;
+            z-index: 100;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        [data-theme="dark"] .options-bar {
+            background: #1a1a1a;
+            border-bottom-color: #404040;
+        }
+        .options-bar button, .options-bar a {
+            background: #eef2f0;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: #1a4d5f;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .options-bar button, [data-theme="dark"] .options-bar a {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .font-size-control {
+            display: flex;
+            gap: 0.3rem;
+            align-items: center;
+        }
+        .font-size-control button {
+            width: 32px;
+            padding: 0.2rem;
+        }
+        
+        .nav-container {
+            margin: 1rem 0;
+        }
+        .nav-center, .nav-bottom {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+        .nav-bottom {
+            margin-top: 1rem;
+        }
+        .nav-btn {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            color: #1a4d5f;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .nav-btn {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .nav-btn:hover {
+            background: #e5e0d8;
+        }
+        .nav-btn.disabled {
+            background: #e5e0d8;
+            color: #9ca3af;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .chapter-counter {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] .chapter-counter {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        .chapter-selector {
+            margin: 0.5rem 0;
+            text-align: center;
+        }
+        .chapter-selector select {
+            background: #eef2f0;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-family: inherit;
+            color: #1a4d5f;
+            cursor: pointer;
+            width: 300px;
+            max-width: 90%;
+        }
+        [data-theme="dark"] .chapter-selector select {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin: 1rem 0 0.25rem;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] h1 {
+            color: #5a9e8c;
+        }
+        .episode-number {
+            color: #6b6a68;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #e5e0d8;
+            padding-bottom: 0.5rem;
+        }
+        [data-theme="dark"] .episode-number {
+            color: #a0a0a0;
+            border-bottom-color: #404040;
+        }
+        .story-content {
+            margin: 1.5rem 0;
+        }
+        .story-content p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+        hr {
+            margin: 2rem 0;
+            border: none;
+            border-top: 1px solid #e5e0d8;
+        }
+        [data-theme="dark"] hr {
+            border-top-color: #404040;
+        }
+        
+        .floating-buttons {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+        .floating-btn {
+            background: #1a4d5f;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.8;
+        }
+        [data-theme="dark"] .floating-btn {
+            background: #5a9e8c;
+        }
+        .floating-btn:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        
+        .toast-message {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: #1a4d5f;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            z-index: 1000;
+            animation: fadeOut 3s ease forwards;
+        }
+        [data-theme="dark"] .toast-message {
+            background: #5a9e8c;
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            70% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+        
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            border-top: 1px solid #e5e0d8;
+            padding-top: 1.5rem;
+        }
+        [data-theme="dark"] footer {
+            border-top-color: #404040;
+        }
+        
+        @media (max-width: 600px) {
+            body { padding: 0.5rem; }
+            .nav-center, .nav-bottom { flex-direction: column; gap: 0.5rem; }
+            .floating-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                bottom: 70px;
+                right: 15px;
+            }
+        }
+    </style>
+    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+</head>
+<body>
+    <div class="options-bar">
+        <div class="font-size-control">
+            <button id="fontMinus">A-</button>
+            <button id="fontPlus">A+</button>
+        </div>
+        <a href="index.html">📚 Índice</a>
+        <button id="themeToggle">🌙 Modo oscuro</button>
+    </div>
+
+    <div class="nav-container">
+        <div class="nav-center">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo1e27.html" id="prevLinkTop" class="nav-btn ">← Cacería del "Asesino de aventureros" 5</a>
+            <span class="chapter-counter" id="chapterCounterTop">Capítulo 1 - Episodio 28</span>
+            <a href="capitulo1e29.html" id="nextLinkTop" class="nav-btn ">Hacia la próxima venganza →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelect">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <h1>El fin del "Asesino de aventureros"</h1>
+    <div class="episode-number">Capítulo 1 - Episodio 28</div>
+
+    <div class="story-content">
+        <p>—…¿Mmm? ¿¡Uh!? ¡H-hermano!?</p>
+<p>—Buenos días, Miya-chan.</p>
+<p>—¿D-Dark-san? ¿Eh? ¿Esto es…?</p>
+<p>Miya yacía en uno de los dormitorios de la suite del último piso de la posada donde nos alojábamos. Yo estaba sentado en una silla al lado de la cama, velando por ella. Miya, al despertarse, miró a su alrededor con la mirada asustada de un animalito, como diciendo "no sé qué pasa". Esperando a que se calmara, le conté una historia que había preparado.</p>
+<p>—Anoche, Gold, que estaba bebiendo en el Gremio de Aventureros, oyó algo sobre el "asesino de aventureros". Al saberlo, nos adelantamos a los demás para encontrarlo. A pesar de que era de noche, nos adentramos en el calabozo. Mientras buscábamos, encontramos a Miya a punto de ser asesinada por un elfo joven. El elfo, al verse descubierto y atacado, huyó hacia el interior del calabozo. Después de proteger a Miya, que estaba inconsciente, registramos los alrededores y encontramos a su hermano Elio al borde de la muerte, y a Gimra y Wady, que por desgracia ya habían fallecido. Por las pruebas, dedujimos que aquel "joven elfo" era el "asesino de aventureros".</p>
+<p>Lancé magia de recuperación sobre Elio, pero estaba gravemente herido. Para garantizar la seguridad de Miya y traer la información, regresamos del calabozo enseguida. A ella la trajimos a la posada donde nos alojábamos; a Elio, por precaución, lo ingresamos en un hospital de la ciudad. Gold fue al gremio a dar la información sobre el "asesino de aventureros".</p>
+<p>—Por supuesto, todo era mentira. Era una historia inventada para que Miya y el gremio no sospecharan. Dejando aparte al gremio, la propia Miya, gracias a la "SR, Hipnosis", tenía los recuerdos anteriores y posteriores borrosos, y no recordaba en absoluto haber estado en el "Abismo", aunque fuera poco tiempo. Ya habíamos hecho hablar a Kaito, el "joven elfo", en el "Abismo". Había dado órdenes estrictas para que, aunque fuera a la fuerza, sacaran toda la información sobre los "Maestros" y los "Sub-Maestros". A esas horas, Ellie y las demás estarían extrayéndole los recuerdos con magia prohibida y grandes sufrimientos.</p>
+<p>Con la máscara podía ocultar mi expresión, pero procurando no sonar sospechoso, continué:</p>
+<p>—El gremio, por las pruebas, cree muy probable que ese "joven elfo" sea el "asesino de aventureros". Quieren que les cuentes los detalles cuando despiertes.</p>
+<p>—E-entendido. Sí, ese es el "asesino de aventureros", no hay duda. Apareció de repente a nuestro lado… Cuando hablamos del "asesino de aventureros", dijo: "a partir de ahora tendré que tener más cuidado con el sigilo", y nos atacó. A mi hermano…</p>
+<p>Miya, incorporada, apretaba con fuerza la manta con sus pequeñas manos. Saqué dos pañuelos del bolsillo y se los di.</p>
+<p>—¿Esto es…?</p>
+<p>—Son mechones de cabello de Gimra y Wady. Lo siento, logramos salvar a Elio, pero a ellos… no pudimos traer sus cuerpos.</p>
+<p>—¡? ¡G-gracias! ¡Solo con esto ya me alegro! ¡Gracias! ¡Gracias…!</p>
+<p>Miya, por fin consciente de la muerte de sus amigos, apretó los mechones contra su pecho y rompió a llorar.</p>
+<p><em>(En aquel momento, mientras me enfrentaba a Kaito, usé cartas de la Gacha Infinita para curarlos y protegerlos, pero aunque llegué a tiempo para Elio, no pude salvar a Gimra ni a Wady…)</em></p>
+<p>Existen magias de resurrección, pero no son infalibles y tienen muchas condiciones; no pudimos traerlos de vuelta. Una vez perdida, la vida humana no se recupera tan fácilmente, por muy poderoso que uno sea.</p>
+<p><em>(Aquí debo parar por hoy…)</em></p>
+<p>Decidido, no dije nada más y salí sigilosamente de la habitación. Aunque cerré la puerta, mis oídos de alto nivel captaban los sollozos de Miya desde el interior.</p>
+<p><em>(Me esforcé en subir de nivel para cumplir mi venganza… pero tener tan buen oído a veces es un inconveniente.)</em></p>
+<p>La dejé sola y me alejé de la puerta hasta que se calmó.</p>
+<p>***</p>
+<p>Dos cosas cambiaron con el incidente del "asesino de aventureros".</p>
+<p>La primera fue que el Gremio de Aventureros valoró nuestra información sobre el caso y nos ascendió un rango. Miya, después de llorar, fue al gremio a declarar. Con nuestra información y su testimonio, el gremio determinó que el "joven elfo" era el "asesino de aventureros". Incluso hicieron un retrato robot basándose en nuestros recuerdos y los de Miya, y alertaron a los aventureros. Se organizó incluso un escuadrón para dar caza al "asesino de aventureros", que, según nuestros testimonios, había huido hacia el interior del calabozo. Yo creía que no nos ascenderían de rango sin entregar al culpable. Ascender al rango C, de aventurero experto, solo con información fue una suerte inesperada.</p>
+<p>Lo segundo fue que Miya y Elio decidieron dejar de ser aventureros, renunciar a ir a la escuela de magia del Ducado de Six y regresar a su pueblo. Elio, una vez dado de alta, liquidó las pertenencias que tenían en su posada habitual. Al parecer, mañana por la mañana saldrían de la ciudad como escoltas de una caravana. Vinieron a despedirse de nosotros, que les habíamos salvado la vida y les habíamos ayudado. Los recibí en el salón de la suite y escuché lo que tenían que decir.</p>
+<p>Nemumu sirvió té en la mesa donde estaban sentados Miya y Elio. Yo me senté frente a ellos; Gold y los demás estaban de pie en un rincón, escuchando. Miya y Elio hicieron una profunda reverencia.</p>
+<p>—Por poco tiempo que fuera, nos ayudaron a salvar a mi hermano y nos trataron muy bien. Muchas gracias.</p>
+<p>—De verdad, muchas gracias. Mi vida se salvó gracias a ustedes.</p>
+<p>—No, nosotros también recibimos consejos y el ungüento para quemaduras. Salvarle la vida fue… casualidad.</p>
+<p>No podía decir que fue gracias a la "SSR, Pulsera de la Oración". Y no quería hacerles recordar aquello, así que no lo mencioné, pero no pudimos salvar a Gimra ni a Wady. Salvar a Elio fue solo cuestión de suerte. Por muy alto que sea mi nivel, no todo se puede hacer. Este poder no es omnipotente.</p>
+<p>Para cambiar de tema, les pregunté:</p>
+<p>—Me dijeron que dejaban de ser aventureros y volvían a su pueblo. Siendo Elio tan esforzado y Miya una maga tan buena, podrían seguir como aventureros con otros compañeros, ¿no?</p>
+<p>—Sí, algunos nos han hecho propuestas. Pero después de aquello, tengo miedo de volver a entrar en un calabozo.</p>
+<p>Las manos que tenía sobre las rodillas temblaban. Había visto morir a sus compañeros ante sus ojos, a su hermano al borde de la muerte, y ella misma había estado a punto de morir. Era normal que le diera miedo volver a un calabozo.</p>
+<p>"Y además", añadió con una sonrisa apenada.</p>
+<p>—Me hice aventurera y entré en calabozos porque estaba con todos. Solos, no podemos. ¿Verdad, hermano?</p>
+<p>—Sí, por eso ahora unirme a otros no sería lo mismo. Y queremos llevar los mechones de Gimra y Wady a su pueblo. Con la ayuda de unos parientes, esperamos poder vivir por nuestra cuenta.</p>
+<p>—Ya veo.</p>
+<p>Un silencio melancólico invadió la habitación. Para cambiar la atmósfera, Miya, aunque con falsa alegría, dijo en tono animado:</p>
+<p>—Es difícil entrar en la escuela de magia del Ducado, pero seguiré estudiando magia por mi cuenta sin rendirme, esforzándome junto a mi hermano, para ser una maga de la que nadie se ría. Si alguna vez vienen por nuestro pueblo, por favor, pasen a saludarnos.</p>
+<p>—Sí, entonces lo haré.</p>
+<p>—De acuerdo, les esperaremos. Todos en el pueblo les recibiremos con los brazos abiertos.</p>
+<p>—Es una promesa, Dark-san. Le esperamos.</p>
+<p>Ambos respondieron con una sonrisa esperanzada. Charlaron un rato con Gold y los demás, y luego se fueron de la posada. En la habitación solo quedamos nosotros.</p>
+<p>—Regresaré al "Abismo". Si viene alguien a verme, dile que vuelva más tarde.</p>
+<p>—Entendido, mi señor.</p>
+<p>Dejando a Nemumu y Gold en la habitación, regresé al "Abismo" con la carta "SSR, Teletransportación".</p>
+    </div>
+
+    <hr>
+
+    <div class="nav-container">
+        <div class="nav-bottom">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo1e27.html" id="prevLinkBottom" class="nav-btn ">← Cacería del "Asesino de aventureros" 5</a>
+            <span class="chapter-counter" id="chapterCounterBottom">Capítulo 1 - Episodio 28</span>
+            <a href="capitulo1e29.html" id="nextLinkBottom" class="nav-btn ">Hacia la próxima venganza →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelectBottom">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <div class="floating-buttons">
+        <button class="floating-btn" id="scrollToTop" title="Ir arriba">⬆</button>
+        <button class="floating-btn" id="scrollToBottom" title="Ir abajo">⬇</button>
+    </div>
+
+    <footer>
+        <p>Gacha Infinita © 明鏡シスイ (Meikyō Shisui) | Traducción: Ocholobos</p>
+        <p>Apoya al autor comprando los volúmenes oficiales</p>
+    </footer>
+
+    <script src="data.js"></script>
+    <script>
+        // ========== CONFIGURACIÓN DEL CAPÍTULO ==========
+        const CHAPTER_NUM = 1;
+        const EPISODE_NUM = 28;
+        
+        // ========== NAVEGACIÓN ==========
+        function setupNavigation() {
+            if (typeof GACHA_DATA !== 'undefined') {
+                const currentEpisode = GACHA_DATA.getEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const prevEpisode = GACHA_DATA.getPrevEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const nextEpisode = GACHA_DATA.getNextEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const allEpisodes = GACHA_DATA.getAllEpisodesOrdered();
+                
+                const prevLinks = [document.getElementById('prevLinkTop'), document.getElementById('prevLinkBottom')];
+                const nextLinks = [document.getElementById('nextLinkTop'), document.getElementById('nextLinkBottom')];
+                const counters = [document.getElementById('chapterCounterTop'), document.getElementById('chapterCounterBottom')];
+                
+                counters.forEach(c => { if(c) c.textContent = `${currentEpisode.chapterTitle} - Episodio ${currentEpisode.episodeNum}`; });
+                
+                if (prevEpisode) {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${prevEpisode.chapter}e${prevEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = prevEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `← ${shortTitle}`;
+                        }
+                    });
+                } else {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = '← Sin anterior';
+                        }
+                    });
+                }
+                
+                if (nextEpisode) {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${nextEpisode.chapter}e${nextEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = nextEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `${shortTitle} →`;
+                        }
+                    });
+                } else {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = 'Sin siguiente →';
+                        }
+                    });
+                }
+                
+                const selects = [document.getElementById('chapterSelect'), document.getElementById('chapterSelectBottom')];
+                selects.forEach(select => {
+                    if (!select) return;
+                    let options = '<option value="">📖 Seleccionar episodio...</option>';
+                    for (const ep of allEpisodes) {
+                        const selected = (ep.chapter == CHAPTER_NUM && ep.episodeNum == EPISODE_NUM) ? 'selected' : '';
+                        options += `<option value="capitulo${ep.chapter}e${ep.episodeNum}.html" ${selected}>${ep.chapterTitle} - Episodio ${ep.episodeNum}: ${ep.title}</option>`;
+                    }
+                    select.innerHTML = options;
+                    select.onchange = function() { if(this.value) window.location.href = this.value; };
+                });
+            }
+        }
+        
+        // ========== REGISTRAR LECTURA EN HISTORIAL ==========
+        function markAsRead() {
+            const user = localStorage.getItem('gacha_user');
+            if (!user) return;
+            
+            let history = localStorage.getItem(`gacha_history_${user}`);
+            let historyObj = history ? JSON.parse(history) : { chapters: [] };
+            
+            const readKey = { chapter: CHAPTER_NUM, episode: EPISODE_NUM };
+            historyObj.chapters = historyObj.chapters.filter(item => 
+                !(item.chapter == CHAPTER_NUM && item.episode == EPISODE_NUM)
+            );
+            historyObj.chapters.unshift(readKey);
+            if (historyObj.chapters.length > 20) historyObj.chapters.pop();
+            
+            localStorage.setItem(`gacha_history_${user}`, JSON.stringify(historyObj));
+        }
+        
+        // ========== CONTROLES ==========
+        function initControls() {
+            const savedTheme = localStorage.getItem('gacha_theme');
+            if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+            const savedFont = localStorage.getItem('gacha_fontsize');
+            if (savedFont) document.body.style.fontSize = savedFont + '%';
+            
+            document.getElementById('fontPlus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.min(150, size + 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            document.getElementById('fontMinus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.max(70, size - 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            
+            const themeBtn = document.getElementById('themeToggle');
+            if (document.documentElement.hasAttribute('data-theme')) themeBtn.textContent = '☀️ Modo claro';
+            themeBtn.onclick = () => {
+                const isDark = document.documentElement.hasAttribute('data-theme');
+                if (isDark) {
+                    document.documentElement.removeAttribute('data-theme');
+                    localStorage.setItem('gacha_theme', 'light');
+                    themeBtn.textContent = '🌙 Modo oscuro';
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('gacha_theme', 'dark');
+                    themeBtn.textContent = '☀️ Modo claro';
+                }
+            };
+            
+            document.getElementById('scrollToTop').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('scrollToBottom').onclick = () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+        
+        // ========== INICIALIZACIÓN ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            initControls();
+            setupNavigation();
+            markAsRead();
+            
+            kofiWidgetOverlay.draw('ocholobos', {
+                'type': 'floating-chat',
+                'floating-chat.donateButton.text': 'Apóyame',
+                'floating-chat.donateButton.background-color': '#1a4d5f',
+                'floating-chat.donateButton.text-color': '#ffffff'
+            });
+        });
+    </script>
+</body>
+</html>
