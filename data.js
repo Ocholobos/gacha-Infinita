@@ -1,89 +1,89 @@
 // ============================================================
 // DATOS CENTRALIZADOS DE EPISODIOS TRADUCIDOS
-// Última actualización: 24/03/2026 20:25
+// Última actualización: 24/03/2026 21:25
 // ============================================================
 
 const GACHA_DATA = {
     chapters: [
     {
         'num': 0,
-        'title': 'Capítulo 0',
+        'title': 'Prólogo: Gacha Infinita',
         'episodes': [
             {
                 'num': 0,
                 'title': 'Gacha Infinita - Parte 1',
-                'date': '17/04/2020 12:00'
+                'date': '2020/04/17 12:00'
             },
             {
                 'num': 1,
                 'title': 'Tres años después',
-                'date': '17/04/2020 12:00'
+                'date': '2020/04/17 12:00'
             },
             {
                 'num': 2,
                 'title': 'La venganza contra Garou',
-                'date': '17/04/2020 12:00'
+                'date': '2020/04/17 12:00'
             }
         ]
     },
     {
         'num': 1,
-        'title': 'Capítulo 1',
+        'title': 'Comienzo de la venganza',
         'episodes': [
             {
                 'num': 1,
                 'title': 'El viaje comienza',
-                'date': '17/04/2020 12:00'
+                'date': '2020/04/17 12:00'
             },
             {
                 'num': 2,
                 'title': 'Planes de futuro',
-                'date': '17/04/2020 17:00'
+                'date': '2020/04/17 17:00'
             },
             {
                 'num': 3,
                 'title': '¿Cómo vengarse de la elfa Sasha?',
-                'date': '18/04/2020 12:00'
+                'date': '2020/04/18 12:00'
             },
             {
                 'num': 4,
                 'title': 'Interrupción',
-                'date': '18/04/2020 17:00'
+                'date': '2020/04/18 17:00'
             },
             {
                 'num': 5,
                 'title': 'Dentro del calabozo',
-                'date': '19/04/2020 12:00'
+                'date': '2020/04/19 12:00'
             },
             {
                 'num': 6,
                 'title': 'Límites del crecimiento',
-                'date': '19/04/2020 17:00'
+                'date': '2020/04/19 17:00'
             },
             {
                 'num': 7,
                 'title': 'Jóvenes aventureros',
-                'date': '20/04/2020 12:00'
+                'date': '2020/04/20 12:00'
             },
             {
                 'num': 8,
                 'title': 'Combate en el calabozo',
-                'date': '20/04/2020 17:00'
+                'date': '2020/04/20 17:00'
             },
             {
                 'num': 9,
                 'title': 'Ducado de Six',
-                'date': '21/04/2020 12:00'
+                'date': '2020/04/21 12:00'
             },
             {
                 'num': 10,
                 'title': 'Intercambio de piedras mágicas',
-                'date': '21/04/2020 17:00'
+                'date': '2020/04/21 17:00'
             },
             {
                 'num': 11,
                 'title': 'Inculcando el espíritu caballeresco',
-                'date': '22/04/2020 12:00'
+                'date': '2020/04/22 12:00'
             }
         ]
     }
