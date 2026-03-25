@@ -151,7 +151,6 @@
             flex-shrink: 0;
         }
         
-        /* Paginación */
         .pagination {
             display: flex;
             justify-content: center;
@@ -333,14 +332,24 @@
         // ========== CARGAR DATOS ==========
         function loadData() {
             if (typeof GACHA_DATA !== 'undefined') {
-                allEpisodes = GACHA_DATA.getAllEpisodesOrdered();
+                // Usar getAllEpisodes que devuelve todos los episodios con chapterTitle
+                allEpisodes = GACHA_DATA.getAllEpisodes();
                 totalEpisodes = allEpisodes.length;
                 totalPages = Math.ceil(totalEpisodes / ITEMS_PER_PAGE);
                 document.getElementById('totalChapters').textContent = totalEpisodes;
                 document.getElementById('translatedCount').textContent = totalEpisodes;
+                
+                // Debug: mostrar primer episodio para verificar
+                if (allEpisodes.length > 0) {
+                    console.log('Primer episodio:', allEpisodes[0]);
+                    console.log('Título del capítulo:', allEpisodes[0].chapterTitle);
+                }
                 return true;
+            } else {
+                console.error('GACHA_DATA no está definido. Verifica que data.js esté cargado correctamente.');
+                document.getElementById('chapterIndex').innerHTML = '<p style="color:red;">Error: No se pudo cargar el archivo data.js. Verifica que exista en la misma carpeta.</p>';
+                return false;
             }
-            return false;
         }
         
         // ========== RENDERIZAR ÍNDICE (solo página actual) ==========
@@ -355,7 +364,7 @@
                 if (!chaptersMap.has(ep.chapter)) {
                     chaptersMap.set(ep.chapter, {
                         chapter: ep.chapter,
-                        title: ep.chapterTitle,
+                        title: ep.chapterTitle || `Capítulo ${ep.chapter}`,
                         episodes: []
                     });
                 }
@@ -376,14 +385,14 @@
                     html += `
                         <li class="episode-item">
                             <a href="${fileName}" class="episode-link" onclick="markAsRead(${ep.chapter}, ${ep.episodeNum})">Episodio ${ep.episodeNum}: ${ep.title}</a>
-                            <span class="episode-date">${ep.date}</span>
+                            <span class="episode-date">${ep.date || ''}</span>
                         </li>
                     `;
                 }
                 html += `</ul></div>`;
             }
             
-            document.getElementById('chapterIndex').innerHTML = html;
+            document.getElementById('chapterIndex').innerHTML = html || '<p>No hay episodios disponibles.</p>';
         }
         
         // ========== RENDERIZAR PAGINACIÓN ==========
@@ -597,12 +606,14 @@
             
             window.markAsRead = markAsRead;
             
-            kofiWidgetOverlay.draw('ocholobos', {
-                'type': 'floating-chat',
-                'floating-chat.donateButton.text': 'Apóyame',
-                'floating-chat.donateButton.background-color': '#1a4d5f',
-                'floating-chat.donateButton.text-color': '#ffffff'
-            });
+            if (typeof kofiWidgetOverlay !== 'undefined') {
+                kofiWidgetOverlay.draw('ocholobos', {
+                    'type': 'floating-chat',
+                    'floating-chat.donateButton.text': 'Apóyame',
+                    'floating-chat.donateButton.background-color': '#1a4d5f',
+                    'floating-chat.donateButton.text-color': '#ffffff'
+                });
+            }
         });
     </script>
 </body>
