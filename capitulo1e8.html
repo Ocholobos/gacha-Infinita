@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Combate en el calabozo | Gacha Infinita</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             font-family: 'Georgia', 'Times New Roman', serif;
             max-width: 800px;
@@ -55,26 +59,30 @@
             background: #2a3a35;
             color: #5a9e8c;
         }
-        .font-size-control { display: flex; gap: 0.3rem; align-items: center; }
-        .font-size-control button { width: 32px; padding: 0.2rem; }
-        .user-info {
-            background: #1a4d5f;
-            color: white;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
+        .font-size-control {
+            display: flex;
+            gap: 0.3rem;
+            align-items: center;
         }
-        [data-theme="dark"] .user-info { background: #5a9e8c; }
+        .font-size-control button {
+            width: 32px;
+            padding: 0.2rem;
+        }
         
-        .nav-container { margin: 1rem 0; }
+        .nav-container {
+            margin: 1rem 0;
+        }
         .nav-center, .nav-bottom {
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 1rem;
             flex-wrap: wrap;
+            margin-bottom: 0.5rem;
         }
-        .nav-bottom { margin-top: 1rem; }
+        .nav-bottom {
+            margin-top: 1rem;
+        }
         .nav-btn {
             background: #eef2f0;
             padding: 0.5rem 1rem;
@@ -88,8 +96,13 @@
             align-items: center;
             gap: 0.3rem;
         }
-        [data-theme="dark"] .nav-btn { background: #2a3a35; color: #5a9e8c; }
-        .nav-btn:hover { background: #e5e0d8; }
+        [data-theme="dark"] .nav-btn {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .nav-btn:hover {
+            background: #e5e0d8;
+        }
         .nav-btn.disabled {
             background: #e5e0d8;
             color: #9ca3af;
@@ -104,9 +117,15 @@
             font-weight: 500;
             color: #1a4d5f;
         }
-        [data-theme="dark"] .chapter-counter { background: #2a3a35; color: #5a9e8c; }
+        [data-theme="dark"] .chapter-counter {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
         
-        .chapter-selector { margin: 0.5rem 0; text-align: center; }
+        .chapter-selector {
+            margin: 0.5rem 0;
+            text-align: center;
+        }
         .chapter-selector select {
             background: #eef2f0;
             border: none;
@@ -119,14 +138,19 @@
             width: 300px;
             max-width: 90%;
         }
-        [data-theme="dark"] .chapter-selector select { background: #2a3a35; color: #5a9e8c; }
+        [data-theme="dark"] .chapter-selector select {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
         
         h1 {
             font-size: 1.8rem;
             margin: 1rem 0 0.25rem;
             color: #1a4d5f;
         }
-        [data-theme="dark"] h1 { color: #5a9e8c; }
+        [data-theme="dark"] h1 {
+            color: #5a9e8c;
+        }
         .episode-number {
             color: #6b6a68;
             margin-bottom: 1rem;
@@ -137,85 +161,21 @@
             color: #a0a0a0;
             border-bottom-color: #404040;
         }
-        .story-content { margin: 1.5rem 0; }
-        .story-content p { margin-bottom: 1.2rem; text-align: justify; }
-        hr { margin: 2rem 0; border: none; border-top: 1px solid #e5e0d8; }
-        [data-theme="dark"] hr { border-top-color: #404040; }
-        
-        .rating-section {
-            background: white;
-            border: 1px solid #e5e0d8;
-            border-radius: 16px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            text-align: center;
-        }
-        [data-theme="dark"] .rating-section { background: #2d2d2d; border-color: #404040; }
-        .stars { display: flex; justify-content: center; gap: 0.5rem; margin-bottom: 1rem; }
-        .star {
-            font-size: 2rem;
-            cursor: pointer;
-            color: #cbd5e0;
-            transition: color 0.2s;
-        }
-        .star:hover, .star.active { color: #f5b042; }
-        
-        .comments-section {
-            background: white;
-            border: 1px solid #e5e0d8;
-            border-radius: 16px;
-            padding: 1.5rem;
+        .story-content {
             margin: 1.5rem 0;
         }
-        [data-theme="dark"] .comments-section { background: #2d2d2d; border-color: #404040; }
-        .comment-form {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
+        .story-content p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
         }
-        .comment-form input, .comment-form textarea {
-            padding: 0.5rem;
-            border: 1px solid #e5e0d8;
-            border-radius: 8px;
-            background: #faf9f7;
-            font-family: inherit;
-        }
-        [data-theme="dark"] .comment-form input, [data-theme="dark"] .comment-form textarea {
-            background: #1a1a1a;
-            border-color: #404040;
-            color: #e5e5e5;
-        }
-        .comment-form textarea { min-height: 80px; resize: vertical; }
-        .comment-form button {
-            width: 100px;
-            background: #1a4d5f;
-            color: white;
+        hr {
+            margin: 2rem 0;
             border: none;
-            padding: 0.5rem;
-            border-radius: 8px;
-            cursor: pointer;
+            border-top: 1px solid #e5e0d8;
         }
-        [data-theme="dark"] .comment-form button { background: #5a9e8c; }
-        .comment-item {
-            border-bottom: 1px solid #e5e0d8;
-            padding: 0.8rem 0;
+        [data-theme="dark"] hr {
+            border-top-color: #404040;
         }
-        .comment-name { font-weight: bold; color: #1a4d5f; }
-        .comment-date { font-size: 0.7rem; color: #6b6a68; margin-left: 0.5rem; }
-        .comment-like, .comment-report, .comment-delete {
-            margin-left: 0.8rem;
-            cursor: pointer;
-            font-size: 0.7rem;
-            display: inline-block;
-            transition: all 0.2s;
-        }
-        .comment-like { color: #9ca3af; }
-        .comment-like:hover { color: #e53e3e; }
-        .comment-report { color: #9ca3af; }
-        .comment-report:hover { color: #e53e3e; }
-        .comment-delete { color: #9ca3af; }
-        .comment-delete:hover { color: #e53e3e; }
         
         .floating-buttons {
             position: fixed;
@@ -241,8 +201,13 @@
             justify-content: center;
             opacity: 0.8;
         }
-        [data-theme="dark"] .floating-btn { background: #5a9e8c; }
-        .floating-btn:hover { opacity: 1; transform: scale(1.05); }
+        [data-theme="dark"] .floating-btn {
+            background: #5a9e8c;
+        }
+        .floating-btn:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
         
         .toast-message {
             position: fixed;
@@ -256,7 +221,9 @@
             z-index: 1000;
             animation: fadeOut 3s ease forwards;
         }
-        [data-theme="dark"] .toast-message { background: #5a9e8c; }
+        [data-theme="dark"] .toast-message {
+            background: #5a9e8c;
+        }
         @keyframes fadeOut {
             0% { opacity: 1; }
             70% { opacity: 1; }
@@ -271,20 +238,22 @@
             border-top: 1px solid #e5e0d8;
             padding-top: 1.5rem;
         }
-        [data-theme="dark"] footer { border-top-color: #404040; }
+        [data-theme="dark"] footer {
+            border-top-color: #404040;
+        }
         
         @media (max-width: 600px) {
             body { padding: 0.5rem; }
             .nav-center, .nav-bottom { flex-direction: column; gap: 0.5rem; }
-            .floating-btn { width: 40px; height: 40px; font-size: 1.2rem; }
-            .star { font-size: 1.5rem; }
+            .floating-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                bottom: 70px;
+                right: 15px;
+            }
         }
     </style>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="firebase-config.js"></script>
-    <script src="auth.js"></script>
     <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
 </head>
 <body>
@@ -293,11 +262,6 @@
             <button id="fontMinus">A-</button>
             <button id="fontPlus">A+</button>
         </div>
-        <a href="usuario.html">👤 Mi perfil</a>
-        <a href="reglas.html">📜 Reglas</a>
-        <a href="moderacion.html" id="modLink" style="display: none;">🛡️ Moderación</a>
-        <div id="userInfo" class="user-info" style="display: none;"></div>
-        <button id="logoutBtnHeader" style="display: none;">Cerrar sesión</button>
         <a href="index.html">📚 Índice</a>
         <button id="themeToggle">🌙 Modo oscuro</button>
     </div>
@@ -305,9 +269,9 @@
     <div class="nav-container">
         <div class="nav-center">
             <a href="index.html" class="nav-btn">📚 Índice</a>
-            <a href="capitulo1e7.html" id="prevLinkTop" class="nav-btn">← Jóvenes aventureros</a>
+            <a href="capitulo1e7.html" id="prevLinkTop" class="nav-btn ">← Jóvenes aventureros</a>
             <span class="chapter-counter" id="chapterCounterTop">Capítulo 1 - Episodio 8</span>
-            <a href="capitulo1e9.html" id="nextLinkTop" class="nav-btn">Ducado de Six →</a>
+            <a href="capitulo1e9.html" id="nextLinkTop" class="nav-btn ">Ducado de Six →</a>
         </div>
     </div>
 
@@ -322,188 +286,91 @@
 
     <div class="story-content">
         <p>—Gold, Nemumu, cacería de lobos.</p>
-        
-        <p>—Entendido, Dark-sama.</p>
-        
-        <p>—¡S-señores caballeros, ¿de verdad van a pelear?! ¡El oponente es un Lobo Grande de los Arbustos, que actúa como jefe de este piso!</p>
-        
-        <p>—¡Jajajaja! Para nosotros, monstruos de este nivel no son nada. Más bien, aprovechando la ocasión, ¡les enseñaré a los jóvenes cómo luchar con espada y escudo!</p>
-        
-        <p>Ante nuestra elección de pelear, Elio y los demás pusieron cara de asombro.</p>
-        
-        <p>Gold ignoró su reacción y, con entusiasmo, desenvainó su espada, tomó su escudo dorado y se adelantó.</p>
-        
-        <p>—¡Grrrrr…</p>
-        
-        <p>Los diez Lobos de los Arbustos que acompañaban al Lobo Grande de los Arbustos gruñeron con recelo hacia Gold, que se había adelantado.</p>
-        
-        <p>Sin perder su actitud despreocupada, se dirigió a Elio y los demás que estaban detrás.</p>
-        
-        <p>—He estado observando su combate de antes. Su lucha contra los goblins…</p>
-        
-        <p>—¡Grrraaah!</p>
-        
-        <p>Tres Lobos de los Arbustos corrieron por la pradera y atacaron a Gold.</p>
-        
-        <p>Su pelaje verdoso se camuflaba con la hierba, lo que dificultaba verlos al correr, pero Gold los detuvo con tranquilidad.</p>
-        
-        <p>—Usaban el escudo para defenderse y la espada para atacar. ¡Así se hace!</p>
-        
-        <p>Desvió el ataque de un Lobo de los Arbustos con su escudo, y con un movimiento de su espada contuvo a los otros dos, impidiéndoles atacar.</p>
-        
-        <p>—Defender con el escudo, atacar con la espada. No está mal, pero tampoco es correcto. ¿Entienden? No hay una regla que obligue a usar el escudo solo para defenderse y la espada solo para atacar. Por ejemplo…</p>
-        
-        <p>—¡Aull!</p>
-        
-        <p>Golpeó con el escudo al Lobo de los Arbustos que se abalanzaba.</p>
-        
-        <p>Le dio un golpe de contragolpe en el hocico con el escudo; el lobo soltó un gemido y murió con el cráneo destrozado.</p>
-        
-        <p>—Así se hace, golpeando. El escudo no solo sirve para defenderse. La espada tampoco se trata solo de blandirla; si lees los movimientos del enemigo y la usas con astucia, acertarás. Usa la cabeza: piensa en lo que molesta al enemigo, en cómo sorprenderlo. Si solo blandes la espada y te proteges con el escudo, nunca te harás más fuerte.</p>
-        
-        <p>Mientras daba la lección, Gold fue masacrando a los Lobos de los Arbustos uno tras otro sin perder el aliento.</p>
-        
-        <p>¡Yo tampoco podía quedarme atrás!</p>
-        
-        <p>—¡Flecha de Fuego!</p>
-        
-        <p>—¡Aull!</p>
-        
-        <p>Usé la carta "R, Flecha de Fuego" para acabar con un Lobo de los Arbustos.</p>
-        
-        <p>Luego acabé con dos o tres más de la misma manera con magia de ataque.</p>
-        
-        <p><em>(En la época de la "Reunión de Razas", admiraba a los que podían usar magia, pero usando cartas de la "Gacha Infinita" puedo imitarla de forma simulada. Es divertido.)</em></p>
-        
-        <p>Aunque hay humanos que usan magia, son pocos. También entre los hombres bestia hay pocos.</p>
-        
-        <p>Por eso, que un equipo de principiantes como ellos tenga una maga, aunque sea su hermana, es bastante raro.</p>
-        
-        <p>Miya, la hermana de Elio, estaba tan sorprendida que habló con la voz temblorosa.</p>
-        
-        <p>—Es increíble… A pesar de tener mi edad, puede lanzar magia de nivel de combate sin necesidad de conjuro…</p>
-        
-        <p>Normalmente, al usar magia, como hacía Miya, hay que concentrarse y recitar un conjuro.</p>
-        
-        <p>Cuando uno se vuelve experto, puede usarla sin recitarlo.</p>
-        
-        <p>Como maga, estaba asombrada de que yo, a pesar de tener su misma edad, pudiera lanzar magia sin conjuro como un experto.</p>
-        
-        <p>—¡Auuuuuuu!</p>
-        
-        <p>—¿Un aullido? ¿Está llamando a más compañeros?… No, ¿es la señal para huir?</p>
-        
-        <p>Lo desagradable de los Lobos Grandes de los Arbustos es que tienen la costumbre de reunir a otros Lobos de los Arbustos con su aullido.</p>
-        
-        <p>En la época de la "Reunión de Razas", cuando luché contra una manada de Lobos Grandes de los Arbustos, por más que los derrotara, no paraban de venir más.</p>
-        
-        <p>Pero esta vez, después del aullido, el Lobo Grande de los Arbustos huyó al bosque apresuradamente.</p>
-        
-        <p>Parecía que había entendido que no podía ganar y dio la señal de huida.</p>
-        
-        <p>¡No podía dejar que se escapara!</p>
-        
-        <p>—¡Muro de Fuego!</p>
-        
-        <p>Usé "SR, Muro de Fuego" para crear una barrera de llamas que bloqueara su huida.</p>
-        
-        <p>—¡¿Auuu?!</p>
-        
-        <p>—¡Mentira! ¡Lanzó magia de nivel táctico sin conjuro!</p>
-        
-        <p>—¿M-Miya?</p>
-        
-        <p>Miya alzó la voz con una expresión de asombro tan grande que parecía que se le iban a saltar los ojos.</p>
-        
-        <p>Desde que la conocía, era la primera vez que la tranquila Miya alzaba tanto la voz.</p>
-        
-        <p>Sus hermanos, que estaban a su lado, quizás sorprendidos por su grito, desviaron la mirada hacia su hermana a pesar de que estaban viendo pelear a Gold.</p>
-        
-        <p>Nosotros, sin prestar atención, continuamos el combate.</p>
-        
-        <p>—¡Nemumu!</p>
-        
-        <p>—¡Déjelo en mis manos, Dark-sama!</p>
-        
-        <p>Nemumu, con un cuchillo en cada mano, decapitó rápidamente al Lobo Grande de los Arbustos, que estaba bloqueado.</p>
-        
-        <p>Con esto, todos los lobos de los arbustos, tanto los grandes como los comunes, fueron aniquilados.</p>
-        
-        <p>Cuando terminó el combate, Miya, que hasta ahora había sido la más tranquila, agarró emocionada los hombros de su hermano y lo sacudió.</p>
-        
-        <p>—¡H-hermano, has visto eso? ¡Un chico humano de mi edad ha lanzado sin conjuro no solo magia de nivel de combate, sino también "Muro de Fuego", que es de nivel táctico, aunque sea de rango bajo!</p>
-        
-        <p>—C-cálmate, Miya. ¿Eso es algo increíble?</p>
-        
-        <p>—¡Claro que es increíble! Quizás entre elfos, demonios y dragones de más edad haya quienes puedan, ¡pero nunca he oído hablar de un humano que pueda lanzar magia de nivel táctico sin conjuro! ¡Estamos presenciando un hito en la historia de la magia!</p>
-        
-        <p>—M-Miya-chan, ¿de verdad es un hito en la historia de la magia?</p>
-        
-        <p>—¡Es verdad, es verdad! ¡Increíble, es como un héroe o un campeón!</p>
-        
-        <p>Miya, de carácter tranquilo, me miraba con tal intensidad que parecía que sus ojos brillaban físicamente.</p>
-        
-        <p>Ante su reacción,</p>
-        
-        <p>—Jeje, que entiendas lo maravilloso y grandioso que es Dark-sama demuestra que tienes buen ojo.</p>
-        
-        <p>—Ah, jajaja…</p>
-        
-        <p>Por alguna razón, Nemumu se enorgullecía como si fuera mérito propio, hinchando el pecho.</p>
-        
-        <p>Su reacción era adorable y me alegraba, pero también me daba vergüenza, así que esbocé una leve sonrisa para disimular.</p>
-        
-        <p>—Entiendo que te alegres de que alaben a mi señor, pero no estaría bien que vinieran más refuerzos atraídos por el alboroto. Deja de hinchar ese pecho plano y recojamos las piedras mágicas de una vez. Cambiemos de lugar.</p>
-        
-        <p>—L-lo sé. ¡Y no digas que tengo el pecho plano!</p>
-        
-        <p>—Nemumu, está claro que se refiere a ti.</p>
-        
-        <p>Nemumu, sonrojada, golpeó la espalda de Gold una y otra vez.</p>
-        
-        <p>Él, sin inmutarse, se puso a extraer las piedras mágicas de los Lobos de los Arbustos que había derrotado.</p>
-        
-        <p>Como la opinión de Gold era razonable, esbocé otra leve sonrisa y me puse a trabajar también.</p>
-        
-        <p>—A-ah, nosotros también ayudamos como agradecimiento por salvarnos.</p>
-        
-        <p>—Gracias. Entonces, se lo agradecemos.</p>
-        
-        <p>Gracias a que Elio y los demás se ofrecieron, terminamos el trabajo en menos de diez minutos.</p>
-        
-        <p>Pudimos alejarnos del lugar antes de que llegaran refuerzos.</p>
+<p>—Entendido, Dark-sama.</p>
+<p>—¡S-señores caballeros, ¿de verdad van a pelear?! ¡El oponente es un Lobo Grande de los Arbustos, que actúa como jefe de este piso!</p>
+<p>—¡Jajajaja! Para nosotros, monstruos de este nivel no son nada. Más bien, aprovechando la ocasión, ¡les enseñaré a los jóvenes cómo luchar con espada y escudo!</p>
+<p>Ante nuestra elección de pelear, Elio y los demás pusieron cara de asombro.</p>
+<p>Gold ignoró su reacción y, con entusiasmo, desenvainó su espada, tomó su escudo dorado y se adelantó.</p>
+<p>—¡Grrrrr…</p>
+<p>Los diez Lobos de los Arbustos que acompañaban al Lobo Grande de los Arbustos gruñeron con recelo hacia Gold, que se había adelantado.</p>
+<p>Sin perder su actitud despreocupada, se dirigió a Elio y los demás que estaban detrás.</p>
+<p>—He estado observando su combate de antes. Su lucha contra los goblins…</p>
+<p>—¡Grrraaah!</p>
+<p>Tres Lobos de los Arbustos corrieron por la pradera y atacaron a Gold.</p>
+<p>Su pelaje verdoso se camuflaba con la hierba, lo que dificultaba verlos al correr, pero Gold los detuvo con tranquilidad.</p>
+<p>—Usaban el escudo para defenderse y la espada para atacar. ¡Así se hace!</p>
+<p>Desvió el ataque de un Lobo de los Arbustos con su escudo, y con un movimiento de su espada contuvo a los otros dos, impidiéndoles atacar.</p>
+<p>—Defender con el escudo, atacar con la espada. No está mal, pero tampoco es correcto. ¿Entienden? No hay una regla que obligue a usar el escudo solo para defenderse y la espada solo para atacar. Por ejemplo…</p>
+<p>—¡Aull!</p>
+<p>Golpeó con el escudo al Lobo de los Arbustos que se abalanzaba.</p>
+<p>Le dio un golpe de contragolpe en el hocico con el escudo; el lobo soltó un gemido y murió con el cráneo destrozado.</p>
+<p>—Así se hace, golpeando. El escudo no solo sirve para defenderse. La espada tampoco se trata solo de blandirla; si lees los movimientos del enemigo y la usas con astucia, acertarás. Usa la cabeza: piensa en lo que molesta al enemigo, en cómo sorprenderlo. Si solo blandes la espada y te proteges con el escudo, nunca te harás más fuerte.</p>
+<p>Mientras daba la lección, Gold fue masacrando a los Lobos de los Arbustos uno tras otro sin perder el aliento.</p>
+<p>¡Yo tampoco podía quedarme atrás!</p>
+<p>—¡Flecha de Fuego!</p>
+<p>—¡Aull!</p>
+<p>Usé la carta "R, Flecha de Fuego" para acabar con un Lobo de los Arbustos.</p>
+<p>Luego acabé con dos o tres más de la misma manera con magia de ataque.</p>
+<p><em>(En la época de la "Reunión de Razas", admiraba a los que podían usar magia, pero usando cartas de la "Gacha Infinita" puedo imitarla de forma simulada. Es divertido.)</em></p>
+<p>Aunque hay humanos que usan magia, son pocos. También entre los hombres bestia hay pocos.</p>
+<p>Por eso, que un equipo de principiantes como ellos tenga una maga, aunque sea su hermana, es bastante raro.</p>
+<p>Miya, la hermana de Elio, estaba tan sorprendida que habló con la voz temblorosa.</p>
+<p>—Es increíble… A pesar de tener mi edad, puede lanzar magia de nivel de combate sin necesidad de conjuro…</p>
+<p>Normalmente, al usar magia, como hacía Miya, hay que concentrarse y recitar un conjuro.</p>
+<p>Cuando uno se vuelve experto, puede usarla sin recitarlo.</p>
+<p>Como maga, estaba asombrada de que yo, a pesar de tener su misma edad, pudiera lanzar magia sin conjuro como un experto.</p>
+<p>—¡Auuuuuuu!</p>
+<p>—¿Un aullido? ¿Está llamando a más compañeros?… No, ¿es la señal para huir?</p>
+<p>Lo desagradable de los Lobos Grandes de los Arbustos es que tienen la costumbre de reunir a otros Lobos de los Arbustos con su aullido.</p>
+<p>En la época de la "Reunión de Razas", cuando luché contra una manada de Lobos Grandes de los Arbustos, por más que los derrotara, no paraban de venir más.</p>
+<p>Pero esta vez, después del aullido, el Lobo Grande de los Arbustos huyó al bosque apresuradamente.</p>
+<p>Parecía que había entendido que no podía ganar y dio la señal de huida.</p>
+<p>¡No podía dejar que se escapara!</p>
+<p>—¡Muro de Fuego!</p>
+<p>Usé "SR, Muro de Fuego" para crear una barrera de llamas que bloqueara su huida.</p>
+<p>—¡¿Auuu?!</p>
+<p>—¡Mentira! ¡Lanzó magia de nivel táctico sin conjuro!</p>
+<p>—¿M-Miya?</p>
+<p>Miya alzó la voz con una expresión de asombro tan grande que parecía que se le iban a saltar los ojos.</p>
+<p>Desde que la conocía, era la primera vez que la tranquila Miya alzaba tanto la voz.</p>
+<p>Sus hermanos, que estaban a su lado, quizás sorprendidos por su grito, desviaron la mirada hacia su hermana a pesar de que estaban viendo pelear a Gold.</p>
+<p>Nosotros, sin prestar atención, continuamos el combate.</p>
+<p>—¡Nemumu!</p>
+<p>—¡Déjelo en mis manos, Dark-sama!</p>
+<p>Nemumu, con un cuchillo en cada mano, decapitó rápidamente al Lobo Grande de los Arbustos, que estaba bloqueado.</p>
+<p>Con esto, todos los lobos de los arbustos, tanto los grandes como los comunes, fueron aniquilados.</p>
+<p>Cuando terminó el combate, Miya, que hasta ahora había sido la más tranquila, agarró emocionada los hombros de su hermano y lo sacudió.</p>
+<p>—¡H-hermano, has visto eso? ¡Un chico humano de mi edad ha lanzado sin conjuro no solo magia de nivel de combate, sino también "Muro de Fuego", que es de nivel táctico, aunque sea de rango bajo!</p>
+<p>—C-cálmate, Miya. ¿Eso es algo increíble?</p>
+<p>—¡Claro que es increíble! Quizás entre elfos, demonios y dragones de más edad haya quienes puedan, ¡pero nunca he oído hablar de un humano que pueda lanzar magia de nivel táctico sin conjuro! ¡Estamos presenciando un hito en la historia de la magia!</p>
+<p>—M-Miya-chan, ¿de verdad es un hito en la historia de la magia?</p>
+<p>—¡Es verdad, es verdad! ¡Increíble, es como un héroe o un campeón!</p>
+<p>Miya, de carácter tranquilo, me miraba con tal intensidad que parecía que sus ojos brillaban físicamente.</p>
+<p>Ante su reacción,</p>
+<p>—Jeje, que entiendas lo maravilloso y grandioso que es Dark-sama demuestra que tienes buen ojo.</p>
+<p>—Ah, jajaja…</p>
+<p>Por alguna razón, Nemumu se enorgullecía como si fuera mérito propio, hinchando el pecho.</p>
+<p>Su reacción era adorable y me alegraba, pero también me daba vergüenza, así que esbocé una leve sonrisa para disimular.</p>
+<p>—Entiendo que te alegres de que alaben a mi señor, pero no estaría bien que vinieran más refuerzos atraídos por el alboroto. Deja de hinchar ese pecho plano y recojamos las piedras mágicas de una vez. Cambiemos de lugar.</p>
+<p>—L-lo sé. ¡Y no digas que tengo el pecho plano!</p>
+<p>—Nemumu, está claro que se refiere a ti.</p>
+<p>Nemumu, sonrojada, golpeó la espalda de Gold una y otra vez.</p>
+<p>Él, sin inmutarse, se puso a extraer las piedras mágicas de los Lobos de los Arbustos que había derrotado.</p>
+<p>Como la opinión de Gold era razonable, esbocé otra leve sonrisa y me puse a trabajar también.</p>
+<p>—A-ah, nosotros también ayudamos como agradecimiento por salvarnos.</p>
+<p>—Gracias. Entonces, se lo agradecemos.</p>
+<p>Gracias a que Elio y los demás se ofrecieron, terminamos el trabajo en menos de diez minutos.</p>
+<p>Pudimos alejarnos del lugar antes de que llegaran refuerzos.</p>
     </div>
 
     <hr>
 
-    <div class="rating-section">
-        <h3>⭐ Califica este capítulo</h3>
-        <div class="stars" id="starRating">
-            <span class="star" data-value="1">★</span>
-            <span class="star" data-value="2">★</span>
-            <span class="star" data-value="3">★</span>
-            <span class="star" data-value="4">★</span>
-            <span class="star" data-value="5">★</span>
-        </div>
-        <div id="ratingMessage" style="font-size:0.85rem; margin-top:0.5rem;"></div>
-    </div>
-
-    <div class="comments-section">
-        <h3>💬 Comentarios</h3>
-        <div class="comment-form">
-            <input type="text" id="commentName" placeholder="Tu nombre" readonly>
-            <textarea id="commentText" placeholder="Escribe tu comentario... (Inicia sesión para comentar)"></textarea>
-            <button id="submitComment">Enviar</button>
-        </div>
-        <div id="commentsList"></div>
-    </div>
-
     <div class="nav-container">
         <div class="nav-bottom">
             <a href="index.html" class="nav-btn">📚 Índice</a>
-            <a href="capitulo1e7.html" id="prevLinkBottom" class="nav-btn">← Jóvenes aventureros</a>
+            <a href="capitulo1e7.html" id="prevLinkBottom" class="nav-btn ">← Jóvenes aventureros</a>
             <span class="chapter-counter" id="chapterCounterBottom">Capítulo 1 - Episodio 8</span>
-            <a href="capitulo1e9.html" id="nextLinkBottom" class="nav-btn">Ducado de Six →</a>
+            <a href="capitulo1e9.html" id="nextLinkBottom" class="nav-btn ">Ducado de Six →</a>
         </div>
     </div>
 
@@ -525,197 +392,64 @@
 
     <script src="data.js"></script>
     <script>
+        // ========== CONFIGURACIÓN DEL CAPÍTULO ==========
         const CHAPTER_NUM = 1;
         const EPISODE_NUM = 8;
         
-        let pointsAdded = false;
-        let currentUserProfile = null;
-        
-        async function registerRead() {
-            if (pointsAdded) return;
-            const user = auth.currentUser;
-            if (!user) return;
-            const result = await registerChapterRead(CHAPTER_NUM, EPISODE_NUM);
-            if (result.success && !result.alreadyRead) {
-                pointsAdded = true;
-                showToast(`📚 +${result.pointsGained} puntos por leer este capítulo`);
-                if (result.newLevel && result.newLevel.name !== currentUserProfile?.level) {
-                    showToast(`🎉 ¡Subiste a nivel ${result.newLevel.name}! ${result.newLevel.badge}`);
-                }
-            }
-        }
-        
-        function showToast(message) {
-            const toast = document.createElement('div');
-            toast.className = 'toast-message';
-            toast.textContent = message;
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 3000);
-        }
-        
-        async function initRating() {
-            const stars = document.querySelectorAll('.star');
-            const messageDiv = document.getElementById('ratingMessage');
-            const user = auth.currentUser;
-            if (user) {
-                const userDoc = await db.collection('users').doc(user.uid).get();
-                const rated = userDoc.data()?.ratedChapters?.includes(`${CHAPTER_NUM}_${EPISODE_NUM}`);
-                if (rated) {
-                    const ratingData = await db.collection('ratings')
-                        .where('userId', '==', user.uid)
-                        .where('chapterNum', '==', CHAPTER_NUM)
-                        .where('episodeNum', '==', EPISODE_NUM)
-                        .get();
-                    if (!ratingData.empty) {
-                        const rating = ratingData.docs[0].data().rating;
-                        updateStars(rating);
-                        messageDiv.innerHTML = `✅ Ya calificaste este capítulo con ${rating} estrellas. ¡Gracias!`;
-                    } else {
-                        messageDiv.innerHTML = '✅ Ya calificaste este capítulo. ¡Gracias!';
-                    }
-                }
-            }
-            stars.forEach(star => {
-                star.addEventListener('click', async function() {
-                    const user = auth.currentUser;
-                    if (!user) { messageDiv.innerHTML = '❌ Inicia sesión para calificar'; return; }
-                    const userDoc = await db.collection('users').doc(user.uid).get();
-                    const rated = userDoc.data()?.ratedChapters?.includes(`${CHAPTER_NUM}_${EPISODE_NUM}`);
-                    if (rated) { messageDiv.innerHTML = '⚠️ Ya calificaste este capítulo anteriormente.'; return; }
-                    const value = parseInt(this.dataset.value);
-                    const result = await registerRating(CHAPTER_NUM, EPISODE_NUM, value);
-                    if (result.success) {
-                        updateStars(value);
-                        messageDiv.innerHTML = `⭐ Calificaste este capítulo con ${value} estrellas. +${result.pointsGained} puntos. ¡Gracias!`;
-                        showToast(`⭐ +${result.pointsGained} puntos por calificar`);
-                        if (result.newLevel && result.newLevel.name !== currentUserProfile?.level) {
-                            showToast(`🎉 ¡Subiste a nivel ${result.newLevel.name}! ${result.newLevel.badge}`);
-                        }
-                    } else { messageDiv.innerHTML = `❌ ${result.error}`; }
-                });
-            });
-        }
-        
-        function updateStars(rating) {
-            const stars = document.querySelectorAll('.star');
-            stars.forEach((star, index) => { if (index < rating) star.classList.add('active'); else star.classList.remove('active'); });
-        }
-        
-        async function loadComments() {
-            const result = await getComments(CHAPTER_NUM, EPISODE_NUM);
-            if (!result.success) { document.getElementById('commentsList').innerHTML = '<p>Error al cargar comentarios</p>'; return; }
-            const comments = result.comments;
-            const container = document.getElementById('commentsList');
-            if (comments.length === 0) { container.innerHTML = '<p>No hay comentarios aún. ¡Sé el primero en comentar!</p>'; return; }
-            const user = auth.currentUser;
-            let html = '';
-            for (const comment of comments) {
-                const isOwner = user && user.uid === comment.userId;
-                html += `<div class="comment-item" data-comment-id="${comment.id}" data-author-id="${comment.userId}">
-                            <span class="comment-name">${escapeHtml(comment.username)}</span>
-                            <span class="comment-date">${new Date(comment.timestamp?.toDate()).toLocaleString()}</span>
-                            <span class="comment-like" onclick="handleLike('${comment.id}', '${comment.userId}')">❤️ ${comment.likes || 0}</span>
-                            <span class="comment-report" onclick="handleReport('${comment.id}', '${escapeHtml(comment.text)}')">🚩 Reportar</span>
-                            ${isOwner ? `<span class="comment-delete" onclick="handleDeleteComment('${comment.id}')">🗑️ Eliminar</span>` : ''}
-                            <div class="comment-text">${escapeHtml(comment.text)}</div>
-                         </div>`;
-            }
-            container.innerHTML = html;
-        }
-        
-        async function handleLike(commentId, authorId) {
-            const user = auth.currentUser;
-            if (!user) { alert('Inicia sesión para dar like'); return; }
-            const result = await likeComment(commentId, authorId);
-            if (result.success) { loadComments(); showToast('👍 Like registrado'); } else { alert(result.error); }
-        }
-        
-        async function handleReport(commentId, commentText) {
-            const user = auth.currentUser;
-            if (!user) { alert('Debes iniciar sesión para reportar un comentario'); return; }
-            const reason = prompt('Motivo del reporte:\n\n1. Insulto o acoso\n2. Spoiler sin aviso\n3. Spam o publicidad\n4. Contenido inapropiado\n5. Otro\n\nEscribe el motivo:');
-            if (reason === null) return;
-            const result = await reportComment(commentId, reason, user.uid);
-            if (result.success) { alert('✅ Comentario reportado. Gracias por ayudar a mantener la comunidad.'); } else { alert('❌ Error: ' + result.error); }
-        }
-        
-        async function handleDeleteComment(commentId) {
-            if (!confirm('¿Eliminar tu comentario? Esta acción no se puede deshacer.')) return;
-            const result = await deleteComment(commentId);
-            if (result.success) { alert('✅ Comentario eliminado'); loadComments(); } else { alert('❌ Error: ' + result.error); }
-        }
-        
-        function escapeHtml(str) { return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]); }
-        
-        async function submitComment() {
-            const user = auth.currentUser;
-            if (!user) { alert('Debes iniciar sesión para comentar'); return; }
-            const text = document.getElementById('commentText').value;
-            if (!text.trim()) { alert('Escribe un comentario'); return; }
-            const userProfile = await getUserProfile();
-            if (!userProfile.success) { alert('Error al obtener perfil'); return; }
-            const result = await registerComment(CHAPTER_NUM, EPISODE_NUM, text, userProfile.profile.username);
-            if (result.success) {
-                document.getElementById('commentText').value = '';
-                loadComments();
-                showToast(`💬 +${result.pointsGained} puntos por comentar`);
-                if (result.newLevel && result.newLevel.name !== currentUserProfile?.level) {
-                    showToast(`🎉 ¡Subiste a nivel ${result.newLevel.name}! ${result.newLevel.badge}`);
-                }
-            } else { alert(result.error); }
-        }
-        
-        async function updateUserInfo() {
-            const user = auth.currentUser;
-            const userInfoDiv = document.getElementById('userInfo');
-            const logoutBtn = document.getElementById('logoutBtnHeader');
-            const nameInput = document.getElementById('commentName');
-            const modLink = document.getElementById('modLink');
-            if (user) {
-                const result = await getUserProfile();
-                if (result.success) {
-                    currentUserProfile = result.profile;
-                    userInfoDiv.style.display = 'inline-block';
-                    logoutBtn.style.display = 'inline-block';
-                    userInfoDiv.textContent = `${currentUserProfile.username} | ${currentUserProfile.totalPoints} pts | ${currentUserProfile.levelBadge}`;
-                    nameInput.value = currentUserProfile.username;
-                    nameInput.readonly = true;
-                    document.getElementById('commentText').placeholder = "Escribe tu comentario...";
-                    if (isAdmin(user)) modLink.style.display = 'inline-block';
-                    else modLink.style.display = 'none';
-                }
-            } else {
-                userInfoDiv.style.display = 'none';
-                logoutBtn.style.display = 'none';
-                nameInput.value = "Inicia sesión para comentar";
-                nameInput.readonly = true;
-                document.getElementById('commentText').placeholder = "Inicia sesión para comentar";
-                modLink.style.display = 'none';
-            }
-        }
-        
-        async function handleLogout() { await logoutUser(); location.reload(); }
-        
+        // ========== NAVEGACIÓN ==========
         function setupNavigation() {
             if (typeof GACHA_DATA !== 'undefined') {
                 const currentEpisode = GACHA_DATA.getEpisode(CHAPTER_NUM, EPISODE_NUM);
                 const prevEpisode = GACHA_DATA.getPrevEpisode(CHAPTER_NUM, EPISODE_NUM);
                 const nextEpisode = GACHA_DATA.getNextEpisode(CHAPTER_NUM, EPISODE_NUM);
                 const allEpisodes = GACHA_DATA.getAllEpisodesOrdered();
+                
                 const prevLinks = [document.getElementById('prevLinkTop'), document.getElementById('prevLinkBottom')];
                 const nextLinks = [document.getElementById('nextLinkTop'), document.getElementById('nextLinkBottom')];
                 const counters = [document.getElementById('chapterCounterTop'), document.getElementById('chapterCounterBottom')];
+                
                 counters.forEach(c => { if(c) c.textContent = `${currentEpisode.chapterTitle} - Episodio ${currentEpisode.episodeNum}`; });
+                
                 if (prevEpisode) {
-                    prevLinks.forEach(l => { if(l) { l.href = `capitulo${prevEpisode.chapter}e${prevEpisode.episodeNum}.html`; l.classList.remove('disabled'); l.textContent = `← ${prevEpisode.title}`; } });
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${prevEpisode.chapter}e${prevEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = prevEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `← ${shortTitle}`;
+                        }
+                    });
                 } else {
-                    prevLinks.forEach(l => { if(l) { l.classList.add('disabled'); l.removeAttribute('href'); l.textContent = '← Sin anterior'; } });
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = '← Sin anterior';
+                        }
+                    });
                 }
+                
                 if (nextEpisode) {
-                    nextLinks.forEach(l => { if(l) { l.href = `capitulo${nextEpisode.chapter}e${nextEpisode.episodeNum}.html`; l.classList.remove('disabled'); l.textContent = `${nextEpisode.title} →`; } });
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${nextEpisode.chapter}e${nextEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = nextEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `${shortTitle} →`;
+                        }
+                    });
                 } else {
-                    nextLinks.forEach(l => { if(l) { l.classList.add('disabled'); l.removeAttribute('href'); l.textContent = 'Sin siguiente →'; } });
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = 'Sin siguiente →';
+                        }
+                    });
                 }
+                
                 const selects = [document.getElementById('chapterSelect'), document.getElementById('chapterSelectBottom')];
                 selects.forEach(select => {
                     if (!select) return;
@@ -730,11 +464,31 @@
             }
         }
         
+        // ========== REGISTRAR LECTURA EN HISTORIAL ==========
+        function markAsRead() {
+            const user = localStorage.getItem('gacha_user');
+            if (!user) return;
+            
+            let history = localStorage.getItem(`gacha_history_${user}`);
+            let historyObj = history ? JSON.parse(history) : { chapters: [] };
+            
+            const readKey = { chapter: CHAPTER_NUM, episode: EPISODE_NUM };
+            historyObj.chapters = historyObj.chapters.filter(item => 
+                !(item.chapter == CHAPTER_NUM && item.episode == EPISODE_NUM)
+            );
+            historyObj.chapters.unshift(readKey);
+            if (historyObj.chapters.length > 20) historyObj.chapters.pop();
+            
+            localStorage.setItem(`gacha_history_${user}`, JSON.stringify(historyObj));
+        }
+        
+        // ========== CONTROLES ==========
         function initControls() {
             const savedTheme = localStorage.getItem('gacha_theme');
             if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
             const savedFont = localStorage.getItem('gacha_fontsize');
             if (savedFont) document.body.style.fontSize = savedFont + '%';
+            
             document.getElementById('fontPlus').onclick = () => {
                 let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
                 size = Math.min(150, size + 10);
@@ -747,6 +501,7 @@
                 document.body.style.fontSize = size + '%';
                 localStorage.setItem('gacha_fontsize', size);
             };
+            
             const themeBtn = document.getElementById('themeToggle');
             if (document.documentElement.hasAttribute('data-theme')) themeBtn.textContent = '☀️ Modo claro';
             themeBtn.onclick = () => {
@@ -761,25 +516,23 @@
                     themeBtn.textContent = '☀️ Modo claro';
                 }
             };
+            
             document.getElementById('scrollToTop').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
             document.getElementById('scrollToBottom').onclick = () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-            document.getElementById('logoutBtnHeader').onclick = handleLogout;
         }
         
-        document.addEventListener('DOMContentLoaded', async () => {
+        // ========== INICIALIZACIÓN ==========
+        document.addEventListener('DOMContentLoaded', () => {
             initControls();
             setupNavigation();
-            await updateUserInfo();
-            await loadComments();
-            await initRating();
-            onAuthStateChanged(async (state) => {
-                await updateUserInfo();
-                if (state.loggedIn) { await registerRead(); await loadComments(); }
+            markAsRead();
+            
+            kofiWidgetOverlay.draw('ocholobos', {
+                'type': 'floating-chat',
+                'floating-chat.donateButton.text': 'Apóyame',
+                'floating-chat.donateButton.background-color': '#1a4d5f',
+                'floating-chat.donateButton.text-color': '#ffffff'
             });
-            document.getElementById('submitComment').onclick = submitComment;
-            window.handleLike = handleLike;
-            window.handleReport = handleReport;
-            window.handleDeleteComment = handleDeleteComment;
         });
     </script>
 </body>
