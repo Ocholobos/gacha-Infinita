@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gacha Infinita - Parte 3 | Gacha Infinita</title>
+    <title>La venganza contra Garou | Gacha Infinita</title>
     <style>
         * {
             margin: 0;
@@ -67,16 +67,6 @@
         .font-size-control button {
             width: 32px;
             padding: 0.2rem;
-        }
-        .user-info {
-            background: #1a4d5f;
-            color: white;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-        }
-        [data-theme="dark"] .user-info {
-            background: #5a9e8c;
         }
         
         .nav-container {
@@ -187,106 +177,6 @@
             border-top-color: #404040;
         }
         
-        .rating-section {
-            background: white;
-            border: 1px solid #e5e0d8;
-            border-radius: 16px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            text-align: center;
-        }
-        [data-theme="dark"] .rating-section {
-            background: #2d2d2d;
-            border-color: #404040;
-        }
-        .stars {
-            display: flex;
-            justify-content: center;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-        .star {
-            font-size: 2rem;
-            cursor: pointer;
-            color: #cbd5e0;
-            transition: color 0.2s;
-        }
-        .star:hover, .star.active {
-            color: #f5b042;
-        }
-        
-        .comments-section {
-            background: white;
-            border: 1px solid #e5e0d8;
-            border-radius: 16px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-        }
-        [data-theme="dark"] .comments-section {
-            background: #2d2d2d;
-            border-color: #404040;
-        }
-        .comment-form {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-        }
-        .comment-form input, .comment-form textarea {
-            padding: 0.5rem;
-            border: 1px solid #e5e0d8;
-            border-radius: 8px;
-            background: #faf9f7;
-            font-family: inherit;
-        }
-        [data-theme="dark"] .comment-form input, [data-theme="dark"] .comment-form textarea {
-            background: #1a1a1a;
-            border-color: #404040;
-            color: #e5e5e5;
-        }
-        .comment-form textarea {
-            min-height: 80px;
-            resize: vertical;
-        }
-        .comment-form button {
-            width: 100px;
-            background: #1a4d5f;
-            color: white;
-            border: none;
-            padding: 0.5rem;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-        [data-theme="dark"] .comment-form button {
-            background: #5a9e8c;
-        }
-        .comment-item {
-            border-bottom: 1px solid #e5e0d8;
-            padding: 0.8rem 0;
-        }
-        .comment-name {
-            font-weight: bold;
-            color: #1a4d5f;
-        }
-        .comment-date {
-            font-size: 0.7rem;
-            color: #6b6a68;
-            margin-left: 0.5rem;
-        }
-        .comment-like, .comment-report, .comment-delete {
-            margin-left: 0.8rem;
-            cursor: pointer;
-            font-size: 0.7rem;
-            display: inline-block;
-            transition: all 0.2s;
-        }
-        .comment-like { color: #9ca3af; }
-        .comment-like:hover { color: #e53e3e; }
-        .comment-report { color: #9ca3af; }
-        .comment-report:hover { color: #e53e3e; }
-        .comment-delete { color: #9ca3af; }
-        .comment-delete:hover { color: #e53e3e; }
-        
         .floating-buttons {
             position: fixed;
             bottom: 20px;
@@ -359,17 +249,11 @@
                 width: 40px;
                 height: 40px;
                 font-size: 1.2rem;
-            }
-            .star {
-                font-size: 1.5rem;
+                bottom: 70px;
+                right: 15px;
             }
         }
     </style>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="firebase-config.js"></script>
-    <script src="auth.js"></script>
     <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
 </head>
 <body>
@@ -378,11 +262,6 @@
             <button id="fontMinus">A-</button>
             <button id="fontPlus">A+</button>
         </div>
-        <a href="usuario.html">👤 Mi perfil</a>
-        <a href="reglas.html">📜 Reglas</a>
-        <a href="moderacion.html" id="modLink" style="display: none;">🛡️ Moderación</a>
-        <div id="userInfo" class="user-info" style="display: none;"></div>
-        <button id="logoutBtnHeader" style="display: none;">Cerrar sesión</button>
         <a href="index.html">📚 Índice</a>
         <button id="themeToggle">🌙 Modo oscuro</button>
     </div>
@@ -390,9 +269,9 @@
     <div class="nav-container">
         <div class="nav-center">
             <a href="index.html" class="nav-btn">📚 Índice</a>
-            <a href="capitulo0e1.html" id="prevLinkTop" class="nav-btn">← Gacha Infinita - Parte 2</a>
+            <a href="capitulo0e1.html" id="prevLinkTop" class="nav-btn ">← Tres años después</a>
             <span class="chapter-counter" id="chapterCounterTop">Capítulo 0 - Episodio 2</span>
-            <a href="capitulo1e1.html" id="nextLinkTop" class="nav-btn">El viaje comienza →</a>
+            <a href="capitulo1e1.html" id="nextLinkTop" class="nav-btn ">El viaje comienza →</a>
         </div>
     </div>
 
@@ -402,1121 +281,559 @@
         </select>
     </div>
 
-    <h1>Gacha Infinita - Parte 3</h1>
-    <div class="episode-number">Capítulo 0 - Episodio 2: La venganza contra Garou</div>
+    <h1>La venganza contra Garou</h1>
+    <div class="episode-number">Capítulo 0 - Episodio 2</div>
 
     <div class="story-content">
         <p>Garou, el hombre bestia, caminaba arrogantemente por la calle principal de la ciudad.</p>
-        
-        <p>La gente en la calle inmediatamente le abría paso, y aquellos que lo admiraban se acercaban para hacerle una reverencia.</p>
-        
-        <p>—¡Oye, Garou aniki! ¿A dónde vas? Si no te importa, déjame acompañarte.</p>
-        
-        <p>—Oye, Garou, me preguntaba si te gustaría conocer a mi hermana. Mi hermana es fan tuya.</p>
-        
-        <p>—No, no. En lugar de conocer a su misteriosa hermana, será mejor que conozcas a mi hija.</p>
-        
-        <p>—Garou-sama, por favor vuelve a la tienda y cuéntanos tu historia heroica. ¡Te estaremos esperando!</p>
-        
-        <p>—Garou-sama, por favor ven a nuestra tienda en lugar de a las tiendas de esas niñas. ¡Si vienes aquí, te prometo que recibirás un trato especial!</p>
-        
-        <p>Los jóvenes hombres bestia, los jóvenes, los ancianos, las mujeres jóvenes y las atractivas mujeres bestia se turnaban para llamarlo.</p>
-        
-        <p>Garou no se detuvo, pero levantó ligeramente la mano para rechazar mientras su cola se movía de buen humor.</p>
-        
-        <p>—Lo siento, pero aún tengo trabajo que hacer. No tengo tiempo ahora. Cuando esté libre, los llamaré o vendré a visitarlos, así que espérenme.</p>
-        
-        <p>Los que fueron rechazados por Garou no dijeron nada más. Lo miraron con respeto, admiración, cariño e incluso un toque de celos.</p>
-        
-        <p>Sin embargo, para el Garou actual, incluso las miradas de celos eran solo un factor para satisfacer su sentido de superioridad.</p>
-        
-        <p>(Matar a un niño humano es suficiente para convertirme en el próximo jefe de la raza de lobos bestia, ¡así que fue un trabajo delicioso!)</p>
-        
-        <p>Hace unos tres años, se encontró a un niño con el potencial de ser el "Maestro", por lo que fue reclutado en la Legión "Reunión de Razas".</p>
-        
-        <p>Después de eso, observaron al niño durante tres meses, pero se determinó que el niño no era el "Maestro".</p>
-        
-        <p>Decidieron matarlo por si acaso. Lo llevaron a un calabozo donde no tenían que preocuparse por ser vistos y sería más fácil deshacerse del cuerpo.</p>
-        
-        <p>Sin embargo, se confiaron demasiado y lo dejaron escapar.</p>
-        
-        <p>Para ser precisos, Garou estaba a punto de matar al niño que tenía una flecha clavada en la pierna. Pero la mano del niño activó accidentalmente un círculo mágico de teletransportación.</p>
-        
-        <p>El niño desapareció.</p>
-        
-        <p>Hicieron todo lo posible por buscarlo después, pero no pudieron encontrarlo.</p>
-        
-        <p>Sin embargo, con esa herida, el niño humano había sido transportado a algún lugar del calabozo más grande, más fuerte y más peligroso del mundo, el "Abismo".</p>
-        
-        <p>Probablemente sería atacado por monstruos atraídos por el olor a sangre y devorado hasta morir.</p>
-        
-        <p>Como resultado, todos los miembros acordaron que Light estaba muerto y notificaron a los superiores.</p>
-        
-        <p>Los superiores también les creyeron y determinaron que "la posibilidad de que Light siga vivo es baja".</p>
-        
-        <p>Decidieron declarar su muerte.</p>
-        
-        <p>Como recompensa por el asesinato del humano sospechoso de ser el "Maestro", Garou recibió su puesto actual de "Candidato principal para líder de los lobos bestia".</p>
-        
-        <p>Gracias a esto, era reconocido por cada lobo bestia que encontraba en la calle y por otras razas bestiales, y recibió una gran cantidad de dinero del gobierno.</p>
-        
-        <p>Solo el dinero de la recompensa era suficiente para vivir el resto de su vida.</p>
-        
-        <p>(Además de nosotros, también han creado legiones, tiendas, gremios de comerciantes y organizaciones secretas para buscar al "Maestro"… Al final, todavía no entiendo qué es realmente el "Maestro". ¿Por qué tantos países se esfuerzan tanto en buscarlo?)</p>
-        
-        <p>Incluso el trato que recibió Garou era excepcional.</p>
-        
-        <p>Originalmente, la posición de Garou en la raza de lobos bestia no era tan buena. Ni siquiera podía ser candidato a líder.</p>
-        
-        <p>Si fuera un humano, sería como el tercer hijo de un agricultor pobre en el pueblo que saltó a la cima de la lista de candidatos a jefe del pueblo a la mañana siguiente. Y si todo iba bien, sería elegido seguro.</p>
-        
-        <p>No solo era Garou.</p>
-        
-        <p>Se rumoreaba que cada uno de los antiguos miembros de la Reunión de Razas estaba progresando enormemente en sus pueblos natales, al igual que Garou.</p>
-        
-        <p>(He oído que Sasha la elfa es una hija ilegítima que no se llevaba bien con su media hermana y era tratada como alguien que no existía. Pero ahora, hay rumores de que la familia real está hablando de casarla. El enano Nano ha sido contratado por los mejores herreros. Diablo, el demonio, no solo ha recuperado su nobleza desheredada, sino que también ha ascendido de rango…)</p>
-        
-        <p>Drago, el dragón, era el que más había progresado.</p>
-        
-        <p>(No me di cuenta de que Drago-san es un miembro de la familia real que tiene derecho al trono… No es de extrañar que su orgullo sea mayor que el de los dragones comunes. He oído que su posición para el trono era baja, pero aumentó significativamente después de matar a un humano… Existe la posibilidad de que se convierta en el líder de los dragones, el más fuerte de las 6 razas. Eso es más que un gran avance.)</p>
-        
-        <p>Light no era el "Maestro".</p>
-        
-        <p>A pesar de este hecho, recibieron muchos buenos tratos solo por deshacerse de él.</p>
-        
-        <p>(Si Light fuera el verdadero "Maestro", ¿lo habrían tratado mejor? Si ese es el caso, entonces ¿qué diablos es un "Maestro"?)</p>
-        
-        <p>Curioso y esperando un mejor trato del que recibía ahora, pensó en "investigar por su cuenta" sobre el Maestro, pero sus instintos rápidamente descartaron la idea.</p>
-        
-        <p>Solo de pensarlo, casi podía oler la muerte que se pegaba a su nariz.</p>
-        
-        <p>Se le erizó la piel bajo el pelaje.</p>
-        
-        <p>(Mi instinto me dice que no me involucre con lo del "Maestro". Si mi intuición se activa, debe ser realmente malo. Me ha salvado la vida tantas veces…)</p>
-        
-        <p>Cuando era miembro de la Legión "Reunión de Razas", entró en calabozos muchas veces y luchó contra muchos monstruos peligrosos.</p>
-        
-        <p>Cada vez, sus instintos bestiales lo salvaron.</p>
-        
-        <p>Los antiguos miembros de la "Reunión de Razas" incluso tomaban en cuenta la "intuición instintiva" de Garou.</p>
-        
-        <p>(Mientras hay vida, hay esperanza. Sería un desperdicio volverse codicioso y renunciar a mi posición actual. Soy un niño huérfano y abandonado que solo sabe usar la violencia, y ahora soy el próximo candidato principal para líder de los lobos bestia. Si las cosas van bien, la cima de la raza de lobos bestia será mía… kuku, fufufuhi! ¡No puedo creer que este Garou-sama sea el mejor de la raza de lobos bestia! Para proteger esta posición, debería olvidarme del "Maestro".)</p>
-        
-        <p>Garou estaba seguro de que sus países los trataban bien a él y a los otros miembros del equipo como recompensa por matar a Light, que no era el "Maestro".</p>
-        
-        <p>Pero no había razón para que él renunciara a su buen trato actual solo por su curiosidad.</p>
-        
-        <p>De hecho, la respuesta correcta sería olvidarse del "Maestro".</p>
-        
-        <p>—Disculpe, ¿puedo llamar su atención?</p>
-        
-        <p>—¿Eh?</p>
-        
-        <p>Mientras sacaba conclusiones internamente sobre el "Maestro", una voz lo llamó.</p>
-        
-        <p>Garou soltó un sonido gruñón porque lo interrumpieron en su proceso de pensamiento.</p>
-        
-        <p>Sin embargo, una mujer hermosa estaba allí y al instante disipó su mal humor.</p>
-        
-        <p>Su cabello negro parecía cortado del cielo nocturno. Su cabello estaba recogido en una cola de caballo. Llevaba una capa bien confeccionada, con un atuendo de viaje similar debajo.</p>
-        
-        <p>Era alta para una mujer, y su rostro tenía ojos grandes, pestañas largas, labios rojos y una nariz bien definida. Todo estaba perfectamente colocado. Su piel era tan suave y blanca que parecía una muñeca que Dios había creado con esmero.</p>
-        
-        <p>Solo su belleza ya llamaba la atención, pero también tenía un pecho extremadamente grande que empujaba su ropa desde abajo. Sus pechos eran tan grandes que los hombres definitivamente los mirarían. Sin embargo, su cintura era tan pequeña que parecía que podría romperse, y sus brazos y piernas eran largos y esbeltos. Toda esta combinación la hacía ver muy estilizada.</p>
-        
-        <p>Una mujer humana tan hermosa le habló.</p>
-        
-        <p>Era tan hermosa que se preguntó: "¿Es humana?".</p>
-        
-        <p>—Siento interrumpirte. ¿Eres Garou-sama, el exmiembro de la Legión "Reunión de Razas"?</p>
-        
-        <p>—Eh, oo, ooo.</p>
-        
-        <p>Garou no había cambiado su nombre.</p>
-        
-        <p>Así que no era tan difícil encontrarlo.</p>
-        
-        <p>Por cierto, la razón oficial de la disolución de la "Reunión de Razas" fue que "los miembros se sintieron responsables por la muerte de Light en el calabozo y se separaron".</p>
-        
-        <p>La hermosa mujer preguntó con expresión triste.</p>
-        
-        <p>—En realidad, estoy buscando el paradero del señor al que debo servir, el Maestro Light. …Lo siento, aún no te he dicho mi nombre. Me llamo Mei. Soy una sirvienta que jura lealtad absoluta a Light-sama.</p>
-        
-        <p>—Oh, ¿ooo?</p>
-        
-        <p>Le hicieron preguntas unilateralmente y ella ya se presentó. Sin embargo, una vez más, Garou solo pudo escupir una voz que sonaba como un gemido.</p>
-        
-        <hr>
-        
-        <p>Una hermosa sirvienta llamada Mei dijo que Light no era el segundo hijo de un agricultor pobre. No podía mencionar el nombre de sus padres, pero en realidad era un niño de una familia noble. Debido a circunstancias, tuvieron que pedir a un agricultor pobre que lo cuidara.</p>
-        
-        <p>Finalmente, su verdadera familia podía recibirlo con los brazos abiertos, pero desafortunadamente, el estado y la ubicación de Light eran desconocidos.</p>
-        
-        <p>Buscaron a la Legión "Reunión de Razas" como último esfuerzo. Aun así, tomó mucho tiempo encontrarlos porque el grupo ya se había disuelto.</p>
-        
-        <p>No había esperanza, pero al menos quería preguntar sobre los últimos días de Light. Y si era posible, que la guiaran a ese lugar.</p>
-        
-        <p>Solo por guiarla al lugar, pagaría una gran cantidad de dinero. La cantidad era suficiente para construir una pequeña casa.</p>
-        
-        <p>Garou bailaba locamente por dentro.</p>
-        
-        <p>(¡Los humanos son tan idiotas! ¡Están dispuestos a pagar tanto oro solo para guiar a un niño a su lugar de muerte! Y esta mujer, después de secuestrarla y divertirme lo suficiente con ella, ¡puedo venderla a un traficante de esclavos por más oro!)</p>
-        
-        <p>(Y—) entrecerró los ojos internamente.</p>
-        
-        <p>(Cuando Light fue sospechoso de ser el "Maestro", todo sobre él fue investigado no solo por nosotros sino también por los países. Y sin embargo, ¿cómo es posible que una mujer tan extraordinaria quedara fuera de la investigación? Es demasiado sospechoso. Pero también es posible que esta mujer esté confundiendo a Light con otro niño… De todos modos, es una oportunidad demasiado buena para dejarla pasar.)</p>
-        
-        <p>Acarició su carta de triunfo, que guardaba en su bolsillo.</p>
-        
-        <p>Esta era la carta de triunfo que había llevado desde antes de unirse a la Legión "Reunión de Razas".</p>
-        
-        <p>Garou confiaba en que esto sería suficiente para sacarlo de la mayoría de las situaciones.</p>
-        
-        <p>Así que aceptó la oferta de Mei.</p>
-        
-        <p>Sin embargo, debido a que el nivel de Mei era demasiado bajo, era extremadamente difícil para Garou guiar a Mei para ir al piso intermedio del calabozo más grande, más fuerte y más peligroso del mundo, el "Abismo".</p>
-        
-        <p>No necesitaba dinero.</p>
-        
-        <p>Más bien, para aumentar su fama, llamó y reunió a los jóvenes hombres bestia lobo que admiraban a Garou.</p>
-        
-        <p>Además, desde el punto de vista de Garou, poder disfrutar sexualmente de Mei era más importante que el dinero.</p>
-        
-        <p>Si quería secuestrarla, violarla y divertirse con ella, sería mejor hacerlo en un lugar donde nadie pudiera verlos.</p>
-        
-        <p>En ese sentido, un calabozo era un lugar muy conveniente.</p>
-        
-        <p>(Sería mejor si el país destruyera a esos humanos estúpidos y débiles que no pueden entender estas cosas. Bueno, gracias a eso, puedo divertirme así.)</p>
-        
-        <p>Garou aceptó su solicitud.</p>
-        
-        <p>Discutieron la fecha y hora de partida.</p>
-        
-        <p>La mano de obra se reunió de inmediato.</p>
-        
-        <p>De hecho, cuando Garou, el candidato principal para líder de los lobos bestia, llamaba, incluso los que no eran lobos bestia se reunían.</p>
-        
-        <p>Como hormigas atraídas por la miel, muchas personas querían hacer un favor y ser recordadas por Garou.</p>
-        
-        <p>Al final de su partida, tomar más tiempo y esfuerzo seleccionar a los participantes que decidir la ruta a tomar.</p>
-        
-        <p>Al final, se reclutaron 10 jóvenes hombres bestia lobo con niveles alrededor de 150.</p>
-        
-        <p>Con Garou y Mei, era un grupo grande de 12 personas.</p>
-        
-        <p>A diferencia de la Reunión de Razas, tenían más miembros bestia, pero su nivel no era tan alto.</p>
-        
-        <p>Por eso usaban números para compensar la diferencia.</p>
-        
-        <p>Además, debido a sus rasgos raciales, los hombres bestia eran buenos luchando en grupo más que solos. Esta era la razón por la que decidieron preparar un grupo grande.</p>
-        
-        <p>Gracias al agudo sentido del olfato de los hombres bestia, llegaron al destino sin luchar contra ningún monstruo. A pesar de que su destino era el piso intermedio del calabozo más grande, más fuerte y más peligroso del mundo, el "Abismo".</p>
-        
-        <p>—Aquí fue donde Light-sama…</p>
-        
-        <p>—Sí, Light fue herido por el ataque sorpresa de un monstruo aquí. También tuvo la mala suerte de quedar atrapado en una trampa de teletransportación colocada al azar y desapareció de nuestra vista.</p>
-        
-        <p>Mei se llevó ambas manos a la boca frente al lugar. Parecía que estaba conteniendo su dolor.</p>
-        
-        <p>En ese momento, su cola de caballo negra se sacudió como un perro que llora por su maestro al que nunca volvería a ver.</p>
-        
-        <p>Mientras le explicaba la historia falsa, Garou miró a los jóvenes que había traído consigo.</p>
-        
-        <p>Como también habían sido informados antes, se movieron silenciosamente a una posición donde pudieran bloquear la entrada para evitar que Mei escapara.</p>
-        
-        <p>Originalmente, este lugar era solo un espacio para descansar antes de entrar al nivel medio de Naraku, y solo había una entrada. El techo era alto y el espacio era grande, lo que lo convertía en un lugar perfecto para tomar un descanso.</p>
-        
-        <p>Muy pocos aventureros podían usar este lugar, ubicado dentro del calabozo más grande, más fuerte y más peligroso del mundo, el "Abismo".</p>
-        
-        <p>Si bloqueaban esta entrada, Mei no tendría forma de escapar.</p>
-        
-        <p>Por el contrario, si bloqueaban la entrada, perderían su camino de escape…</p>
-        
-        <p>Mei no prestó atención a sus movimientos y continuó lamentándose.</p>
-        
-        <p>Mientras se burlaba internamente: "Los humanos son tan fáciles", Garou continuó interpretando el papel compasivo.</p>
-        
-        <p>—Fue demasiado repentino y no pudimos responder lo suficientemente rápido. Con esa herida, probablemente no duraría mucho. Lamento no haber podido protegerlo aunque estaba con él…</p>
-        
-        <p>—Debe haber sido realmente doloroso. En este lugar oscuro y sucio, fuiste traicionado y torturado por esos bastardos… Si hubiera podido estar allí antes, no habría terminado así. Estoy tan avergonzada de mí misma.</p>
-        
-        <p>—…¿Tú?</p>
-        
-        <p>Sin escuchar las palabras de consuelo de Garou, Mei lloraba sola mientras pensaba en la traición de la Legión "Reunión de Razas" que ocurrió hace casi tres años.</p>
-        
-        <p>Garou tardó un tiempo en entender el monólogo de Mei.</p>
-        
-        <p>Él se distanció lentamente de ella.</p>
-        
-        <p>Los jóvenes comenzaron a notar el cambio en el comportamiento de Garou y comenzaron a ponerse nerviosos.</p>
-        
-        <p>Una vez que ganó algo de distancia, preguntó:</p>
-        
-        <p>—…¿Quién eres? ¿Cómo sabes eso?</p>
-        
-        <p>Light fue sospechoso de ser el "Maestro" y planearon matarlo en el calabozo para estar seguros, pero antes de matarlo, tocó una trampa de teletransportación y desapareció.</p>
-        
-        <p>Solo unas pocas personas sabían este hecho.</p>
-        
-        <p>Mei, que no había escuchado sus palabras de consuelo antes, respondió a esa pregunta.</p>
-        
-        <p>Soltó la mano que había estado sosteniendo su boca y lentamente se giró para mirarlos.</p>
-        
-        <p>El color de sus ojos estaba teñido de ira, tanto que se podía ver incluso en la oscuridad.</p>
-        
-        <p>—Ya te dije que solo soy leal a Light-sama. Si insultas mi camino como sirvienta, te haré ver el color de tus propias entrañas aquí y ahora.</p>
-        
-        <p>—¿Eh?</p>
-        
-        <p>No solo Garou.</p>
-        
-        <p>El pelaje de todos los hombres bestia en la habitación se erizó.</p>
-        
-        <p>El aura intimidante de Mei había abrumado a los hombres bestia, que se dice que tienen fuerza física, órganos sensoriales y capacidad de lucha superiores a los humanos.</p>
-        
-        <p>Como si estuvieran a la deriva en el océano y algo enorme se moviera justo debajo de ellos. Podían sentir el terror que emanaba de Mei.</p>
-        
-        <p>(Ah, el oponente es solo una mujer humana. Es presa fácil. Después de divertirme con ella en este calabozo, ¡la venderé a un traficante de esclavos por monedas de oro! Pero, ¿qué es esta abrumadora sensación de miedo? ¡Como si estuviera frente a un monstruo que emergió del fuego del infierno!)</p>
-        
-        <p>Esta situación anormal hizo que los otros hombres bestia comenzaran a gritar y romper su formación.</p>
-        
-        <p>—¡Ga, Garou-san, qué… qué está pasando aquí?</p>
-        
-        <p>—¡A, aniki, dijiste que esto era un trabajo fácil! ¡¿Nos mentiste?!</p>
-        
-        <p>—¿Estás tratando de matarnos a todos para poder cambiar al otro bando y sobrevivir solo?</p>
-        
-        <p>—¡¿Garou aniki nos está traicionando?! ¡Eso es mentira, ¿verdad?!</p>
-        
-        <p>Los jóvenes fueron sacudidos por la extraordinaria intimidación de Mei y comenzaron a sospechar de Garou por haber sugerido la idea.</p>
-        
-        <p>Los hombres bestia básicamente valoraban a sus compañeros. De lo contrario, no podrían trabajar juntos para cazar monstruos y aumentar sus niveles.</p>
-        
-        <p>Pero si uno de ellos traicionaba al grupo, sería castigado severamente como ejemplo. El tipo de castigo que hace desear la muerte.</p>
-        
-        <p>—¡Tú, tú idiota! ¡Soy el candidato principal para líder de los lobos bestia! ¿Por qué iba a renunciar a mi buena posición actual para irme a otro país? ¡Usa la cabeza, idiotas! ¿O tal vez quieres ir contra mí, el candidato principal para líder de los lobos bestia? En lugar de pasar un buen rato, saldrás lastimado cuando regresemos…</p>
-        
-        <p>Garou amenazó con voz alta para despejar sus sospechas, pero no pudo terminar sus líneas.</p>
-        
-        <p>Porque la persona que se suponía que estaba muerta apareció casualmente y alzó la voz como si acabara de regresar de un paseo.</p>
-        
-        <p>—Mei, no los toques todavía. Especialmente a Garou, él es mi presa.</p>
-        
-        <p>—¡!?</p>
-        
-        <p>Todos los hombres bestia se giraron, la voz venía de detrás de ellos.</p>
-        
-        <p>Llevaba una capucha negra y sostenía un bastón de mago que superaba su altura.</p>
-        
-        <p>No era demasiado alto, y si adivinaban por su voz, era un niño de 12 o 13 años.</p>
-        
-        <p>La raza de hombres bestia tiene una nariz sensible. Inmediatamente notaron que la otra parte era un humano.</p>
-        
-        <p>Pero por otro lado, estaban confundidos.</p>
-        
-        <p>En el calabozo más grande, más fuerte y más peligroso del mundo, el "Abismo", ¿por qué hay un niño humano que puede estar detrás de ellos sin ser notado?</p>
-        
-        <p>Cuando apareció el niño, la abrumadora intimidación desapareció como si nunca hubiera estado allí.</p>
-        
-        <p>Cuando la llamó, la expresión de Mei cambió, pero emanaba una vibra dulce y suave como una doncella enamorada.</p>
-        
-        <p>El niño levantó ligeramente la mano en respuesta y se bajó la capucha.</p>
-        
-        <p>Como esperaban, un niño humano apareció debajo de la capucha.</p>
-        
-        <p>Su cabello cuidadosamente recortado y arreglado era brillante, sus ojos grandes y sus pestañas lo suficientemente largas como para crear sombras.</p>
-        
-        <p>Su piel era de un color lechoso saludable como la de un niño, y combinado con sus labios rosados, parecía más una "hermosa chica" que un "niño".</p>
-        
-        <p>Parecía un niño que sería muy popular.</p>
-        
-        <p>Incluso antes de que se bajara la capucha, Garou era el único que todavía estaba aturdido.</p>
-        
-        <p>—Im, imposible… ¿todavía vives… Light?</p>
-        
-        <p>—…Garou. Vine a vengarme por lo que hiciste hace tres años.</p>
-        
-        <p>Como si se encontrara con un amigo por primera vez en mucho tiempo, el niño, Light, sonrió a su objetivo de venganza.</p>
-        
-        <p>Cuando el niño que estaba detrás de los hombres bestia lo llamó, Garou se sorprendió.</p>
-        
-        <p>Sin embargo, la expresión estúpida de sorpresa de Garou no duró mucho.</p>
-        
-        <p>—Nunca pensé que todavía estuvieras vivo… kukuku, ¿además venganza? ¿Un debilucho de nivel 15 como tú quiere vengarse? ¡Gyahahahaha! ¡Estoy agradecido de que los humanos sean estúpidos!</p>
-        
-        <p>Garou, que antes había sido asustado por Mei, se rió como si le hubieran dado tesoros de oro y plata, una comida lujosa y una amplia selección de mujeres hermosas.</p>
-        
-        <p>Después de reírse hasta el final, hizo una sonrisa fea, como la que hizo cuando traicionó a Light.</p>
-        
-        <p>—No sé cómo sobreviviste, ¡pero me sorprende que te atrevas a mostrarte frente a mí! ¡Si matamos a este ser y traemos su cadáver, entonces la raza de hombres bestia puede hacerle un favor a la raza dragón! ¡Esto es enorme! ¡En lugar de ser solo el candidato principal, seré el líder de los lobos bestia seguro!</p>
-        
-        <p>Frente a los ojos y la voz lujuriosos de Garou, Light suspiró como si estuviera disgustado.</p>
-        
-        <p>—De todos modos, ya he investigado a Light, hasta el número de arrugas en su trasero. Es solo un tipo normal que recibió un don un poco inusual e inútil. Probablemente solo tuvo suerte de estar vivo y fue rescatado por esa mujer espeluznante de allí, ¿verdad?</p>
-        
-        <p>—…bueno, eso no está mal.</p>
-        
-        <p>No tenía que explicar los detalles de su habilidad y el don "Gacha Infinita" a ellos.</p>
-        
-        <p>Con la respuesta de Light, Garou se convenció de que su suposición era correcta.</p>
-        
-        <p>—¿Pensaste que la chica que te ayudó podría luchar contra nosotros y vengarse? ¡Eres ingenuo! ¡No puedes ver la diferencia de poder!</p>
-        
-        <p>Garou volvió a mirar a Light con desdén y luego chasqueó la lengua y dio instrucciones a los jóvenes que estaban allí en blanco, incapaces de seguir la situación.</p>
-        
-        <p>—¡Oye! ¿Qué diablos están haciendo allí? ¿No tienen cerebro para entender la situación? ¡Con su cadáver, podemos hacer que la raza dragón nos deba un favor, y luego seré el líder de los lobos bestia seguro! ¡Si quieren pasar un buen rato, bloqueen rápidamente la puerta para que no puedan escapar, idiotas!</p>
-        
-        <p>—¡!?</p>
-        
-        <p>En parte porque Garou era el líder de este proyecto, había dado la orden, pero el hecho de que pudieran hacer que la Raza Dragón les debiera un favor era lo más importante para ellos.</p>
-        
-        <p>La raza dragón era la más superior de las seis razas.</p>
-        
-        <p>Lo que significaba que podían hacer que el país les debiera un favor.</p>
-        
-        <p>Para ellos, esto era extremadamente importante.</p>
-        
-        <p>—¡E-entendido, Garou aniki! ¡Los atraparemos pronto! ¡Oigan, ustedes, dense la vuelta!</p>
-        
-        <p>—¡Entendido! ¡Oye, vamos!</p>
-        
-        <p>—¡OK! ¡También somos ayudantes del líder de los lobos bestia! ¡Por fin nuestra suerte llegó!</p>
-        
-        <p>Con la fuerza de sus piernas, dos personas se movieron a alta velocidad para bloquear la entrada… pero. Como muñecos frágiles, sus cabezas se desprendieron de sus cuellos y rodaron por el suelo.</p>
-        
-        <p>Como pollos decapitados, los dos cuerpos corrieron un rato sin cabezas y finalmente se detuvieron al chocar contra una pared.</p>
-        
-        <p>Sus manos y pies se contraían mientras la sangre brotaba.</p>
-        
-        <p>El calabozo se llenó con el espeso olor a sangre.</p>
-        
-        <p>—No los dejaré pasar detrás de nosotros.</p>
-        
-        <p>—¿Qué?</p>
-        
-        <p>Sin que se dieran cuenta, Mei estaba de pie junto a Light.</p>
-        
-        <p>Por lo que acababa de decir, parecía que Mei fue quien cortó las dos cabezas, pero… Garou y los demás no tenían idea de cómo lo hizo.</p>
-        
-        <p>Cuando se dieron cuenta, las cabezas ya estaban rodando por el suelo.</p>
-        
-        <p>Mientras Garou y los otros hombres bestia estaban en shock, Light elogió casualmente a Mei como si fuera natural que ella hiciera eso.</p>
-        
-        <p>—Gracias, Mei. Continúa bloqueando la entrada para evitar que escapen.</p>
-        
-        <p>—Sí, señor. Juro por mi camino de sirvienta que cumpliré perfectamente su orden.</p>
-        
-        <p>Mei hizo una reverencia profunda y retrocedió para bloquear la entrada.</p>
-        
-        <p>Light se enfrentó nuevamente a Garou y los demás.</p>
-        
-        <p>Light y Mei bloquearon la entrada.</p>
-        
-        <p>Incluso los hombres bestia, que normalmente menospreciaban a los humanos, se sorprendieron al ver la habilidad de Mei.</p>
-        
-        <p>Además, frente a Light, que parecía tan seguro, sintieron miedo y quisieron huir.</p>
-        
-        <p>Garou era el único que se puso rojo y gritó.</p>
-        
-        <p>—¡Cálmense, idiotas! ¡No sé cómo, pero solo los mataron con un ataque sorpresa! ¡Si tenemos cuidado, no seremos derrotados por humanos!</p>
-        
-        <p>—*Yareyare*… Todavía menosprecias a los demás como hace tres años. ¿Crees que somos débiles?</p>
-        
-        <p>—¡No te metas conmigo! ¡No podemos ser más débiles que humanos que ni siquiera pueden subir de nivel!</p>
-        
-        <p>Los otros hombres bestia asintieron en acuerdo con las palabras de Garou.</p>
-        
-        <p>Esta era la razón de su desprecio por la raza humana.</p>
-        
-        <p>Los enanos eran fuertes y hábiles y podían fabricar armas y armaduras poderosas, lo que facilitaba subir de nivel.</p>
-        
-        <p>Los elfos sobresalían en magia y tenían una larga vida útil, por lo que podían alcanzar niveles altos fácilmente.</p>
-        
-        <p>La raza dragón y la raza demonio tenían una gran fuerza física, alto poder mágico, alta vitalidad y una larga esperanza de vida. Esta era la razón por la que había muchas personas de alto nivel entre ellos (en comparación, la raza dragón tendía a tener un nivel más alto que la raza demonio debido a sus habilidades básicas superiores).</p>
-        
-        <p>Por otro lado, la raza humana tenía más dificultades para subir de nivel que otras especies. Su fuerza física era más débil, su poder mágico más bajo, sus cuerpos más frágiles y su vida útil más corta.</p>
-        
-        <p>Así que básicamente, su nivel era abrumadoramente más bajo que otras razas.</p>
-        
-        <p>La raza de hombres bestia tenía un poder mágico más bajo y la misma vida útil que los humanos, pero tenían una fuerza física, vitalidad y velocidad abrumadoramente superiores a los humanos. Además, eran fuertes en batallas grupales, y sus sentidos agudos les facilitaban encontrar a sus presas, otro factor que facilitaba subir de nivel.</p>
-        
-        <p>El estatus humano era "generalmente de nivel más bajo que otras razas", por eso la raza humana era menospreciada por otras razas.</p>
-        
-        <p>Por lo tanto, Garou y sus amigos ahora menospreciaban a Light y Mei como de "nivel inferior" y "no pueden ser más fuertes que ellos".</p>
-        
-        <p>—Te estás dejando llevar, humano. …Voy a arrancar tu disfraz ahora mismo. ¡Todos ustedes, trabajen conmigo!</p>
-        
-        <p>Garou usó las mismas garras de acero que hace tres años y pateó el suelo.</p>
-        
-        <p>Los otros hombres bestia se unieron al ataque, aunque iban un poco atrasados de su llamado.</p>
-        
-        <p>Los hombres bestia eran los mejores de todas las razas cuando se trataba de coordinación. Aunque estaban improvisando, mostraban más coordinación que un grupo humano experto.</p>
-        
-        <p>—¡Muere! ¡Humano de mierda que se deja llevar!</p>
-        
-        <p>Garras, patadas, espadas, lanzas cortas y cuchillos volaron hacia él desde todas direcciones, pero Light no dio ni un paso y giró su bastón para repeler todos los ataques.</p>
-        
-        <p>—¡Gee!?</p>
-        
-        <p>—¡Gugo!</p>
-        
-        <p>—¡Ngigyi!?</p>
-        
-        <p>Gritaron como un cerdo que había sido pateado. Los hombres bestia, incluido Garou que lo había atacado, fueron fácilmente derribados.</p>
-        
-        <p>Mientras Light miraba a los hombres bestia arrastrándose por el suelo con dolor, habló como si ya estuviera aburrido.</p>
-        
-        <p>—¿Qué pasa? ¿Ya terminó?</p>
-        
-        <p>Esta palabra hirió gravemente el orgullo de Garou.</p>
-        
-        <p>Se arrastró al suelo, con los ojos ensangrentados mientras presionaba su mano sobre su abdomen herido.</p>
-        
-        <p>—¿Eh? ¿Solo un humano, y te atreves a mirarme con desprecio? ¡Solo un humano, y te atreves a mirarme con desprecio! ¡Solo un humano, no te atrevas a mirarme con desprecio! ¡Soy el "candidato principal para líder de los lobos bestia"! ¡Los humanos no tienen derecho a mirarme con desprecio! ¡Mierda! Pero no me remataste. Ese descuido te costará la muerte!</p>
-        
-        <p>Movió su mano de su dolorido abdomen y rebuscó en su bolsillo.</p>
-        
-        <p>Sacó una bola brillante del tamaño de una pelota de ping-pong.</p>
-        
-        <p>Garou usó su "carta de triunfo" sin dudar.</p>
-        
-        <p>—¡No sé qué trucos usas, pero no te dejes llevar solo porque te has vuelto un poco más fuerte! ¡Haré que tu rostro se pinte de desesperación en poco tiempo! ¡Sal, Bestia Demoníaca Fenrir!</p>
-        
-        <p>Sin dudar, Garou usó su "carta de triunfo": la Bola de Bestia Mágica.</p>
-        
-        <p>La Bola de Bestia Mágica es un objeto mágico que se encuentra raramente en ruinas o calabozos. Contiene una bestia mágica de alto nivel.</p>
-        
-        <p>Al romper la bola, se puede invocar temporalmente un monstruo de alto nivel y ponerlo bajo su control. Sin embargo, es solo temporal y desaparecerá en aproximadamente una hora.</p>
-        
-        <p>Muchos aventureros de primera clase, como Garou, lo guardaban para salir de apuros.</p>
-        
-        <p>Por supuesto, el precio era muy alto. El precio más bajo era 100 millones de yenes japoneses.</p>
-        
-        <p>Un monstruo que había estado sellado apareció cuando rompió la Bola de Bestia Mágica.</p>
-        
-        <p>Apareció un lobo gigantesco de unos 7 metros de largo con pelaje azul pálido.</p>
-        
-        <p>—¡Grrrrrrr! Gruñó amenazadoramente hacia Light y los demás.</p>
-        
-        <p>Garou se rió a carcajadas. Su expresión estaba llena de confianza en su victoria.</p>
-        
-        <p>—¡Gyahahahaha! He estado guardando mi "carta de triunfo" para una emergencia como esta. ¡Una bestia demoníaca de nivel 500, Fenrir! ¡Tu suerte se acabó cuando te dejaste llevar y no me mataste antes!</p>
-        
-        <p>La aparición de Fenrir, una bestia demoníaca de nivel 500, reenergizó a los hombres bestia que habían sido fácilmente derrotados por Light.</p>
-        
-        <p>—¡Qué bestia mágica tan hermosa y poderosa!</p>
-        
-        <p>—Como era de esperar de Garou aniki, que solía ser miembro de la Legión de Élite. No sabía que tenía una habilidad secreta así.</p>
-        
-        <p>—¡Esta es la habilidad de un aventurero de primera clase, el candidato principal para líder de los lobos bestia!</p>
-        
-        <p>—¡Como era de esperar de Garou-sama!</p>
-        
-        <p>Los jóvenes miraban respetuosamente a Garou y a Fenrir, la bestia mágica de nivel 500. Parecían niños frente a un jugador de fútbol profesional.</p>
-        
-        <p>Por otro lado, Light soltó un suspiro de disgusto por su estupidez.</p>
-        
-        <p>—¿Nivel 500?… ¿Esa es realmente una "carta de triunfo"? Eso es demasiado débil.</p>
-        
-        <p>—¡Gyahahahaha! Dijiste que el nivel 500 es débil. ¡Parece que enfrentarte a Fenrir te ha vuelto loco! Estoy seguro de que el truco que nos repelió antes fue algún tipo de poder de objeto mágico. ¡Pero este es el real, nivel 500! ¡Voy a volar todos tus pequeños trucos! ¿Por qué no te arrastras por el suelo y ruegas por tu vida? Si logras hacerme reír viéndote rogar por tu vida, podría cambiar de opinión y no matarte. ¡Sí, hazlo rápido!</p>
-        
-        <p>Por supuesto, Garou no tenía intención de dejar vivo a Light aunque este suplicara por su vida.</p>
-        
-        <p>Los otros jóvenes además de Garou entendieron esto y miraron a Light con una sonrisa burlona.</p>
-        
-        <p>Por otro lado, Light soltó un suspiro aburrido. En lugar de rogar por su vida, los instó a atacar.</p>
-        
-        <p>—¿De verdad? ¿Una bestia demoníaca de nivel 500 es una carta de triunfo…? Bueno, bueno, no me moveré ni un paso de aquí, así que pueden hacer lo que quieran.</p>
-        
-        <p>Light extendió sus manos para provocar a su oponente.</p>
-        
-        <p>No importa quién lo viera, no se movió ni un paso como había declarado.</p>
-        
-        <p>Por supuesto, el rostro de Garou se puso rojo por su comportamiento provocador y se enojó.</p>
-        
-        <p>—¡Entonces, como deseas, te mataré sin dejar ni un hueso! ¡Bestia Demoníaca Fenrir, hazlo! ¡Cañón Rugiente de Bestia Demoníaca!</p>
-        
-        <p>—¡WOOOOOOo!</p>
-        
-        <p>La persona que rompe la Bola de Bestia Mágica es reconocida temporalmente como el amo de la Bestia Mágica y puede conocer su nivel, características, especialidades, debilidades y habilidades.</p>
-        
-        <p>Garou usó su poder para ordenar a la Bestia Demoníaca Fenrir que usara su ataque más poderoso, el Cañón Rugiente de Bestia Demoníaca.</p>
-        
-        <p>Este es el ataque especial de la Bestia Demoníaca Fenrir que libera todo su poder mágico.</p>
-        
-        <p>Junto con su rugido, la bestia demoníaca abrió mucho la boca, el poder mágico blanco azulado se concentró… ¡y luego disparó!</p>
-        
-        <p>Convirtió todo el poder mágico de su nivel 500 en un ataque.</p>
-        
-        <p>Ciertamente, era un golpe mortal. Incluso si el oponente tenía el mismo nivel o un nivel más alto, cualquiera que fuera alcanzado por ese ataque sería herido de muerte.</p>
-        
-        <p>—Para ataques que solo levantan polvo, la bestia era demasiado ruidosa. Qué molestia.</p>
-        
-        <p>—Im, imposible… él, él está ileso…</p>
-        
-        <p>A pesar de ser golpeado de lleno por el Cañón Rugiente de Bestia Demoníaca, Light no tenía ni un rasguño, ni siquiera una quemadura en su cabello o ropa.</p>
-        
-        <p>El Cañón Rugiente de Bestia Demoníaca es un ataque mortal de Fenrir de nivel 500. No es algo que se pueda prevenir con defensas a medias u objetos mágicos.</p>
-        
-        <p>Si eso sucedía… solo sería posible si hubiera una gran diferencia en poder y nivel.</p>
-        
-        <p>Garou y todos los hombres bestia que habían alabado a la Bestia Demoníaca Fenrir miraban a Light aturdidos.</p>
-        
-        <p>Light sonrió ligeramente sin prestarles atención.</p>
-        
-        <p>—Ahora es mi turno.</p>
-        
-        <p>Alcanzó su bolsillo como Garou y sacó una carta.</p>
-        
-        <p>—Sería una lástima que la gente malinterpretara que un perro callejero tan patético es Fenrir. Por eso te mostraré especialmente al "verdadero". Carta UR "Bestia Divina Fenrir Nivel 9000", liberar.</p>
-        
-        <p>Mientras Light hablaba, la carta comenzó a brillar.</p>
-        
-        <p>La luz se desvaneció rápidamente y apareció una bestia.</p>
-        
-        <p>Era una bestia gigante de 15 metros de altura. Su pelaje era blanco como la nieve y sus colmillos se veían muy poderosos.</p>
-        
-        <p>No necesitaba explicación.</p>
-        
-        <p>Todos lo entendieron de un vistazo.</p>
-        
-        <p>El ser frente a ellos era el verdadero Fenrir.</p>
-        
-        <p>Ciertamente, si uno conocía a la "Bestia Divina Fenrir Nivel 9000", entonces la "Bestia Demoníaca Fenrir Nivel 500" solo parecería un patético perro callejero.</p>
-        
-        <p>Light habló con una voz aguda e infantil.</p>
-        
-        <p>—Fenrir, mata a ese perro callejero.</p>
-        
-        <p>—¡Oouw!</p>
-        
-        <p>Ante la orden de su Señor, la "Bestia Divina Fenrir" ladró suavemente.</p>
-        
-        <p>Con solo levantar una mano y agitarla con un movimiento ligero, "Fenrir la Bestia Demoníaca" o el falso Fenrir fue partido verticalmente, se convirtió en trozos de hielo, se agrietó y luego desapareció como polvo.</p>
-        
-        <p>Todos sus restos desaparecieron de este mundo, sin dejar ni un solo pelo. Como si la "Bestia Demoníaca Fenrir nivel 500" nunca hubiera existido.</p>
-        
-        <p>—Bien, buen trabajo.</p>
-        
-        <p>—¡Guau! ¡Ouw!</p>
-        
-        <p>Light lo elogió por matar a la Bestia Demoníaca Fenrir como se le ordenó y lo acarició como recompensa.</p>
-        
-        <p>Fenrir fue elogiado por su amo como un perro mascota, moviendo la cola como si estuviera feliz de que lo acariciaran.</p>
-        
-        <p>—…………</p>
-        
-        <p>Mei los miraba con ojos envidiosos mientras Light acariciaba y elogiaba a la "Bestia Divina Fenrir".</p>
-        
-        <p>Por otro lado, Garou y el resto de los hombres bestia…</p>
-        
-        <p>—Ah, Aaaah…</p>
-        
-        <p>—Hii, hii, hii</p>
-        
-        <p>—…………</p>
-        
-        <p>Todos no pudieron evitar gritar y cayeron de rodillas.</p>
-        
-        <p>Por supuesto, Garou también estaba asustado y conmocionado. Su miedo a una situación que no podía entender hizo que perdiera fuerza y cayera de culo.</p>
-        
-        <p>—Qué, tú, e, eliminas a un Fenrir de nivel 500, en, en un instante…</p>
-        
-        <p>—Incluso si no hubiera invocado a la "Bestia Divina Fenrir", podría matar fácilmente a ese tipo de bestia demoníaca en un instante. Porque mi nivel ahora es 9999.</p>
-        
-        <p>—…¿Qué?</p>
-        
-        <p>—Porque mi nivel es 9999.</p>
-        
-        <p>Como Garou antes, Light también reveló su estado.</p>
-        
-        <p>Su estado mostraba "Nivel 9999".</p>
-        
-        <p>El color de los rostros de los hombres bestia empeoró aún más.</p>
-        
-        <p>Mientras los miraba, Light les dijo algo que los hizo sentir más desesperados.</p>
-        
-        <p>—No solo yo. Mei también tiene el mismo nivel. Mei.</p>
-        
-        <p>Ante la llamada de Light, ella reveló silenciosamente su estado.</p>
-        
-        <p>Como Light, su estado mostraba "Nivel 9999".</p>
-        
-        <p>La expresión de los hombres bestia se llenó de desesperación y dejaron escapar sus voces.</p>
-        
-        <p>—Ni, nivel 9999…</p>
-        
-        <p>—Es, es verdad…</p>
-        
-        <p>—Eh, ¿el límite de nivel humano no es solo alrededor de 100?</p>
-        
-        <p>—No hay manera de que podamos ganar contra eso…</p>
-        
-        <p>Ninguno de los jóvenes hombres bestia pudo negar el hecho de que estaban enfrentando un nivel de 9999.</p>
-        
-        <p>Invoca a la Bestia Divina Fenrir que masacra fácilmente a un Fenrir de nivel 500 justo frente a ellos.</p>
-        
-        <p>Garou también cayó de culo y no podía levantarse por el miedo después de ver a la Bestia Divina Fenrir matar de un solo golpe.</p>
-        
-        <p>Nadie en ese lugar podía negar las palabras de Light.</p>
-        
-        <p>Garou miraba fijamente a Light con la cara azul, cubierta de sudor como una cascada.</p>
-        
-        <p>(Por qué… por qué no me di cuenta de eso…? Light no había crecido nada en tres años? ¿Por qué no me di cuenta?)</p>
-        
-        <p>Light era un niño de doce años de un pueblo agrícola.</p>
-        
-        <p>Habían pasado unos tres años desde entonces, y ahora debía tener quince años.</p>
-        
-        <p>La edad de 12 a 15 años es un período de crecimiento humano en el que un niño crece, le aparece la nuez y su rostro se vuelve más maduro.</p>
-        
-        <p>Sería extraño si no hubiera cambiado.</p>
-        
-        <p>Pero Light no había cambiado en absoluto.</p>
-        
-        <p>La apariencia de Light no había cambiado desde que lo traicionaron e intentaron matarlo hace tres años.</p>
-        
-        <p>Entonces, ¿por qué está ocurriendo este "fenómeno imposible"?</p>
-        
-        <p>(El nivel 9999 no es solo un farol que este niño estúpido inventó… Si es cierto, entonces tiene sentido que haya dejado de envejecer y que una "Bestia Divina Fenrir" esté dispuesta a seguir su orden. Esto significa que Light realmente se ha convertido en un monstruo de nivel 9999…)</p>
-        
-        <p>Para ser precisos, no era por su nivel, sino gracias al poder del "Brazalete de la Inmortalidad", un objeto mítico que obtuvo de la "Gacha Infinita", que lo hacía inmortal.</p>
-        
-        <p>Para recordar la desesperación, la tristeza y la ira de ser traicionado, Light usaba el Brazalete de la Inmortalidad para mantener la apariencia de un niño de 12 años.</p>
-        
-        <p>Cuando Garou finalmente creyó las palabras de Light y se horrorizó, los otros hombres bestia enroscaron sus colas con mirada y voz desesperadas.</p>
-        
-        <p>—Ga, Garou aniki…</p>
-        
-        <p>—Ga, Garou-sama, ¿qué vamos a hacer?</p>
-        
-        <p>—¿Qué debo hacer, Garou aniki…?</p>
-        
-        <p>Un grupo de jóvenes hombres bestia reclutados y traídos a Naraku con la promesa de una buena recompensa rogaban instrucciones a su líder, Garou.</p>
-        
-        <p>Esperaban instrucciones sobre qué hacer y cómo salvar sus vidas.</p>
-        
-        <p>Sus ojos se centraron en Garou a la vez…</p>
-        
-        <p>Él estaba arrastrándose por el suelo con la cara azul.</p>
-        
-        <p>—¡Realmente lamento mi mala educación hasta ahora! ¡Y-yo estaba engañando a Light-sama por órdenes del gobierno! ¡No fue mi voluntad! Así que, ¡por favor, perdóname! ¡No me importa lo que les pase a estos tipos, así que sálvame! ¡Te lo ruego!</p>
-        
-        <p>—¡Ga, Garou aniki! ¿Nos estás traicionando?</p>
-        
-        <p>—¡Co, cobarde! ¿No te da vergüenza darnos la espalda ahora?</p>
-        
-        <p>—¡Cállate! ¡No soy como ustedes! De hecho, traicioné a Light-sama una vez. ¡Pero cuando Light-sama vino a la ciudad, lo cuidé de muchas maneras, ¿no es así? ¿Verdad, Light-sama?</p>
-        
-        <p>Garou sonreía, frotándose las manos y halagando a Light como si su actitud anterior fuera solo una mentira.</p>
-        
-        <p>—Le compré kushiyaki en un puesto de comida, ¡e incluso le di jugo de frutas para beber! ¡Incluso peleé y ahuyenté a la gente que se burlaba de Light-sama! ¿Verdad? ¡Estoy seguro de que tengo recuerdos con Light-sama, cosas que compartimos juntos! ¡Por eso está bien si soy el único que él salvaría!</p>
-        
-        <p>—…………</p>
-        
-        <p>Light miró silenciosamente a Garou, que estaba de rodillas y halagándolo.</p>
-        
-        <p>Mientras tanto, los otros hombres bestia continuaron culpando a Garou.</p>
-        
-        <p>Después de un rato, Light levantó ligeramente la mano.</p>
-        
-        <p>Cuando levantó la mano, los maldiciones ruidosas y feas que habían sido dolorosas de escuchar se detuvieron.</p>
-        
-        <p>El calabozo se sumió en el silencio como si estuvieran en un cementerio en plena noche.</p>
-        
-        <p>Light miró a Garou y preguntó.</p>
-        
-        <p>—Antes de ayudarte, hablemos de lo que sabes. Para empezar, ¿qué es exactamente un "Maestro"?</p>
-        
-        <p>—Yo, yo no sé. To, todo lo que sé es que me dijeron desde arriba que buscara al "Maestro"…</p>
-        
-        <p>—¿Por qué el país busca al "Maestro"?</p>
-        
-        <p>—No sé.</p>
-        
-        <p>—¿Por qué el país quiso matarme cuando descubrieron que no soy el "Maestro"?</p>
-        
-        <p>—Yo, yo, no sé.</p>
-        
-        <p>—…………</p>
-        
-        <p>Light parecía impacientarse con sus respuestas.</p>
-        
-        <p>Garou se apresuró a dar una excusa.</p>
-        
-        <p>—¡Yo, realmente no lo sé! ¡Solo me dijeron que buscara al "Maestro"! Es solo mi suposición, pero sospecho que los jefes de la raza de hombres bestia tampoco saben mucho sobre eso. Después de todo, somos mejores que los humanos. Es, esta es solo una percepción común, pero gracias a nuestra alta capacidad física, podemos subir de nivel fácilmente. Desde el punto de vista de otra raza, tenemos una vida útil más baja, un nivel más bajo y una capacidad más baja. A lo sumo, solo nos consideran peones que pueden ser un poco más útiles que la raza humana. Por eso no nos dieron mucha información a los jefes.</p>
-        
-        <p>—…¿Qué saben los otros hombres bestia sobre el "Maestro"?</p>
-        
-        <p>Esta pregunta hizo que todos los otros hombres bestia pensaran más que nunca en sus vidas, como si hubieran encontrado un rayo de esperanza para sobrevivir.</p>
-        
-        <p>Sin embargo, ninguno de ellos tenía información sobre el "Maestro".</p>
-        
-        <p>—…………</p>
-        
-        <p>Light se giró y miró a Mei.</p>
-        
-        <p>Ella entendió sus intenciones y asintió.</p>
-        
-        <p>Usó su magia de detección de mentiras para comprobar sus reacciones.</p>
-        
-        <p>Aparentemente, realmente no sabían nada sobre el "Maestro" ni por qué Light fue blanco de su vida.</p>
-        
-        <p>Light soltó un suspiro de decepción ante este resultado.</p>
-        
-        <p>—Esperaba esto, pero hay incluso menos información de la que esperaba…</p>
-        
-        <p>—¿Qué hacemos?</p>
-        
-        <p>Light respondió a la pregunta de Mei con voz suave.</p>
-        
-        <p>—Ahora que nos han visto, no hay razón para mantenerlos con vida. Excepto a Garou, deshazte de todos.</p>
-        
-        <p>—Ciertamente.</p>
-        
-        <p>—¡!?</p>
-        
-        <p>Tan pronto como Mei hizo una reverencia, todos excepto Garou fueron cortados en pequeños pedazos.</p>
-        
-        <p>Ni siquiera tuvieron tiempo de gritar.</p>
-        
-        <p>Con su guante, Mei había creado un hilo ultrafino y había enredado a los hombres bestia.</p>
-        
-        <p>Este hilo era muy delgado, pero lo suficientemente afilado como para cortar acero u oricalco cuando aplicaba su magia.</p>
-        
-        <p>—Hiii…</p>
-        
-        <p>Los pantalones de Garou se mojaron por la tragedia frente a él.</p>
-        
-        <p>Afortunadamente, incluso si se mojaba, la gente no podía distinguirlo porque el olor a sangre era muy fuerte.</p>
-        
-        <p>Light estaba completamente imperturbable y miró dentro de sus propios bolsillos.</p>
-        
-        <p>—Ahora que nos hemos deshecho de las distracciones y tenemos a la gente que queremos, sigamos… Oh, casi lo olvido. Garou.</p>
-        
-        <p>—¡Hiii! ¡S-sí!</p>
-        
-        <p>El completamente aterrorizado Garou saltó instintivamente cuando escuchó a Light llamarlo.</p>
-        
-        <p>Al mismo tiempo, los charcos de sangre ondularon, salpicaron y trozos de carne se dispersaron.</p>
-        
-        <p>Light soltó una pequeña risa ante su ridícula apariencia y preguntó.</p>
-        
-        <p>—Antes de continuar, déjame preguntarte, ¿crees que podríamos ganar una guerra contra las naciones de la superficie con lo que tenemos ahora?</p>
-        
-        <p>—Eso, eso es…</p>
-        
-        <p>—…………</p>
-        
-        <p>En momentos como este, lo mejor sería mentir para no estropear el humor de Light… pero Mei, que estaba usando magia de detección de mentiras, podría detectar su mentira.</p>
-        
-        <p>Incluso si fuera solo un halago, una mentira no serviría de nada ahora.</p>
-        
-        <p>Garou reunió su valor para expresar sus pensamientos a través de su garganta.</p>
-        
-        <p>—Light-sama y los demás son realmente fuertes, y sí, Fenrir-sama también está aquí. Creo que si luchamos contra países de todo el mundo, tendremos algunas ventajas. Pero, no importa cuán alto sea el nivel, un individuo sigue siendo un individuo. Es casi imposible ganar contra una nación…</p>
-        
-        <p>Después de todo, no importa cuán fuerte sea un individuo, el alcance de su poder es limitado.</p>
-        
-        <p>No importa cómo lo mirara, era difícil para un individuo enfrentarse a la criatura gigante que era la nación.</p>
-        
-        <p>Light también había predicho esto.</p>
-        
-        <p>Garou continuó sus palabras.</p>
-        
-        <p>—Existe la posibilidad de que haya otras armas, armaduras y objetos legendarios que cada país ha guardado durante miles de años. Si los sacaran, no importa cuán fuertes sean Light-sama y los demás, la mitad, o incluso un tercio del mundo sería destruido…</p>
-        
-        <p>—Sí, ya veo. …Es tal como esperábamos. No importa cuán fuerte sea una persona, las cosas que puede hacer individualmente son limitadas.</p>
-        
-        <p>Después de escuchar todas sus respuestas, Light asintió varias veces con satisfacción.</p>
-        
-        <p>Se giró hacia Garou una vez más y dio su orden.</p>
-        
-        <p>—Lo siguiente es similar a la pregunta anterior, pero quiero que confirmes: "¿Puedo ganar si declaro la guerra contra los países de la superficie con esta fuerza?"</p>
-        
-        <p>—¿Eh…?</p>
-        
-        <p>—Entonces movámonos de inmediato. Teletransportación, liberar.</p>
-        
-        <p>—¡!?</p>
-        
-        <p>Simultáneamente, mientras Light hablaba, los tres y una bestia fueron envueltos en luz.</p>
-        
-        <p>Garou era el único sorprendido, y su visión se volvió en blanco y negro.</p>
-        
-        <p>Mei y la Bestia Divina Fenrir no mostraron ninguna reacción particular.</p>
-        
-        <p>Por un momento, su vista se oscureció, pero pronto volvió a la normalidad.</p>
-        
-        <p>—¡！！！！？？？?</p>
-        
-        <p>Su vista regresó, pero la vista que se extendía frente a ellos haría que quien la viera se sintiera tan desesperado; era más oscura y dura que el alquitrán.</p>
-        
-        <p>Al usar la carta "Teletransportación", Garou fue transportado instantáneamente al nivel más bajo del calabozo más grande, más fuerte y más peligroso del mundo, el "Abismo".</p>
-        
-        <p>Lo que lo esperaba allí era un ejército de monstruos míticos.</p>
-        
-        <p>En un salón del tamaño de un campo de fútbol, con techos tan altos que no se podían ver a través de la neblina, los monstruos esperaban ordenadamente.</p>
-        
-        <p>Una alfombra roja brillante recorría el largo de la sala, un trono de oro, joyas y metales preciosos estaba colocado en el otro extremo. Una enorme bandera militar ondeaba en la pared al fondo de la sala.</p>
-        
-        <p>Frente al trono, justo antes de las escaleras, había tres hermosas chicas alineadas.</p>
-        
-        <p>También, un enorme dragón, un gigante, y un perro de tres cabezas tan enorme como la "Bestia Divina Fenrir". No solo eran los monstruos aterradores.</p>
-        
-        <p>Hermosas chicas vestían ropas de sirvienta con alas transparentes creciendo de sus espaldas. Caballeros vestían deslumbrantes armaduras doradas. Una mujer hermosa sostenía un enorme hacha de batalla en sus manos sin dificultad. También había una chica con un tubo largo como una lanza y un mosquete, que Garou no podía entender.</p>
-        
-        <p>Su número era probablemente alrededor de 3000.</p>
-        
-        <p>A primera vista, había una gran variedad de cosas que parecían inconsistentes, pero de alguna manera Garou percibía que estaban unidos por una fuerte voluntad —una locura de lealtad.</p>
-        
-        <p>A pesar de enfrentarse a un ejército de monstruos míticos, Light se veía relajado y dio una orden casualmente.</p>
-        
-        <p>—Todos, muestren su estado.</p>
-        
-        <p>Su voz definitivamente no llegaba al fondo de la sala.</p>
-        
-        <p>Y sin embargo, sin demora, todos mostraron su estado como se les indicó para que un tercero pudiera verlo.</p>
-        
-        <p>—Aah … Aaah … aaaah!</p>
-        
-        <p>Garou no pudo evitar soltar un débil grito.</p>
-        
-        <p>Las hadas sirvientas de nivel 500 se alineaban en su vista, los monstruos de formas extrañas tenían niveles alrededor de 1000 a 9000, y los soldados de armadura dorada de nivel 5000 en la esquina.</p>
-        
-        <p>Las tres hermosas chicas paradas frente al trono tenían el nivel más alto, igual que Mei y Light. Habían alcanzado el nivel 9999.</p>
-        
-        <p>Light caminó sobre la alfombra roja extendida en medio del ejército con su estado mostrado.</p>
-        
-        <p>Mei lo siguió, y la "Bestia Divina Fenrir" se movió a una esquina donde estaban reunidos los gigantes.</p>
-        
-        <p>Garou era el único que permanecía en su lugar.</p>
-        
-        <p>Cada vez que Light caminaba sobre la alfombra y pasaba junto al ejército, los monstruos de alto nivel se arrodillaban e inclinaban la cabeza.</p>
-        
-        <p>Su comportamiento parecía tan normal, tan natural, no,… lo hacían como si servir a Light fuera el acto más noble y amoroso en este mundo.</p>
-        
-        <p>Light caminó por la alfombra roja con el gesto, como si fuera lo más natural que lo sirvieran.</p>
-        
-        <p>Las tres hermosas chicas que esperaban frente al trono también se arrodillaron afectuosamente.</p>
-        
-        <p>Mei también se unió a la fila, sirviéndole con alegría.</p>
-        
-        <p>Light caminó por las escaleras sin detenerse.</p>
-        
-        <p>Subió las escaleras y se sentó en el trono, que era tan lujoso que parecía algo que nunca había existido en este mundo.</p>
-        
-        <p>—Levanten la cabeza.</p>
-        
-        <p>Los monstruos míticos siguieron fielmente las instrucciones de Light.</p>
-        
-        <p>Todos levantaron la cabeza perfectamente en orden.</p>
-        
-        <p>Light preguntó a Garou, que todavía estaba sentado en la alfombra roja.</p>
-        
-        <p>—Este es el poder que he reunido durante tres años. Garou, déjame preguntarte de nuevo: "Si declaro la guerra contra las naciones de la superficie con esta fuerza, ¿ganaré?"</p>
-        
-        <p>—Aa, aaaah,…</p>
-        
-        <p>Garou no respondió.</p>
-        
-        <p>No, su expresión desesperada era la respuesta.</p>
-        
-        <p>(¿Qué es esto, he vagado a un mundo mítico? Hay tantos monstruos que ni siquiera puedo contarlos. Han estado construyendo su poder en el fondo de Naraku… No estoy seguro de si las armas, armaduras y objetos que los países han reunido durante miles de años funcionarán contra estos monstruos.)</p>
-        
-        <p>La persona que preparó todo esto era un niño de una familia campesina pobre.</p>
-        
-        <p>Los miembros de la Legión, incluido Garou, lo menospreciaban internamente. Al final, lo traicionaron, se burlaron de él e intentaron matarlo.</p>
-        
-        <p>No había cambiado en absoluto desde hace tres años.</p>
-        
-        <p>Ahora el Señor de la Destrucción estaba sentado en su trono, sonriendo inocentemente como un niño pequeño.</p>
-        
-        <p>Sin embargo, el niño poseía el poder de acabar con el mundo fácilmente, como romper un bloque de juguete.</p>
-        
-        <p>(…Oh, ya veo. Intentamos matar a Light, y por eso me metí en este lío.)</p>
-        
-        <p>Garou se dio cuenta.</p>
-        
-        <p>Antes de su traición, Light era solo un niño simple, o en términos malos, un niño ingenuo.</p>
-        
-        <p>Un niño normal con sentidos morales normales que se podían encontrar en cualquier lugar.</p>
-        
-        <p>Sin embargo, Light había cambiado porque Garou y los demás lo traicionaron e intentaron deshacerse de él bajo las órdenes de varios países. O quizás sería mejor decir que había aprendido. Sabía que estaba destinado a ser usado y desechado.</p>
-        
-        <p>Luego, bajo las órdenes de varias naciones, la Legión "Reunión de Razas" trabajó junta para matar a Light, y fue entonces cuando aprendió. El simple hecho: si no los mataba, lo matarían a él.</p>
-        
-        <p>Si Light no hubiera notado ese hecho, nunca habría preparado el ejército abrumador que se extendía frente a él ahora.</p>
-        
-        <p>Pero como ellos habían mostrado sus colmillos primero, él usaría este inmenso poder sin dudar.</p>
-        
-        <p>Fue el país el que intentó matarlo. Si va a mostrar sus colmillos, debería estar preparado para atacar. Por lo tanto, no le importa si se van a acumular miles, diez mil, cien mil o cien millones de cadáveres.</p>
-        
-        <p>Habían creado con sus propias manos la peor existencia, una que podía destruir el mundo que gobernaban.</p>
-        
-        <p>Garou estaba desesperado. Su orgulloso cabello se estaba volviendo blanco y cayéndose. Sin intentar ocultarlo, continuó derramando lágrimas.</p>
-        
-        <p>Light finalmente sonrió con satisfacción al ver su condición.</p>
-        
-        <p>—El silencio es oro, la elocuencia es plata. Sabía que tenía razón al elegir a Garou primero. No es bueno para pensar desde sus días en la Legión, pero sus instintos son tan agudos como los de un animal. Por su reacción, parece que tenemos suficiente poder para luchar y destruir las naciones.</p>
-        
-        <p>Light se rió y luego dirigió una mirada fría a Garou.</p>
-        
-        <p>—Te daré una recompensa. Te dejaré vivir hasta que sepa la verdad y decida si poner fin a todos excepto a la raza humana. No puedes morir. Asegúrate de que no puedas morir aunque lo desees.</p>
-        
-        <p>—¡Aaaaah, aaaaaaaah, aaaaah, aaaaaaaaaaaah!</p>
-        
-        <p>Garou gritó en voz alta por primera vez desde que llegó aquí.</p>
-        
-        <p>No se molestó en contener su grito de desesperación porque imaginaba la tortura que tendría que soportar hasta que Light tomara su decisión.</p>
-        
-        <p>Habían creado al señor demonio más fuerte y peor con sus propias manos, y se volvió loco cuando se dio cuenta de que las razas que no fueran la humana podrían extinguirse según el humor de Light.</p>
-        
-        <p>Los monstruos se acercaron desde ambos lados de Garou mientras continuaba gritando y volviéndose loco.</p>
-        
-        <p>Garou no mostró signos de querer huir, ni le importó que su cabello se volviera gris y se cayera. Le hizo una pregunta a Light.</p>
-        
-        <p>—¿Qué eres? ¿Qué? …¿Eres un monstruo de cuento de hadas que acabará con el mundo?</p>
-        
-        <p>—…………</p>
-        
-        <p>Levantó ligeramente la mano ante esta pregunta.</p>
-        
-        <p>Detuvo a los monstruos que estaban a punto de llevarlo a la cárcel.</p>
-        
-        <p>A la orden del Señor, los monstruos se detuvieron como si hubiera presionado el botón de pausa.</p>
-        
-        <p>Light respondió a la pregunta de Garou con una actitud despreocupada.</p>
-        
-        <p>—No soy un "monstruo de cuento de hadas" ni esa gran existencia. Solo quiero vengarme de todos ustedes y descubrir por qué quisieron matarme como a un insecto y conocer la verdad. Después de vengarme y conocer la verdad, volveré a mi vida original. Más bien, con el poder de este don "Gacha Infinita", voy a ayudar a la gente, ser útil al mundo.</p>
-        
-        <p>—¡Ahahahahahahahahahahaha! ¡Ihihihihihihi! ¡Kihihihihihi!</p>
-        
-        <p>Garou se rió de esta respuesta.</p>
-        
-        <p>Solo se rió como si se hubiera roto.</p>
-        
-        <p>—¿Qué quieres decir con "voy a ayudar a la gente, ser útil al mundo"? ¡No hay manera de que un ser roto como tú pueda beneficiar a la gente o al mundo! ¡Todo lo que un ser como tú puede hacer es muerte, destrucción y masacre! ¿Estás tratando de convertirte en un Dios?</p>
-        
-        <p>Los monstruos se enojaron.</p>
-        
-        <p>Garou había maldecido a su Señor.</p>
-        
-        <p>Normalmente, su corazón dejaría de latir, su vida terminaría, pero Garou se había vuelto loco e ignoró su ira.</p>
-        
-        <p>Solo siguió riendo como un loco.</p>
-        
-        <p>—…llévenselo.</p>
-        
-        <p>Light observó su reacción y le dio otra orden.</p>
-        
-        <p>Garou fue sujetado por ambos lados por los monstruos y arrastrado a la prisión.</p>
-        
-        <p>Todo el tiempo, siguió riéndose para sí mismo.</p>
-        
-        <p>La puerta principal se abrió y se cerró.</p>
-        
-        <p>Después de que la risa de Garou se desvaneciera, Light reflexionó un rato.</p>
-        
-        <p>—…Dios, ¿eh? Ya veo. Esa es una forma de pensarlo.</p>
-        
-        <p>Light murmuró para sí mismo y se rió inocentemente.</p>
-        
-        <p>—Entonces seré un dios. Sí, si eso es lo que quieres, entonces hagámoslo. Si puedo conocer la verdad sobre el mundo, la razón por la que casi me matan como a un insecto hace tres años, me convertiré en un dios. Ah, ¿por qué no?</p>
-        
-        <p>Se giró hacia sus seguidores frente a él.</p>
-        
-        <p>—La reacción de Garou me convenció de que nuestra fuerza es de clase mundial. Pero de nuevo, como él señaló, el mundo no es tan fácil. Deberíamos tener cuidado.</p>
-        
-        <p>Incluso mientras hacía esto, el don "Gacha Infinita" seguía activado y continuaba escupiendo cartas.</p>
-        
-        <p>Con un pequeño truco, podía seguir tirando del gacha sin parar durante 24 horas.</p>
-        
-        <p>—Nuestro poder aumenta con el tiempo, pero necesitamos saber más sobre cada país y sus fortalezas para aumentar nuestras posibilidades de éxito. Especialmente sobre el "Maestro".</p>
-        
-        <p>—Los detalles sobre el "Maestro" no están disponibles, pero todos en la sala esperaban que fuera una entidad poderosa.</p>
-        
-        <p>—Si hay alguien como yo que posee un don inusual, existe una alta posibilidad de que esa persona sea blanco. Por eso voy a concentrarme en recopilar información sobre cada país primero, para encontrar la verdad. ¿Alguna objeción?</p>
-        
-        <p>A Light le tomó unos tres años conquistar Naraku. Llegó a la superficie, aumentó su nivel y estudió para mejorar su capacidad académica y expandir su potencial de guerra.</p>
-        
-        <p>Cuando estuvo seguro de que no había objeciones, asintió y dijo.</p>
-        
-        <p>—Lo peor que podría pasar es una guerra inmediata. En ese caso, nos organizaremos como decidimos de antemano. Dejaré que Nazuna tome la delantera.</p>
-        
-        <p>—¡Déjamelo a mí! ¡Mataré, mataré y mataré todos los obstáculos que se interpongan en el camino de mi Señor! ¡Construiré montones de cuerpos y ríos de sangre a través del mundo entero!</p>
-        
-        <p>Nazuna se emocionó mucho. Levantó la mano y declaró.</p>
-        
-        <p>—Dejaré el puesto de ayudante, el mando operativo y la planificación a Elly.</p>
-        
-        <p>—Como Light-sama desee, juro dar todo lo que tengo.</p>
-        
-        <p>Elly se sostuvo el sombrero, levantó su falda gótica y se inclinó con gracia.</p>
-        
-        <p>—Aoyuki, toma el mando del escuadrón de monstruos. ¿Puedes hacerlo?</p>
-        
-        <p>—Sí. Todo lo que hago es por el Señor, y te serviré hasta la última gota de mi sangre.</p>
-        
-        <p>Se cubrió los ojos con su sudadera de orejas de gato y respondió en una voz fría que normalmente no usaba.</p>
-        
-        <p>Mostraba que realmente estaba motivada.</p>
-        
-        <p>Finalmente, Light llamó a Mei.</p>
-        
-        <p>—Mei, gestiona la información entrante, la logística, el apoyo, señala los problemas que no conozco, ofrece soluciones… ¿puedes hacerlo?</p>
-        
-        <p>—Juro por mi camino de sirvienta que haré lo mejor y seré la más perfecta.</p>
-        
-        <p>Light asintió con satisfacción ante la entusiasta respuesta de Mei.</p>
-        
-        <p>—El mundo… Si la verdad oculta es cierta, seré el que esparza la felicidad, como el Dios Bueno. El mundo… si la verdad está distorsionada, es trágica y malvada, no dudaré en convertirme en el que esparza la muerte, la destrucción, la masacre y la desesperanza. Me llamaré a mí mismo el Dios Malvado. En ese momento, destruiré todos los países.</p>
-        
-        <p>Light se rió inocentemente.</p>
-        
-        <p>Mientras se reía como un niño, cantaba sobre la destrucción del mundo.</p>
-        
-        <p>Mientras tenía el poder de destruir realmente el mundo.</p>
-        
-        <p>—Ahora, de Naraku a la superficie. De la oscuridad a la luz. Comencemos nuestra marcha para encontrar la verdad.</p>
-        
-        <p>Con una sola palabra de Light, comenzaron a moverse.</p>
-        
-        <p>Un ejército con suficiente poder para destruir el mundo comenzó a marchar hacia la superficie desde el calabozo más grande, más fuerte y más peligroso del mundo, el "Abismo".</p>
+<p>La gente en la calle inmediatamente le abría paso, y aquellos que lo admiraban se acercaban para hacerle una reverencia.</p>
+<p>—¡Oye, Garou aniki! ¿A dónde vas? Si no te importa, déjame acompañarte.</p>
+<p>—Oye, Garou, me preguntaba si te gustaría conocer a mi hermana. Mi hermana es fan tuya.</p>
+<p>—No, no. En lugar de conocer a su misteriosa hermana, será mejor que conozcas a mi hija.</p>
+<p>—Garou-sama, por favor vuelve a la tienda y cuéntanos tu historia heroica. ¡Te estaremos esperando!</p>
+<p>—Garou-sama, por favor ven a nuestra tienda en lugar de a las tiendas de esas niñas. ¡Si vienes aquí, te prometo que recibirás un trato especial!</p>
+<p>Los jóvenes hombres bestia, los jóvenes, los ancianos, las mujeres jóvenes y las atractivas mujeres bestia se turnaban para llamarlo.</p>
+<p>Garou no se detuvo, pero levantó ligeramente la mano para rechazar mientras su cola se movía de buen humor.</p>
+<p>—Lo siento, pero aún tengo trabajo que hacer. No tengo tiempo ahora. Cuando esté libre, los llamaré o vendré a visitarlos, así que espérenme.</p>
+<p>Los que fueron rechazados por Garou no dijeron nada más. Lo miraron con respeto, admiración, cariño e incluso un toque de celos.</p>
+<p>Sin embargo, para el Garou actual, incluso las miradas de celos eran solo un factor para satisfacer su sentido de superioridad.</p>
+<p>(Matar a un niño humano es suficiente para convertirme en el próximo jefe de la raza de lobos bestia, ¡así que fue un trabajo delicioso!)</p>
+<p>Hace unos tres años, se encontró a un niño con el potencial de ser el "Maestro", por lo que fue reclutado en la Legión "Reunión de Razas".</p>
+<p>Después de eso, observaron al niño durante tres meses, pero se determinó que el niño no era el "Maestro".</p>
+<p>Decidieron matarlo por si acaso. Lo llevaron a un calabozo donde no tenían que preocuparse por ser vistos y sería más fácil deshacerse del cuerpo.</p>
+<p>Sin embargo, se confiaron demasiado y lo dejaron escapar.</p>
+<p>Para ser precisos, Garou estaba a punto de matar al niño que tenía una flecha clavada en la pierna. Pero la mano del niño activó accidentalmente un círculo mágico de teletransportación.</p>
+<p>El niño desapareció.</p>
+<p>Hicieron todo lo posible por buscarlo después, pero no pudieron encontrarlo.</p>
+<p>Sin embargo, con esa herida, el niño humano había sido transportado a algún lugar del calabozo más grande, más fuerte y más peligroso del mundo, el "Abismo".</p>
+<p>Probablemente sería atacado por monstruos atraídos por el olor a sangre y devorado hasta morir.</p>
+<p>Como resultado, todos los miembros acordaron que Light estaba muerto y notificaron a los superiores.</p>
+<p>Los superiores también les creyeron y determinaron que "la posibilidad de que Light siga vivo es baja".</p>
+<p>Decidieron declarar su muerte.</p>
+<p>Como recompensa por el asesinato del humano sospechoso de ser el "Maestro", Garou recibió su puesto actual de "Candidato principal para líder de los lobos bestia".</p>
+<p>Gracias a esto, era reconocido por cada lobo bestia que encontraba en la calle y por otras razas bestiales, y recibió una gran cantidad de dinero del gobierno.</p>
+<p>Solo el dinero de la recompensa era suficiente para vivir el resto de su vida.</p>
+<p>(Además de nosotros, también han creado legiones, tiendas, gremios de comerciantes y organizaciones secretas para buscar al "Maestro"… Al final, todavía no entiendo qué es realmente el "Maestro". ¿Por qué tantos países se esfuerzan tanto en buscarlo?)</p>
+<p>Incluso el trato que recibió Garou era excepcional.</p>
+<p>Originalmente, la posición de Garou en la raza de lobos bestia no era tan buena. Ni siquiera podía ser candidato a líder.</p>
+<p>Si fuera un humano, sería como el tercer hijo de un agricultor pobre en el pueblo que saltó a la cima de la lista de candidatos a jefe del pueblo a la mañana siguiente. Y si todo iba bien, sería elegido seguro.</p>
+<p>No solo era Garou.</p>
+<p>Se rumoreaba que cada uno de los antiguos miembros de la Reunión de Razas estaba progresando enormemente en sus pueblos natales, al igual que Garou.</p>
+<p>(He oído que Sasha la elfa es una hija ilegítima que no se llevaba bien con su media hermana y era tratada como alguien que no existía. Pero ahora, hay rumores de que la familia real está hablando de casarla. El enano Nano ha sido contratado por los mejores herreros. Diablo, el demonio, no solo ha recuperado su nobleza desheredada, sino que también ha ascendido de rango…)</p>
+<p>Drago, el dragón, era el que más había progresado.</p>
+<p>(No me di cuenta de que Drago-san es un miembro de la familia real que tiene derecho al trono… No es de extrañar que su orgullo sea mayor que el de los dragones comunes. He oído que su posición para el trono era baja, pero aumentó significativamente después de matar a un humano… Existe la posibilidad de que se convierta en el líder de los dragones, el más fuerte de las 6 razas. Eso es más que un gran avance.)</p>
+<p>Light no era el "Maestro".</p>
+<p>A pesar de este hecho, recibieron muchos buenos tratos solo por deshacerse de él.</p>
+<p>(Si Light fuera el verdadero "Maestro", ¿lo habrían tratado mejor? Si ese es el caso, entonces ¿qué diablos es un "Maestro"?)</p>
+<p>Curioso y esperando un mejor trato del que recibía ahora, pensó en "investigar por su cuenta" sobre el Maestro, pero sus instintos rápidamente descartaron la idea.</p>
+<p>Solo de pensarlo, casi podía oler la muerte que se pegaba a su nariz.</p>
+<p>Se le erizó la piel bajo el pelaje.</p>
+<p>(Mi instinto me dice que no me involucre con lo del "Maestro". Si mi intuición se activa, debe ser realmente malo. Me ha salvado la vida tantas veces…)</p>
+<p>Cuando era miembro de la Legión "Reunión de Razas", entró en calabozos muchas veces y luchó contra muchos monstruos peligrosos.</p>
+<p>Cada vez, sus instintos bestiales lo salvaron.</p>
+<p>Los antiguos miembros de la "Reunión de Razas" incluso tomaban en cuenta la "intuición instintiva" de Garou.</p>
+<p>(Mientras hay vida, hay esperanza. Sería un desperdicio volverse codicioso y renunciar a mi posición actual. Soy un niño huérfano y abandonado que solo sabe usar la violencia, y ahora soy el próximo candidato principal para líder de los lobos bestia. Si las cosas van bien, la cima de la raza de lobos bestia será mía… kuku, fufufuhi! ¡No puedo creer que este Garou-sama sea el mejor de la raza de lobos bestia! Para proteger esta posición, debería olvidarme del "Maestro".)</p>
+<p>Garou estaba seguro de que sus países los trataban bien a él y a los otros miembros del equipo como recompensa por matar a Light, que no era el "Maestro".</p>
+<p>Pero no había razón para que él renunciara a su buen trato actual solo por su curiosidad.</p>
+<p>De hecho, la respuesta correcta sería olvidarse del "Maestro".</p>
+<p>—Disculpe, ¿puedo llamar su atención?</p>
+<p>—¿Eh?</p>
+<p>Mientras sacaba conclusiones internamente sobre el "Maestro", una voz lo llamó.</p>
+<p>Garou soltó un sonido gruñón porque lo interrumpieron en su proceso de pensamiento.</p>
+<p>Sin embargo, una mujer hermosa estaba allí y al instante disipó su mal humor.</p>
+<p>Su cabello negro parecía cortado del cielo nocturno. Su cabello estaba recogido en una cola de caballo. Llevaba una capa bien confeccionada, con un atuendo de viaje similar debajo.</p>
+<p>Era alta para una mujer, y su rostro tenía ojos grandes, pestañas largas, labios rojos y una nariz bien definida. Todo estaba perfectamente colocado. Su piel era tan suave y blanca que parecía una muñeca que Dios había creado con esmero.</p>
+<p>Solo su belleza ya llamaba la atención, pero también tenía un pecho extremadamente grande que empujaba su ropa desde abajo. Sus pechos eran tan grandes que los hombres definitivamente los mirarían. Sin embargo, su cintura era tan pequeña que parecía que podría romperse, y sus brazos y piernas eran largos y esbeltos. Toda esta combinación la hacía ver muy estilizada.</p>
+<p>Una mujer humana tan hermosa le habló.</p>
+<p>Era tan hermosa que se preguntó: "¿Es humana?".</p>
+<p>—Siento interrumpirte. ¿Eres Garou-sama, el exmiembro de la Legión "Reunión de Razas"?</p>
+<p>—Eh, oo, ooo.</p>
+<p>Garou no había cambiado su nombre.</p>
+<p>Así que no era tan difícil encontrarlo.</p>
+<p>Por cierto, la razón oficial de la disolución de la "Reunión de Razas" fue que "los miembros se sintieron responsables por la muerte de Light en el calabozo y se separaron".</p>
+<p>La hermosa mujer preguntó con expresión triste.</p>
+<p>—En realidad, estoy buscando el paradero del señor al que debo servir, el Maestro Light. …Lo siento, aún no te he dicho mi nombre. Me llamo Mei. Soy una sirvienta que jura lealtad absoluta a Light-sama.</p>
+<p>—Oh, ¿ooo?</p>
+<p>Le hicieron preguntas unilateralmente y ella ya se presentó. Sin embargo, una vez más, Garou solo pudo escupir una voz que sonaba como un gemido.</p>
+<p>***</p>
+<p>Una hermosa sirvienta llamada Mei dijo que Light no era el segundo hijo de un agricultor pobre. No podía mencionar el nombre de sus padres, pero en realidad era un niño de una familia noble. Debido a circunstancias, tuvieron que pedir a un agricultor pobre que lo cuidara.</p>
+<p>Finalmente, su verdadera familia podía recibirlo con los brazos abiertos, pero desafortunadamente, el estado y la ubicación de Light eran desconocidos.</p>
+<p>Buscaron a la Legión "Reunión de Razas" como último esfuerzo. Aun así, tomó mucho tiempo encontrarlos porque el grupo ya se había disuelto.</p>
+<p>No había esperanza, pero al menos quería preguntar sobre los últimos días de Light. Y si era posible, que la guiaran a ese lugar.</p>
+<p>Solo por guiarla al lugar, pagaría una gran cantidad de dinero. La cantidad era suficiente para construir una pequeña casa.</p>
+<p>Garou bailaba locamente por dentro.</p>
+<p>(¡Los humanos son tan idiotas! ¡Están dispuestos a pagar tanto oro solo para guiar a un niño a su lugar de muerte! Y esta mujer, después de secuestrarla y divertirme lo suficiente con ella, ¡puedo venderla a un traficante de esclavos por más oro!)</p>
+<p>(Y—) entrecerró los ojos internamente.</p>
+<p>(Cuando Light fue sospechoso de ser el "Maestro", todo sobre él fue investigado no solo por nosotros sino también por los países. Y sin embargo, ¿cómo es posible que una mujer tan extraordinaria quedara fuera de la investigación? Es demasiado sospechoso. Pero también es posible que esta mujer esté confundiendo a Light con otro niño… De todos modos, es una oportunidad demasiado buena para dejarla pasar.)</p>
+<p>Acarició su carta de triunfo, que guardaba en su bolsillo.</p>
+<p>Esta era la carta de triunfo que había llevado desde antes de unirse a la Legión "Reunión de Razas".</p>
+<p>Garou confiaba en que esto sería suficiente para sacarlo de la mayoría de las situaciones.</p>
+<p>Así que aceptó la oferta de Mei.</p>
+<p>Sin embargo, debido a que el nivel de Mei era demasiado bajo, era extremadamente difícil para Garou guiar a Mei para ir al piso intermedio del calabozo más grande, más fuerte y más peligroso del mundo, el "Abismo".</p>
+<p>No necesitaba dinero.</p>
+<p>Más bien, para aumentar su fama, llamó y reunió a los jóvenes hombres bestia lobo que admiraban a Garou.</p>
+<p>Además, desde el punto de vista de Garou, poder disfrutar sexualmente de Mei era más importante que el dinero.</p>
+<p>Si quería secuestrarla, violarla y divertirse con ella, sería mejor hacerlo en un lugar donde nadie pudiera verlos.</p>
+<p>En ese sentido, un calabozo era un lugar muy conveniente.</p>
+<p>(Sería mejor si el país destruyera a esos humanos estúpidos y débiles que no pueden entender estas cosas. Bueno, gracias a eso, puedo divertirme así.)</p>
+<p>Garou aceptó su solicitud.</p>
+<p>Discutieron la fecha y hora de partida.</p>
+<p>La mano de obra se reunió de inmediato.</p>
+<p>De hecho, cuando Garou, el candidato principal para líder de los lobos bestia, llamaba, incluso los que no eran lobos bestia se reunían.</p>
+<p>Como hormigas atraídas por la miel, muchas personas querían hacer un favor y ser recordadas por Garou.</p>
+<p>Al final de su partida, tomar más tiempo y esfuerzo seleccionar a los participantes que decidir la ruta a tomar.</p>
+<p>Al final, se reclutaron 10 jóvenes hombres bestia lobo con niveles alrededor de 150.</p>
+<p>Con Garou y Mei, era un grupo grande de 12 personas.</p>
+<p>A diferencia de la Reunión de Razas, tenían más miembros bestia, pero su nivel no era tan alto.</p>
+<p>Por eso usaban números para compensar la diferencia.</p>
+<p>Además, debido a sus rasgos raciales, los hombres bestia eran buenos luchando en grupo más que solos. Esta era la razón por la que decidieron preparar un grupo grande.</p>
+<p>Gracias al agudo sentido del olfato de los hombres bestia, llegaron al destino sin luchar contra ningún monstruo. A pesar de que su destino era el piso intermedio del calabozo más grande, más fuerte y más peligroso del mundo, el "Abismo".</p>
+<p>—Aquí fue donde Light-sama…</p>
+<p>—Sí, Light fue herido por el ataque sorpresa de un monstruo aquí. También tuvo la mala suerte de quedar atrapado en una trampa de teletransportación colocada al azar y desapareció de nuestra vista.</p>
+<p>Mei se llevó ambas manos a la boca frente al lugar. Parecía que estaba conteniendo su dolor.</p>
+<p>En ese momento, su cola de caballo negra se sacudió como un perro que llora por su maestro al que nunca volvería a ver.</p>
+<p>Mientras le explicaba la historia falsa, Garou miró a los jóvenes que había traído consigo.</p>
+<p>Como también habían sido informados antes, se movieron silenciosamente a una posición donde pudieran bloquear la entrada para evitar que Mei escapara.</p>
+<p>Originalmente, este lugar era solo un espacio para descansar antes de entrar al nivel medio de Naraku, y solo había una entrada. El techo era alto y el espacio era grande, lo que lo convertía en un lugar perfecto para tomar un descanso.</p>
+<p>Muy pocos aventureros podían usar este lugar, ubicado dentro del calabozo más grande, más fuerte y más peligroso del mundo, el "Abismo".</p>
+<p>Si bloqueaban esta entrada, Mei no tendría forma de escapar.</p>
+<p>Por el contrario, si bloqueaban la entrada, perderían su camino de escape…</p>
+<p>Mei no prestó atención a sus movimientos y continuó lamentándose.</p>
+<p>Mientras se burlaba internamente: "Los humanos son tan fáciles", Garou continuó interpretando el papel compasivo.</p>
+<p>—Fue demasiado repentino y no pudimos responder lo suficientemente rápido. Con esa herida, probablemente no duraría mucho. Lamento no haber podido protegerlo aunque estaba con él…</p>
+<p>—Debe haber sido realmente doloroso. En este lugar oscuro y sucio, fuiste traicionado y torturado por esos bastardos… Si hubiera podido estar allí antes, no habría terminado así. Estoy tan avergonzada de mí misma.</p>
+<p>—…¿Tú?</p>
+<p>Sin escuchar las palabras de consuelo de Garou, Mei lloraba sola mientras pensaba en la traición de la Legión "Reunión de Razas" que ocurrió hace casi tres años.</p>
+<p>Garou tardó un tiempo en entender el monólogo de Mei.</p>
+<p>Él se distanció lentamente de ella.</p>
+<p>Los jóvenes comenzaron a notar el cambio en el comportamiento de Garou y comenzaron a ponerse nerviosos.</p>
+<p>Una vez que ganó algo de distancia, preguntó:</p>
+<p>—…¿Quién eres? ¿Cómo sabes eso?</p>
+<p>Light fue sospechoso de ser el "Maestro" y planearon matarlo en el calabozo para estar seguros, pero antes de matarlo, tocó una trampa de teletransportación y desapareció.</p>
+<p>Solo unas pocas personas sabían este hecho.</p>
+<p>Mei, que no había escuchado sus palabras de consuelo antes, respondió a esa pregunta.</p>
+<p>Soltó la mano que había estado sosteniendo su boca y lentamente se giró para mirarlos.</p>
+<p>El color de sus ojos estaba teñido de ira, tanto que se podía ver incluso en la oscuridad.</p>
+<p>—Ya te dije que solo soy leal a Light-sama. Si insultas mi camino como sirvienta, te haré ver el color de tus propias entrañas aquí y ahora.</p>
+<p>—¿Eh?</p>
+<p>No solo Garou.</p>
+<p>El pelaje de todos los hombres bestia en la habitación se erizó.</p>
+<p>El aura intimidante de Mei había abrumado a los hombres bestia, que se dice que tienen fuerza física, órganos sensoriales y capacidad de lucha superiores a los humanos.</p>
+<p>Como si estuvieran a la deriva en el océano y algo enorme se moviera justo debajo de ellos. Podían sentir el terror que emanaba de Mei.</p>
+<p>(Ah, el oponente es solo una mujer humana. Es presa fácil. Después de divertirme con ella en este calabozo, ¡la venderé a un traficante de esclavos por monedas de oro! Pero, ¿qué es esta abrumadora sensación de miedo? ¡Como si estuviera frente a un monstruo que emergió del fuego del infierno!)</p>
+<p>Esta situación anormal hizo que los otros hombres bestia comenzaran a gritar y romper su formación.</p>
+<p>—¡Ga, Garou-san, qué… qué está pasando aquí?</p>
+<p>—¡A, aniki, dijiste que esto era un trabajo fácil! ¡¿Nos mentiste?!</p>
+<p>—¿Estás tratando de matarnos a todos para poder cambiar al otro bando y sobrevivir solo?</p>
+<p>—¡¿Garou aniki nos está traicionando?! ¡Eso es mentira, ¿verdad?!</p>
+<p>Los jóvenes fueron sacudidos por la extraordinaria intimidación de Mei y comenzaron a sospechar de Garou por haber sugerido la idea.</p>
+<p>Los hombres bestia básicamente valoraban a sus compañeros. De lo contrario, no podrían trabajar juntos para cazar monstruos y aumentar sus niveles.</p>
+<p>Pero si uno de ellos traicionaba al grupo, sería castigado severamente como ejemplo. El tipo de castigo que hace desear la muerte.</p>
+<p>—¡Tú, tú idiota! ¡Soy el candidato principal para líder de los lobos bestia! ¿Por qué iba a renunciar a mi buena posición actual para irme a otro país? ¡Usa la cabeza, idiotas! ¿O tal vez quieres ir contra mí, el candidato principal para líder de los lobos bestia? En lugar de pasar un buen rato, saldrás lastimado cuando regresemos…</p>
+<p>Garou amenazó con voz alta para despejar sus sospechas, pero no pudo terminar sus líneas.</p>
+<p>Porque la persona que se suponía que estaba muerta apareció casualmente y alzó la voz como si acabara de regresar de un paseo.</p>
+<p>—Mei, no los toques todavía. Especialmente a Garou, él es mi presa.</p>
+<p>—¡!?</p>
+<p>Todos los hombres bestia se giraron, la voz venía de detrás de ellos.</p>
+<p>Llevaba una capucha negra y sostenía un bastón de mago que superaba su altura.</p>
+<p>No era demasiado alto, y si adivinaban por su voz, era un niño de 12 o 13 años.</p>
+<p>La raza de hombres bestia tiene una nariz sensible. Inmediatamente notaron que la otra parte era un humano.</p>
+<p>Pero por otro lado, estaban confundidos.</p>
+<p>En el calabozo más grande, más fuerte y más peligroso del mundo, el "Abismo", ¿por qué hay un niño humano que puede estar detrás de ellos sin ser notado?</p>
+<p>Cuando apareció el niño, la abrumadora intimidación desapareció como si nunca hubiera estado allí.</p>
+<p>Cuando la llamó, la expresión de Mei cambió, pero emanaba una vibra dulce y suave como una doncella enamorada.</p>
+<p>El niño levantó ligeramente la mano en respuesta y se bajó la capucha.</p>
+<p>Como esperaban, un niño humano apareció debajo de la capucha.</p>
+<p>Su cabello cuidadosamente recortado y arreglado era brillante, sus ojos grandes y sus pestañas lo suficientemente largas como para crear sombras.</p>
+<p>Su piel era de un color lechoso saludable como la de un niño, y combinado con sus labios rosados, parecía más una "hermosa chica" que un "niño".</p>
+<p>Parecía un niño que sería muy popular.</p>
+<p>Incluso antes de que se bajara la capucha, Garou era el único que todavía estaba aturdido.</p>
+<p>—Im, imposible… ¿todavía vives… Light?</p>
+<p>—…Garou. Vine a vengarme por lo que hiciste hace tres años.</p>
+<p>Como si se encontrara con un amigo por primera vez en mucho tiempo, el niño, Light, sonrió a su objetivo de venganza.</p>
+<p>Cuando el niño que estaba detrás de los hombres bestia lo llamó, Garou se sorprendió.</p>
+<p>Sin embargo, la expresión estúpida de sorpresa de Garou no duró mucho.</p>
+<p>—Nunca pensé que todavía estuvieras vivo… kukuku, ¿además venganza? ¿Un debilucho de nivel 15 como tú quiere vengarse? ¡Gyahahahaha! ¡Estoy agradecido de que los humanos sean estúpidos!</p>
+<p>Garou, que antes había sido asustado por Mei, se rió como si le hubieran dado tesoros de oro y plata, una comida lujosa y una amplia selección de mujeres hermosas.</p>
+<p>Después de reírse hasta el final, hizo una sonrisa fea, como la que hizo cuando traicionó a Light.</p>
+<p>—No sé cómo sobreviviste, ¡pero me sorprende que te atrevas a mostrarte frente a mí! ¡Si matamos a este ser y traemos su cadáver, entonces la raza de hombres bestia puede hacerle un favor a la raza dragón! ¡Esto es enorme! ¡En lugar de ser solo el candidato principal, seré el líder de los lobos bestia seguro!</p>
+<p>Frente a los ojos y la voz lujuriosos de Garou, Light suspiró como si estuviera disgustado.</p>
+<p>—De todos modos, ya he investigado a Light, hasta el número de arrugas en su trasero. Es solo un tipo normal que recibió un don un poco inusual e inútil. Probablemente solo tuvo suerte de estar vivo y fue rescatado por esa mujer espeluznante de allí, ¿verdad?</p>
+<p>—…bueno, eso no está mal.</p>
+<p>No tenía que explicar los detalles de su habilidad y el don "Gacha Infinita" a ellos.</p>
+<p>Con la respuesta de Light, Garou se convenció de que su suposición era correcta.</p>
+<p>—¿Pensaste que la chica que te ayudó podría luchar contra nosotros y vengarse? ¡Eres ingenuo! ¡No puedes ver la diferencia de poder!</p>
+<p>Garou volvió a mirar a Light con desdén y luego chasqueó la lengua y dio instrucciones a los jóvenes que estaban allí en blanco, incapaces de seguir la situación.</p>
+<p>—¡Oye! ¿Qué diablos están haciendo allí? ¿No tienen cerebro para entender la situación? ¡Con su cadáver, podemos hacer que la raza dragón nos deba un favor, y luego seré el líder de los lobos bestia seguro! ¡Si quieren pasar un buen rato, bloqueen rápidamente la puerta para que no puedan escapar, idiotas!</p>
+<p>—¡!?</p>
+<p>En parte porque Garou era el líder de este proyecto, había dado la orden, pero el hecho de que pudieran hacer que la Raza Dragón les debiera un favor era lo más importante para ellos.</p>
+<p>La raza dragón era la más superior de las seis razas.</p>
+<p>Lo que significaba que podían hacer que el país les debiera un favor.</p>
+<p>Para ellos, esto era extremadamente importante.</p>
+<p>—¡E-entendido, Garou aniki! ¡Los atraparemos pronto! ¡Oigan, ustedes, dense la vuelta!</p>
+<p>—¡Entendido! ¡Oye, vamos!</p>
+<p>—¡OK! ¡También somos ayudantes del líder de los lobos bestia! ¡Por fin nuestra suerte llegó!</p>
+<p>Con la fuerza de sus piernas, dos personas se movieron a alta velocidad para bloquear la entrada… pero. Como muñecos frágiles, sus cabezas se desprendieron de sus cuellos y rodaron por el suelo.</p>
+<p>Como pollos decapitados, los dos cuerpos corrieron un rato sin cabezas y finalmente se detuvieron al chocar contra una pared.</p>
+<p>Sus manos y pies se contraían mientras la sangre brotaba.</p>
+<p>El calabozo se llenó con el espeso olor a sangre.</p>
+<p>—No los dejaré pasar detrás de nosotros.</p>
+<p>—¿Qué?</p>
+<p>Sin que se dieran cuenta, Mei estaba de pie junto a Light.</p>
+<p>Por lo que acababa de decir, parecía que Mei fue quien cortó las dos cabezas, pero… Garou y los demás no tenían idea de cómo lo hizo.</p>
+<p>Cuando se dieron cuenta, las cabezas ya estaban rodando por el suelo.</p>
+<p>Mientras Garou y los otros hombres bestia estaban en shock, Light elogió casualmente a Mei como si fuera natural que ella hiciera eso.</p>
+<p>—Gracias, Mei. Continúa bloqueando la entrada para evitar que escapen.</p>
+<p>—Sí, señor. Juro por mi camino de sirvienta que cumpliré perfectamente su orden.</p>
+<p>Mei hizo una reverencia profunda y retrocedió para bloquear la entrada.</p>
+<p>Light se enfrentó nuevamente a Garou y los demás.</p>
+<p>Light y Mei bloquearon la entrada.</p>
+<p>Incluso los hombres bestia, que normalmente menospreciaban a los humanos, se sorprendieron al ver la habilidad de Mei.</p>
+<p>Además, frente a Light, que parecía tan seguro, sintieron miedo y quisieron huir.</p>
+<p>Garou era el único que se puso rojo y gritó.</p>
+<p>—¡Cálmense, idiotas! ¡No sé cómo, pero solo los mataron con un ataque sorpresa! ¡Si tenemos cuidado, no seremos derrotados por humanos!</p>
+<p>—*Yareyare*… Todavía menosprecias a los demás como hace tres años. ¿Crees que somos débiles?</p>
+<p>—¡No te metas conmigo! ¡No podemos ser más débiles que humanos que ni siquiera pueden subir de nivel!</p>
+<p>Los otros hombres bestia asintieron en acuerdo con las palabras de Garou.</p>
+<p>Esta era la razón de su desprecio por la raza humana.</p>
+<p>Los enanos eran fuertes y hábiles y podían fabricar armas y armaduras poderosas, lo que facilitaba subir de nivel.</p>
+<p>Los elfos sobresalían en magia y tenían una larga vida útil, por lo que podían alcanzar niveles altos fácilmente.</p>
+<p>La raza dragón y la raza demonio tenían una gran fuerza física, alto poder mágico, alta vitalidad y una larga esperanza de vida. Esta era la razón por la que había muchas personas de alto nivel entre ellos (en comparación, la raza dragón tendía a tener un nivel más alto que la raza demonio debido a sus habilidades básicas superiores).</p>
+<p>Por otro lado, la raza humana tenía más dificultades para subir de nivel que otras especies. Su fuerza física era más débil, su poder mágico más bajo, sus cuerpos más frágiles y su vida útil más corta.</p>
+<p>Así que básicamente, su nivel era abrumadoramente más bajo que otras razas.</p>
+<p>La raza de hombres bestia tenía un poder mágico más bajo y la misma vida útil que los humanos, pero tenían una fuerza física, vitalidad y velocidad abrumadoramente superiores a los humanos. Además, eran fuertes en batallas grupales, y sus sentidos agudos les facilitaban encontrar a sus presas, otro factor que facilitaba subir de nivel.</p>
+<p>El estatus humano era "generalmente de nivel más bajo que otras razas", por eso la raza humana era menospreciada por otras razas.</p>
+<p>Por lo tanto, Garou y sus amigos ahora menospreciaban a Light y Mei como de "nivel inferior" y "no pueden ser más fuertes que ellos".</p>
+<p>—Te estás dejando llevar, humano. …Voy a arrancar tu disfraz ahora mismo. ¡Todos ustedes, trabajen conmigo!</p>
+<p>Garou usó las mismas garras de acero que hace tres años y pateó el suelo.</p>
+<p>Los otros hombres bestia se unieron al ataque, aunque iban un poco atrasados de su llamado.</p>
+<p>Los hombres bestia eran los mejores de todas las razas cuando se trataba de coordinación. Aunque estaban improvisando, mostraban más coordinación que un grupo humano experto.</p>
+<p>—¡Muere! ¡Humano de mierda que se deja llevar!</p>
+<p>Garras, patadas, espadas, lanzas cortas y cuchillos volaron hacia él desde todas direcciones, pero Light no dio ni un paso y giró su bastón para repeler todos los ataques.</p>
+<p>—¡Gee!?</p>
+<p>—¡Gugo!</p>
+<p>—¡Ngigyi!?</p>
+<p>Gritaron como un cerdo que había sido pateado. Los hombres bestia, incluido Garou que lo había atacado, fueron fácilmente derribados.</p>
+<p>Mientras Light miraba a los hombres bestia arrastrándose por el suelo con dolor, habló como si ya estuviera aburrido.</p>
+<p>—¿Qué pasa? ¿Ya terminó?</p>
+<p>Esta palabra hirió gravemente el orgullo de Garou.</p>
+<p>Se arrastró al suelo, con los ojos ensangrentados mientras presionaba su mano sobre su abdomen herido.</p>
+<p>—¿Eh? ¿Solo un humano, y te atreves a mirarme con desprecio? ¡Solo un humano, y te atreves a mirarme con desprecio! ¡Solo un humano, no te atrevas a mirarme con desprecio! ¡Soy el "candidato principal para líder de los lobos bestia"! ¡Los humanos no tienen derecho a mirarme con desprecio! ¡Mierda! Pero no me remataste. Ese descuido te costará la muerte!</p>
+<p>Movió su mano de su dolorido abdomen y rebuscó en su bolsillo.</p>
+<p>Sacó una bola brillante del tamaño de una pelota de ping-pong.</p>
+<p>Garou usó su "carta de triunfo" sin dudar.</p>
+<p>—¡No sé qué trucos usas, pero no te dejes llevar solo porque te has vuelto un poco más fuerte! ¡Haré que tu rostro se pinte de desesperación en poco tiempo! ¡Sal, Bestia Demoníaca Fenrir!</p>
+<p>Sin dudar, Garou usó su "carta de triunfo": la Bola de Bestia Mágica.</p>
+<p>La Bola de Bestia Mágica es un objeto mágico que se encuentra raramente en ruinas o calabozos. Contiene una bestia mágica de alto nivel.</p>
+<p>Al romper la bola, se puede invocar temporalmente un monstruo de alto nivel y ponerlo bajo su control. Sin embargo, es solo temporal y desaparecerá en aproximadamente una hora.</p>
+<p>Muchos aventureros de primera clase, como Garou, lo guardaban para salir de apuros.</p>
+<p>Por supuesto, el precio era muy alto. El precio más bajo era 100 millones de yenes japoneses.</p>
+<p>Un monstruo que había estado sellado apareció cuando rompió la Bola de Bestia Mágica.</p>
+<p>Apareció un lobo gigantesco de unos 7 metros de largo con pelaje azul pálido.</p>
+<p>—¡Grrrrrrr! Gruñó amenazadoramente hacia Light y los demás.</p>
+<p>Garou se rió a carcajadas. Su expresión estaba llena de confianza en su victoria.</p>
+<p>—¡Gyahahahaha! He estado guardando mi "carta de triunfo" para una emergencia como esta. ¡Una bestia demoníaca de nivel 500, Fenrir! ¡Tu suerte se acabó cuando te dejaste llevar y no me mataste antes!</p>
+<p>La aparición de Fenrir, una bestia demoníaca de nivel 500, reenergizó a los hombres bestia que habían sido fácilmente derrotados por Light.</p>
+<p>—¡Qué bestia mágica tan hermosa y poderosa!</p>
+<p>—Como era de esperar de Garou aniki, que solía ser miembro de la Legión de Élite. No sabía que tenía una habilidad secreta así.</p>
+<p>—¡Esta es la habilidad de un aventurero de primera clase, el candidato principal para líder de los lobos bestia!</p>
+<p>—¡Como era de esperar de Garou-sama!</p>
+<p>Los jóvenes miraban respetuosamente a Garou y a Fenrir, la bestia mágica de nivel 500. Parecían niños frente a un jugador de fútbol profesional.</p>
+<p>Por otro lado, Light soltó un suspiro de disgusto por su estupidez.</p>
+<p>—¿Nivel 500?… ¿Esa es realmente una "carta de triunfo"? Eso es demasiado débil.</p>
+<p>—¡Gyahahahaha! Dijiste que el nivel 500 es débil. ¡Parece que enfrentarte a Fenrir te ha vuelto loco! Estoy seguro de que el truco que nos repelió antes fue algún tipo de poder de objeto mágico. ¡Pero este es el real, nivel 500! ¡Voy a volar todos tus pequeños trucos! ¿Por qué no te arrastras por el suelo y ruegas por tu vida? Si logras hacerme reír viéndote rogar por tu vida, podría cambiar de opinión y no matarte. ¡Sí, hazlo rápido!</p>
+<p>Por supuesto, Garou no tenía intención de dejar vivo a Light aunque este suplicara por su vida.</p>
+<p>Los otros jóvenes además de Garou entendieron esto y miraron a Light con una sonrisa burlona.</p>
+<p>Por otro lado, Light soltó un suspiro aburrido. En lugar de rogar por su vida, los instó a atacar.</p>
+<p>—¿De verdad? ¿Una bestia demoníaca de nivel 500 es una carta de triunfo…? Bueno, bueno, no me moveré ni un paso de aquí, así que pueden hacer lo que quieran.</p>
+<p>Light extendió sus manos para provocar a su oponente.</p>
+<p>No importa quién lo viera, no se movió ni un paso como había declarado.</p>
+<p>Por supuesto, el rostro de Garou se puso rojo por su comportamiento provocador y se enojó.</p>
+<p>—¡Entonces, como deseas, te mataré sin dejar ni un hueso! ¡Bestia Demoníaca Fenrir, hazlo! ¡Cañón Rugiente de Bestia Demoníaca!</p>
+<p>—¡WOOOOOOo!</p>
+<p>La persona que rompe la Bola de Bestia Mágica es reconocida temporalmente como el amo de la Bestia Mágica y puede conocer su nivel, características, especialidades, debilidades y habilidades.</p>
+<p>Garou usó su poder para ordenar a la Bestia Demoníaca Fenrir que usara su ataque más poderoso, el Cañón Rugiente de Bestia Demoníaca.</p>
+<p>Este es el ataque especial de la Bestia Demoníaca Fenrir que libera todo su poder mágico.</p>
+<p>Junto con su rugido, la bestia demoníaca abrió mucho la boca, el poder mágico blanco azulado se concentró… ¡y luego disparó!</p>
+<p>Convirtió todo el poder mágico de su nivel 500 en un ataque.</p>
+<p>Ciertamente, era un golpe mortal. Incluso si el oponente tenía el mismo nivel o un nivel más alto, cualquiera que fuera alcanzado por ese ataque sería herido de muerte.</p>
+<p>—Para ataques que solo levantan polvo, la bestia era demasiado ruidosa. Qué molestia.</p>
+<p>—Im, imposible… él, él está ileso…</p>
+<p>A pesar de ser golpeado de lleno por el Cañón Rugiente de Bestia Demoníaca, Light no tenía ni un rasguño, ni siquiera una quemadura en su cabello o ropa.</p>
+<p>El Cañón Rugiente de Bestia Demoníaca es un ataque mortal de Fenrir de nivel 500. No es algo que se pueda prevenir con defensas a medias u objetos mágicos.</p>
+<p>Si eso sucedía… solo sería posible si hubiera una gran diferencia en poder y nivel.</p>
+<p>Garou y todos los hombres bestia que habían alabado a la Bestia Demoníaca Fenrir miraban a Light aturdidos.</p>
+<p>Light sonrió ligeramente sin prestarles atención.</p>
+<p>—Ahora es mi turno.</p>
+<p>Alcanzó su bolsillo como Garou y sacó una carta.</p>
+<p>—Sería una lástima que la gente malinterpretara que un perro callejero tan patético es Fenrir. Por eso te mostraré especialmente al "verdadero". Carta UR "Bestia Divina Fenrir Nivel 9000", liberar.</p>
+<p>Mientras Light hablaba, la carta comenzó a brillar.</p>
+<p>La luz se desvaneció rápidamente y apareció una bestia.</p>
+<p>Era una bestia gigante de 15 metros de altura. Su pelaje era blanco como la nieve y sus colmillos se veían muy poderosos.</p>
+<p>No necesitaba explicación.</p>
+<p>Todos lo entendieron de un vistazo.</p>
+<p>El ser frente a ellos era el verdadero Fenrir.</p>
+<p>Ciertamente, si uno conocía a la "Bestia Divina Fenrir Nivel 9000", entonces la "Bestia Demoníaca Fenrir Nivel 500" solo parecería un patético perro callejero.</p>
+<p>Light habló con una voz aguda e infantil.</p>
+<p>—Fenrir, mata a ese perro callejero.</p>
+<p>—¡Oouw!</p>
+<p>Ante la orden de su Señor, la "Bestia Divina Fenrir" ladró suavemente.</p>
+<p>Con solo levantar una mano y agitarla con un movimiento ligero, "Fenrir la Bestia Demoníaca" o el falso Fenrir fue partido verticalmente, se convirtió en trozos de hielo, se agrietó y luego desapareció como polvo.</p>
+<p>Todos sus restos desaparecieron de este mundo, sin dejar ni un solo pelo. Como si la "Bestia Demoníaca Fenrir nivel 500" nunca hubiera existido.</p>
+<p>—Bien, buen trabajo.</p>
+<p>—¡Guau! ¡Ouw!</p>
+<p>Light lo elogió por matar a la Bestia Demoníaca Fenrir como se le ordenó y lo acarició como recompensa.</p>
+<p>Fenrir fue elogiado por su amo como un perro mascota, moviendo la cola como si estuviera feliz de que lo acariciaran.</p>
+<p>—…………</p>
+<p>Mei los miraba con ojos envidiosos mientras Light acariciaba y elogiaba a la "Bestia Divina Fenrir".</p>
+<p>Por otro lado, Garou y el resto de los hombres bestia…</p>
+<p>—Ah, Aaaah…</p>
+<p>—Hii, hii, hii</p>
+<p>—…………</p>
+<p>Todos no pudieron evitar gritar y cayeron de rodillas.</p>
+<p>Por supuesto, Garou también estaba asustado y conmocionado. Su miedo a una situación que no podía entender hizo que perdiera fuerza y cayera de culo.</p>
+<p>—Qué, tú, e, eliminas a un Fenrir de nivel 500, en, en un instante…</p>
+<p>—Incluso si no hubiera invocado a la "Bestia Divina Fenrir", podría matar fácilmente a ese tipo de bestia demoníaca en un instante. Porque mi nivel ahora es 9999.</p>
+<p>—…¿Qué?</p>
+<p>—Porque mi nivel es 9999.</p>
+<p>Como Garou antes, Light también reveló su estado.</p>
+<p>Su estado mostraba "Nivel 9999".</p>
+<p>El color de los rostros de los hombres bestia empeoró aún más.</p>
+<p>Mientras los miraba, Light les dijo algo que los hizo sentir más desesperados.</p>
+<p>—No solo yo. Mei también tiene el mismo nivel. Mei.</p>
+<p>Ante la llamada de Light, ella reveló silenciosamente su estado.</p>
+<p>Como Light, su estado mostraba "Nivel 9999".</p>
+<p>La expresión de los hombres bestia se llenó de desesperación y dejaron escapar sus voces.</p>
+<p>—Ni, nivel 9999…</p>
+<p>—Es, es verdad…</p>
+<p>—Eh, ¿el límite de nivel humano no es solo alrededor de 100?</p>
+<p>—No hay manera de que podamos ganar contra eso…</p>
+<p>Ninguno de los jóvenes hombres bestia pudo negar el hecho de que estaban enfrentando un nivel de 9999.</p>
+<p>Invoca a la Bestia Divina Fenrir que masacra fácilmente a un Fenrir de nivel 500 justo frente a ellos.</p>
+<p>Garou también cayó de culo y no podía levantarse por el miedo después de ver a la Bestia Divina Fenrir matar de un solo golpe.</p>
+<p>Nadie en ese lugar podía negar las palabras de Light.</p>
+<p>Garou miraba fijamente a Light con la cara azul, cubierta de sudor como una cascada.</p>
+<p>(Por qué… por qué no me di cuenta de eso…? Light no había crecido nada en tres años? ¿Por qué no me di cuenta?)</p>
+<p>Light era un niño de doce años de un pueblo agrícola.</p>
+<p>Habían pasado unos tres años desde entonces, y ahora debía tener quince años.</p>
+<p>La edad de 12 a 15 años es un período de crecimiento humano en el que un niño crece, le aparece la nuez y su rostro se vuelve más maduro.</p>
+<p>Sería extraño si no hubiera cambiado.</p>
+<p>Pero Light no había cambiado en absoluto.</p>
+<p>La apariencia de Light no había cambiado desde que lo traicionaron e intentaron matarlo hace tres años.</p>
+<p>Entonces, ¿por qué está ocurriendo este "fenómeno imposible"?</p>
+<p>(El nivel 9999 no es solo un farol que este niño estúpido inventó… Si es cierto, entonces tiene sentido que haya dejado de envejecer y que una "Bestia Divina Fenrir" esté dispuesta a seguir su orden. Esto significa que Light realmente se ha convertido en un monstruo de nivel 9999…)</p>
+<p>Para ser precisos, no era por su nivel, sino gracias al poder del "Brazalete de la Inmortalidad", un objeto mítico que obtuvo de la "Gacha Infinita", que lo hacía inmortal.</p>
+<p>Para recordar la desesperación, la tristeza y la ira de ser traicionado, Light usaba el Brazalete de la Inmortalidad para mantener la apariencia de un niño de 12 años.</p>
+<p>Cuando Garou finalmente creyó las palabras de Light y se horrorizó, los otros hombres bestia enroscaron sus colas con mirada y voz desesperadas.</p>
+<p>—Ga, Garou aniki…</p>
+<p>—Ga, Garou-sama, ¿qué vamos a hacer?</p>
+<p>—¿Qué debo hacer, Garou aniki…?</p>
+<p>Un grupo de jóvenes hombres bestia reclutados y traídos a Naraku con la promesa de una buena recompensa rogaban instrucciones a su líder, Garou.</p>
+<p>Esperaban instrucciones sobre qué hacer y cómo salvar sus vidas.</p>
+<p>Sus ojos se centraron en Garou a la vez…</p>
+<p>Él estaba arrastrándose por el suelo con la cara azul.</p>
+<p>—¡Realmente lamento mi mala educación hasta ahora! ¡Y-yo estaba engañando a Light-sama por órdenes del gobierno! ¡No fue mi voluntad! Así que, ¡por favor, perdóname! ¡No me importa lo que les pase a estos tipos, así que sálvame! ¡Te lo ruego!</p>
+<p>—¡Ga, Garou aniki! ¿Nos estás traicionando?</p>
+<p>—¡Co, cobarde! ¿No te da vergüenza darnos la espalda ahora?</p>
+<p>—¡Cállate! ¡No soy como ustedes! De hecho, traicioné a Light-sama una vez. ¡Pero cuando Light-sama vino a la ciudad, lo cuidé de muchas maneras, ¿no es así? ¿Verdad, Light-sama?</p>
+<p>Garou sonreía, frotándose las manos y halagando a Light como si su actitud anterior fuera solo una mentira.</p>
+<p>—Le compré kushiyaki en un puesto de comida, ¡e incluso le di jugo de frutas para beber! ¡Incluso peleé y ahuyenté a la gente que se burlaba de Light-sama! ¿Verdad? ¡Estoy seguro de que tengo recuerdos con Light-sama, cosas que compartimos juntos! ¡Por eso está bien si soy el único que él salvaría!</p>
+<p>—…………</p>
+<p>Light miró silenciosamente a Garou, que estaba de rodillas y halagándolo.</p>
+<p>Mientras tanto, los otros hombres bestia continuaron culpando a Garou.</p>
+<p>Después de un rato, Light levantó ligeramente la mano.</p>
+<p>Cuando levantó la mano, los maldiciones ruidosas y feas que habían sido dolorosas de escuchar se detuvieron.</p>
+<p>El calabozo se sumió en el silencio como si estuvieran en un cementerio en plena noche.</p>
+<p>Light miró a Garou y preguntó.</p>
+<p>—Antes de ayudarte, hablemos de lo que sabes. Para empezar, ¿qué es exactamente un "Maestro"?</p>
+<p>—Yo, yo no sé. To, todo lo que sé es que me dijeron desde arriba que buscara al "Maestro"…</p>
+<p>—¿Por qué el país busca al "Maestro"?</p>
+<p>—No sé.</p>
+<p>—¿Por qué el país quiso matarme cuando descubrieron que no soy el "Maestro"?</p>
+<p>—Yo, yo, no sé.</p>
+<p>—…………</p>
+<p>Light parecía impacientarse con sus respuestas.</p>
+<p>Garou se apresuró a dar una excusa.</p>
+<p>—¡Yo, realmente no lo sé! ¡Solo me dijeron que buscara al "Maestro"! Es solo mi suposición, pero sospecho que los jefes de la raza de hombres bestia tampoco saben mucho sobre eso. Después de todo, somos mejores que los humanos. Es, esta es solo una percepción común, pero gracias a nuestra alta capacidad física, podemos subir de nivel fácilmente. Desde el punto de vista de otra raza, tenemos una vida útil más baja, un nivel más bajo y una capacidad más baja. A lo sumo, solo nos consideran peones que pueden ser un poco más útiles que la raza humana. Por eso no nos dieron mucha información a los jefes.</p>
+<p>—…¿Qué saben los otros hombres bestia sobre el "Maestro"?</p>
+<p>Esta pregunta hizo que todos los otros hombres bestia pensaran más que nunca en sus vidas, como si hubieran encontrado un rayo de esperanza para sobrevivir.</p>
+<p>Sin embargo, ninguno de ellos tenía información sobre el "Maestro".</p>
+<p>—…………</p>
+<p>Light se giró y miró a Mei.</p>
+<p>Ella entendió sus intenciones y asintió.</p>
+<p>Usó su magia de detección de mentiras para comprobar sus reacciones.</p>
+<p>Aparentemente, realmente no sabían nada sobre el "Maestro" ni por qué Light fue blanco de su vida.</p>
+<p>Light soltó un suspiro de decepción ante este resultado.</p>
+<p>—Esperaba esto, pero hay incluso menos información de la que esperaba…</p>
+<p>—¿Qué hacemos?</p>
+<p>Light respondió a la pregunta de Mei con voz suave.</p>
+<p>—Ahora que nos han visto, no hay razón para mantenerlos con vida. Excepto a Garou, deshazte de todos.</p>
+<p>—Ciertamente.</p>
+<p>—¡!?</p>
+<p>Tan pronto como Mei hizo una reverencia, todos excepto Garou fueron cortados en pequeños pedazos.</p>
+<p>Ni siquiera tuvieron tiempo de gritar.</p>
+<p>Con su guante, Mei había creado un hilo ultrafino y había enredado a los hombres bestia.</p>
+<p>Este hilo era muy delgado, pero lo suficientemente afilado como para cortar acero u oricalco cuando aplicaba su magia.</p>
+<p>—Hiii…</p>
+<p>Los pantalones de Garou se mojaron por la tragedia frente a él.</p>
+<p>Afortunadamente, incluso si se mojaba, la gente no podía distinguirlo porque el olor a sangre era muy fuerte.</p>
+<p>Light estaba completamente imperturbable y miró dentro de sus propios bolsillos.</p>
+<p>—Ahora que nos hemos deshecho de las distracciones y tenemos a la gente que queremos, sigamos… Oh, casi lo olvido. Garou.</p>
+<p>—¡Hiii! ¡S-sí!</p>
+<p>El completamente aterrorizado Garou saltó instintivamente cuando escuchó a Light llamarlo.</p>
+<p>Al mismo tiempo, los charcos de sangre ondularon, salpicaron y trozos de carne se dispersaron.</p>
+<p>Light soltó una pequeña risa ante su ridícula apariencia y preguntó.</p>
+<p>—Antes de continuar, déjame preguntarte, ¿crees que podríamos ganar una guerra contra las naciones de la superficie con lo que tenemos ahora?</p>
+<p>—Eso, eso es…</p>
+<p>—…………</p>
+<p>En momentos como este, lo mejor sería mentir para no estropear el humor de Light… pero Mei, que estaba usando magia de detección de mentiras, podría detectar su mentira.</p>
+<p>Incluso si fuera solo un halago, una mentira no serviría de nada ahora.</p>
+<p>Garou reunió su valor para expresar sus pensamientos a través de su garganta.</p>
+<p>—Light-sama y los demás son realmente fuertes, y sí, Fenrir-sama también está aquí. Creo que si luchamos contra países de todo el mundo, tendremos algunas ventajas. Pero, no importa cuán alto sea el nivel, un individuo sigue siendo un individuo. Es casi imposible ganar contra una nación…</p>
+<p>Después de todo, no importa cuán fuerte sea un individuo, el alcance de su poder es limitado.</p>
+<p>No importa cómo lo mirara, era difícil para un individuo enfrentarse a la criatura gigante que era la nación.</p>
+<p>Light también había predicho esto.</p>
+<p>Garou continuó sus palabras.</p>
+<p>—Existe la posibilidad de que haya otras armas, armaduras y objetos legendarios que cada país ha guardado durante miles de años. Si los sacaran, no importa cuán fuertes sean Light-sama y los demás, la mitad, o incluso un tercio del mundo sería destruido…</p>
+<p>—Sí, ya veo. …Es tal como esperábamos. No importa cuán fuerte sea una persona, las cosas que puede hacer individualmente son limitadas.</p>
+<p>Después de escuchar todas sus respuestas, Light asintió varias veces con satisfacción.</p>
+<p>Se giró hacia Garou una vez más y dio su orden.</p>
+<p>—Lo siguiente es similar a la pregunta anterior, pero quiero que confirmes: "¿Puedo ganar si declaro la guerra contra los países de la superficie con esta fuerza?"</p>
+<p>—¿Eh…?</p>
+<p>—Entonces movámonos de inmediato. Teletransportación, liberar.</p>
+<p>—¡!?</p>
+<p>Simultáneamente, mientras Light hablaba, los tres y una bestia fueron envueltos en luz.</p>
+<p>Garou era el único sorprendido, y su visión se volvió en blanco y negro.</p>
+<p>Mei y la Bestia Divina Fenrir no mostraron ninguna reacción particular.</p>
+<p>Por un momento, su vista se oscureció, pero pronto volvió a la normalidad.</p>
+<p>—¡！！！！？？？?</p>
+<p>Su vista regresó, pero la vista que se extendía frente a ellos haría que quien la viera se sintiera tan desesperado; era más oscura y dura que el alquitrán.</p>
+<p>Al usar la carta "Teletransportación", Garou fue transportado instantáneamente al nivel más bajo del calabozo más grande, más fuerte y más peligroso del mundo, el "Abismo".</p>
+<p>Lo que lo esperaba allí era un ejército de monstruos míticos.</p>
+<p>En un salón del tamaño de un campo de fútbol, con techos tan altos que no se podían ver a través de la neblina, los monstruos esperaban ordenadamente.</p>
+<p>Una alfombra roja brillante recorría el largo de la sala, un trono de oro, joyas y metales preciosos estaba colocado en el otro extremo. Una enorme bandera militar ondeaba en la pared al fondo de la sala.</p>
+<p>Frente al trono, justo antes de las escaleras, había tres hermosas chicas alineadas.</p>
+<p>También, un enorme dragón, un gigante, y un perro de tres cabezas tan enorme como la "Bestia Divina Fenrir". No solo eran los monstruos aterradores.</p>
+<p>Hermosas chicas vestían ropas de sirvienta con alas transparentes creciendo de sus espaldas. Caballeros vestían deslumbrantes armaduras doradas. Una mujer hermosa sostenía un enorme hacha de batalla en sus manos sin dificultad. También había una chica con un tubo largo como una lanza y un mosquete, que Garou no podía entender.</p>
+<p>Su número era probablemente alrededor de 3000.</p>
+<p>A primera vista, había una gran variedad de cosas que parecían inconsistentes, pero de alguna manera Garou percibía que estaban unidos por una fuerte voluntad —una locura de lealtad.</p>
+<p>A pesar de enfrentarse a un ejército de monstruos míticos, Light se veía relajado y dio una orden casualmente.</p>
+<p>—Todos, muestren su estado.</p>
+<p>Su voz definitivamente no llegaba al fondo de la sala.</p>
+<p>Y sin embargo, sin demora, todos mostraron su estado como se les indicó para que un tercero pudiera verlo.</p>
+<p>—Aah … Aaah … aaaah!</p>
+<p>Garou no pudo evitar soltar un débil grito.</p>
+<p>Las hadas sirvientas de nivel 500 se alineaban en su vista, los monstruos de formas extrañas tenían niveles alrededor de 1000 a 9000, y los soldados de armadura dorada de nivel 5000 en la esquina.</p>
+<p>Las tres hermosas chicas paradas frente al trono tenían el nivel más alto, igual que Mei y Light. Habían alcanzado el nivel 9999.</p>
+<p>Light caminó sobre la alfombra roja extendida en medio del ejército con su estado mostrado.</p>
+<p>Mei lo siguió, y la "Bestia Divina Fenrir" se movió a una esquina donde estaban reunidos los gigantes.</p>
+<p>Garou era el único que permanecía en su lugar.</p>
+<p>Cada vez que Light caminaba sobre la alfombra y pasaba junto al ejército, los monstruos de alto nivel se arrodillaban e inclinaban la cabeza.</p>
+<p>Su comportamiento parecía tan normal, tan natural, no,… lo hacían como si servir a Light fuera el acto más noble y amoroso en este mundo.</p>
+<p>Light caminó por la alfombra roja con el gesto, como si fuera lo más natural que lo sirvieran.</p>
+<p>Las tres hermosas chicas que esperaban frente al trono también se arrodillaron afectuosamente.</p>
+<p>Mei también se unió a la fila, sirviéndole con alegría.</p>
+<p>Light caminó por las escaleras sin detenerse.</p>
+<p>Subió las escaleras y se sentó en el trono, que era tan lujoso que parecía algo que nunca había existido en este mundo.</p>
+<p>—Levanten la cabeza.</p>
+<p>Los monstruos míticos siguieron fielmente las instrucciones de Light.</p>
+<p>Todos levantaron la cabeza perfectamente en orden.</p>
+<p>Light preguntó a Garou, que todavía estaba sentado en la alfombra roja.</p>
+<p>—Este es el poder que he reunido durante tres años. Garou, déjame preguntarte de nuevo: "Si declaro la guerra contra las naciones de la superficie con esta fuerza, ¿ganaré?"</p>
+<p>—Aa, aaaah,…</p>
+<p>Garou no respondió.</p>
+<p>No, su expresión desesperada era la respuesta.</p>
+<p>(¿Qué es esto, he vagado a un mundo mítico? Hay tantos monstruos que ni siquiera puedo contarlos. Han estado construyendo su poder en el fondo de Naraku… No estoy seguro de si las armas, armaduras y objetos que los países han reunido durante miles de años funcionarán contra estos monstruos.)</p>
+<p>La persona que preparó todo esto era un niño de una familia campesina pobre.</p>
+<p>Los miembros de la Legión, incluido Garou, lo menospreciaban internamente. Al final, lo traicionaron, se burlaron de él e intentaron matarlo.</p>
+<p>No había cambiado en absoluto desde hace tres años.</p>
+<p>Ahora el Señor de la Destrucción estaba sentado en su trono, sonriendo inocentemente como un niño pequeño.</p>
+<p>Sin embargo, el niño poseía el poder de acabar con el mundo fácilmente, como romper un bloque de juguete.</p>
+<p>(…Oh, ya veo. Intentamos matar a Light, y por eso me metí en este lío.)</p>
+<p>Garou se dio cuenta.</p>
+<p>Antes de su traición, Light era solo un niño simple, o en términos malos, un niño ingenuo.</p>
+<p>Un niño normal con sentidos morales normales que se podían encontrar en cualquier lugar.</p>
+<p>Sin embargo, Light había cambiado porque Garou y los demás lo traicionaron e intentaron deshacerse de él bajo las órdenes de varios países. O quizás sería mejor decir que había aprendido. Sabía que estaba destinado a ser usado y desechado.</p>
+<p>Luego, bajo las órdenes de varias naciones, la Legión "Reunión de Razas" trabajó junta para matar a Light, y fue entonces cuando aprendió. El simple hecho: si no los mataba, lo matarían a él.</p>
+<p>Si Light no hubiera notado ese hecho, nunca habría preparado el ejército abrumador que se extendía frente a él ahora.</p>
+<p>Pero como ellos habían mostrado sus colmillos primero, él usaría este inmenso poder sin dudar.</p>
+<p>Fue el país el que intentó matarlo. Si va a mostrar sus colmillos, debería estar preparado para atacar. Por lo tanto, no le importa si se van a acumular miles, diez mil, cien mil o cien millones de cadáveres.</p>
+<p>Habían creado con sus propias manos la peor existencia, una que podía destruir el mundo que gobernaban.</p>
+<p>Garou estaba desesperado. Su orgulloso cabello se estaba volviendo blanco y cayéndose. Sin intentar ocultarlo, continuó derramando lágrimas.</p>
+<p>Light finalmente sonrió con satisfacción al ver su condición.</p>
+<p>—El silencio es oro, la elocuencia es plata. Sabía que tenía razón al elegir a Garou primero. No es bueno para pensar desde sus días en la Legión, pero sus instintos son tan agudos como los de un animal. Por su reacción, parece que tenemos suficiente poder para luchar y destruir las naciones.</p>
+<p>Light se rió y luego dirigió una mirada fría a Garou.</p>
+<p>—Te daré una recompensa. Te dejaré vivir hasta que sepa la verdad y decida si poner fin a todos excepto a la raza humana. No puedes morir. Asegúrate de que no puedas morir aunque lo desees.</p>
+<p>—¡Aaaaah, aaaaaaaah, aaaaah, aaaaaaaaaaaah!</p>
+<p>Garou gritó en voz alta por primera vez desde que llegó aquí.</p>
+<p>No se molestó en contener su grito de desesperación porque imaginaba la tortura que tendría que soportar hasta que Light tomara su decisión.</p>
+<p>Habían creado al señor demonio más fuerte y peor con sus propias manos, y se volvió loco cuando se dio cuenta de que las razas que no fueran la humana podrían extinguirse según el humor de Light.</p>
+<p>Los monstruos se acercaron desde ambos lados de Garou mientras continuaba gritando y volviéndose loco.</p>
+<p>Garou no mostró signos de querer huir, ni le importó que su cabello se volviera gris y se cayera. Le hizo una pregunta a Light.</p>
+<p>—¿Qué eres? ¿Qué? …¿Eres un monstruo de cuento de hadas que acabará con el mundo?</p>
+<p>—…………</p>
+<p>Levantó ligeramente la mano ante esta pregunta.</p>
+<p>Detuvo a los monstruos que estaban a punto de llevarlo a la cárcel.</p>
+<p>A la orden del Señor, los monstruos se detuvieron como si hubiera presionado el botón de pausa.</p>
+<p>Light respondió a la pregunta de Garou con una actitud despreocupada.</p>
+<p>—No soy un "monstruo de cuento de hadas" ni esa gran existencia. Solo quiero vengarme de todos ustedes y descubrir por qué quisieron matarme como a un insecto y conocer la verdad. Después de vengarme y conocer la verdad, volveré a mi vida original. Más bien, con el poder de este don "Gacha Infinita", voy a ayudar a la gente, ser útil al mundo.</p>
+<p>—¡Ahahahahahahahahahahaha! ¡Ihihihihihihi! ¡Kihihihihihi!</p>
+<p>Garou se rió de esta respuesta.</p>
+<p>Solo se rió como si se hubiera roto.</p>
+<p>—¿Qué quieres decir con "voy a ayudar a la gente, ser útil al mundo"? ¡No hay manera de que un ser roto como tú pueda beneficiar a la gente o al mundo! ¡Todo lo que un ser como tú puede hacer es muerte, destrucción y masacre! ¿Estás tratando de convertirte en un Dios?</p>
+<p>Los monstruos se enojaron.</p>
+<p>Garou había maldecido a su Señor.</p>
+<p>Normalmente, su corazón dejaría de latir, su vida terminaría, pero Garou se había vuelto loco e ignoró su ira.</p>
+<p>Solo siguió riendo como un loco.</p>
+<p>—…llévenselo.</p>
+<p>Light observó su reacción y le dio otra orden.</p>
+<p>Garou fue sujetado por ambos lados por los monstruos y arrastrado a la prisión.</p>
+<p>Todo el tiempo, siguió riéndose para sí mismo.</p>
+<p>La puerta principal se abrió y se cerró.</p>
+<p>Después de que la risa de Garou se desvaneciera, Light reflexionó un rato.</p>
+<p>—…Dios, ¿eh? Ya veo. Esa es una forma de pensarlo.</p>
+<p>Light murmuró para sí mismo y se rió inocentemente.</p>
+<p>—Entonces seré un dios. Sí, si eso es lo que quieres, entonces hagámoslo. Si puedo conocer la verdad sobre el mundo, la razón por la que casi me matan como a un insecto hace tres años, me convertiré en un dios. Ah, ¿por qué no?</p>
+<p>Se giró hacia sus seguidores frente a él.</p>
+<p>—La reacción de Garou me convenció de que nuestra fuerza es de clase mundial. Pero de nuevo, como él señaló, el mundo no es tan fácil. Deberíamos tener cuidado.</p>
+<p>Incluso mientras hacía esto, el don "Gacha Infinita" seguía activado y continuaba escupiendo cartas.</p>
+<p>Con un pequeño truco, podía seguir tirando del gacha sin parar durante 24 horas.</p>
+<p>—Nuestro poder aumenta con el tiempo, pero necesitamos saber más sobre cada país y sus fortalezas para aumentar nuestras posibilidades de éxito. Especialmente sobre el "Maestro".</p>
+<p>—Los detalles sobre el "Maestro" no están disponibles, pero todos en la sala esperaban que fuera una entidad poderosa.</p>
+<p>—Si hay alguien como yo que posee un don inusual, existe una alta posibilidad de que esa persona sea blanco. Por eso voy a concentrarme en recopilar información sobre cada país primero, para encontrar la verdad. ¿Alguna objeción?</p>
+<p>A Light le tomó unos tres años conquistar Naraku. Llegó a la superficie, aumentó su nivel y estudió para mejorar su capacidad académica y expandir su potencial de guerra.</p>
+<p>Cuando estuvo seguro de que no había objeciones, asintió y dijo.</p>
+<p>—Lo peor que podría pasar es una guerra inmediata. En ese caso, nos organizaremos como decidimos de antemano. Dejaré que Nazuna tome la delantera.</p>
+<p>—¡Déjamelo a mí! ¡Mataré, mataré y mataré todos los obstáculos que se interpongan en el camino de mi Señor! ¡Construiré montones de cuerpos y ríos de sangre a través del mundo entero!</p>
+<p>Nazuna se emocionó mucho. Levantó la mano y declaró.</p>
+<p>—Dejaré el puesto de ayudante, el mando operativo y la planificación a Elly.</p>
+<p>—Como Light-sama desee, juro dar todo lo que tengo.</p>
+<p>Elly se sostuvo el sombrero, levantó su falda gótica y se inclinó con gracia.</p>
+<p>—Aoyuki, toma el mando del escuadrón de monstruos. ¿Puedes hacerlo?</p>
+<p>—Sí. Todo lo que hago es por el Señor, y te serviré hasta la última gota de mi sangre.</p>
+<p>Se cubrió los ojos con su sudadera de orejas de gato y respondió en una voz fría que normalmente no usaba.</p>
+<p>Mostraba que realmente estaba motivada.</p>
+<p>Finalmente, Light llamó a Mei.</p>
+<p>—Mei, gestiona la información entrante, la logística, el apoyo, señala los problemas que no conozco, ofrece soluciones… ¿puedes hacerlo?</p>
+<p>—Juro por mi camino de sirvienta que haré lo mejor y seré la más perfecta.</p>
+<p>Light asintió con satisfacción ante la entusiasta respuesta de Mei.</p>
+<p>—El mundo… Si la verdad oculta es cierta, seré el que esparza la felicidad, como el Dios Bueno. El mundo… si la verdad está distorsionada, es trágica y malvada, no dudaré en convertirme en el que esparza la muerte, la destrucción, la masacre y la desesperanza. Me llamaré a mí mismo el Dios Malvado. En ese momento, destruiré todos los países.</p>
+<p>Light se rió inocentemente.</p>
+<p>Mientras se reía como un niño, cantaba sobre la destrucción del mundo.</p>
+<p>Mientras tenía el poder de destruir realmente el mundo.</p>
+<p>—Ahora, de Naraku a la superficie. De la oscuridad a la luz. Comencemos nuestra marcha para encontrar la verdad.</p>
+<p>Con una sola palabra de Light, comenzaron a moverse.</p>
+<p>Un ejército con suficiente poder para destruir el mundo comenzó a marchar hacia la superficie desde el calabozo más grande, más fuerte y más peligroso del mundo, el "Abismo".</p>
     </div>
 
     <hr>
 
-    <!-- SECCIÓN DE CALIFICACIÓN -->
-    <div class="rating-section">
-        <h3>⭐ Califica este capítulo</h3>
-        <div class="stars" id="starRating">
-            <span class="star" data-value="1">★</span>
-            <span class="star" data-value="2">★</span>
-            <span class="star" data-value="3">★</span>
-            <span class="star" data-value="4">★</span>
-            <span class="star" data-value="5">★</span>
-        </div>
-        <div id="ratingMessage" style="font-size:0.85rem; margin-top:0.5rem;"></div>
-    </div>
-
-    <!-- SECCIÓN DE COMENTARIOS -->
-    <div class="comments-section">
-        <h3>💬 Comentarios</h3>
-        <div class="comment-form">
-            <input type="text" id="commentName" placeholder="Tu nombre" readonly>
-            <textarea id="commentText" placeholder="Escribe tu comentario... (Inicia sesión para comentar)"></textarea>
-            <button id="submitComment">Enviar</button>
-        </div>
-        <div id="commentsList"></div>
-    </div>
-
     <div class="nav-container">
         <div class="nav-bottom">
             <a href="index.html" class="nav-btn">📚 Índice</a>
-            <a href="capitulo0e1.html" id="prevLinkBottom" class="nav-btn">← Gacha Infinita - Parte 2</a>
+            <a href="capitulo0e1.html" id="prevLinkBottom" class="nav-btn ">← Tres años después</a>
             <span class="chapter-counter" id="chapterCounterBottom">Capítulo 0 - Episodio 2</span>
-            <a href="capitulo1e1.html" id="nextLinkBottom" class="nav-btn">El viaje comienza →</a>
+            <a href="capitulo1e1.html" id="nextLinkBottom" class="nav-btn ">El viaje comienza →</a>
         </div>
     </div>
 
@@ -1542,253 +859,6 @@
         const CHAPTER_NUM = 0;
         const EPISODE_NUM = 2;
         
-        let pointsAdded = false;
-        let currentUserProfile = null;
-        
-        // ========== REGISTRAR LECTURA ==========
-        async function registerRead() {
-            if (pointsAdded) return;
-            const user = auth.currentUser;
-            if (!user) return;
-            
-            const result = await registerChapterRead(CHAPTER_NUM, EPISODE_NUM);
-            if (result.success && !result.alreadyRead) {
-                pointsAdded = true;
-                showToast(`📚 +${result.pointsGained} puntos por leer este capítulo`);
-                if (result.newLevel && result.newLevel.name !== currentUserProfile?.level) {
-                    showToast(`🎉 ¡Subiste a nivel ${result.newLevel.name}! ${result.newLevel.badge}`);
-                }
-            }
-        }
-        
-        function showToast(message) {
-            const toast = document.createElement('div');
-            toast.className = 'toast-message';
-            toast.textContent = message;
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 3000);
-        }
-        
-        // ========== SISTEMA DE CALIFICACIÓN ==========
-        let rated = false;
-        
-        async function initRating() {
-            const stars = document.querySelectorAll('.star');
-            const messageDiv = document.getElementById('ratingMessage');
-            
-            const user = auth.currentUser;
-            if (user) {
-                const userDoc = await db.collection('users').doc(user.uid).get();
-                const ratedChapters = userDoc.data()?.ratedChapters || [];
-                rated = ratedChapters.includes(`${CHAPTER_NUM}_${EPISODE_NUM}`);
-                if (rated) {
-                    const ratingData = await db.collection('ratings')
-                        .where('userId', '==', user.uid)
-                        .where('chapterNum', '==', CHAPTER_NUM)
-                        .where('episodeNum', '==', EPISODE_NUM)
-                        .get();
-                    if (!ratingData.empty) {
-                        const rating = ratingData.docs[0].data().rating;
-                        updateStars(rating);
-                        messageDiv.innerHTML = `✅ Ya calificaste este capítulo con ${rating} estrellas. ¡Gracias!`;
-                    } else {
-                        messageDiv.innerHTML = '✅ Ya calificaste este capítulo. ¡Gracias!';
-                    }
-                }
-            }
-            
-            stars.forEach(star => {
-                star.addEventListener('click', async function() {
-                    if (rated) {
-                        messageDiv.innerHTML = '⚠️ Ya calificaste este capítulo anteriormente.';
-                        return;
-                    }
-                    const value = parseInt(this.dataset.value);
-                    const result = await registerRating(CHAPTER_NUM, EPISODE_NUM, value);
-                    if (result.success) {
-                        rated = true;
-                        updateStars(value);
-                        messageDiv.innerHTML = `⭐ Calificaste este capítulo con ${value} estrellas. +${result.pointsGained} puntos. ¡Gracias!`;
-                        showToast(`⭐ +${result.pointsGained} puntos por calificar`);
-                        if (result.newLevel && result.newLevel.name !== currentUserProfile?.level) {
-                            showToast(`🎉 ¡Subiste a nivel ${result.newLevel.name}! ${result.newLevel.badge}`);
-                        }
-                    } else {
-                        messageDiv.innerHTML = `❌ ${result.error}`;
-                    }
-                });
-            });
-        }
-        
-        function updateStars(rating) {
-            const stars = document.querySelectorAll('.star');
-            stars.forEach((star, index) => {
-                if (index < rating) star.classList.add('active');
-                else star.classList.remove('active');
-            });
-        }
-        
-        // ========== SISTEMA DE COMENTARIOS ==========
-        async function loadComments() {
-            const result = await getComments(CHAPTER_NUM, EPISODE_NUM);
-            if (!result.success) {
-                document.getElementById('commentsList').innerHTML = '<p>Error al cargar comentarios</p>';
-                return;
-            }
-            
-            const comments = result.comments;
-            const container = document.getElementById('commentsList');
-            if (comments.length === 0) {
-                container.innerHTML = '<p>No hay comentarios aún. ¡Sé el primero en comentar!</p>';
-                return;
-            }
-            
-            const user = auth.currentUser;
-            let html = '';
-            for (const comment of comments) {
-                const isOwner = user && user.uid === comment.userId;
-                html += `<div class="comment-item" data-comment-id="${comment.id}" data-author-id="${comment.userId}">
-                            <span class="comment-name">${escapeHtml(comment.username)}</span>
-                            <span class="comment-date">${new Date(comment.timestamp?.toDate()).toLocaleString()}</span>
-                            <span class="comment-like" onclick="handleLike('${comment.id}', '${comment.userId}')">❤️ ${comment.likes || 0}</span>
-                            <span class="comment-report" onclick="handleReport('${comment.id}', '${escapeHtml(comment.text)}')">🚩 Reportar</span>
-                            ${isOwner ? `<span class="comment-delete" onclick="handleDeleteComment('${comment.id}')">🗑️ Eliminar</span>` : ''}
-                            <div class="comment-text">${escapeHtml(comment.text)}</div>
-                         </div>`;
-            }
-            container.innerHTML = html;
-        }
-        
-        async function handleLike(commentId, authorId) {
-            const user = auth.currentUser;
-            if (!user) {
-                alert('Inicia sesión para dar like');
-                return;
-            }
-            const result = await likeComment(commentId, authorId);
-            if (result.success) {
-                loadComments();
-                showToast('👍 Like registrado');
-            } else {
-                alert(result.error);
-            }
-        }
-        
-        async function handleReport(commentId, commentText) {
-            const user = auth.currentUser;
-            if (!user) {
-                alert('Debes iniciar sesión para reportar un comentario');
-                return;
-            }
-            
-            const reason = prompt(
-                'Motivo del reporte:\n\n' +
-                '1. Insulto o acoso\n' +
-                '2. Spoiler sin aviso\n' +
-                '3. Spam o publicidad\n' +
-                '4. Contenido inapropiado\n' +
-                '5. Otro\n\n' +
-                'Escribe el motivo:'
-            );
-            
-            if (reason === null) return;
-            
-            const result = await reportComment(commentId, reason, user.uid);
-            if (result.success) {
-                alert('✅ Comentario reportado. Gracias por ayudar a mantener la comunidad.');
-            } else {
-                alert('❌ Error: ' + result.error);
-            }
-        }
-        
-        async function handleDeleteComment(commentId) {
-            if (!confirm('¿Eliminar tu comentario? Esta acción no se puede deshacer.')) return;
-            
-            const result = await deleteComment(commentId);
-            if (result.success) {
-                alert('✅ Comentario eliminado');
-                loadComments();
-            } else {
-                alert('❌ Error: ' + result.error);
-            }
-        }
-        
-        function escapeHtml(str) {
-            return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]);
-        }
-        
-        async function submitComment() {
-            const user = auth.currentUser;
-            if (!user) {
-                alert('Debes iniciar sesión para comentar');
-                return;
-            }
-            
-            const text = document.getElementById('commentText').value;
-            if (!text.trim()) {
-                alert('Escribe un comentario');
-                return;
-            }
-            
-            const userProfile = await getUserProfile();
-            if (!userProfile.success) {
-                alert('Error al obtener perfil');
-                return;
-            }
-            
-            const result = await registerComment(CHAPTER_NUM, EPISODE_NUM, text, userProfile.profile.username);
-            if (result.success) {
-                document.getElementById('commentText').value = '';
-                loadComments();
-                showToast(`💬 +${result.pointsGained} puntos por comentar`);
-                if (result.newLevel && result.newLevel.name !== currentUserProfile?.level) {
-                    showToast(`🎉 ¡Subiste a nivel ${result.newLevel.name}! ${result.newLevel.badge}`);
-                }
-            } else {
-                alert(result.error);
-            }
-        }
-        
-        // ========== ACTUALIZAR INFO DE USUARIO ==========
-        async function updateUserInfo() {
-            const user = auth.currentUser;
-            const userInfoDiv = document.getElementById('userInfo');
-            const logoutBtn = document.getElementById('logoutBtnHeader');
-            const nameInput = document.getElementById('commentName');
-            const modLink = document.getElementById('modLink');
-            
-            if (user) {
-                const result = await getUserProfile();
-                if (result.success) {
-                    currentUserProfile = result.profile;
-                    userInfoDiv.style.display = 'inline-block';
-                    logoutBtn.style.display = 'inline-block';
-                    userInfoDiv.textContent = `${currentUserProfile.username} | ${currentUserProfile.totalPoints} pts | ${currentUserProfile.levelBadge}`;
-                    nameInput.value = currentUserProfile.username;
-                    nameInput.readonly = true;
-                    document.getElementById('commentText').placeholder = "Escribe tu comentario...";
-                    
-                    if (isAdmin(user)) {
-                        modLink.style.display = 'inline-block';
-                    } else {
-                        modLink.style.display = 'none';
-                    }
-                }
-            } else {
-                userInfoDiv.style.display = 'none';
-                logoutBtn.style.display = 'none';
-                nameInput.value = "Inicia sesión para comentar";
-                nameInput.readonly = true;
-                document.getElementById('commentText').placeholder = "Inicia sesión para comentar";
-                modLink.style.display = 'none';
-            }
-        }
-        
-        async function handleLogout() {
-            await logoutUser();
-            location.reload();
-        }
-        
         // ========== NAVEGACIÓN ==========
         function setupNavigation() {
             if (typeof GACHA_DATA !== 'undefined') {
@@ -1804,10 +874,43 @@
                 counters.forEach(c => { if(c) c.textContent = `${currentEpisode.chapterTitle} - Episodio ${currentEpisode.episodeNum}`; });
                 
                 if (prevEpisode) {
-                    prevLinks.forEach(l => { if(l) { l.href = `capitulo${prevEpisode.chapter}e${prevEpisode.episodeNum}.html`; l.classList.remove('disabled'); l.textContent = `← ${prevEpisode.title}`; } });
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${prevEpisode.chapter}e${prevEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = prevEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `← ${shortTitle}`;
+                        }
+                    });
+                } else {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = '← Sin anterior';
+                        }
+                    });
                 }
+                
                 if (nextEpisode) {
-                    nextLinks.forEach(l => { if(l) { l.href = `capitulo${nextEpisode.chapter}e${nextEpisode.episodeNum}.html`; l.classList.remove('disabled'); l.textContent = `${nextEpisode.title} →`; } });
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${nextEpisode.chapter}e${nextEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = nextEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `${shortTitle} →`;
+                        }
+                    });
+                } else {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = 'Sin siguiente →';
+                        }
+                    });
                 }
                 
                 const selects = [document.getElementById('chapterSelect'), document.getElementById('chapterSelectBottom')];
@@ -1822,6 +925,24 @@
                     select.onchange = function() { if(this.value) window.location.href = this.value; };
                 });
             }
+        }
+        
+        // ========== REGISTRAR LECTURA EN HISTORIAL ==========
+        function markAsRead() {
+            const user = localStorage.getItem('gacha_user');
+            if (!user) return;
+            
+            let history = localStorage.getItem(`gacha_history_${user}`);
+            let historyObj = history ? JSON.parse(history) : { chapters: [] };
+            
+            const readKey = { chapter: CHAPTER_NUM, episode: EPISODE_NUM };
+            historyObj.chapters = historyObj.chapters.filter(item => 
+                !(item.chapter == CHAPTER_NUM && item.episode == EPISODE_NUM)
+            );
+            historyObj.chapters.unshift(readKey);
+            if (historyObj.chapters.length > 20) historyObj.chapters.pop();
+            
+            localStorage.setItem(`gacha_history_${user}`, JSON.stringify(historyObj));
         }
         
         // ========== CONTROLES ==========
@@ -1861,29 +982,20 @@
             
             document.getElementById('scrollToTop').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
             document.getElementById('scrollToBottom').onclick = () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-            document.getElementById('logoutBtnHeader').onclick = handleLogout;
         }
         
         // ========== INICIALIZACIÓN ==========
-        document.addEventListener('DOMContentLoaded', async () => {
+        document.addEventListener('DOMContentLoaded', () => {
             initControls();
             setupNavigation();
-            await updateUserInfo();
-            await loadComments();
-            await initRating();
+            markAsRead();
             
-            onAuthStateChanged(async (state) => {
-                await updateUserInfo();
-                if (state.loggedIn) {
-                    await registerRead();
-                    await loadComments();
-                }
+            kofiWidgetOverlay.draw('ocholobos', {
+                'type': 'floating-chat',
+                'floating-chat.donateButton.text': 'Apóyame',
+                'floating-chat.donateButton.background-color': '#1a4d5f',
+                'floating-chat.donateButton.text-color': '#ffffff'
             });
-            
-            document.getElementById('submitComment').onclick = submitComment;
-            window.handleLike = handleLike;
-            window.handleReport = handleReport;
-            window.handleDeleteComment = handleDeleteComment;
         });
     </script>
 </body>
