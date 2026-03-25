@@ -1,31 +1,10 @@
 // ============================================================
 // DATOS CENTRALIZADOS DE EPISODIOS TRADUCIDOS
-// Última actualización: 24/03/2026 22:19
+// Última actualización: 25/03/2026 09:22
 // ============================================================
 
 const GACHA_DATA = {
     chapters: [
-    {
-        'num': 0,
-        'title': 'Prólogo: Gacha Infinita',
-        'episodes': [
-            {
-                'num': 0,
-                'title': 'Gacha Infinita - Parte 1',
-                'date': '2020/04/17 12:00'
-            },
-            {
-                'num': 1,
-                'title': 'Tres años después',
-                'date': '2020/04/17 12:00'
-            },
-            {
-                'num': 2,
-                'title': 'La venganza contra Garou',
-                'date': '2020/04/17 12:00'
-            }
-        ]
-    },
     {
         'num': 1,
         'title': 'Comienzo de la venganza',
@@ -89,6 +68,162 @@ const GACHA_DATA = {
                 'num': 12,
                 'title': 'Grandius',
                 'date': '2020/04/22 17:00'
+            },
+            {
+                'num': 13,
+                'title': 'Pulsera de la oración',
+                'date': '2020/04/23 12:00'
+            },
+            {
+                'num': 14,
+                'title': 'Charlas de las sirvientas',
+                'date': '2020/04/23 17:00'
+            },
+            {
+                'num': 15,
+                'title': 'El nuevo grupo \'Bufón Negro\'',
+                'date': '2020/04/24 12:00'
+            },
+            {
+                'num': 16,
+                'title': 'Crisis y huida',
+                'date': '2020/04/24 17:00'
+            },
+            {
+                'num': 17,
+                'title': 'El cambio de actitud',
+                'date': '2020/04/25 12:00'
+            },
+            {
+                'num': 18,
+                'title': 'El asesino de aventureros',
+                'date': '2020/04/25 17:00'
+            },
+            {
+                'num': 19,
+                'title': 'La Bruja Prohibida Ellie',
+                'date': '2020/04/26 12:00'
+            },
+            {
+                'num': 20,
+                'title': 'Retirada y encuentro',
+                'date': '2020/04/26 17:00'
+            },
+            {
+                'num': 21,
+                'title': 'El orgullo del hermano',
+                'date': '2020/04/27 12:00'
+            },
+            {
+                'num': 22,
+                'title': 'Un pequeño milagro',
+                'date': '2020/04/27 17:00'
+            },
+            {
+                'num': 23,
+                'title': 'Cacería del \'Asesino de aventureros\' 1',
+                'date': '2020/04/28 12:00'
+            },
+            {
+                'num': 24,
+                'title': 'Cacería del \'Asesino de aventureros\' 2',
+                'date': '2020/04/28 17:00'
+            },
+            {
+                'num': 25,
+                'title': 'Cacería del \'Asesino de aventureros\' 3',
+                'date': '2020/04/29 12:00'
+            },
+            {
+                'num': 26,
+                'title': 'Cacería del \'Asesino de aventureros\' 4',
+                'date': '2020/04/29 17:00'
+            },
+            {
+                'num': 27,
+                'title': 'Cacería del \'Asesino de aventureros\' 5',
+                'date': '2020/04/30 12:00'
+            },
+            {
+                'num': 28,
+                'title': 'El fin del \'Asesino de aventureros\'',
+                'date': '2020/04/30 17:00'
+            },
+            {
+                'num': 29,
+                'title': 'Hacia la próxima venganza',
+                'date': '2020/05/01 12:00'
+            },
+            {
+                'num': 30,
+                'title': 'Día de Nazuna - Primera parte',
+                'date': '2020/05/01 17:00'
+            },
+            {
+                'num': 31,
+                'title': 'Día de Nazuna - Segunda parte',
+                'date': '2020/05/02 12:00'
+            },
+            {
+                'num': 32,
+                'title': 'Las demandas de las sirvientas',
+                'date': '2020/05/02 17:00'
+            }
+        ]
+    },
+    {
+        'num': 2,
+        'title': 'Venganza contra la elfa Sasha',
+        'episodes': [
+            {
+                'num': 1,
+                'title': 'Sasha y su prometido',
+                'date': '2020/05/03 12:00'
+            },
+            {
+                'num': 2,
+                'title': 'El pasado alcanzado',
+                'date': '2020/05/03 17:00'
+            },
+            {
+                'num': 3,
+                'title': 'Los orígenes de Sasha',
+                'date': '2020/05/04 12:00'
+            },
+            {
+                'num': 4,
+                'title': 'Light y Ellie',
+                'date': '2020/05/04 17:00'
+            },
+            {
+                'num': 5,
+                'title': 'La Orden de los Caballeros Blancos 1',
+                'date': '2020/05/05 12:00'
+            },
+            {
+                'num': 6,
+                'title': 'La Orden de los Caballeros Blancos 2',
+                'date': '2020/05/05 17:00'
+            },
+            {
+                'num': 7,
+                'title': 'La misteriosa torre gigante',
+                'date': '2020/05/06 12:00'
+            },
+            {
+                'num': 8,
+                'title': 'Los aventureros mohicanos',
+                'date': '2020/05/06 17:00'
+            },
+            {
+                'num': 9,
+                'title': 'Nya~',
+                'date': '2020/05/07 12:00'
+            },
+            {
+                'num': 10,
+                'title': 'Siguiente acción',
+                'date': '2020/05/07 17:00'
             }
         ]
     }
