@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ducado de Six | Gacha Infinita</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem;
+            line-height: 1.8;
+            background: #faf9f7;
+            color: #2c2b28;
+            transition: all 0.3s ease;
+        }
+        [data-theme="dark"] body {
+            background: #1a1a1a;
+            color: #e5e5e5;
+        }
+        
+        .options-bar {
+            position: sticky;
+            top: 0;
+            background: #faf9f7;
+            border-bottom: 1px solid #e5e0d8;
+            padding: 0.6rem 1rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.8rem;
+            z-index: 100;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        [data-theme="dark"] .options-bar {
+            background: #1a1a1a;
+            border-bottom-color: #404040;
+        }
+        .options-bar button, .options-bar a {
+            background: #eef2f0;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: #1a4d5f;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .options-bar button, [data-theme="dark"] .options-bar a {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .font-size-control {
+            display: flex;
+            gap: 0.3rem;
+            align-items: center;
+        }
+        .font-size-control button {
+            width: 32px;
+            padding: 0.2rem;
+        }
+        
+        .nav-container {
+            margin: 1rem 0;
+        }
+        .nav-center, .nav-bottom {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+        .nav-bottom {
+            margin-top: 1rem;
+        }
+        .nav-btn {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            color: #1a4d5f;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .nav-btn {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .nav-btn:hover {
+            background: #e5e0d8;
+        }
+        .nav-btn.disabled {
+            background: #e5e0d8;
+            color: #9ca3af;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .chapter-counter {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] .chapter-counter {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        .chapter-selector {
+            margin: 0.5rem 0;
+            text-align: center;
+        }
+        .chapter-selector select {
+            background: #eef2f0;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-family: inherit;
+            color: #1a4d5f;
+            cursor: pointer;
+            width: 300px;
+            max-width: 90%;
+        }
+        [data-theme="dark"] .chapter-selector select {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin: 1rem 0 0.25rem;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] h1 {
+            color: #5a9e8c;
+        }
+        .episode-number {
+            color: #6b6a68;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #e5e0d8;
+            padding-bottom: 0.5rem;
+        }
+        [data-theme="dark"] .episode-number {
+            color: #a0a0a0;
+            border-bottom-color: #404040;
+        }
+        .story-content {
+            margin: 1.5rem 0;
+        }
+        .story-content p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+        hr {
+            margin: 2rem 0;
+            border: none;
+            border-top: 1px solid #e5e0d8;
+        }
+        [data-theme="dark"] hr {
+            border-top-color: #404040;
+        }
+        
+        .floating-buttons {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+        .floating-btn {
+            background: #1a4d5f;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.8;
+        }
+        [data-theme="dark"] .floating-btn {
+            background: #5a9e8c;
+        }
+        .floating-btn:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        
+        .toast-message {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: #1a4d5f;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            z-index: 1000;
+            animation: fadeOut 3s ease forwards;
+        }
+        [data-theme="dark"] .toast-message {
+            background: #5a9e8c;
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            70% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+        
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            border-top: 1px solid #e5e0d8;
+            padding-top: 1.5rem;
+        }
+        [data-theme="dark"] footer {
+            border-top-color: #404040;
+        }
+        
+        @media (max-width: 600px) {
+            body { padding: 0.5rem; }
+            .nav-center, .nav-bottom { flex-direction: column; gap: 0.5rem; }
+            .floating-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                bottom: 70px;
+                right: 15px;
+            }
+        }
+    </style>
+    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+</head>
+<body>
+    <div class="options-bar">
+        <div class="font-size-control">
+            <button id="fontMinus">A-</button>
+            <button id="fontPlus">A+</button>
+        </div>
+        <a href="index.html">📚 Índice</a>
+        <button id="themeToggle">🌙 Modo oscuro</button>
+    </div>
+
+    <div class="nav-container">
+        <div class="nav-center">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo1e8.html" id="prevLinkTop" class="nav-btn ">← Combate en el calabozo</a>
+            <span class="chapter-counter" id="chapterCounterTop">Capítulo 1 - Episodio 9</span>
+            <a href="capitulo1e10.html" id="nextLinkTop" class="nav-btn ">Intercambio de piedras mágicas →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelect">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <h1>Ducado de Six</h1>
+    <div class="episode-number">Capítulo 1 - Episodio 9</div>
+
+    <div class="story-content">
+        <p>Fuimos atacados por un Lobo Grande de los Arbustos y varios Lobos de los Arbustos, pero logramos repelerlos sin problemas.</p>
+<p>Con la ayuda de Elio y los demás, los aventureros humanos, pudimos recuperar las piedras mágicas de los monstruos derrotados.</p>
+<p>Entonces, él nos hizo una propuesta.</p>
+<p>—Pronto se pondrá el sol, así que nosotros acamparemos aquí. Moverse después del anochecer es peligroso. Como agradecimiento por habernos salvado de la Serpiente de los Arbustos, el Lobo Grande de los Arbustos y los Lobos de los Arbustos, por favor, quédense a cenar con nosotros y a usar nuestras humildes tiendas.</p>
+<p>—Lo de la Serpiente de los Arbustos fue un detalle, pero lo de los otros dos monstruos fue algo que hicimos por nuestra cuenta.</p>
+<p>—Aún así, también está lo de esta mañana, y además…</p>
+<p>El hermano observó de reojo a su hermana, que tenía los ojos brillando con emoción.</p>
+<p>—Mi hermana insiste en que quiere hablar sobre magia con usted… Así que por favor, acepte.</p>
+<p>—Jajaja… Bueno, si insisten tanto, acepto.</p>
+<p>Los hermanos son débiles con los deseos de sus hermanas menores.</p>
+<p>Lo sé bien porque yo también tengo una hermana pequeña.</p>
+<p>Así que acepté sin problemas.</p>
+<p>***</p>
+<p>Montamos las tiendas que ellos traían, ayudamos a hacer un fogón improvisado con piedras que había en el suelo, y mientras tanto intercambiamos presentaciones.</p>
+<p>El líder es Elio, el de pelo rojo, y su hermana, la maga Miya. Sus compañeros son Gimra, un bromista que es amigo de la infancia de ambos, y Wady, el más alto.</p>
+<p>Era un grupo un poco especial: una maga y tres guerreros con espada y escudo.</p>
+<p>Cuando pregunté por qué todos los chicos eran guerreros con espada y escudo, la respuesta fue:</p>
+<p>—¡Porque los caballeros son geniales!</p>
+<p>Gold solo pudo responder con una risa incómoda: "A-ah, ya veo".</p>
+<p>Me parece que deberían pensar un poco más en los roles y la formación del grupo… pero por norma general no está bien meterse en la composición del grupo de otros, así que dejé pasar el tema.</p>
+<p>Miya sacó agua con magia, y en una olla puso carne seca, verduras deshidratadas y sal para hacer un guiso.</p>
+<p>Mientras se preparaba la comida sencilla de campamento, hablé con Miya sobre magia, como ella quería.</p>
+<p>Eso sí, no podía contarles mi verdadera identidad —que domino el "Abismo"— así que les conté la historia que habíamos inventado para mi identidad pública.</p>
+<p>—¿Sus padres eran magos los dos? Por eso tiene un talento tan increíble.</p>
+<p>—Miya-chan, tú también usas magia muy bien para tu edad.</p>
+<p>—Comparada con Dark-san, yo no soy nada. No puedo ni lanzar magia sin conjuro, y mucho menos magia de nivel táctico.</p>
+<p>En este mundo, la magia se clasifica básicamente en tres categorías:</p>
+<p>Nivel de Combate, Nivel Táctico y Nivel Estratégico.</p>
+<p>A medida que se avanza del nivel de Combate al Estratégico, el alcance y el poder aumentan. Esta clasificación aplica tanto a magia de ataque, defensa, recuperación y apoyo.</p>
+<p>Cuando el nivel aumenta, aquellos con aptitud pueden aprender magia. Los usuarios experimentados pueden llegar a lanzar magia sin conjuro, pero alcanzar ese nivel normalmente requiere un esfuerzo extraordinario.</p>
+<p>Además, dentro de cada nivel —Combate, Táctico, Estratégico— también hay diferencias entre rango bajo, medio y alto. La magia que usé, "SR, Muro de Fuego", se clasifica como magia de nivel táctico de rango bajo.</p>
+<p>A continuación, defino cada nivel:</p>
+<p>Nivel de Combate<br>Magia utilizada por un solo mago. Incluye ataques como Flecha de Fuego, Flecha de Hielo, etc. Los atributos que uno puede aprender varían según la persona, y algunos pueden manejar muchos. Generalmente se considera que aquellos que se especializan en un solo atributo tienen más éxito a largo plazo.</p>
+<p>Nivel Táctico<br>Se refiere básicamente a magia que afecta un área amplia. La capacidad de usar este nivel es considerada el umbral que separa a los "de primera clase". La mayoría de los humanos no logran superar esta barrera. Los dragones, elfos y demonios la superan con facilidad.</p>
+<p>Nivel Estratégico<br>Magia que causa un impacto aún mayor que la táctica: hacer caer meteoritos del cielo, provocar tsunamis, abrir grietas con terremotos… Por eso se le llama "estratégica". Puede ser lanzada por varios magos combinando sus poderes mágicos, pero requiere una técnica avanzada y un costo muy alto. Incluso en los países de razas distintas a la humana o la bestia, es una magia que rara vez se utiliza.</p>
+<p>***</p>
+<p>(Por cierto, Ellie, la "Bruja Prohibida", que también es mi maestra de magia, puede usar un nivel aún más alto que el Estratégico: el Nivel Extremo. Pero es una categoría poco conocida, y ella me dijo que no debería mencionarlo en la superficie.)</p>
+<p>Con el Nivel Extremo se pueden lograr cosas como resucitar a los muertos (con muchas condiciones), invocar ángeles, mensajeros de la diosa, o conectar el espacio con otras dimensiones. Incluso Ellie, la "Bruja Prohibida" que ha dominado la magia, solo puede usarla una vez al día. Por eso se le llama "Nivel Extremo".</p>
+<p>Por cierto, usando este Nivel Extremo fue que pude elevar mi nivel hasta 9999.</p>
+<p>(Subir de nivel fue realmente difícil…), recordé con nostalgia.</p>
+<p>Mientras yo pensaba en eso, Elio consolaba a su hermana Miya acariciándole la cabeza.</p>
+<p>—Yo no entiendo mucho de magia, pero Miya tiene tanto talento que recibió una recomendación para la escuela de magia del Ducado. Seguro que algún día podrás usar ese nivel táctico, así que no te desanimes.</p>
+<p>—A-ay, hermano, no me acaricies la cabeza, se me va a despeinar el cabello.</p>
+<p>Miya se retorció con vergüenza ante la muestra de cariño de su hermano.</p>
+<p>El Ducado es una nación fundada con la inversión de las seis razas, con un dragón como representante al frente, operando bajo su responsabilidad. Su nombre oficial es "Ducado de Six". Se le llama simplemente "el Ducado". Es uno de los países más prósperos de este mundo. Los dragones llaman a su propio país el "Imperio Dragón". El Ducado es considerado por ellos como una colonia, por eso se hacen llamar "Imperio Dragón".</p>
+<p>Una vez cada varios años, los representantes de las seis razas —humanos, hombres bestia, dragones, elfos, enanos y demonios— se reúnen en el Ducado para celebrar conferencias y tomar acuerdos.</p>
+<p>La escuela de magia del Ducado es una de las mejores. Que recibiera una recomendación para esa escuela demuestra que Miya es una maga con verdadero talento.</p>
+<p>—Pero nuestros padres murieron por una enfermedad contagiosa, y como no pudimos pagar las tasas, al final no pude asistir, y también tuve que dejar la escuela de magia a la que iba antes. Así que mi hermana, mis amigos de la infancia y yo nos reunimos para empezar como aventureros. Mi objetivo es ganar dinero como aventurero para que Miya pueda estudiar en la escuela de magia del Ducado.</p>
+<p>Miya tiene trece años. Elio y los demás tienen quince. Se cree que es mejor empezar a estudiar magia desde una edad temprana para que se afiance bien. Perder unos años es un retraso importante, pero no es una diferencia insalvable.</p>
+<p>—Oye, oye, líder. Nuestro sueño es "de todos", ¿no?</p>
+<p>—…………</p>
+<p>Gimra hizo el comentario con una sonrisa, y Wady asintió en silencio. Ante las palabras de los tres, Miya dijo:</p>
+<p>—Para mí, con estar todos juntos así ya es suficiente. Así que, hermano, no se esfuercen demasiado.</p>
+<p>—Lo sé. No haré nada imprudente.</p>
+<p>El hermano volvió a acariciarle la cabeza. Esta vez, Miya no se resistió y aceptó su mano.</p>
+<p>Para cambiar el ambiente que se había vuelto un poco nostálgico, Elio lanzó una pregunta.</p>
+<p>—Por cierto, Dark-san, ¿por qué se hicieron aventureros?</p>
+<p>—Bueno… Mis padres cuidaron mucho de Gold, de Nemumu y de mí. Pero fallecieron en un incendio, y Dark sufrió graves quemaduras en el rostro… Para encontrar un remedio o poción que cure esas heridas, y para que Dark amplíe sus horizontes, nosotros nos hicimos aventureros.</p>
+<p>Gold relató con fluidez la historia que habíamos preparado de antemano.</p>
+<p>La carta "SSR, Máscara del Bufón" tiene efectos de ilusión y distorsión del reconocimiento. Con el poder de esa ilusión, puedo hacer parecer que tengo graves quemaduras en el rostro. También usamos eso como excusa para ocultar mi verdadero aspecto bajo la máscara.</p>
+<p>Después de la pregunta de Elio, el bromista Gimra levantó la mano para opinar.</p>
+<p>—¡Yo, yo! ¿Puedo hacer una pregunta? ¿Gold-san y Nemumu-san son novios, por casualidad?</p>
+<p>Ante esta pregunta, Miya, con su entusiasmo juvenil por los temas de amor, se le iluminaron los ojos, y Wady también prestó atención en silencio. Por cierto, les habíamos explicado que yo tengo doce años, Nemumu dieciocho, y Gold alrededor de veintitantos.</p>
+<p>Nemumu hizo una expresión tan amarga que parecía que hubiera masticado diez mil insectos; una expresión de genuino disgusto.</p>
+<p>—Un hombre tan vulgar, vestido con esa armadura dorada de mal gusto y de mente tan pobre, no es de mi gusto. Jamás.</p>
+<p>—¡Jajajaja! Pues yo tampoco tengo interés en las de pecho plano. Yo prefiero a las mayores, del tipo maduro que va bien con el dorado.</p>
+<p>—¿Quién tiene el pecho plano, dices? ¡Siempre digo que soy normal!</p>
+<p>Nemumu, con el rostro completamente enrojecido, empezó a golpear el hombro de Gold, que estaba sentado a su lado.</p>
+<p>Dejando de lado su reacción, la respuesta de Gold me hizo soltar un comentario involuntario.</p>
+<p>—Oh, no sabía que tenías preferencias así, Gold.</p>
+<p>—No es que lo ocultara, pero no es algo que uno ande contando a cualquiera.</p>
+<p>—Entonces, Nemumu-san, ¿qué tal si me elige a mí?</p>
+<p>—Rechazo la oferta. Yo tengo la noble misión de proteger a Dark-sama.</p>
+<p>Ante esta respuesta, Miya, con los ojos aún más brillantes, nos miró a Nemumu y a mí, que estábamos sentados uno al lado del otro.</p>
+<p>—El amor con diferencia de edad, qué bonito.</p>
+<p>No es que tengamos ese tipo de relación…</p>
+<p>Antes de que pudiera negarlo, Gold soltó una carcajada y agitó la mano frente a su rostro.</p>
+<p>—¡Jajajaja! No, no. Una de pecho plano como Nemumu sería demasiado buena para mi señor.</p>
+<p>—¡Por eso! ¡Siempre digo que soy normal, maldito metal brillante!</p>
+<p>Completamente enfurecida por sus palabras, Nemumu se levantó, desenvainó su cuchillo y empezó a golpear la cabeza de Gold con el mango una y otra vez. Pero no surtía efecto, y Gold seguía riendo con entusiasmo.</p>
+<p>Elio, que actuaba como líder, se sintió tan abrumado por la situación que se disculpó.</p>
+<p>—Lo, lo siento mucho. Mi compañero dijo algo tan inapropiado…</p>
+<p>—No, no se preocupe. Más bien, nosotros somos los que estamos haciendo escándalo, discúlpeme.</p>
+<p>Justo cuando nos disculpábamos mutuamente, la olla de campamento parecía haber terminado de cocer.</p>
+
+    </div>
+
+    <hr>
+
+    <div class="nav-container">
+        <div class="nav-bottom">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo1e8.html" id="prevLinkBottom" class="nav-btn ">← Combate en el calabozo</a>
+            <span class="chapter-counter" id="chapterCounterBottom">Capítulo 1 - Episodio 9</span>
+            <a href="capitulo1e10.html" id="nextLinkBottom" class="nav-btn ">Intercambio de piedras mágicas →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelectBottom">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <div class="floating-buttons">
+        <button class="floating-btn" id="scrollToTop" title="Ir arriba">⬆</button>
+        <button class="floating-btn" id="scrollToBottom" title="Ir abajo">⬇</button>
+    </div>
+
+    <footer>
+        <p>Gacha Infinita © 明鏡シスイ (Meikyō Shisui) | Traducción: Ocholobos</p>
+        <p>Apoya al autor comprando los volúmenes oficiales</p>
+    </footer>
+
+    <script src="data.js"></script>
+    <script>
+        // ========== CONFIGURACIÓN DEL CAPÍTULO ==========
+        const CHAPTER_NUM = 1;
+        const EPISODE_NUM = 9;
+        
+        // ========== NAVEGACIÓN ==========
+        function setupNavigation() {
+            if (typeof GACHA_DATA !== 'undefined') {
+                const currentEpisode = GACHA_DATA.getEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const prevEpisode = GACHA_DATA.getPrevEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const nextEpisode = GACHA_DATA.getNextEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const allEpisodes = GACHA_DATA.getAllEpisodesOrdered();
+                
+                const prevLinks = [document.getElementById('prevLinkTop'), document.getElementById('prevLinkBottom')];
+                const nextLinks = [document.getElementById('nextLinkTop'), document.getElementById('nextLinkBottom')];
+                const counters = [document.getElementById('chapterCounterTop'), document.getElementById('chapterCounterBottom')];
+                
+                counters.forEach(c => { if(c) c.textContent = `${currentEpisode.chapterTitle} - Episodio ${currentEpisode.episodeNum}`; });
+                
+                if (prevEpisode) {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${prevEpisode.chapter}e${prevEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = prevEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `← ${shortTitle}`;
+                        }
+                    });
+                } else {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = '← Sin anterior';
+                        }
+                    });
+                }
+                
+                if (nextEpisode) {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${nextEpisode.chapter}e${nextEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = nextEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `${shortTitle} →`;
+                        }
+                    });
+                } else {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = 'Sin siguiente →';
+                        }
+                    });
+                }
+                
+                const selects = [document.getElementById('chapterSelect'), document.getElementById('chapterSelectBottom')];
+                selects.forEach(select => {
+                    if (!select) return;
+                    let options = '<option value="">📖 Seleccionar episodio...</option>';
+                    for (const ep of allEpisodes) {
+                        const selected = (ep.chapter == CHAPTER_NUM && ep.episodeNum == EPISODE_NUM) ? 'selected' : '';
+                        options += `<option value="capitulo${ep.chapter}e${ep.episodeNum}.html" ${selected}>${ep.chapterTitle} - Episodio ${ep.episodeNum}: ${ep.title}</option>`;
+                    }
+                    select.innerHTML = options;
+                    select.onchange = function() { if(this.value) window.location.href = this.value; };
+                });
+            }
+        }
+        
+        // ========== REGISTRAR LECTURA EN HISTORIAL ==========
+        function markAsRead() {
+            const user = localStorage.getItem('gacha_user');
+            if (!user) return;
+            
+            let history = localStorage.getItem(`gacha_history_${user}`);
+            let historyObj = history ? JSON.parse(history) : { chapters: [] };
+            
+            const readKey = { chapter: CHAPTER_NUM, episode: EPISODE_NUM };
+            historyObj.chapters = historyObj.chapters.filter(item => 
+                !(item.chapter == CHAPTER_NUM && item.episode == EPISODE_NUM)
+            );
+            historyObj.chapters.unshift(readKey);
+            if (historyObj.chapters.length > 20) historyObj.chapters.pop();
+            
+            localStorage.setItem(`gacha_history_${user}`, JSON.stringify(historyObj));
+        }
+        
+        // ========== CONTROLES ==========
+        function initControls() {
+            const savedTheme = localStorage.getItem('gacha_theme');
+            if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+            const savedFont = localStorage.getItem('gacha_fontsize');
+            if (savedFont) document.body.style.fontSize = savedFont + '%';
+            
+            document.getElementById('fontPlus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.min(150, size + 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            document.getElementById('fontMinus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.max(70, size - 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            
+            const themeBtn = document.getElementById('themeToggle');
+            if (document.documentElement.hasAttribute('data-theme')) themeBtn.textContent = '☀️ Modo claro';
+            themeBtn.onclick = () => {
+                const isDark = document.documentElement.hasAttribute('data-theme');
+                if (isDark) {
+                    document.documentElement.removeAttribute('data-theme');
+                    localStorage.setItem('gacha_theme', 'light');
+                    themeBtn.textContent = '🌙 Modo oscuro';
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('gacha_theme', 'dark');
+                    themeBtn.textContent = '☀️ Modo claro';
+                }
+            };
+            
+            document.getElementById('scrollToTop').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('scrollToBottom').onclick = () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+        
+        // ========== INICIALIZACIÓN ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            initControls();
+            setupNavigation();
+            markAsRead();
+            
+            kofiWidgetOverlay.draw('ocholobos', {
+                'type': 'floating-chat',
+                'floating-chat.donateButton.text': 'Apóyame',
+                'floating-chat.donateButton.background-color': '#1a4d5f',
+                'floating-chat.donateButton.text-color': '#ffffff'
+            });
+        });
+    </script>
+</body>
+</html>
