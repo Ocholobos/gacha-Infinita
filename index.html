@@ -1,19 +1,685 @@
-{
-  "chapters": [
-    {
-      "chapter": 2,
-      "episode": 10,
-      "fecha": "25/03/2026 14:35"
-    },
-    {
-      "chapter": 2,
-      "episode": 9,
-      "fecha": "25/03/2026 14:30"
-    },
-    {
-      "chapter": 2,
-      "episode": 8,
-      "fecha": "25/03/2026 14:25"
-    }
-  ]
-}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎲 Gacha Infinita | Novela Web</title>
+    <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAGlSURBVHgB7VfBbcIwFH3pBIzAqGyQbpBOkG6QboA6QTMBbIBMQEegjHpADkgnyAYoG+ANyAYtYhI7sVU7tULiq1Na8vP3/Z/jBAKBQCAQCAQCgUAgEFgBKqWqKNB1nQohYhhS0zR2Y13XhyzLVmutHxJCyFmWbYwxB4/HYxvn+d55vV4Xtm2fHMcpE0JMY+zB6/U6EkK2KaUHAkDbtg/gn2EYG2At6/U6PqUUG+j7fo8NCCFXyE9RFFPTNM1xHBeX0IjsPE/TNAfLEAIAwKvVKvV9P3k8HslsNjvYdI0QQriGP6oEAPB8Pp/LslwbhmG4rmsQHBNCEs/zcsMweIgxVqOUNgkhqyiKJhRFMRljTE0IqQghNqXUIYSUIKINAFalFHcFADzP82RZdgUAgDEmk8nkF4lfoZTmiBBXpZSWEELDMDYAwHVdd1VV3adSChhjK5RSjjHm4g4Mw1gvFosPz/N4nudZFEU5z/N+EAJjLOf5fr+fUUpvE0K+AACO44xijM0WBoFAIBAIBAKBQCAQCGSC3wAByPTX2+VnKAAAAABJRU5ErkJggg==">
+    <style>
+        :root {
+            --bg-color: #faf9f7;
+            --text-color: #2c2b28;
+            --card-bg: white;
+            --border-color: #e5e0d8;
+            --accent: #1a4d5f;
+            --accent-light: #eef2f0;
+            --secondary-text: #6b6a68;
+        }
+        [data-theme="dark"] {
+            --bg-color: #1a1a1a;
+            --text-color: #e5e5e5;
+            --card-bg: #2d2d2d;
+            --border-color: #404040;
+            --accent: #5a9e8c;
+            --accent-light: #2a3a35;
+            --secondary-text: #a0a0a0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+        .container { max-width: 1000px; margin: 0 auto; padding: 1rem 1.5rem 2rem; }
+        
+        .options-bar {
+            position: sticky;
+            top: 0;
+            background: var(--bg-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0.6rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            z-index: 100;
+        }
+        .logo-area { display: flex; align-items: center; gap: 0.5rem; font-size: 1.1rem; font-weight: bold; color: var(--accent); }
+        .controls-area { display: flex; gap: 0.8rem; align-items: center; flex-wrap: wrap; }
+        .options-bar button {
+            background: var(--accent-light);
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: var(--accent);
+        }
+        .font-size-control { display: flex; gap: 0.3rem; align-items: center; }
+        .font-size-control button { width: 32px; padding: 0.2rem; }
+        
+        .series-header { text-align: center; padding: 1.5rem 0; border-bottom: 3px solid var(--border-color); margin-bottom: 1.5rem; }
+        h1 { font-size: 2rem; color: var(--accent); margin-bottom: 0.5rem; }
+        .author { font-size: 0.9rem; color: var(--secondary-text); }
+        .info-badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin: 1rem 0; }
+        .badge { background: var(--accent-light); padding: 0.3rem 0.8rem; border-radius: 30px; font-size: 0.75rem; color: var(--accent); }
+        
+        .other-titles, .synopsis, .user-panel {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 1.5rem 0;
+        }
+        .synopsis { padding: 1.5rem; }
+        .synopsis h2 { font-size: 1.2rem; color: var(--accent); margin-bottom: 1rem; border-left: 4px solid var(--accent); padding-left: 1rem; }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+        }
+        .stat-number { font-size: 1.5rem; font-weight: bold; color: var(--accent); }
+        .stat-label { font-size: 0.7rem; color: var(--secondary-text); }
+        
+        .login-form { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .login-form input {
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-color);
+            color: var(--text-color);
+            flex: 1;
+        }
+        .login-form button, .logout-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .history-list { margin-top: 1rem; padding-top: 0.5rem; border-top: 1px solid var(--border-color); }
+        .history-item { padding: 0.5rem 0; font-size: 0.85rem; border-bottom: 1px solid var(--border-color); }
+        .history-item:last-child { border-bottom: none; }
+        .history-item a { color: var(--accent); text-decoration: none; font-weight: 500; }
+        .history-date { font-size: 0.7rem; color: var(--secondary-text); margin-top: 0.2rem; }
+        
+        .chapter-group { margin: 1.5rem 0 0; }
+        .chapter-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-left: 4px solid var(--accent);
+            padding-left: 1rem;
+            margin-bottom: 0.8rem;
+            color: var(--accent);
+        }
+        .episode-list { list-style: none; padding-left: 1rem; }
+        .episode-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+            gap: 0.5rem;
+        }
+        .episode-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            flex: 1;
+        }
+        .episode-link:hover { text-decoration: underline; }
+        .episode-date {
+            font-size: 0.7rem;
+            color: var(--secondary-text);
+            font-family: monospace;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 2rem 0;
+        }
+        .pagination button, .pagination a {
+            background: var(--accent-light);
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            color: var(--accent);
+            text-decoration: none;
+        }
+        .pagination .active {
+            background: var(--accent);
+            color: white;
+        }
+        .pagination .disabled {
+            background: var(--border-color);
+            color: #9ca3af;
+            cursor: not-allowed;
+        }
+        .page-input {
+            display: inline-flex;
+            gap: 0.3rem;
+            align-items: center;
+            background: var(--accent-light);
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+        }
+        .page-input input {
+            width: 55px;
+            padding: 0.2rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background: var(--bg-color);
+            text-align: center;
+        }
+        
+        .debug-panel {
+            background: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 0.8rem;
+            margin: 1rem 0;
+            font-family: monospace;
+            font-size: 0.75rem;
+            color: #333;
+            max-height: 200px;
+            overflow: auto;
+        }
+        [data-theme="dark"] .debug-panel {
+            background: #2a2a2a;
+            border-color: #555;
+            color: #ccc;
+        }
+        
+        .floating-buttons {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+        .floating-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .error-message {
+            background: #ffe0e0;
+            color: #c00;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            text-align: center;
+            border: 1px solid #c00;
+        }
+        
+        footer {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            font-size: 0.7rem;
+            color: var(--secondary-text);
+        }
+        
+        @media (max-width: 600px) {
+            .container { padding: 0.5rem 1rem; }
+            .options-bar { flex-direction: column; align-items: stretch; }
+            .controls-area { justify-content: center; }
+            .episode-item { flex-direction: column; align-items: flex-start; }
+            .episode-date { align-self: flex-end; }
+        }
+    </style>
+    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+</head>
+<body>
+    <div class="options-bar">
+        <div class="logo-area"><span>🎲</span><span>Gacha Infinita</span></div>
+        <div class="controls-area">
+            <div class="font-size-control"><button id="fontMinus">A-</button><button id="fontPlus">A+</button></div>
+            <button id="themeToggle">🌙 Modo oscuro</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="series-header">
+            <h1>Gacha Infinita</h1>
+            <div class="author">Autor: 明鏡シスイ (Meikyō Shisui)</div>
+            <div class="info-badges">
+                <span class="badge">📖 Novela Web</span>
+                <span class="badge">🔥 En publicación</span>
+                <span class="badge">⚔️ Fantasía / Venganza</span>
+                <span class="badge">🎲 Gacha</span>
+            </div>
+        </div>
+
+        <div class="other-titles">
+            <h3>📌 También conocido como</h3>
+            <p><strong>日本語:</strong> 【連載版】信じていた仲間達にダンジョン奥地で殺されかけたがギフト『無限ガチャ』でレベル９９９９の仲間達を手に入れて元パーティーメンバーと世界に復讐＆『ざまぁ！』します！</p>
+        </div>
+
+        <div class="synopsis">
+            <h2>📖 Sinopsis</h2>
+            <p>Light, un humano, es expulsado del grupo <strong>"Reunión de Razas"</strong> en lo profundo de un <strong>calabozo</strong>. En este mundo existen seis razas: humana, bestia, dragón, elfo, enano y demonio. Los humanos son discriminados por las demás razas.</p>
+            <p>Tras ser traicionado, Light activa su habilidad <strong>Gacha Infinita</strong>, obteniendo a <strong>Mei</strong>, una luchadora de nivel 9999. Tres años después, Light ha creado su propio reino en el calabozo y planea vengarse de sus traidores.</p>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card"><div class="stat-number" id="totalChapters">0</div><div class="stat-label">Episodios totales</div></div>
+            <div class="stat-card"><div class="stat-number">14</div><div class="stat-label">LN Volúmenes</div></div>
+            <div class="stat-card"><div class="stat-number">21</div><div class="stat-label">Manga Volúmenes</div></div>
+            <div class="stat-card"><div class="stat-number" id="translatedCount">0</div><div class="stat-label">Traducidos</div></div>
+        </div>
+
+        <!-- Panel de usuario -->
+        <div class="user-panel" id="userPanel">
+            <h3>📚 Mi historial de lectura</h3>
+            <div id="loginSection">
+                <div class="login-form">
+                    <input type="text" id="usernameInput" placeholder="Tu nombre o seudónimo">
+                    <button id="loginBtn">Comenzar a leer</button>
+                </div>
+            </div>
+            <div id="historySection" style="display: none;">
+                <p>👤 <strong id="displayName"></strong> <button id="logoutBtn" class="logout-btn" style="margin-left: 1rem;">Cerrar sesión</button></p>
+                <div class="history-list"><div id="historyList"></div><a href="#" id="clearHistoryBtn" style="font-size:0.7rem;">Limpiar historial</a></div>
+            </div>
+        </div>
+
+        <h2 style="margin: 1rem 0 0.5rem; color: var(--accent);">📑 Índice de episodios</h2>
+        <div id="chapterIndex"></div>
+        
+        <!-- Panel de depuración -->
+        <div class="debug-panel" id="debugPanel">
+            <strong>🔧 Depuración:</strong> Esperando carga de datos...
+        </div>
+        
+        <div class="pagination" id="pagination"></div>
+
+        <footer>
+            <p>Gacha Infinita © 明鏡シスイ (Meikyō Shisui) | Traducción: Ocholobos</p>
+        </footer>
+    </div>
+
+    <div class="floating-buttons">
+        <button class="floating-btn" id="scrollToTop">⬆</button>
+        <button class="floating-btn" id="scrollToBottom">⬇</button>
+    </div>
+
+    <script src="data.js"></script>
+    <script>
+        // ========== DEPURACIÓN ==========
+        function debug(msg) {
+            const panel = document.getElementById('debugPanel');
+            if (panel) {
+                const time = new Date().toLocaleTimeString();
+                panel.innerHTML += `<div>[${time}] ${msg}</div>`;
+                panel.scrollTop = panel.scrollHeight;
+            }
+            console.log(msg);
+        }
+        
+        debug("Iniciando carga de página...");
+        
+        // ========== CONFIGURACIÓN ==========
+        let allEpisodes = [];
+        let totalEpisodes = 0;
+        const ITEMS_PER_PAGE = 20;
+        let currentPage = 1;
+        let totalPages = 1;
+        
+        // ========== TÍTULOS DE CAPÍTULOS ==========
+        const chapterTitles = {
+            0: "Prólogo: Gacha Infinita",
+            1: "Comienzo de la venganza",
+            2: "Venganza contra la elfa Sasha"
+        };
+        
+        // ========== CARGAR DATOS ==========
+        function loadData() {
+            debug("Verificando GACHA_DATA...");
+            if (typeof GACHA_DATA === 'undefined') {
+                debug("❌ ERROR: GACHA_DATA no está definido");
+                document.getElementById('chapterIndex').innerHTML = '<div class="error-message">❌ Error: No se pudo cargar data.js. Verifica que exista en la misma carpeta.</div>';
+                return false;
+            }
+            
+            debug("✅ GACHA_DATA encontrado");
+            debug(`Estructura: chapters = ${GACHA_DATA.chapters ? GACHA_DATA.chapters.length : 'null'} capítulos`);
+            
+            if (!GACHA_DATA.chapters || GACHA_DATA.chapters.length === 0) {
+                debug("❌ ERROR: GACHA_DATA.chapters está vacío");
+                return false;
+            }
+            
+            // Construir array de episodios
+            allEpisodes = [];
+            for (const chapter of GACHA_DATA.chapters) {
+                debug(`Procesando capítulo ${chapter.num}: ${chapter.episodes ? chapter.episodes.length : 0} episodios`);
+                if (chapter.episodes) {
+                    for (const ep of chapter.episodes) {
+                        allEpisodes.push({
+                            chapter: chapter.num,
+                            chapterTitle: chapterTitles[chapter.num] || `Capítulo ${chapter.num}`,
+                            episodeNum: ep.num,
+                            title: ep.title,
+                            date: ep.date,
+                            file: `capitulo${chapter.num}e${ep.num}.html`
+                        });
+                    }
+                }
+            }
+            
+            totalEpisodes = allEpisodes.length;
+            totalPages = Math.ceil(totalEpisodes / ITEMS_PER_PAGE);
+            document.getElementById('totalChapters').textContent = totalEpisodes;
+            document.getElementById('translatedCount').textContent = totalEpisodes;
+            
+            debug(`✅ Cargados ${totalEpisodes} episodios`);
+            debug(`Primer episodio: ${allEpisodes[0] ? allEpisodes[0].title : 'ninguno'}`);
+            return true;
+        }
+        
+        // ========== RENDERIZAR ÍNDICE ==========
+        function renderIndex() {
+            if (allEpisodes.length === 0) {
+                document.getElementById('chapterIndex').innerHTML = '<div class="error-message">⚠️ No hay episodios cargados.</div>';
+                return;
+            }
+            
+            const start = (currentPage - 1) * ITEMS_PER_PAGE;
+            const end = Math.min(start + ITEMS_PER_PAGE, totalEpisodes);
+            const pageEpisodes = allEpisodes.slice(start, end);
+            
+            // Agrupar por capítulo
+            const chaptersMap = new Map();
+            for (const ep of pageEpisodes) {
+                if (!chaptersMap.has(ep.chapter)) {
+                    chaptersMap.set(ep.chapter, {
+                        chapter: ep.chapter,
+                        title: `📖 Capítulo ${ep.chapter}: ${ep.chapterTitle}`,
+                        episodes: []
+                    });
+                }
+                chaptersMap.get(ep.chapter).episodes.push(ep);
+            }
+            
+            const chapters = Array.from(chaptersMap.values()).sort((a, b) => a.chapter - b.chapter);
+            
+            let html = '';
+            for (const chapter of chapters) {
+                html += `<div class="chapter-group">`;
+                html += `<div class="chapter-title">${escapeHtml(chapter.title)}</div>`;
+                html += `<ul class="episode-list">`;
+                
+                for (const ep of chapter.episodes) {
+                    const fileName = `capitulo${ep.chapter}e${ep.episodeNum}.html`;
+                    html += `
+                        <li class="episode-item">
+                            <a href="${fileName}" class="episode-link" onclick="marcarLectura(event, ${ep.chapter}, ${ep.episodeNum})">
+                                Episodio ${ep.episodeNum}: ${escapeHtml(ep.title)}
+                            </a>
+                            <span class="episode-date">${ep.date || ''}</span>
+                        </li>
+                    `;
+                }
+                html += `</ul></div>`;
+            }
+            
+            document.getElementById('chapterIndex').innerHTML = html;
+            debug(`Renderizado página ${currentPage} (episodios ${start+1}-${end})`);
+        }
+        
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+        
+        // ========== PAGINACIÓN ==========
+        function renderPagination() {
+            if (totalPages <= 1) {
+                document.getElementById('pagination').innerHTML = '';
+                return;
+            }
+            
+            let html = '';
+            if (currentPage > 1) {
+                html += `<a href="#" data-page="1">« Primero</a>`;
+                html += `<a href="#" data-page="${currentPage - 1}">‹ Anterior</a>`;
+            } else {
+                html += `<span class="disabled">« Primero</span>`;
+                html += `<span class="disabled">‹ Anterior</span>`;
+            }
+            
+            let startPage = Math.max(1, currentPage - 2);
+            let endPage = Math.min(totalPages, startPage + 4);
+            if (endPage - startPage < 4) startPage = Math.max(1, endPage - 4);
+            
+            for (let i = startPage; i <= endPage; i++) {
+                if (i === currentPage) html += `<span class="active">${i}</span>`;
+                else html += `<a href="#" data-page="${i}">${i}</a>`;
+            }
+            
+            if (currentPage < totalPages) {
+                html += `<a href="#" data-page="${currentPage + 1}">Siguiente ›</a>`;
+                html += `<a href="#" data-page="${totalPages}">Último »</a>`;
+            } else {
+                html += `<span class="disabled">Siguiente ›</span>`;
+                html += `<span class="disabled">Último »</span>`;
+            }
+            
+            html += `<div class="page-input">
+                        <span>Ir a:</span>
+                        <input type="number" id="pageInput" min="1" max="${totalPages}" value="${currentPage}">
+                        <button id="goToPageBtn">Ir</button>
+                     </div>`;
+            
+            document.getElementById('pagination').innerHTML = html;
+            
+            document.querySelectorAll('#pagination a[data-page]').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const page = parseInt(link.dataset.page);
+                    if (!isNaN(page) && page >= 1 && page <= totalPages) goToPage(page);
+                });
+            });
+            
+            const goBtn = document.getElementById('goToPageBtn');
+            if (goBtn) goBtn.addEventListener('click', () => {
+                const page = parseInt(document.getElementById('pageInput').value);
+                if (!isNaN(page) && page >= 1 && page <= totalPages) goToPage(page);
+            });
+        }
+        
+        function goToPage(page) {
+            currentPage = page;
+            renderIndex();
+            renderPagination();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // ========== HISTORIAL ==========
+        let currentUser = null;
+        let userHistory = { chapters: [] };
+        
+        function loadUser() {
+            const saved = localStorage.getItem('gacha_user');
+            if (saved) {
+                currentUser = saved;
+                const hist = localStorage.getItem(`gacha_history_${currentUser}`);
+                if (hist) {
+                    try {
+                        userHistory = JSON.parse(hist);
+                        if (!userHistory.chapters) userHistory.chapters = [];
+                    } catch(e) { userHistory = { chapters: [] }; }
+                }
+                document.getElementById('loginSection').style.display = 'none';
+                document.getElementById('historySection').style.display = 'block';
+                document.getElementById('displayName').textContent = currentUser;
+                updateHistoryDisplay();
+            }
+        }
+        
+        function updateHistoryDisplay() {
+            const div = document.getElementById('historyList');
+            const history = userHistory.chapters || [];
+            
+            if (history.length === 0) {
+                div.innerHTML = '<p style="color:var(--secondary-text);">No has leído nada aún.</p>';
+                return;
+            }
+            
+            const ultimos = history.slice(0, 3);
+            let html = '';
+            for (const item of ultimos) {
+                const episode = allEpisodes.find(ep => ep.chapter == item.chapter && ep.episodeNum == item.episode);
+                if (episode) {
+                    html += `
+                        <div class="history-item">
+                            <div>📖 <a href="capitulo${episode.chapter}e${episode.episodeNum}.html">Capítulo ${episode.chapter} - Episodio ${episode.episodeNum}: ${escapeHtml(episode.title)}</a></div>
+                            <div class="history-date">📅 Leído: ${item.fecha || 'fecha desconocida'}</div>
+                        </div>
+                    `;
+                }
+            }
+            div.innerHTML = html;
+        }
+        
+        function formatearFechaHora() {
+            const ahora = new Date();
+            const dia = String(ahora.getDate()).padStart(2, '0');
+            const mes = String(ahora.getMonth() + 1).padStart(2, '0');
+            const año = ahora.getFullYear();
+            const horas = String(ahora.getHours()).padStart(2, '0');
+            const minutos = String(ahora.getMinutes()).padStart(2, '0');
+            return `${dia}/${mes}/${año} ${horas}:${minutos}`;
+        }
+        
+        function marcarLectura(event, chapter, episode) {
+            if (!currentUser) {
+                event.preventDefault();
+                alert('Inicia sesión para guardar tu historial.');
+                return false;
+            }
+            
+            const ahora = formatearFechaHora();
+            userHistory.chapters = userHistory.chapters.filter(c => !(c.chapter == chapter && c.episode == episode));
+            userHistory.chapters.unshift({ chapter: chapter, episode: episode, fecha: ahora });
+            if (userHistory.chapters.length > 20) userHistory.chapters.pop();
+            
+            localStorage.setItem(`gacha_history_${currentUser}`, JSON.stringify(userHistory));
+            updateHistoryDisplay();
+            return true;
+        }
+        
+        // ========== CONTROLES ==========
+        function initControls() {
+            const savedTheme = localStorage.getItem('gacha_theme');
+            if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+            const savedFont = localStorage.getItem('gacha_fontsize');
+            if (savedFont) document.body.style.fontSize = savedFont + '%';
+            
+            document.getElementById('fontPlus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.min(150, size + 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            document.getElementById('fontMinus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.max(70, size - 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            
+            const themeBtn = document.getElementById('themeToggle');
+            if (document.documentElement.hasAttribute('data-theme')) themeBtn.textContent = '☀️ Modo claro';
+            themeBtn.onclick = () => {
+                const isDark = document.documentElement.hasAttribute('data-theme');
+                if (isDark) {
+                    document.documentElement.removeAttribute('data-theme');
+                    localStorage.setItem('gacha_theme', 'light');
+                    themeBtn.textContent = '🌙 Modo oscuro';
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('gacha_theme', 'dark');
+                    themeBtn.textContent = '☀️ Modo claro';
+                }
+            };
+            
+            document.getElementById('scrollToTop').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('scrollToBottom').onclick = () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+        
+        // ========== INICIALIZACIÓN ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            debug("DOM cargado, iniciando...");
+            if (loadData()) {
+                renderIndex();
+                renderPagination();
+            }
+            initControls();
+            loadUser();
+            
+            document.getElementById('loginBtn').onclick = () => {
+                const name = document.getElementById('usernameInput').value.trim();
+                if (name) {
+                    localStorage.setItem('gacha_user', name);
+                    loadUser();
+                }
+            };
+            document.getElementById('logoutBtn').onclick = () => {
+                localStorage.removeItem('gacha_user');
+                location.reload();
+            };
+            document.getElementById('clearHistoryBtn').onclick = (e) => {
+                e.preventDefault();
+                if (confirm('¿Borrar todo tu historial?')) {
+                    userHistory = { chapters: [] };
+                    localStorage.setItem(`gacha_history_${currentUser}`, JSON.stringify(userHistory));
+                    updateHistoryDisplay();
+                }
+            };
+            
+            window.marcarLectura = marcarLectura;
+            debug("Inicialización completa");
+        });
+    </script>
+</body>
+</html>
