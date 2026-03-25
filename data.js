@@ -1,10 +1,31 @@
 // ============================================================
 // DATOS CENTRALIZADOS DE EPISODIOS TRADUCIDOS
-// Última actualización: 25/03/2026 09:22
+// Última actualización: 25/03/2026 09:56
 // ============================================================
 
 const GACHA_DATA = {
     chapters: [
+    {
+        'num': 0,
+        'title': 'Prólogo: Gacha Infinita',
+        'episodes': [
+            {
+                'num': 0,
+                'title': 'Gacha Infinita',
+                'date': '2020/04/17 12:00'
+            },
+            {
+                'num': 1,
+                'title': 'Tres años después',
+                'date': '2020/04/17 12:00'
+            },
+            {
+                'num': 2,
+                'title': 'La venganza contra Garou',
+                'date': '2020/04/17 12:00'
+            }
+        ]
+    },
     {
         'num': 1,
         'title': 'Comienzo de la venganza',
