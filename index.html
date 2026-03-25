@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🎲 Gacha Infinita | Novela Web</title>
+    <meta name="description" content="Lee Gacha Infinita, una novela web de fantasía y venganza. Light fue traicionado por sus compañeros, pero con el poder del Gacha Infinito reunirá aliados de nivel 9999 para cobrar venganza.">
     <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAGlSURBVHgB7VfBbcIwFH3pBIzAqGyQbpBOkG6QboA6QTMBbIBMQEegjHpADkgnyAYoG+ANyAYtYhI7sVU7tULiq1Na8vP3/Z/jBAKBQCAQCAQCgUAgEFgBKqWqKNB1nQohYhhS0zR2Y13XhyzLVmutHxJCyFmWbYwxB4/HYxvn+d55vV4Xtm2fHMcpE0JMY+zB6/U6EkK2KaUHAkDbtg/gn2EYG2At6/U6PqUUG+j7fo8NCCFXyE9RFFPTNM1xHBeX0IjsPE/TNAfLEAIAwKvVKvV9P3k8HslsNjvYdI0QQriGP6oEAPB8Pp/LslwbhmG4rmsQHBNCEs/zcsMweIgxVqOUNgkhqyiKJhRFMRljTE0IqQghNqXUIYSUIKINAFalFHcFADzP82RZdgUAgDEmk8nkF4lfoZTmiBBXpZSWEELDMDYAwHVdd1VV3adSChhjK5RSjjHm4g4Mw1gvFosPz/N4nudZFEU5z/N+EAJjLOf5fr+fUUpvE0K+AACO44xijM0WBoFAIBAIBAKBQCAQCGSC3wAByPTX2+VnKAAAAABJRU5ErkJggg==">
     <style>
         :root {
@@ -14,6 +15,9 @@
             --accent: #1a4d5f;
             --accent-light: #eef2f0;
             --secondary-text: #6b6a68;
+            --prologue-color: #b85c1a;
+            --interlude-color: #2c7a5a;
+            --extra-color: #b86f2c;
         }
         [data-theme="dark"] {
             --bg-color: #1a1a1a;
@@ -23,6 +27,9 @@
             --accent: #5a9e8c;
             --accent-light: #2a3a35;
             --secondary-text: #a0a0a0;
+            --prologue-color: #e07c3a;
+            --interlude-color: #4aa392;
+            --extra-color: #e08e3a;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -123,8 +130,12 @@
             border-left: 4px solid var(--accent);
             padding-left: 1rem;
             margin-bottom: 0.8rem;
-            color: var(--accent);
         }
+        .chapter-title.prologo { color: var(--prologue-color); border-left-color: var(--prologue-color); }
+        .chapter-title.capitulo { color: var(--accent); border-left-color: var(--accent); }
+        .chapter-title.interludio { color: var(--interlude-color); border-left-color: var(--interlude-color); }
+        .chapter-title.extra { color: var(--extra-color); border-left-color: var(--extra-color); }
+        
         .episode-list { list-style: none; padding-left: 1rem; }
         .episode-item {
             display: flex;
@@ -136,17 +147,37 @@
             gap: 0.5rem;
         }
         .episode-link {
-            color: var(--accent);
             text-decoration: none;
             font-weight: 500;
             flex: 1;
         }
+        .episode-link.prologo { color: var(--prologue-color); }
+        .episode-link.capitulo { color: var(--accent); }
+        .episode-link.interludio { color: var(--interlude-color); }
+        .episode-link.extra { color: var(--extra-color); }
         .episode-link:hover { text-decoration: underline; }
         .episode-date {
             font-size: 0.7rem;
             color: var(--secondary-text);
             font-family: monospace;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
+        .episode-badge {
+            font-size: 0.65rem;
+            padding: 0.1rem 0.4rem;
+            border-radius: 12px;
+            margin-right: 0.5rem;
+            font-weight: normal;
+            display: inline-block;
+        }
+        .episode-badge.prologo { background: #f0e4d0; color: var(--prologue-color); }
+        .episode-badge.capitulo { background: var(--accent-light); color: var(--accent); }
+        .episode-badge.interludio { background: #d0f0e8; color: var(--interlude-color); }
+        .episode-badge.extra { background: #f0e0d0; color: var(--extra-color); }
+        [data-theme="dark"] .episode-badge.prologo { background: #3a2a1a; }
+        [data-theme="dark"] .episode-badge.interludio { background: #1a3a2a; }
+        [data-theme="dark"] .episode-badge.extra { background: #3a2a1a; }
         
         .pagination {
             display: flex;
@@ -165,7 +196,9 @@
             font-size: 0.85rem;
             color: var(--accent);
             text-decoration: none;
+            font-weight: 500;
         }
+        .pagination button:hover, .pagination a:hover { background: var(--border-color); }
         .pagination .active {
             background: var(--accent);
             color: white;
@@ -189,25 +222,8 @@
             border: 1px solid var(--border-color);
             border-radius: 4px;
             background: var(--bg-color);
+            color: var(--text-color);
             text-align: center;
-        }
-        
-        .debug-panel {
-            background: #f0f0f0;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            padding: 0.8rem;
-            margin: 1rem 0;
-            font-family: monospace;
-            font-size: 0.75rem;
-            color: #333;
-            max-height: 200px;
-            overflow: auto;
-        }
-        [data-theme="dark"] .debug-panel {
-            background: #2a2a2a;
-            border-color: #555;
-            color: #ccc;
         }
         
         .floating-buttons {
@@ -232,7 +248,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            opacity: 0.8;
         }
+        .floating-btn:hover { opacity: 1; transform: scale(1.05); }
         
         .error-message {
             background: #ffe0e0;
@@ -242,6 +260,11 @@
             margin: 1rem 0;
             text-align: center;
             border: 1px solid #c00;
+        }
+        [data-theme="dark"] .error-message {
+            background: #2a1a1a;
+            color: #ff8888;
+            border-color: #ff8888;
         }
         
         footer {
@@ -259,15 +282,24 @@
             .controls-area { justify-content: center; }
             .episode-item { flex-direction: column; align-items: flex-start; }
             .episode-date { align-self: flex-end; }
+            .floating-btn { width: 38px; height: 38px; font-size: 1rem; }
+            .pagination { gap: 0.3rem; }
+            .pagination button, .pagination a { padding: 0.3rem 0.6rem; font-size: 0.75rem; }
         }
     </style>
     <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
 </head>
 <body>
     <div class="options-bar">
-        <div class="logo-area"><span>🎲</span><span>Gacha Infinita</span></div>
+        <div class="logo-area">
+            <span>🎲</span>
+            <span>Gacha Infinita</span>
+        </div>
         <div class="controls-area">
-            <div class="font-size-control"><button id="fontMinus">A-</button><button id="fontPlus">A+</button></div>
+            <div class="font-size-control">
+                <button id="fontMinus">A-</button>
+                <button id="fontPlus">A+</button>
+            </div>
             <button id="themeToggle">🌙 Modo oscuro</button>
         </div>
     </div>
@@ -281,12 +313,14 @@
                 <span class="badge">🔥 En publicación</span>
                 <span class="badge">⚔️ Fantasía / Venganza</span>
                 <span class="badge">🎲 Gacha</span>
+                <span class="badge">📺 Anime adaptado</span>
             </div>
         </div>
 
         <div class="other-titles">
             <h3>📌 También conocido como</h3>
             <p><strong>日本語:</strong> 【連載版】信じていた仲間達にダンジョン奥地で殺されかけたがギフト『無限ガチャ』でレベル９９９９の仲間達を手に入れて元パーティーメンバーと世界に復讐＆『ざまぁ！』します！</p>
+            <p><strong>English:</strong> <em>Backstabbed in a Backwater Dungeon: My Trusted Companions Tried to Kill Me, But Thanks to the Gift of an Unlimited Gacha I Got Lvl 9999 Friends and Am Out for Revenge on My Former Party Members and the World</em></p>
         </div>
 
         <div class="synopsis">
@@ -302,7 +336,7 @@
             <div class="stat-card"><div class="stat-number" id="translatedCount">0</div><div class="stat-label">Traducidos</div></div>
         </div>
 
-        <!-- Panel de usuario -->
+        <!-- Panel de usuario con historial -->
         <div class="user-panel" id="userPanel">
             <h3>📚 Mi historial de lectura</h3>
             <div id="loginSection">
@@ -310,48 +344,36 @@
                     <input type="text" id="usernameInput" placeholder="Tu nombre o seudónimo">
                     <button id="loginBtn">Comenzar a leer</button>
                 </div>
+                <p style="font-size: 0.7rem; margin-top: 0.5rem;">✅ Solo se guarda en tu navegador.</p>
             </div>
             <div id="historySection" style="display: none;">
                 <p>👤 <strong id="displayName"></strong> <button id="logoutBtn" class="logout-btn" style="margin-left: 1rem;">Cerrar sesión</button></p>
-                <div class="history-list"><div id="historyList"></div><a href="#" id="clearHistoryBtn" style="font-size:0.7rem;">Limpiar historial</a></div>
+                <div class="history-list">
+                    <div id="historyList"></div>
+                    <a href="#" id="clearHistoryBtn" style="font-size:0.7rem;">Limpiar historial</a>
+                </div>
             </div>
         </div>
 
         <h2 style="margin: 1rem 0 0.5rem; color: var(--accent);">📑 Índice de episodios</h2>
         <div id="chapterIndex"></div>
         
-        <!-- Panel de depuración -->
-        <div class="debug-panel" id="debugPanel">
-            <strong>🔧 Depuración:</strong> Esperando carga de datos...
-        </div>
-        
+        <!-- Paginación -->
         <div class="pagination" id="pagination"></div>
 
         <footer>
-            <p>Gacha Infinita © 明鏡シスイ (Meikyō Shisui) | Traducción: Ocholobos</p>
+            <p>Gacha Infinita © 明鏡シスイ (Meikyō Shisui)</p>
+            <p>Traducción: Ocholobos | Apoya al autor comprando los volúmenes oficiales</p>
         </footer>
     </div>
 
     <div class="floating-buttons">
-        <button class="floating-btn" id="scrollToTop">⬆</button>
-        <button class="floating-btn" id="scrollToBottom">⬇</button>
+        <button class="floating-btn" id="scrollToTop" title="Ir arriba">⬆</button>
+        <button class="floating-btn" id="scrollToBottom" title="Ir abajo">⬇</button>
     </div>
 
     <script src="data.js"></script>
     <script>
-        // ========== DEPURACIÓN ==========
-        function debug(msg) {
-            const panel = document.getElementById('debugPanel');
-            if (panel) {
-                const time = new Date().toLocaleTimeString();
-                panel.innerHTML += `<div>[${time}] ${msg}</div>`;
-                panel.scrollTop = panel.scrollHeight;
-            }
-            console.log(msg);
-        }
-        
-        debug("Iniciando carga de página...");
-        
         // ========== CONFIGURACIÓN ==========
         let allEpisodes = [];
         let totalEpisodes = 0;
@@ -363,41 +385,73 @@
         const chapterTitles = {
             0: "Prólogo: Gacha Infinita",
             1: "Comienzo de la venganza",
-            2: "Venganza contra la elfa Sasha"
+            2: "Venganza contra la elfa Sasha",
+            3: "El pasado de Light",
+            4: "El reino humano",
+            5: "Venganza contra el enano Nano",
+            6: "Masacre de hombres bestia",
+            7: "Reino Demonio",
+            8: "Conferencia del Ducado de Six",
+            9: "Reino Demonio - Primera parte",
+            10: "Reino Demonio - Segunda parte",
+            11: "Reino Demonio - Tercera parte",
+            12: "Festival de coronación de la Reina Lilith",
+            13: "Religión de la Diosa",
+            14: "Imperio Dragón",
+            15: "Castillo flotante",
+            16: "Contra los \"Maestros\" del Imperio Dragón",
+            17: "Contra el Dios Maligno"
         };
+        
+        // ========== DETECTAR TIPO DE EPISODIO ==========
+        function detectarTipoEpisodio(titulo, chapterNum) {
+            // Capítulo 0 es prólogo
+            if (chapterNum === 0) return 'prologo';
+            
+            // Detectar por título
+            const tituloLower = titulo.toLowerCase();
+            if (tituloLower.includes('extra:') || tituloLower.includes('interludio') || 
+                tituloLower.includes('día de nazuna') || tituloLower.includes('charlas de las sirvientas') ||
+                tituloLower.includes('las demandas de las sirvientas') ||
+                tituloLower.includes('pasta de frijol') || tituloLower.includes('el baño y el secreto') ||
+                tituloLower.includes('la historia de nemumu') || tituloLower.includes('cielo e infierno') ||
+                tituloLower.includes('reflexión de ellie') || tituloLower.includes('miedo y alegría de suz') ||
+                tituloLower.includes('¿malestar de yume?')) {
+                return 'interludio';
+            }
+            
+            // Por defecto, capítulo normal
+            return 'capitulo';
+        }
+        
+        // ========== FORMATEAR TÍTULO DE SECCIÓN ==========
+        function formatSectionTitle(chapterNum, tipo) {
+            const tituloBase = chapterTitles[chapterNum] || `Capítulo ${chapterNum}`;
+            if (tipo === 'prologo') return `📜 ${tituloBase}`;
+            if (tipo === 'interludio') return `🎭 Interludio: ${tituloBase}`;
+            if (tipo === 'extra') return `✨ Extra: ${tituloBase}`;
+            return `📖 ${tituloBase}`;
+        }
         
         // ========== CARGAR DATOS ==========
         function loadData() {
-            debug("Verificando GACHA_DATA...");
             if (typeof GACHA_DATA === 'undefined') {
-                debug("❌ ERROR: GACHA_DATA no está definido");
-                document.getElementById('chapterIndex').innerHTML = '<div class="error-message">❌ Error: No se pudo cargar data.js. Verifica que exista en la misma carpeta.</div>';
+                document.getElementById('chapterIndex').innerHTML = '<div class="error-message">❌ Error: No se pudo cargar el archivo data.js. Verifica que exista en la misma carpeta.</div>';
                 return false;
             }
             
-            debug("✅ GACHA_DATA encontrado");
-            debug(`Estructura: chapters = ${GACHA_DATA.chapters ? GACHA_DATA.chapters.length : 'null'} capítulos`);
-            
-            if (!GACHA_DATA.chapters || GACHA_DATA.chapters.length === 0) {
-                debug("❌ ERROR: GACHA_DATA.chapters está vacío");
-                return false;
-            }
-            
-            // Construir array de episodios
+            // Construir array de episodios desde la estructura chapters
             allEpisodes = [];
             for (const chapter of GACHA_DATA.chapters) {
-                debug(`Procesando capítulo ${chapter.num}: ${chapter.episodes ? chapter.episodes.length : 0} episodios`);
-                if (chapter.episodes) {
-                    for (const ep of chapter.episodes) {
-                        allEpisodes.push({
-                            chapter: chapter.num,
-                            chapterTitle: chapterTitles[chapter.num] || `Capítulo ${chapter.num}`,
-                            episodeNum: ep.num,
-                            title: ep.title,
-                            date: ep.date,
-                            file: `capitulo${chapter.num}e${ep.num}.html`
-                        });
-                    }
+                for (const ep of chapter.episodes) {
+                    allEpisodes.push({
+                        chapter: chapter.num,
+                        chapterTitle: chapter.title,
+                        episodeNum: ep.num,
+                        title: ep.title,
+                        date: ep.date,
+                        file: `capitulo${chapter.num}e${ep.num}.html`
+                    });
                 }
             }
             
@@ -406,15 +460,13 @@
             document.getElementById('totalChapters').textContent = totalEpisodes;
             document.getElementById('translatedCount').textContent = totalEpisodes;
             
-            debug(`✅ Cargados ${totalEpisodes} episodios`);
-            debug(`Primer episodio: ${allEpisodes[0] ? allEpisodes[0].title : 'ninguno'}`);
             return true;
         }
         
         // ========== RENDERIZAR ÍNDICE ==========
         function renderIndex() {
             if (allEpisodes.length === 0) {
-                document.getElementById('chapterIndex').innerHTML = '<div class="error-message">⚠️ No hay episodios cargados.</div>';
+                document.getElementById('chapterIndex').innerHTML = '<div class="error-message">⚠️ No hay episodios disponibles.</div>';
                 return;
             }
             
@@ -425,29 +477,53 @@
             // Agrupar por capítulo
             const chaptersMap = new Map();
             for (const ep of pageEpisodes) {
+                const tipo = detectarTipoEpisodio(ep.title, ep.chapter);
                 if (!chaptersMap.has(ep.chapter)) {
                     chaptersMap.set(ep.chapter, {
                         chapter: ep.chapter,
-                        title: `📖 Capítulo ${ep.chapter}: ${ep.chapterTitle}`,
+                        tipo: tipo,
+                        title: formatSectionTitle(ep.chapter, tipo),
                         episodes: []
                     });
                 }
                 chaptersMap.get(ep.chapter).episodes.push(ep);
             }
             
+            // Ordenar capítulos
             const chapters = Array.from(chaptersMap.values()).sort((a, b) => a.chapter - b.chapter);
             
             let html = '';
             for (const chapter of chapters) {
+                const chapterClass = chapter.tipo === 'prologo' ? 'prologo' : (chapter.tipo === 'interludio' ? 'interludio' : 'capitulo');
                 html += `<div class="chapter-group">`;
-                html += `<div class="chapter-title">${escapeHtml(chapter.title)}</div>`;
+                html += `<div class="chapter-title ${chapterClass}">${escapeHtml(chapter.title)}</div>`;
                 html += `<ul class="episode-list">`;
                 
                 for (const ep of chapter.episodes) {
+                    const tipo = detectarTipoEpisodio(ep.title, ep.chapter);
+                    let badgeText = '';
+                    let badgeClass = '';
+                    let linkClass = '';
+                    
+                    if (tipo === 'prologo') {
+                        badgeText = '📜 Prólogo';
+                        badgeClass = 'prologo';
+                        linkClass = 'prologo';
+                    } else if (tipo === 'interludio') {
+                        badgeText = '🎭 Interludio';
+                        badgeClass = 'interludio';
+                        linkClass = 'interludio';
+                    } else {
+                        badgeText = '📖';
+                        badgeClass = 'capitulo';
+                        linkClass = 'capitulo';
+                    }
+                    
                     const fileName = `capitulo${ep.chapter}e${ep.episodeNum}.html`;
                     html += `
                         <li class="episode-item">
-                            <a href="${fileName}" class="episode-link" onclick="marcarLectura(event, ${ep.chapter}, ${ep.episodeNum})">
+                            <a href="${fileName}" class="episode-link ${linkClass}" onclick="marcarLectura(event, ${ep.chapter}, ${ep.episodeNum})">
+                                <span class="episode-badge ${badgeClass}">${badgeText}</span>
                                 Episodio ${ep.episodeNum}: ${escapeHtml(ep.title)}
                             </a>
                             <span class="episode-date">${ep.date || ''}</span>
@@ -458,7 +534,6 @@
             }
             
             document.getElementById('chapterIndex').innerHTML = html;
-            debug(`Renderizado página ${currentPage} (episodios ${start+1}-${end})`);
         }
         
         function escapeHtml(str) {
@@ -473,8 +548,9 @@
         
         // ========== PAGINACIÓN ==========
         function renderPagination() {
+            const container = document.getElementById('pagination');
             if (totalPages <= 1) {
-                document.getElementById('pagination').innerHTML = '';
+                container.innerHTML = '';
                 return;
             }
             
@@ -510,7 +586,7 @@
                         <button id="goToPageBtn">Ir</button>
                      </div>`;
             
-            document.getElementById('pagination').innerHTML = html;
+            container.innerHTML = html;
             
             document.querySelectorAll('#pagination a[data-page]').forEach(link => {
                 link.addEventListener('click', (e) => {
@@ -521,9 +597,16 @@
             });
             
             const goBtn = document.getElementById('goToPageBtn');
+            const pageInput = document.getElementById('pageInput');
             if (goBtn) goBtn.addEventListener('click', () => {
-                const page = parseInt(document.getElementById('pageInput').value);
+                const page = parseInt(pageInput.value);
                 if (!isNaN(page) && page >= 1 && page <= totalPages) goToPage(page);
+            });
+            if (pageInput) pageInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    const page = parseInt(pageInput.value);
+                    if (!isNaN(page) && page >= 1 && page <= totalPages) goToPage(page);
+                }
             });
         }
         
@@ -537,6 +620,16 @@
         // ========== HISTORIAL ==========
         let currentUser = null;
         let userHistory = { chapters: [] };
+        
+        function formatearFechaHora() {
+            const ahora = new Date();
+            const dia = String(ahora.getDate()).padStart(2, '0');
+            const mes = String(ahora.getMonth() + 1).padStart(2, '0');
+            const año = ahora.getFullYear();
+            const horas = String(ahora.getHours()).padStart(2, '0');
+            const minutos = String(ahora.getMinutes()).padStart(2, '0');
+            return `${dia}/${mes}/${año} ${horas}:${minutos}`;
+        }
         
         function loadUser() {
             const saved = localStorage.getItem('gacha_user');
@@ -565,14 +658,22 @@
                 return;
             }
             
+            // Mostrar solo los últimos 3 registros
             const ultimos = history.slice(0, 3);
             let html = '';
             for (const item of ultimos) {
                 const episode = allEpisodes.find(ep => ep.chapter == item.chapter && ep.episodeNum == item.episode);
                 if (episode) {
+                    const tipo = detectarTipoEpisodio(episode.title, episode.chapter);
+                    let badge = '';
+                    if (tipo === 'prologo') badge = '📜';
+                    else if (tipo === 'interludio') badge = '🎭';
+                    else badge = '📖';
+                    
+                    const chapterDisplay = formatSectionTitle(episode.chapter, tipo);
                     html += `
                         <div class="history-item">
-                            <div>📖 <a href="capitulo${episode.chapter}e${episode.episodeNum}.html">Capítulo ${episode.chapter} - Episodio ${episode.episodeNum}: ${escapeHtml(episode.title)}</a></div>
+                            <div>${badge} <a href="capitulo${episode.chapter}e${episode.episodeNum}.html">${escapeHtml(chapterDisplay)} - Episodio ${episode.episodeNum}: ${escapeHtml(episode.title)}</a></div>
                             <div class="history-date">📅 Leído: ${item.fecha || 'fecha desconocida'}</div>
                         </div>
                     `;
@@ -581,26 +682,21 @@
             div.innerHTML = html;
         }
         
-        function formatearFechaHora() {
-            const ahora = new Date();
-            const dia = String(ahora.getDate()).padStart(2, '0');
-            const mes = String(ahora.getMonth() + 1).padStart(2, '0');
-            const año = ahora.getFullYear();
-            const horas = String(ahora.getHours()).padStart(2, '0');
-            const minutos = String(ahora.getMinutes()).padStart(2, '0');
-            return `${dia}/${mes}/${año} ${horas}:${minutos}`;
-        }
-        
         function marcarLectura(event, chapter, episode) {
             if (!currentUser) {
                 event.preventDefault();
-                alert('Inicia sesión para guardar tu historial.');
+                alert('Inicia sesión para guardar tu historial de lectura.');
                 return false;
             }
             
             const ahora = formatearFechaHora();
+            const nuevoRegistro = { chapter: chapter, episode: episode, fecha: ahora };
+            
+            // Eliminar si ya existía y añadir al principio
             userHistory.chapters = userHistory.chapters.filter(c => !(c.chapter == chapter && c.episode == episode));
-            userHistory.chapters.unshift({ chapter: chapter, episode: episode, fecha: ahora });
+            userHistory.chapters.unshift(nuevoRegistro);
+            
+            // Mantener solo los últimos 20 registros
             if (userHistory.chapters.length > 20) userHistory.chapters.pop();
             
             localStorage.setItem(`gacha_history_${currentUser}`, JSON.stringify(userHistory));
@@ -649,7 +745,6 @@
         
         // ========== INICIALIZACIÓN ==========
         document.addEventListener('DOMContentLoaded', () => {
-            debug("DOM cargado, iniciando...");
             if (loadData()) {
                 renderIndex();
                 renderPagination();
@@ -670,7 +765,7 @@
             };
             document.getElementById('clearHistoryBtn').onclick = (e) => {
                 e.preventDefault();
-                if (confirm('¿Borrar todo tu historial?')) {
+                if (confirm('¿Borrar todo tu historial de lectura?')) {
                     userHistory = { chapters: [] };
                     localStorage.setItem(`gacha_history_${currentUser}`, JSON.stringify(userHistory));
                     updateHistoryDisplay();
@@ -678,7 +773,15 @@
             };
             
             window.marcarLectura = marcarLectura;
-            debug("Inicialización completa");
+            
+            if (typeof kofiWidgetOverlay !== 'undefined') {
+                kofiWidgetOverlay.draw('ocholobos', {
+                    'type': 'floating-chat',
+                    'floating-chat.donateButton.text': 'Apóyame',
+                    'floating-chat.donateButton.background-color': '#1a4d5f',
+                    'floating-chat.donateButton.text-color': '#ffffff'
+                });
+            }
         });
     </script>
 </body>
