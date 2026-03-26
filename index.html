@@ -381,7 +381,9 @@
         let currentPage = 1;
         let totalPages = 1;
         
-        // ========== TÍTULOS DE CAPÍTULOS ==========
+        // ========== TÍTULOS DE CAPÍTULOS (desde CSV) ==========
+        // Estos títulos se cargarán desde el CSV o se definirán manualmente
+        // Para que funcione sin CSV externo, los definimos aquí basados en titulos_capitulos.csv
         const chapterTitles = {
             0: "Prólogo: Gacha Infinita",
             1: "Comienzo de la venganza",
@@ -427,10 +429,13 @@
         // ========== FORMATEAR TÍTULO DE SECCIÓN ==========
         function formatSectionTitle(chapterNum, tipo) {
             const tituloBase = chapterTitles[chapterNum] || `Capítulo ${chapterNum}`;
-            if (tipo === 'prologo') return `📜 ${tituloBase}`;
-            if (tipo === 'interludio') return `🎭 Interludio: ${tituloBase}`;
-            if (tipo === 'extra') return `✨ Extra: ${tituloBase}`;
-            return `📖 ${tituloBase}`;
+            // Formato: "Capítulo X: Título"
+            const tituloConNumero = `Capítulo ${chapterNum}: ${tituloBase}`;
+            
+            if (tipo === 'prologo') return `📜 ${tituloConNumero}`;
+            if (tipo === 'interludio') return `🎭 ${tituloConNumero}`;
+            if (tipo === 'extra') return `✨ ${tituloConNumero}`;
+            return `📖 ${tituloConNumero}`;
         }
         
         // ========== CARGAR DATOS ==========
@@ -658,8 +663,8 @@
                 return;
             }
             
-            // Mostrar solo los últimos 3 registros
-            const ultimos = history.slice(0, 3);
+            // Mostrar solo los últimos 10 registros
+            const ultimos = history.slice(0, 10);
             let html = '';
             for (const item of ultimos) {
                 const episode = allEpisodes.find(ep => ep.chapter == item.chapter && ep.episodeNum == item.episode);
@@ -696,8 +701,8 @@
             userHistory.chapters = userHistory.chapters.filter(c => !(c.chapter == chapter && c.episode == episode));
             userHistory.chapters.unshift(nuevoRegistro);
             
-            // Mantener solo los últimos 20 registros
-            if (userHistory.chapters.length > 20) userHistory.chapters.pop();
+            // Mantener solo los últimos 50 registros
+            if (userHistory.chapters.length > 50) userHistory.chapters = userHistory.chapters.slice(0, 50);
             
             localStorage.setItem(`gacha_history_${currentUser}`, JSON.stringify(userHistory));
             updateHistoryDisplay();
