@@ -118,10 +118,23 @@
             cursor: pointer;
         }
         .history-list { margin-top: 1rem; padding-top: 0.5rem; border-top: 1px solid var(--border-color); }
-        .history-item { padding: 0.5rem 0; font-size: 0.85rem; border-bottom: 1px solid var(--border-color); }
-        .history-item:last-child { border-bottom: none; }
-        .history-item a { color: var(--accent); text-decoration: none; font-weight: 500; }
-        .history-date { font-size: 0.7rem; color: var(--secondary-text); margin-top: 0.2rem; }
+        .history-item { 
+            padding: 0.75rem; 
+            font-size: 0.9rem; 
+            background: var(--accent-light);
+            border-radius: 10px;
+            margin-top: 0.5rem;
+        }
+        .history-item a { color: var(--accent); text-decoration: none; font-weight: 500; display: block; }
+        .history-date { font-size: 0.7rem; color: var(--secondary-text); margin-top: 0.3rem; }
+        .clear-history {
+            display: inline-block;
+            font-size: 0.7rem;
+            color: var(--secondary-text);
+            margin-top: 0.5rem;
+            text-decoration: none;
+        }
+        .clear-history:hover { color: var(--accent); }
         
         .chapter-group { margin: 1.5rem 0 0; }
         .chapter-title {
@@ -336,9 +349,9 @@
             <div class="stat-card"><div class="stat-number" id="translatedCount">0</div><div class="stat-label">Traducidos</div></div>
         </div>
 
-        <!-- Panel de usuario con historial -->
+        <!-- Panel de usuario con historial (solo último episodio) -->
         <div class="user-panel" id="userPanel">
-            <h3>📚 Mi historial de lectura</h3>
+            <h3>📚 Último episodio leído</h3>
             <div id="loginSection">
                 <div class="login-form">
                     <input type="text" id="usernameInput" placeholder="Tu nombre o seudónimo">
@@ -348,10 +361,8 @@
             </div>
             <div id="historySection" style="display: none;">
                 <p>👤 <strong id="displayName"></strong> <button id="logoutBtn" class="logout-btn" style="margin-left: 1rem;">Cerrar sesión</button></p>
-                <div class="history-list">
-                    <div id="historyList"></div>
-                    <a href="#" id="clearHistoryBtn" style="font-size:0.7rem;">Limpiar historial</a>
-                </div>
+                <div class="history-list" id="historyList"></div>
+                <a href="#" id="clearHistoryBtn" class="clear-history">🗑️ Limpiar historial</a>
             </div>
         </div>
 
@@ -381,9 +392,7 @@
         let currentPage = 1;
         let totalPages = 1;
         
-        // ========== TÍTULOS DE CAPÍTULOS (desde CSV) ==========
-        // Estos títulos se cargarán desde el CSV o se definirán manualmente
-        // Para que funcione sin CSV externo, los definimos aquí basados en titulos_capitulos.csv
+        // ========== TÍTULOS DE CAPÍTULOS ==========
         const chapterTitles = {
             0: "Prólogo: Gacha Infinita",
             1: "Comienzo de la venganza",
@@ -407,10 +416,7 @@
         
         // ========== DETECTAR TIPO DE EPISODIO ==========
         function detectarTipoEpisodio(titulo, chapterNum) {
-            // Capítulo 0 es prólogo
             if (chapterNum === 0) return 'prologo';
-            
-            // Detectar por título
             const tituloLower = titulo.toLowerCase();
             if (tituloLower.includes('extra:') || tituloLower.includes('interludio') || 
                 tituloLower.includes('día de nazuna') || tituloLower.includes('charlas de las sirvientas') ||
@@ -421,17 +427,13 @@
                 tituloLower.includes('¿malestar de yume?')) {
                 return 'interludio';
             }
-            
-            // Por defecto, capítulo normal
             return 'capitulo';
         }
         
         // ========== FORMATEAR TÍTULO DE SECCIÓN ==========
         function formatSectionTitle(chapterNum, tipo) {
             const tituloBase = chapterTitles[chapterNum] || `Capítulo ${chapterNum}`;
-            // Formato: "Capítulo X: Título"
             const tituloConNumero = `Capítulo ${chapterNum}: ${tituloBase}`;
-            
             if (tipo === 'prologo') return `📜 ${tituloConNumero}`;
             if (tipo === 'interludio') return `🎭 ${tituloConNumero}`;
             if (tipo === 'extra') return `✨ ${tituloConNumero}`;
@@ -441,11 +443,9 @@
         // ========== CARGAR DATOS ==========
         function loadData() {
             if (typeof GACHA_DATA === 'undefined') {
-                document.getElementById('chapterIndex').innerHTML = '<div class="error-message">❌ Error: No se pudo cargar el archivo data.js. Verifica que exista en la misma carpeta.</div>';
+                document.getElementById('chapterIndex').innerHTML = '<div class="error-message">❌ Error: No se pudo cargar el archivo data.js.</div>';
                 return false;
             }
-            
-            // Construir array de episodios desde la estructura chapters
             allEpisodes = [];
             for (const chapter of GACHA_DATA.chapters) {
                 for (const ep of chapter.episodes) {
@@ -459,12 +459,10 @@
                     });
                 }
             }
-            
             totalEpisodes = allEpisodes.length;
             totalPages = Math.ceil(totalEpisodes / ITEMS_PER_PAGE);
             document.getElementById('totalChapters').textContent = totalEpisodes;
             document.getElementById('translatedCount').textContent = totalEpisodes;
-            
             return true;
         }
         
@@ -474,12 +472,10 @@
                 document.getElementById('chapterIndex').innerHTML = '<div class="error-message">⚠️ No hay episodios disponibles.</div>';
                 return;
             }
-            
             const start = (currentPage - 1) * ITEMS_PER_PAGE;
             const end = Math.min(start + ITEMS_PER_PAGE, totalEpisodes);
             const pageEpisodes = allEpisodes.slice(start, end);
             
-            // Agrupar por capítulo
             const chaptersMap = new Map();
             for (const ep of pageEpisodes) {
                 const tipo = detectarTipoEpisodio(ep.title, ep.chapter);
@@ -494,36 +490,19 @@
                 chaptersMap.get(ep.chapter).episodes.push(ep);
             }
             
-            // Ordenar capítulos
             const chapters = Array.from(chaptersMap.values()).sort((a, b) => a.chapter - b.chapter);
-            
             let html = '';
             for (const chapter of chapters) {
                 const chapterClass = chapter.tipo === 'prologo' ? 'prologo' : (chapter.tipo === 'interludio' ? 'interludio' : 'capitulo');
                 html += `<div class="chapter-group">`;
                 html += `<div class="chapter-title ${chapterClass}">${escapeHtml(chapter.title)}</div>`;
                 html += `<ul class="episode-list">`;
-                
                 for (const ep of chapter.episodes) {
                     const tipo = detectarTipoEpisodio(ep.title, ep.chapter);
-                    let badgeText = '';
-                    let badgeClass = '';
-                    let linkClass = '';
-                    
-                    if (tipo === 'prologo') {
-                        badgeText = '📜 Prólogo';
-                        badgeClass = 'prologo';
-                        linkClass = 'prologo';
-                    } else if (tipo === 'interludio') {
-                        badgeText = '🎭 Interludio';
-                        badgeClass = 'interludio';
-                        linkClass = 'interludio';
-                    } else {
-                        badgeText = '📖';
-                        badgeClass = 'capitulo';
-                        linkClass = 'capitulo';
-                    }
-                    
+                    let badgeText = '', badgeClass = '', linkClass = '';
+                    if (tipo === 'prologo') { badgeText = '📜 Prólogo'; badgeClass = 'prologo'; linkClass = 'prologo'; }
+                    else if (tipo === 'interludio') { badgeText = '🎭 Interludio'; badgeClass = 'interludio'; linkClass = 'interludio'; }
+                    else { badgeText = '📖'; badgeClass = 'capitulo'; linkClass = 'capitulo'; }
                     const fileName = `capitulo${ep.chapter}e${ep.episodeNum}.html`;
                     html += `
                         <li class="episode-item">
@@ -537,7 +516,6 @@
                 }
                 html += `</ul></div>`;
             }
-            
             document.getElementById('chapterIndex').innerHTML = html;
         }
         
@@ -554,11 +532,7 @@
         // ========== PAGINACIÓN ==========
         function renderPagination() {
             const container = document.getElementById('pagination');
-            if (totalPages <= 1) {
-                container.innerHTML = '';
-                return;
-            }
-            
+            if (totalPages <= 1) { container.innerHTML = ''; return; }
             let html = '';
             if (currentPage > 1) {
                 html += `<a href="#" data-page="1">« Primero</a>`;
@@ -567,16 +541,13 @@
                 html += `<span class="disabled">« Primero</span>`;
                 html += `<span class="disabled">‹ Anterior</span>`;
             }
-            
             let startPage = Math.max(1, currentPage - 2);
             let endPage = Math.min(totalPages, startPage + 4);
             if (endPage - startPage < 4) startPage = Math.max(1, endPage - 4);
-            
             for (let i = startPage; i <= endPage; i++) {
                 if (i === currentPage) html += `<span class="active">${i}</span>`;
                 else html += `<a href="#" data-page="${i}">${i}</a>`;
             }
-            
             if (currentPage < totalPages) {
                 html += `<a href="#" data-page="${currentPage + 1}">Siguiente ›</a>`;
                 html += `<a href="#" data-page="${totalPages}">Último »</a>`;
@@ -584,15 +555,12 @@
                 html += `<span class="disabled">Siguiente ›</span>`;
                 html += `<span class="disabled">Último »</span>`;
             }
-            
             html += `<div class="page-input">
                         <span>Ir a:</span>
                         <input type="number" id="pageInput" min="1" max="${totalPages}" value="${currentPage}">
                         <button id="goToPageBtn">Ir</button>
                      </div>`;
-            
             container.innerHTML = html;
-            
             document.querySelectorAll('#pagination a[data-page]').forEach(link => {
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -600,7 +568,6 @@
                     if (!isNaN(page) && page >= 1 && page <= totalPages) goToPage(page);
                 });
             });
-            
             const goBtn = document.getElementById('goToPageBtn');
             const pageInput = document.getElementById('pageInput');
             if (goBtn) goBtn.addEventListener('click', () => {
@@ -622,9 +589,9 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
         
-        // ========== HISTORIAL ==========
+        // ========== HISTORIAL (SOLO ÚLTIMO EPISODIO) ==========
         let currentUser = null;
-        let userHistory = { chapters: [] };
+        let lastEpisode = null; // { chapter, episodeNum, title, date }
         
         function formatearFechaHora() {
             const ahora = new Date();
@@ -640,12 +607,11 @@
             const saved = localStorage.getItem('gacha_user');
             if (saved) {
                 currentUser = saved;
-                const hist = localStorage.getItem(`gacha_history_${currentUser}`);
-                if (hist) {
+                const savedLast = localStorage.getItem(`gacha_last_${currentUser}`);
+                if (savedLast) {
                     try {
-                        userHistory = JSON.parse(hist);
-                        if (!userHistory.chapters) userHistory.chapters = [];
-                    } catch(e) { userHistory = { chapters: [] }; }
+                        lastEpisode = JSON.parse(savedLast);
+                    } catch(e) { lastEpisode = null; }
                 }
                 document.getElementById('loginSection').style.display = 'none';
                 document.getElementById('historySection').style.display = 'block';
@@ -656,55 +622,43 @@
         
         function updateHistoryDisplay() {
             const div = document.getElementById('historyList');
-            const history = userHistory.chapters || [];
-            
-            if (history.length === 0) {
+            if (!lastEpisode) {
                 div.innerHTML = '<p style="color:var(--secondary-text);">No has leído nada aún.</p>';
                 return;
             }
-            
-            // Mostrar solo los últimos 10 registros
-            const ultimos = history.slice(0, 10);
-            let html = '';
-            for (const item of ultimos) {
-                const episode = allEpisodes.find(ep => ep.chapter == item.chapter && ep.episodeNum == item.episode);
-                if (episode) {
-                    const tipo = detectarTipoEpisodio(episode.title, episode.chapter);
-                    let badge = '';
-                    if (tipo === 'prologo') badge = '📜';
-                    else if (tipo === 'interludio') badge = '🎭';
-                    else badge = '📖';
-                    
-                    const chapterDisplay = formatSectionTitle(episode.chapter, tipo);
-                    html += `
-                        <div class="history-item">
-                            <div>${badge} <a href="capitulo${episode.chapter}e${episode.episodeNum}.html">${escapeHtml(chapterDisplay)} - Episodio ${episode.episodeNum}: ${escapeHtml(episode.title)}</a></div>
-                            <div class="history-date">📅 Leído: ${item.fecha || 'fecha desconocida'}</div>
-                        </div>
-                    `;
-                }
-            }
+            const tipo = detectarTipoEpisodio(lastEpisode.title, lastEpisode.chapter);
+            let badge = '';
+            if (tipo === 'prologo') badge = '📜';
+            else if (tipo === 'interludio') badge = '🎭';
+            else badge = '📖';
+            const chapterDisplay = formatSectionTitle(lastEpisode.chapter, tipo);
+            html = `
+                <div class="history-item">
+                    <div>${badge} <a href="capitulo${lastEpisode.chapter}e${lastEpisode.episodeNum}.html">${escapeHtml(chapterDisplay)} - Episodio ${lastEpisode.episodeNum}: ${escapeHtml(lastEpisode.title)}</a></div>
+                    <div class="history-date">📅 Leído: ${lastEpisode.fecha || 'fecha desconocida'}</div>
+                </div>
+            `;
             div.innerHTML = html;
         }
         
-        function marcarLectura(event, chapter, episode) {
+        function marcarLectura(event, chapter, episodeNum) {
             if (!currentUser) {
                 event.preventDefault();
                 alert('Inicia sesión para guardar tu historial de lectura.');
                 return false;
             }
+            // Buscar el episodio en allEpisodes para obtener el título
+            const episode = allEpisodes.find(ep => ep.chapter == chapter && ep.episodeNum == episodeNum);
+            if (!episode) return true;
             
             const ahora = formatearFechaHora();
-            const nuevoRegistro = { chapter: chapter, episode: episode, fecha: ahora };
-            
-            // Eliminar si ya existía y añadir al principio
-            userHistory.chapters = userHistory.chapters.filter(c => !(c.chapter == chapter && c.episode == episode));
-            userHistory.chapters.unshift(nuevoRegistro);
-            
-            // Mantener solo los últimos 50 registros
-            if (userHistory.chapters.length > 50) userHistory.chapters = userHistory.chapters.slice(0, 50);
-            
-            localStorage.setItem(`gacha_history_${currentUser}`, JSON.stringify(userHistory));
+            lastEpisode = {
+                chapter: chapter,
+                episodeNum: episodeNum,
+                title: episode.title,
+                fecha: ahora
+            };
+            localStorage.setItem(`gacha_last_${currentUser}`, JSON.stringify(lastEpisode));
             updateHistoryDisplay();
             return true;
         }
@@ -766,13 +720,14 @@
             };
             document.getElementById('logoutBtn').onclick = () => {
                 localStorage.removeItem('gacha_user');
+                localStorage.removeItem(`gacha_last_${currentUser}`);
                 location.reload();
             };
             document.getElementById('clearHistoryBtn').onclick = (e) => {
                 e.preventDefault();
-                if (confirm('¿Borrar todo tu historial de lectura?')) {
-                    userHistory = { chapters: [] };
-                    localStorage.setItem(`gacha_history_${currentUser}`, JSON.stringify(userHistory));
+                if (confirm('¿Borrar tu último episodio leído?')) {
+                    lastEpisode = null;
+                    localStorage.removeItem(`gacha_last_${currentUser}`);
                     updateHistoryDisplay();
                 }
             };
