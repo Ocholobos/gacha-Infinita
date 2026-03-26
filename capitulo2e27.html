@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Batalla en el primer piso 2 | Gacha Infinita</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem;
+            line-height: 1.8;
+            background: #faf9f7;
+            color: #2c2b28;
+            transition: all 0.3s ease;
+        }
+        [data-theme="dark"] body {
+            background: #1a1a1a;
+            color: #e5e5e5;
+        }
+        
+        .options-bar {
+            position: sticky;
+            top: 0;
+            background: #faf9f7;
+            border-bottom: 1px solid #e5e0d8;
+            padding: 0.6rem 1rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.8rem;
+            z-index: 100;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        [data-theme="dark"] .options-bar {
+            background: #1a1a1a;
+            border-bottom-color: #404040;
+        }
+        .options-bar button, .options-bar a {
+            background: #eef2f0;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: #1a4d5f;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .options-bar button, [data-theme="dark"] .options-bar a {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .font-size-control {
+            display: flex;
+            gap: 0.3rem;
+            align-items: center;
+        }
+        .font-size-control button {
+            width: 32px;
+            padding: 0.2rem;
+        }
+        
+        .nav-container {
+            margin: 1rem 0;
+        }
+        .nav-center, .nav-bottom {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+        .nav-bottom {
+            margin-top: 1rem;
+        }
+        .nav-btn {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            color: #1a4d5f;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .nav-btn {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .nav-btn:hover {
+            background: #e5e0d8;
+        }
+        .nav-btn.disabled {
+            background: #e5e0d8;
+            color: #9ca3af;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .chapter-counter {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] .chapter-counter {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        .chapter-selector {
+            margin: 0.5rem 0;
+            text-align: center;
+        }
+        .chapter-selector select {
+            background: #eef2f0;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-family: inherit;
+            color: #1a4d5f;
+            cursor: pointer;
+            width: 300px;
+            max-width: 90%;
+        }
+        [data-theme="dark"] .chapter-selector select {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin: 1rem 0 0.25rem;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] h1 {
+            color: #5a9e8c;
+        }
+        .episode-number {
+            color: #6b6a68;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #e5e0d8;
+            padding-bottom: 0.5rem;
+        }
+        [data-theme="dark"] .episode-number {
+            color: #a0a0a0;
+            border-bottom-color: #404040;
+        }
+        .story-content {
+            margin: 1.5rem 0;
+        }
+        .story-content p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+        hr {
+            margin: 2rem 0;
+            border: none;
+            border-top: 1px solid #e5e0d8;
+        }
+        [data-theme="dark"] hr {
+            border-top-color: #404040;
+        }
+        
+        .floating-buttons {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+        .floating-btn {
+            background: #1a4d5f;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.8;
+        }
+        [data-theme="dark"] .floating-btn {
+            background: #5a9e8c;
+        }
+        .floating-btn:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        
+        .toast-message {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: #1a4d5f;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            z-index: 1000;
+            animation: fadeOut 3s ease forwards;
+        }
+        [data-theme="dark"] .toast-message {
+            background: #5a9e8c;
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            70% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+        
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            border-top: 1px solid #e5e0d8;
+            padding-top: 1.5rem;
+        }
+        [data-theme="dark"] footer {
+            border-top-color: #404040;
+        }
+        
+        @media (max-width: 600px) {
+            body { padding: 0.5rem; }
+            .nav-center, .nav-bottom { flex-direction: column; gap: 0.5rem; }
+            .floating-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                bottom: 70px;
+                right: 15px;
+            }
+        }
+    </style>
+    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+</head>
+<body>
+    <div class="options-bar">
+        <div class="font-size-control">
+            <button id="fontMinus">A-</button>
+            <button id="fontPlus">A+</button>
+        </div>
+        <a href="index.html">📚 Índice</a>
+        <button id="themeToggle">🌙 Modo oscuro</button>
+    </div>
+
+    <div class="nav-container">
+        <div class="nav-center">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo2e26.html" id="prevLinkTop" class="nav-btn ">← Batalla en el primer piso 1</a>
+            <span class="chapter-counter" id="chapterCounterTop">Capítulo 2 - Episodio 27</span>
+            <a href="capitulo2e28.html" id="nextLinkTop" class="nav-btn ">Batalla en el primer piso 3 →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelect">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <h1>Batalla en el primer piso 2</h1>
+    <div class="episode-number">Capítulo 2 - Episodio 27</div>
+
+    <div class="story-content">
+        <p>A pesar de recibir de frente la intención asesina de Nea y Kia, miembros de la Orden de los Caballeros Blancos con nivel superior a 1800, Mera se reía con auténtica alegría.</p>
+<p>—¡Je je je je! Qué amenazador. No solo de palabras, que me diviertan de verdad, enanos elfos…</p>
+<p>Antes de que Mera terminara la frase, dos ráfagas de viento —Nea y Kia con sus sables— corrieron por el suelo. La pareja esquivó el golpe y se separó a izquierda y derecha. Nea y Kia no se detuvieron y siguieron moviéndose a gran velocidad, como el viento. Usaban las gruesas columnas del interior de la torre para atacar en tres dimensiones.</p>
+<p>—¡Je je je je je! Heathel, parece que no eran ratones, sino ardillas.</p>
+<p>—No te confíes tanto.</p>
+<p>—¡Maldigan su mala suerte!</p>
+<p>—¿Mala suerte?</p>
+<p>Ante las palabras de Nea y Kia, Heathel inclinó la cabeza con extrañeza. Los dos, mientras se movían a gran velocidad, hablaron con orgullo.</p>
+<p>—No sé por qué han construido esta torre tan enorme.</p>
+<p>—¡Pero les ha dado la mala suerte de que estas columnas nos dan muchas ventajas!</p>
+<p>—¡Je je je je! Ya veo… ¿Llaman "mala suerte" el habernos dado un sitio para movernos con agilidad? ¿De verdad creen que esto es "mala suerte"?</p>
+<p>—¡Pronto lo entenderán! ¡Cuchilla de Viento!</p>
+<p>—¡Cuchilla de Viento!</p>
+<p>Nea y Kia, mientras se movían a gran velocidad, lanzaron magia de ataque de viento de nivel de Combate sin conjuro. Las cuchillas de vacío se abatieron sobre Mera y Heathel.</p>
+<p>—Bueno, para ser elfos, esto es lo esperable.</p>
+<p>—¡Je je je je! Vaya, ¿esto es "mala suerte"? Qué decepción.</p>
+<p>Heathel y Mera esquivaron sin problemas los ataques. Pero Nea y Kia no perdieron la calma. Una y otra vez, mientras se movían a gran velocidad, seguían lanzando "Cuchilla de Viento" sin conjuro.</p>
+<p>—¡Cuchilla de Viento! ¡Cuchilla de Viento! ¡Cuchilla de Viento!</p>
+<p>—¡Je je je je! ¡Vaya!</p>
+<p>Mera, sujetándose el sombrero con una mano, seguía esquivando las cuchillas que llovían de todas direcciones excepto del suelo. Heathel también se concentraba en esquivar y le advirtió:</p>
+<p>—¡Mera! ¡No pueden seguir moviéndose y lanzando magia a la vez! ¡Concéntrate en esquivar hasta que se cansen!</p>
+<p>—¡Lo siento! ¡Aunque no lo parezca, somos miembros de la Orden de los Caballeros Blancos!</p>
+<p>—¡Podemos mantener este ritmo medio día sin problema! ¡Y además!</p>
+<p>Silbó el aire. Un cuchillo arrojadizo, más rápido que la Cuchilla de Viento, se clavó en el muslo izquierdo de Mera. Kia, que ya estaba en posición de ataque, aprovechó que su movimiento se detuvo y, al pasar junto a ella, le cercenó el tobillo izquierdo con su sable. Sin mediar señal, atacaron al unísono. Un trabajo de equipo digno de gemelos. Kia se alejó en el acto. Nea y Kia reanudaron sus movimientos rápidos para no ser alcanzados.</p>
+<p>—¡Kyahahahaha! ¡Ya le hemos quitado la pierna izquierda, Kia!</p>
+<p>—¿A quién le toca ahora, Nea? ¿A la alta o a la de pelo rojo y azul?</p>
+<p>Nea y Kia se reían con auténtica alegría. Sus voces reflejaban su determinación de torturar a aquellas humanas que los habían menospreciado y cortarles las extremidades, por mucho que les suplicaran. Pero, a pesar de la situación, que habría aterrorizado a cualquier aventurero veterano, Mera y Heathel mantenían su aire de suficiencia. Mera recogió con despreocupación su propio tobillo cercenado. Lo manoseó mientras preguntaba a Heathel.</p>
+<p>—Heathel, ¿qué te parece? ¿Terminó ya el espectáculo de circo?</p>
+<p>—¿Circo? Bueno, ya conocemos su fuerza. No esperaba que fueran tan débiles. Ellie-sama nos dijo que usáramos esto para probar si nuestro poder servía en la superficie, pero no sé si era necesario.</p>
+<p>Incluso Heathel, la más formal, dudaba de la necesidad del experimento y se tapó la cara con una mano, aún con los guanteletes puestos. Tan decepcionada estaba con la diferencia de nivel. Ante tal reacción, incluso Nea y Kia se detuvieron. No era una provocación o un farol. Por su tono, hablaban en serio. Sintiendo una inquietud que no podían ocultar, preguntaron:</p>
+<p>—¿E-están hablando en serio? ¡No nos engañarán con faroles!</p>
+<p>—¡Ni siquiera pueden tocarnos! ¡Son ustedes las que están siendo destrozadas!</p>
+<p>—¡Je je je je je! Tontos. Parece que no se han dado cuenta. Ese cuchillo no me clavó, y mi tobillo no está cortado, ¿no? ¿No han notado que ni en el suelo ni en sus sables hay ni una gota de sangre?</p>
+<p>—¡!?</p>
+<p>Kia, que había cortado el tobillo de Mera, comprobó su sable, alarmado por su comentario. Como ella dijo, no había ni una gota de sangre. Además, Mera abrió la boca y empezó a comerse su propio tobillo. Con un sonido crujiente, se lo tragó. Y no acabó ahí. En cuanto terminó de masticar, el tobillo de Mera volvió a crecer. Como para demostrar que era real, lo movió un par de veces. Entonces, Mera se agarró la cabeza con ambas manos y se la arrancó de un tirón. Ante tal espectáculo, Nea y Kia se quedaron sin palabras. Sosteniendo su propia cabeza cercenada, Mera habló en ese estado.</p>
+<p>—Por cierto, se me olvidaba presentarme. Soy "UR, Quimera Mera, nivel 7777". Como mi nombre indica, mi cuerpo está compuesto por numerosos seres vivos. Cada parte de mi cuerpo, cada célula, es un ser vivo independiente. Por eso puedo recomponerme fácilmente, como he hecho con el pie, y hacer esto también.</p>
+<p>El cuchillo que parecía haberle atravesado la pierna también había sido devorado por algún monstruo de su interior, con una poderosa capacidad digestiva. Los dientes de Nea y Kia castañeteaban. No querían aceptar la realidad y gritaron:</p>
+<p>—¡Im-imposible! ¡Nivel 7777 es más del doble que el comandante! ¡No puede existir un nivel tan desquiciado!</p>
+<p>—¡Eso! ¡Eso es lo que dice Nea! ¡Arrancarte la cabeza será un truco para asustarnos! ¡No nos engañarán!</p>
+<p>—¡Je je je je! ¿Un truco? ¡No hay trampa ni cartón!</p>
+<p>Mera se rió con ganas, aún con la cabeza en la mano. Nea y Kia, aterrorizados, les apuntaron con sus sables.</p>
+<p>—¡Si de verdad fueran monstruos de nivel 7777, por qué esquivaban tan desesperadamente nuestros ataques! ¡No tiene sentido!</p>
+<p>—¡Eso! ¡Eso! ¡Lo que dice Kia! ¡Esa huida tan desesperada es la prueba de que es un farol!</p>
+<p>—Eso era para medir sus fuerzas y conocer sus tácticas. ¡De hecho, yo estaba nerviosa de que la mala actuación de Mera nos delatara! ¡Mera, por favor, actúa un poco mejor la próxima vez!</p>
+<p>—¡Je je je je! ¿Y qué? Al final conseguimos lo que queríamos.</p>
+<p>Heathel había esquivado sus ataques fingiendo sorpresa ante su velocidad y haciendo un esfuerzo por esquivar las Cuchillas de Viento. Pero lo que más le había preocupado era la actuación despreocupada de Mera. Enfadada por sus payasadas, Nea y Kia reanudaron el ataque para demostrar que todo era un farol.</p>
+<p>—¡Si no es un farol, reciban nuestros ataques! ¡Cuchilla de Viento!</p>
+<p>—¡Por mucho que hablen, a ver si se atreven a recibirlos! ¡Cuchilla de Viento!</p>
+<p>Los gemelos, casi al unísono, lanzaron su magia de nivel de Combate sin conjuro. Los ataques impactaron de lleno en Heathel y Mera, pero ellas no se movieron. Como si hubiera sido una brisa, no les hizo ningún daño. Ni siquiera les importó, siguieron discutiendo. Nea y Kia se quedaron sin palabras. Heathel, al verlo, les hizo saber la cruel realidad.</p>
+<p>—Se me olvidaba presentarme. Soy "UR, Luchadora de Fuego y Hielo Heathel, nivel 7777". A Heathel y a Mera no les afectan magias tan básicas.</p>
+<p>—¡Je je je je! Eso es. Nuestra defensa mágica es tan alta que ni siquiera necesitamos pararlas.</p>
+<p>—¡Mentira! ¡Mentira! ¡Cuchilla de Viento! ¡Cuchilla de Viento! ¡Cuchilla de Viento!</p>
+<p>—¡Funciona, por favor! ¡Cuchilla de Viento! ¡Espada de Hielo! ¡Flecha del Trueno!</p>
+<p>Nea lanzaba "Cuchilla de Viento" una tras otra, y Kia lanzaba como loco todas las magias de nivel de Combate que podía sin conjuro. Pero Heathel y Mera ni siquiera se movieron. Para ellas, esas magias de nivel básico no eran más que una brisa. No les causaban el menor daño.</p>
+<p>—Entonces, ¡las destrozaremos!</p>
+<p>—¡Las atravesaremos!</p>
+<p>Nea y Kia abandonaron la magia y cargaron. Nea atacó con su sable, y Kia lanzó un cuchillo con todas sus fuerzas. Pero el sable ni siquiera rasgó la ropa de Mera, y el cuchillo cayó al suelo sin arañar la piel de Heathel.</p>
+<p>—¡Je je je je! ¡Es inútil! Con una espada normal no pueden hacernos daño. ¡Sería más fácil cortar una roca con una espada de papel!</p>
+<p>—Con armas tan mediocres… No es que dude de la inteligencia de Ellie-sama, pero con rivales tan débiles, ¿de verdad era necesario este experimento?</p>
+<p>Mera se reía, y Heathel suspiró con descontento. Nea y Kia, al ver que sus ataques no servían de nada, gritaron y huyeron a toda velocidad. Las dos los observaron con calma.</p>
+<p>—¡Je je je je! Huyen hacia la salida. Pero la salida ya está cerrada, no pueden salir.</p>
+<p>—…¿Puede que sea una trampa? ¿Que finjan huir para que nos confiemos?</p>
+<p>—No puede ser. Eres demasiado desconfiada.</p>
+<p>Mera no pudo evitar hacerle un comentario. Pero Heathel mantuvo su expresión seria.</p>
+<p>—No es una posibilidad nula. No bajemos la guardia, vamos a por ellos.</p>
+<p>Heathel apretó con fuerza los guanteletes de su mano derecha. Mera, sabiendo que era inútil insistir, se encogió de hombros y se alejó de ella. De sus largas mangas surgieron unos brazos de dragón, cubiertos de escamas rojas, especializadas en defensa contra el calor, que envolvieron su cuerpo. Mera, que no había prestado atención a los ataques de Nea y Kia, se puso en guardia. Al verlo, Heathel gritó con fuerza:</p>
+<p>—¡Habita en mi mano derecha! ¡Ifrit!</p>
+    </div>
+
+    <hr>
+
+    <div class="nav-container">
+        <div class="nav-bottom">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo2e26.html" id="prevLinkBottom" class="nav-btn ">← Batalla en el primer piso 1</a>
+            <span class="chapter-counter" id="chapterCounterBottom">Capítulo 2 - Episodio 27</span>
+            <a href="capitulo2e28.html" id="nextLinkBottom" class="nav-btn ">Batalla en el primer piso 3 →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelectBottom">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <div class="floating-buttons">
+        <button class="floating-btn" id="scrollToTop" title="Ir arriba">⬆</button>
+        <button class="floating-btn" id="scrollToBottom" title="Ir abajo">⬇</button>
+    </div>
+
+    <footer>
+        <p>Gacha Infinita © 明鏡シスイ (Meikyō Shisui) | Traducción: Ocholobos</p>
+        <p>Apoya al autor comprando los volúmenes oficiales</p>
+    </footer>
+
+    <script src="data.js"></script>
+    <script>
+        // ========== CONFIGURACIÓN DEL CAPÍTULO ==========
+        const CHAPTER_NUM = 2;
+        const EPISODE_NUM = 27;
+        
+        // ========== NAVEGACIÓN ==========
+        function setupNavigation() {
+            if (typeof GACHA_DATA !== 'undefined') {
+                const currentEpisode = GACHA_DATA.getEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const prevEpisode = GACHA_DATA.getPrevEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const nextEpisode = GACHA_DATA.getNextEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const allEpisodes = GACHA_DATA.getAllEpisodesOrdered();
+                
+                const prevLinks = [document.getElementById('prevLinkTop'), document.getElementById('prevLinkBottom')];
+                const nextLinks = [document.getElementById('nextLinkTop'), document.getElementById('nextLinkBottom')];
+                const counters = [document.getElementById('chapterCounterTop'), document.getElementById('chapterCounterBottom')];
+                
+                counters.forEach(c => { if(c) c.textContent = `${currentEpisode.chapterTitle} - Episodio ${currentEpisode.episodeNum}`; });
+                
+                if (prevEpisode) {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${prevEpisode.chapter}e${prevEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = prevEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `← ${shortTitle}`;
+                        }
+                    });
+                } else {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = '← Sin anterior';
+                        }
+                    });
+                }
+                
+                if (nextEpisode) {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${nextEpisode.chapter}e${nextEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = nextEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `${shortTitle} →`;
+                        }
+                    });
+                } else {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = 'Sin siguiente →';
+                        }
+                    });
+                }
+                
+                const selects = [document.getElementById('chapterSelect'), document.getElementById('chapterSelectBottom')];
+                selects.forEach(select => {
+                    if (!select) return;
+                    let options = '<option value="">📖 Seleccionar episodio...</option>';
+                    for (const ep of allEpisodes) {
+                        const selected = (ep.chapter == CHAPTER_NUM && ep.episodeNum == EPISODE_NUM) ? 'selected' : '';
+                        options += `<option value="capitulo${ep.chapter}e${ep.episodeNum}.html" ${selected}>${ep.chapterTitle} - Episodio ${ep.episodeNum}: ${ep.title}</option>`;
+                    }
+                    select.innerHTML = options;
+                    select.onchange = function() { if(this.value) window.location.href = this.value; };
+                });
+            }
+        }
+        
+        // ========== REGISTRAR LECTURA EN HISTORIAL ==========
+        function markAsRead() {
+            const user = localStorage.getItem('gacha_user');
+            if (!user) return;
+            
+            let history = localStorage.getItem(`gacha_history_${user}`);
+            let historyObj = history ? JSON.parse(history) : { chapters: [] };
+            
+            const readKey = { chapter: CHAPTER_NUM, episode: EPISODE_NUM };
+            historyObj.chapters = historyObj.chapters.filter(item => 
+                !(item.chapter == CHAPTER_NUM && item.episode == EPISODE_NUM)
+            );
+            historyObj.chapters.unshift(readKey);
+            if (historyObj.chapters.length > 20) historyObj.chapters.pop();
+            
+            localStorage.setItem(`gacha_history_${user}`, JSON.stringify(historyObj));
+        }
+        
+        // ========== CONTROLES ==========
+        function initControls() {
+            const savedTheme = localStorage.getItem('gacha_theme');
+            if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+            const savedFont = localStorage.getItem('gacha_fontsize');
+            if (savedFont) document.body.style.fontSize = savedFont + '%';
+            
+            document.getElementById('fontPlus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.min(150, size + 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            document.getElementById('fontMinus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.max(70, size - 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            
+            const themeBtn = document.getElementById('themeToggle');
+            if (document.documentElement.hasAttribute('data-theme')) themeBtn.textContent = '☀️ Modo claro';
+            themeBtn.onclick = () => {
+                const isDark = document.documentElement.hasAttribute('data-theme');
+                if (isDark) {
+                    document.documentElement.removeAttribute('data-theme');
+                    localStorage.setItem('gacha_theme', 'light');
+                    themeBtn.textContent = '🌙 Modo oscuro';
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('gacha_theme', 'dark');
+                    themeBtn.textContent = '☀️ Modo claro';
+                }
+            };
+            
+            document.getElementById('scrollToTop').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('scrollToBottom').onclick = () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+        
+        // ========== INICIALIZACIÓN ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            initControls();
+            setupNavigation();
+            markAsRead();
+            
+            kofiWidgetOverlay.draw('ocholobos', {
+                'type': 'floating-chat',
+                'floating-chat.donateButton.text': 'Apóyame',
+                'floating-chat.donateButton.background-color': '#1a4d5f',
+                'floating-chat.donateButton.text-color': '#ffffff'
+            });
+        });
+    </script>
+</body>
+</html>

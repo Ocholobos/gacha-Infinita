@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Light, nivel alrededor de 3000 (2) | Gacha Infinita</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem;
+            line-height: 1.8;
+            background: #faf9f7;
+            color: #2c2b28;
+            transition: all 0.3s ease;
+        }
+        [data-theme="dark"] body {
+            background: #1a1a1a;
+            color: #e5e5e5;
+        }
+        
+        .options-bar {
+            position: sticky;
+            top: 0;
+            background: #faf9f7;
+            border-bottom: 1px solid #e5e0d8;
+            padding: 0.6rem 1rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.8rem;
+            z-index: 100;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        [data-theme="dark"] .options-bar {
+            background: #1a1a1a;
+            border-bottom-color: #404040;
+        }
+        .options-bar button, .options-bar a {
+            background: #eef2f0;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: #1a4d5f;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .options-bar button, [data-theme="dark"] .options-bar a {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .font-size-control {
+            display: flex;
+            gap: 0.3rem;
+            align-items: center;
+        }
+        .font-size-control button {
+            width: 32px;
+            padding: 0.2rem;
+        }
+        
+        .nav-container {
+            margin: 1rem 0;
+        }
+        .nav-center, .nav-bottom {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+        .nav-bottom {
+            margin-top: 1rem;
+        }
+        .nav-btn {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            color: #1a4d5f;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .nav-btn {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .nav-btn:hover {
+            background: #e5e0d8;
+        }
+        .nav-btn.disabled {
+            background: #e5e0d8;
+            color: #9ca3af;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .chapter-counter {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] .chapter-counter {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        .chapter-selector {
+            margin: 0.5rem 0;
+            text-align: center;
+        }
+        .chapter-selector select {
+            background: #eef2f0;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-family: inherit;
+            color: #1a4d5f;
+            cursor: pointer;
+            width: 300px;
+            max-width: 90%;
+        }
+        [data-theme="dark"] .chapter-selector select {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin: 1rem 0 0.25rem;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] h1 {
+            color: #5a9e8c;
+        }
+        .episode-number {
+            color: #6b6a68;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #e5e0d8;
+            padding-bottom: 0.5rem;
+        }
+        [data-theme="dark"] .episode-number {
+            color: #a0a0a0;
+            border-bottom-color: #404040;
+        }
+        .story-content {
+            margin: 1.5rem 0;
+        }
+        .story-content p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+        hr {
+            margin: 2rem 0;
+            border: none;
+            border-top: 1px solid #e5e0d8;
+        }
+        [data-theme="dark"] hr {
+            border-top-color: #404040;
+        }
+        
+        .floating-buttons {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+        .floating-btn {
+            background: #1a4d5f;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.8;
+        }
+        [data-theme="dark"] .floating-btn {
+            background: #5a9e8c;
+        }
+        .floating-btn:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        
+        .toast-message {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: #1a4d5f;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            z-index: 1000;
+            animation: fadeOut 3s ease forwards;
+        }
+        [data-theme="dark"] .toast-message {
+            background: #5a9e8c;
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            70% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+        
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            border-top: 1px solid #e5e0d8;
+            padding-top: 1.5rem;
+        }
+        [data-theme="dark"] footer {
+            border-top-color: #404040;
+        }
+        
+        @media (max-width: 600px) {
+            body { padding: 0.5rem; }
+            .nav-center, .nav-bottom { flex-direction: column; gap: 0.5rem; }
+            .floating-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                bottom: 70px;
+                right: 15px;
+            }
+        }
+    </style>
+    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+</head>
+<body>
+    <div class="options-bar">
+        <div class="font-size-control">
+            <button id="fontMinus">A-</button>
+            <button id="fontPlus">A+</button>
+        </div>
+        <a href="index.html">📚 Índice</a>
+        <button id="themeToggle">🌙 Modo oscuro</button>
+    </div>
+
+    <div class="nav-container">
+        <div class="nav-center">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo3e4.html" id="prevLinkTop" class="nav-btn ">← Light, nivel alrededor de 3000</a>
+            <span class="chapter-counter" id="chapterCounterTop">Capítulo 3 - Episodio 5</span>
+            <a href="capitulo3e6.html" id="nextLinkTop" class="nav-btn ">vs Hydra →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelect">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <h1>Light, nivel alrededor de 3000 (2)</h1>
+    <div class="episode-number">Capítulo 3 - Episodio 5</div>
+
+    <div class="story-content">
+        <p>Según Mei, "puedo hacer casi cualquier cosa, por eso mi capacidad de combate no es muy alta". Pero cuando hacía combates de práctica con ella, no podía hacer nada. Literalmente, no podía mover ni pies ni manos. Si ella era tan fuerte, ¿cómo de fuertes serían los que se especializan en combate con nivel 9999? Mei se encargó de explorar, elaborando mapas del fondo del "Abismo", marcando las trampas y la ruta hasta el monstruo guardián. ¿Qué es el monstruo guardián? Es el monstruo que protege el núcleo del calabozo. Es el más fuerte, y se dice que detrás de él está el núcleo, que mantiene y gestiona el calabozo. Mei encontró una gran puerta, y dijo que al otro lado "se siente la presencia de un monstruo de gran tamaño, de nivel alrededor de 5000". Por el nivel, no cabía duda de que era el monstruo guardián.</p>
+<p>—El monstruo guardián tiene alrededor de nivel 5000. Con Mei, no perderemos, ¿verdad?</p>
+<p>—Sí. En cuanto entre en la habitación, lo haré pedazos con mi "Hilo Mágico".</p>
+<p>…Y aún dice que no es fuerte. No lo entiendo. Cambiando de tema, le dije:</p>
+<p>—En fin, para entrenar, primero lucharé solo. Así que, cuando entre en la habitación, no lo hagas pedazos al instante, ¿de acuerdo?</p>
+<p>—Entendido. Pero si considero que la vida de Light-sama corre peligro, intervendré. No se esfuerce demasiado.</p>
+<p>—Lo sé. Eres demasiado protectora.</p>
+<p>—Es natural que una sirvienta proteja la vida de su señor.</p>
+<p>Mei, más que una sirvienta, parecía una hermana mayor, riñéndome y abrazándome con ternura. Aunque protestaba diciendo que era "demasiado protectora", en realidad me gustaban sus cuidados.</p>
+<p>Así, decidimos enfrentarnos al monstruo guardián. Por precipitado, dejamos para el día siguiente. Para la batalla decisiva del día siguiente, me bañé con Mei y descansé.</p>
+<p>***</p>
+<p>A la mañana siguiente, después de desayunar y prepararme, nos dirigimos a la sala del guardián. De camino, nos encontramos con monstruos de nivel 1000 a 3000, pero los derrotamos como calentamiento. Llevábamos más de un mes en el fondo del "Abismo", y mi nivel había subido, el equipo era bueno, y los monstruos ya me eran familiares, así que no tuvimos problemas. Llegamos a la sala del guardián con la tranquilidad de un paseo. Era una puerta enorme, con unos relieves siniestros. Mediría unos cuatro o cinco metros. Hice algunos ejercicios de calentamiento con la lanza "UR, Uragan", imbuida con el atributo de viento.</p>
+<p>—Mei, como te dije ayer, básicamente no intervengas. Al principio, quiero luchar para entrenar.</p>
+<p>—Lo sé. Pero no olvide que si se ve en apuros, yo le ayudaré. No haga nada temerario.</p>
+<p>—Ya lo sé.</p>
+<p>Con el ambiente distendido de una hermana y su hermano, toqué la enorme puerta. Al tocarla, se abrió sola, como si la manejara un gigante. El interior estaba oscuro, pero al abrirse, se encendieron luces en el techo y las paredes, iluminando lo suficiente. El techo era alto y la sala muy profunda. Era tan grande que podría albergar una aldea entera. Entré el primero. Detrás, a tres pasos, me seguía Mei.</p>
+<p>—…Ese es el monstruo guardián del "Abismo".</p>
+<p>Al fondo, dormía un enorme cuerpo rechoncho. Sus escamas rojas, tan finas que parecía que se cortarían al tocarlas, y sus nueve cabezas. Al notar nuestra presencia, giró lentamente las cabezas y soltó un gruñido. No tenía alas, pero su cuerpo debía medir unos quince metros.</p>
+<p>—Es una hidra de nivel 5000.</p>
+<p>Mei lo identificó. Nivel 5000. Cerca de 2000 niveles por encima de mí. Por la diferencia, normalmente no podría ni tocarle, pero…</p>
+<p>Antes de que la hidra se levantara del todo, una de sus cabezas abrió la boca hacia nosotros.</p>
+<p>—¡!?</p>
+<p>En cuanto vi la boca abierta, un bloque negro salió disparado a gran velocidad. Salté a la derecha por reflejo; Mei, con calma, a la izquierda. El suelo donde estábamos se hundió, hecho pedazos.</p>
+<p>—¡Te haces el lento para despistarnos y luego escupes rocas a toda velocidad! ¡Qué tramposo!</p>
+<p>—Es un monstruo. No concibe conceptos como trampa o vileza.</p>
+<p>Mei me interrumpió en tono ligero. No tenía tiempo para responder. Aunque había mucha diferencia de nivel, había podido esquivar el ataque gracias a la lanza "UR, Uragan", de nivel Fantasmal, que aumentaba mi velocidad. Con esta lanza y las cartas de la Gacha Infinita, tenía posibilidades de ganar.</p>
+<p>Como venganza, saqué una carta de la caja de ítems.</p>
+<p>—¡Llama explosiva! ¡Liberar!</p>
+<p>La carta "SSR, Llama explosiva". Era una magia de ataque de nivel Táctico superior. Una combinación de explosión y llamas, efectiva contra la mayoría de los monstruos. El humo de la explosión envolvió a la hidra. Aunque fuera el monstruo guardián del "Abismo", de nivel 5000, no podría ignorar este daño.</p>
+<p>—¡Guooo!</p>
+<p>—¿I-ilesa? ¡Y todavía tiene fuerzas para contraatacar!</p>
+<p>Dos de sus cabezas abrieron la boca: una escupió fuego, la otra roció un líquido a gran velocidad. Esquivé gracias a la velocidad de la lanza. El fuego me chamuscó el vello, y el líquido, al caer al suelo, lo derritió con un ruido sibilante. ¡No podía recibir un golpe de eso!</p>
+<p>—L-Light-sama, ya debería intervenir…</p>
+<p>—Apenas hemos empezado, estoy bien. ¡Todavía no intervengas!</p>
+<p>Mei, al ver el suelo derretido, me habló con preocupación. Pero acababa de empezar, y yo era un hombre. No podía rendirme tan pronto delante de ella.</p>
+<p>—¡Si la magia no funciona, tendré que atacar directamente!</p>
+<p>Corrí con la lanza. Tres cabezas se giraron hacia mí; las otras seis vigilaban a Mei. El monstruo guardián sabía por instinto a quién debía vigilar. Me fastidiaba, pero era una oportunidad. Las llamas, el líquido corrosivo y las rocas volaron hacia mí. Las esquivé todas con soltura y me acerqué. A pesar de su aspecto pesado, me atacó con la cola con rapidez. Pero lo esperaba, así que fue una oportunidad. Salté con fuerza, esquivé la cola. Apuntando a una cabeza que me había dado la espalda, blandí la lanza con ambas manos. La punta, de nivel Fantasmal, atravesó sus escamas, más duras que el acero, y se clavó a fondo. Inmediatamente, liberé su poder.</p>
+<p>—¡Uragan, muestra tu poder!</p>
+<p>Al infundirle poder mágico, la lanza desató un vendaval que arrancó la cabeza de la hidra.</p>
+<p>—¡Guooo!</p>
+<p>Sin esperar que yo le arrancara una cabeza, la hidra lanzó un rugido de dolor y rabia. Sin codiciar más, me alejé a una posición segura y volví a empuñar la lanza.</p>
+<p>—¡Bien! ¡Con este equipo, puedo plantar cara a un enemigo de nivel 5000! ¡Quizás pueda derrotarlo sin ayuda de Mei…!?</p>
+<p>No pude terminar la frase. La cabeza que había arrancado con Uragan volvió a crecer en unos diez segundos.</p>
+<p>—¡R-regen… regenera la cabeza casi al instante! ¡Qué poder de regeneración tan increíble!</p>
+<p>—Light-sama, ya debería intervenir…</p>
+<p>Mei me llamó con preocupación. Pero yo también tenía mi orgullo como hombre.</p>
+<p>—¡Todavía no, Mei! ¡La batalla apenas empieza!</p>
+    </div>
+
+    <hr>
+
+    <div class="nav-container">
+        <div class="nav-bottom">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo3e4.html" id="prevLinkBottom" class="nav-btn ">← Light, nivel alrededor de 3000</a>
+            <span class="chapter-counter" id="chapterCounterBottom">Capítulo 3 - Episodio 5</span>
+            <a href="capitulo3e6.html" id="nextLinkBottom" class="nav-btn ">vs Hydra →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelectBottom">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <div class="floating-buttons">
+        <button class="floating-btn" id="scrollToTop" title="Ir arriba">⬆</button>
+        <button class="floating-btn" id="scrollToBottom" title="Ir abajo">⬇</button>
+    </div>
+
+    <footer>
+        <p>Gacha Infinita © 明鏡シスイ (Meikyō Shisui) | Traducción: Ocholobos</p>
+        <p>Apoya al autor comprando los volúmenes oficiales</p>
+    </footer>
+
+    <script src="data.js"></script>
+    <script>
+        // ========== CONFIGURACIÓN DEL CAPÍTULO ==========
+        const CHAPTER_NUM = 3;
+        const EPISODE_NUM = 5;
+        
+        // ========== NAVEGACIÓN ==========
+        function setupNavigation() {
+            if (typeof GACHA_DATA !== 'undefined') {
+                const currentEpisode = GACHA_DATA.getEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const prevEpisode = GACHA_DATA.getPrevEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const nextEpisode = GACHA_DATA.getNextEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const allEpisodes = GACHA_DATA.getAllEpisodesOrdered();
+                
+                const prevLinks = [document.getElementById('prevLinkTop'), document.getElementById('prevLinkBottom')];
+                const nextLinks = [document.getElementById('nextLinkTop'), document.getElementById('nextLinkBottom')];
+                const counters = [document.getElementById('chapterCounterTop'), document.getElementById('chapterCounterBottom')];
+                
+                counters.forEach(c => { if(c) c.textContent = `${currentEpisode.chapterTitle} - Episodio ${currentEpisode.episodeNum}`; });
+                
+                if (prevEpisode) {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${prevEpisode.chapter}e${prevEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = prevEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `← ${shortTitle}`;
+                        }
+                    });
+                } else {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = '← Sin anterior';
+                        }
+                    });
+                }
+                
+                if (nextEpisode) {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${nextEpisode.chapter}e${nextEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = nextEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `${shortTitle} →`;
+                        }
+                    });
+                } else {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = 'Sin siguiente →';
+                        }
+                    });
+                }
+                
+                const selects = [document.getElementById('chapterSelect'), document.getElementById('chapterSelectBottom')];
+                selects.forEach(select => {
+                    if (!select) return;
+                    let options = '<option value="">📖 Seleccionar episodio...</option>';
+                    for (const ep of allEpisodes) {
+                        const selected = (ep.chapter == CHAPTER_NUM && ep.episodeNum == EPISODE_NUM) ? 'selected' : '';
+                        options += `<option value="capitulo${ep.chapter}e${ep.episodeNum}.html" ${selected}>${ep.chapterTitle} - Episodio ${ep.episodeNum}: ${ep.title}</option>`;
+                    }
+                    select.innerHTML = options;
+                    select.onchange = function() { if(this.value) window.location.href = this.value; };
+                });
+            }
+        }
+        
+        // ========== REGISTRAR LECTURA EN HISTORIAL ==========
+        function markAsRead() {
+            const user = localStorage.getItem('gacha_user');
+            if (!user) return;
+            
+            let history = localStorage.getItem(`gacha_history_${user}`);
+            let historyObj = history ? JSON.parse(history) : { chapters: [] };
+            
+            const readKey = { chapter: CHAPTER_NUM, episode: EPISODE_NUM };
+            historyObj.chapters = historyObj.chapters.filter(item => 
+                !(item.chapter == CHAPTER_NUM && item.episode == EPISODE_NUM)
+            );
+            historyObj.chapters.unshift(readKey);
+            if (historyObj.chapters.length > 20) historyObj.chapters.pop();
+            
+            localStorage.setItem(`gacha_history_${user}`, JSON.stringify(historyObj));
+        }
+        
+        // ========== CONTROLES ==========
+        function initControls() {
+            const savedTheme = localStorage.getItem('gacha_theme');
+            if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+            const savedFont = localStorage.getItem('gacha_fontsize');
+            if (savedFont) document.body.style.fontSize = savedFont + '%';
+            
+            document.getElementById('fontPlus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.min(150, size + 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            document.getElementById('fontMinus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.max(70, size - 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            
+            const themeBtn = document.getElementById('themeToggle');
+            if (document.documentElement.hasAttribute('data-theme')) themeBtn.textContent = '☀️ Modo claro';
+            themeBtn.onclick = () => {
+                const isDark = document.documentElement.hasAttribute('data-theme');
+                if (isDark) {
+                    document.documentElement.removeAttribute('data-theme');
+                    localStorage.setItem('gacha_theme', 'light');
+                    themeBtn.textContent = '🌙 Modo oscuro';
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('gacha_theme', 'dark');
+                    themeBtn.textContent = '☀️ Modo claro';
+                }
+            };
+            
+            document.getElementById('scrollToTop').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('scrollToBottom').onclick = () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+        
+        // ========== INICIALIZACIÓN ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            initControls();
+            setupNavigation();
+            markAsRead();
+            
+            kofiWidgetOverlay.draw('ocholobos', {
+                'type': 'floating-chat',
+                'floating-chat.donateButton.text': 'Apóyame',
+                'floating-chat.donateButton.background-color': '#1a4d5f',
+                'floating-chat.donateButton.text-color': '#ffffff'
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La segunda venganza | Gacha Infinita</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem;
+            line-height: 1.8;
+            background: #faf9f7;
+            color: #2c2b28;
+            transition: all 0.3s ease;
+        }
+        [data-theme="dark"] body {
+            background: #1a1a1a;
+            color: #e5e5e5;
+        }
+        
+        .options-bar {
+            position: sticky;
+            top: 0;
+            background: #faf9f7;
+            border-bottom: 1px solid #e5e0d8;
+            padding: 0.6rem 1rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.8rem;
+            z-index: 100;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        [data-theme="dark"] .options-bar {
+            background: #1a1a1a;
+            border-bottom-color: #404040;
+        }
+        .options-bar button, .options-bar a {
+            background: #eef2f0;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: #1a4d5f;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .options-bar button, [data-theme="dark"] .options-bar a {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .font-size-control {
+            display: flex;
+            gap: 0.3rem;
+            align-items: center;
+        }
+        .font-size-control button {
+            width: 32px;
+            padding: 0.2rem;
+        }
+        
+        .nav-container {
+            margin: 1rem 0;
+        }
+        .nav-center, .nav-bottom {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+        .nav-bottom {
+            margin-top: 1rem;
+        }
+        .nav-btn {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            color: #1a4d5f;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .nav-btn {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .nav-btn:hover {
+            background: #e5e0d8;
+        }
+        .nav-btn.disabled {
+            background: #e5e0d8;
+            color: #9ca3af;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .chapter-counter {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] .chapter-counter {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        .chapter-selector {
+            margin: 0.5rem 0;
+            text-align: center;
+        }
+        .chapter-selector select {
+            background: #eef2f0;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-family: inherit;
+            color: #1a4d5f;
+            cursor: pointer;
+            width: 300px;
+            max-width: 90%;
+        }
+        [data-theme="dark"] .chapter-selector select {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin: 1rem 0 0.25rem;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] h1 {
+            color: #5a9e8c;
+        }
+        .episode-number {
+            color: #6b6a68;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #e5e0d8;
+            padding-bottom: 0.5rem;
+        }
+        [data-theme="dark"] .episode-number {
+            color: #a0a0a0;
+            border-bottom-color: #404040;
+        }
+        .story-content {
+            margin: 1.5rem 0;
+        }
+        .story-content p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+        hr {
+            margin: 2rem 0;
+            border: none;
+            border-top: 1px solid #e5e0d8;
+        }
+        [data-theme="dark"] hr {
+            border-top-color: #404040;
+        }
+        
+        .floating-buttons {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+        .floating-btn {
+            background: #1a4d5f;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.8;
+        }
+        [data-theme="dark"] .floating-btn {
+            background: #5a9e8c;
+        }
+        .floating-btn:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        
+        .toast-message {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: #1a4d5f;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            z-index: 1000;
+            animation: fadeOut 3s ease forwards;
+        }
+        [data-theme="dark"] .toast-message {
+            background: #5a9e8c;
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            70% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+        
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            border-top: 1px solid #e5e0d8;
+            padding-top: 1.5rem;
+        }
+        [data-theme="dark"] footer {
+            border-top-color: #404040;
+        }
+        
+        @media (max-width: 600px) {
+            body { padding: 0.5rem; }
+            .nav-center, .nav-bottom { flex-direction: column; gap: 0.5rem; }
+            .floating-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                bottom: 70px;
+                right: 15px;
+            }
+        }
+    </style>
+    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+</head>
+<body>
+    <div class="options-bar">
+        <div class="font-size-control">
+            <button id="fontMinus">A-</button>
+            <button id="fontPlus">A+</button>
+        </div>
+        <a href="index.html">📚 Índice</a>
+        <button id="themeToggle">🌙 Modo oscuro</button>
+    </div>
+
+    <div class="nav-container">
+        <div class="nav-center">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo2e35.html" id="prevLinkTop" class="nav-btn ">← Encuentro después de casi tres años</a>
+            <span class="chapter-counter" id="chapterCounterTop">Capítulo 2 - Episodio 36</span>
+            <a href="capitulo2e37.html" id="nextLinkTop" class="nav-btn ">¿Qué es la desesperación? →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelect">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <h1>La segunda venganza</h1>
+    <div class="episode-number">Capítulo 2 - Episodio 36</div>
+
+    <div class="story-content">
+        <p>—¡Así que realmente seguías vivo! Pero… ¿y las quemaduras? Y tu cuerpo no ha crecido en tres años… ¿eres el verdadero Light?</p>
+<p>—Las quemaduras eran solo una ilusión. Mi cuerpo no ha crecido porque no quiero olvidar la desesperación, la tristeza y la ira que sentí cuando fui traicionado por vosotros, los de la Reunión de Razas. Por eso he mantenido esta apariencia.</p>
+<p>—¡Hii…!</p>
+<p>Sasha, al recibir el odio de frente, soltó un pequeño grito. Michael se interpuso para protegerla. Mirando a Sasha, a su espalda, le preguntó:</p>
+<p>—Sasha, ¿quién es él? Por lo que dice, parece que es el candidato a "Maestro" que ustedes mataron… ¿No lo mataron?</p>
+<p>—E-eso…</p>
+<p>Sasha, sin saber qué responder, se quedó callada. Ella misma no sabía por qué Light seguía vivo. Light, no para ayudar a Sasha, sino para explicárselo también a ella, respondió:</p>
+<p>—Hace tres años, estuve a punto de morir en el "Abismo", el calabozo más grande, más fuerte y más peligroso del mundo, pero caí en una trampa de teletransportación y por suerte sobreviví. Después, para vengarme de vosotros, de la Reunión de Razas, y para saber por qué querían matarme, qué es un "Maestro", por qué los países los buscan, sobreviví. Reuní compañeros como Aoyuki y Ellie, subí de nivel hasta 9999, recopilé información en la superficie, difundí información falsa y preparé mi ejército.</p>
+<p>Dicho esto, Light sonrió y señaló las paredes y el suelo de la torre.</p>
+<p>—¡Incluso esta torre la preparé a propósito para vengarme de ti, Sasha! ¡Todo para llevar a cabo la mejor venganza!</p>
+<p>—¿T-todo esto para vengarse de mí? ¿Y nivel 9999? M-mentira… no hay nada que pueda hacer…</p>
+<p>Sasha palideció, como si fuera a desmayarse. Light, ante su rostro desesperado, no se sintió satisfecho. La sed de venganza que ardía en su pecho no se saciaba con esto.</p>
+<p>—Puf, jajaja…</p>
+<p>—¿M-Michael-sama?</p>
+<p>Al contrario que Sasha, Michael no pudo contener la risa. Ante su risa fuera de lugar, Sasha puso cara de desconcierto. Michael se giró hacia ella, protegiéndola a su espalda, y sonrió.</p>
+<p>—Sasha, eres maravillosa. Eres mi diosa de la suerte. ¡Matar nosotros a este candidato a "Maestro", que además es el dueño de la torre que amenaza al país con un dragón, aumentará nuestra influencia en el Reino Elfo! ¡Entonces nuestra hija será la principal candidata al trono!</p>
+<p>Michael, inusualmente excitado, se dirigió a Sasha. Ella, desconcertada, le contradijo.</p>
+<p>—P-pero Light tiene el poder de construir esta torre y de usar dragones, y además tiene nivel 9999. ¡No podemos matarlo!</p>
+<p>—Cálmese, Sasha.</p>
+<p>Michael le susurró al oído.</p>
+<p>—Es cierto que es sorprendente que haya construido una estructura tan enorme, pero quizás no sea su poder. Seguramente sea de las muchachas que están a su lado. Sobre todo la de la izquierda, la de la túnica de maga. ¿Ha visto sus orejas? Es una elfa, probablemente.</p>
+<p>Sasha miró a Ellie, que estaba a la izquierda de Light. Bajo el sombrero de maga, sus orejas eran puntiagudas. Más cortas que las de un elfo, por eso no se había dado cuenta. En este mundo, si dos razas diferentes tienen un hijo, la probabilidad de embarazo es mucho menor que si son de la misma raza. Además, el niño nace con los rasgos y habilidades de una de las dos razas. Es decir, si es un híbrido de humano y elfo, el hijo será humano o elfo. Los "Sub-Maestros" descienden de la sangre de un "Maestro" humano, pero en definitiva no existen los mestizos. En el Reino Elfo, si una humana da a luz a un hijo de un "Maestro", no lo dejan salir, lo mantienen encerrado y lo casan con un elfo para seguir diluyendo la sangre. Así hasta que solo nazcan elfos. Por eso Michael pensó que Ellie era una "Sub-Maestra", una elfa con sangre de "Maestro". Una elfa con sangre de "Maestro" y experta en magia podría haber construido esta torre. Supuso que sus orejas eran más cortas por algún defecto, que la habían perseguido y marginado, y que Light, siendo humano, la había tratado con cariño, por eso lo seguía.</p>
+<p>Michael continuó:</p>
+<p>—Además, lo del nivel 9999 es un farol. El comandante, el elfo más fuerte, tiene alrededor de 3000. Tres veces eso… ¿cree que un humano inferior puede alcanzarlo? Es como cuando los niños exageran las cosas. No se deje llevar por la apariencia.</p>
+<p>—C-cierto, pensándolo bien, es imposible. Nivel 9999…</p>
+<p>—Y que no haya cambiado físicamente será por el trauma de haber estado a punto de morir. He leído que hay una enfermedad poco común por la que un profundo trauma mental impide que el cuerpo crezca. Seguro que es eso.</p>
+<p>—Ya veo…</p>
+<p>El tono calmado de Michael la tranquilizó. Desde que recibió la nota, en el fondo dudaba de que Light siguiera vivo. Pero al verlo tal cual era hace tres años, se había alterado. Al recuperar la calma, la opinión de Michael le pareció sensata y correcta.</p>
+<p>Michael, por su parte, pensaba en Aoyuki y Ellie.</p>
+<p><em>(Seguro que ellas lo ayudaron. Es joven, de buen aspecto, incluso comparado con un elfo, y con sus desgracias, habrán sentido lástima y simpatía. He oído que a algunas mujeres les gustan los "jóvenes débiles". Supongo que tienen un gusto especial por los débiles.)</em></p>
+<p>Michael, que si Aoyuki y Ellie lo oyeran se enfadarían más que si las descuartizaran, seguía con sus delirios.</p>
+<p><em>(Queremos esa tecnología que desconocemos, y no podemos dejar que se la lleven a otros países. Si les gustan los jóvenes, podríamos ganarlas para nuestro bando con Nea y Kia.)</em></p>
+<p>Michael pensaba que si se conformaban con un humano inferior, con un elfo de mejor aspecto las ganaría fácilmente. Sus conclusiones sobre Light, Aoyuki y Ellie partían de la base de que "un humano inferior no puede ser superior a un elfo". Partiendo de una base errónea, no podía llegar a la respuesta correcta.</p>
+<p>Michael separó la boca del oído de Sasha y esbozó una sonrisa amable.</p>
+<p>—No tenga miedo, acabemos con ese candidato a "Maestro". Y ganemos juntos nuestro feliz futuro.</p>
+<p>—Michael-sama… ¡Sí! ¡Lo mataré, a ese Light que ha sobrevivido de forma tan ruin!</p>
+<p>Los dos se enfrentaron a Light como un grupo de héroes ante un señor demonio. Sus ojos brillaban con una mezcla de falsa justicia y sucios deseos. Light, que había esperado a que terminaran de hablar, cumplió su papel como se esperaba.</p>
+<p>—Mi objetivo es vengarme de Sasha, la de la Reunión de Razas. Subcomandante, si me entregas a ella, te dejaré con vida. O si no soportas ver morir a tu amada prometida, puedes entregar las dos vidas. Por el amor que os profesáis, os mataré rápido aquí mismo. ¿Qué decidís?</p>
+<p>Light, como el señor demonio que esperaban, sonrió cruelmente, cruzó las piernas y preguntó.</p>
+<p>Michael y Sasha, convertidos en el grupo de héroes, respondieron con solemnidad:</p>
+<p>—¡Ninguna de las dos! ¡No voy a dejar a mi amada Sasha! ¡Derrotaré al feo humano inferior y salvaré también a esas muchachas!</p>
+<p>—¡Como dice Michael-sama! ¡Esta vez te enviaremos al infierno con nuestras propias manos, Light! ¡Si te hubieras escondido como un gusano, te habríamos dejado vivir…! ¡Por creerte superior y querer vengarte, te destruirás a ti mismo! ¡Muere arrepintiéndote de tu estupidez!</p>
+<p>Michael declaró que salvaría a Aoyuki y Ellie, no solo a Sasha. Sasha, liberada del estrés que arrastraba desde que recibió la nota, y feliz de poder matar a Light, gritó con júbilo. Light sonrió ante sus declaraciones. Una sonrisa de corazón. De alegría porque iba a lograr la mejor venganza, la más perfecta. En ese momento, Michael y Sasha sellaron su destino.</p>
+<p>—Entonces no hacen falta más palabras. Que comience la venganza.</p>
+<p>Light se levantó del trono. Michael y Sasha se prepararon para el combate. Así comenzó la segunda venganza de Light, después de la de Garou.</p>
+    </div>
+
+    <hr>
+
+    <div class="nav-container">
+        <div class="nav-bottom">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo2e35.html" id="prevLinkBottom" class="nav-btn ">← Encuentro después de casi tres años</a>
+            <span class="chapter-counter" id="chapterCounterBottom">Capítulo 2 - Episodio 36</span>
+            <a href="capitulo2e37.html" id="nextLinkBottom" class="nav-btn ">¿Qué es la desesperación? →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelectBottom">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <div class="floating-buttons">
+        <button class="floating-btn" id="scrollToTop" title="Ir arriba">⬆</button>
+        <button class="floating-btn" id="scrollToBottom" title="Ir abajo">⬇</button>
+    </div>
+
+    <footer>
+        <p>Gacha Infinita © 明鏡シスイ (Meikyō Shisui) | Traducción: Ocholobos</p>
+        <p>Apoya al autor comprando los volúmenes oficiales</p>
+    </footer>
+
+    <script src="data.js"></script>
+    <script>
+        // ========== CONFIGURACIÓN DEL CAPÍTULO ==========
+        const CHAPTER_NUM = 2;
+        const EPISODE_NUM = 36;
+        
+        // ========== NAVEGACIÓN ==========
+        function setupNavigation() {
+            if (typeof GACHA_DATA !== 'undefined') {
+                const currentEpisode = GACHA_DATA.getEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const prevEpisode = GACHA_DATA.getPrevEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const nextEpisode = GACHA_DATA.getNextEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const allEpisodes = GACHA_DATA.getAllEpisodesOrdered();
+                
+                const prevLinks = [document.getElementById('prevLinkTop'), document.getElementById('prevLinkBottom')];
+                const nextLinks = [document.getElementById('nextLinkTop'), document.getElementById('nextLinkBottom')];
+                const counters = [document.getElementById('chapterCounterTop'), document.getElementById('chapterCounterBottom')];
+                
+                counters.forEach(c => { if(c) c.textContent = `${currentEpisode.chapterTitle} - Episodio ${currentEpisode.episodeNum}`; });
+                
+                if (prevEpisode) {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${prevEpisode.chapter}e${prevEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = prevEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `← ${shortTitle}`;
+                        }
+                    });
+                } else {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = '← Sin anterior';
+                        }
+                    });
+                }
+                
+                if (nextEpisode) {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${nextEpisode.chapter}e${nextEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = nextEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `${shortTitle} →`;
+                        }
+                    });
+                } else {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = 'Sin siguiente →';
+                        }
+                    });
+                }
+                
+                const selects = [document.getElementById('chapterSelect'), document.getElementById('chapterSelectBottom')];
+                selects.forEach(select => {
+                    if (!select) return;
+                    let options = '<option value="">📖 Seleccionar episodio...</option>';
+                    for (const ep of allEpisodes) {
+                        const selected = (ep.chapter == CHAPTER_NUM && ep.episodeNum == EPISODE_NUM) ? 'selected' : '';
+                        options += `<option value="capitulo${ep.chapter}e${ep.episodeNum}.html" ${selected}>${ep.chapterTitle} - Episodio ${ep.episodeNum}: ${ep.title}</option>`;
+                    }
+                    select.innerHTML = options;
+                    select.onchange = function() { if(this.value) window.location.href = this.value; };
+                });
+            }
+        }
+        
+        // ========== REGISTRAR LECTURA EN HISTORIAL ==========
+        function markAsRead() {
+            const user = localStorage.getItem('gacha_user');
+            if (!user) return;
+            
+            let history = localStorage.getItem(`gacha_history_${user}`);
+            let historyObj = history ? JSON.parse(history) : { chapters: [] };
+            
+            const readKey = { chapter: CHAPTER_NUM, episode: EPISODE_NUM };
+            historyObj.chapters = historyObj.chapters.filter(item => 
+                !(item.chapter == CHAPTER_NUM && item.episode == EPISODE_NUM)
+            );
+            historyObj.chapters.unshift(readKey);
+            if (historyObj.chapters.length > 20) historyObj.chapters.pop();
+            
+            localStorage.setItem(`gacha_history_${user}`, JSON.stringify(historyObj));
+        }
+        
+        // ========== CONTROLES ==========
+        function initControls() {
+            const savedTheme = localStorage.getItem('gacha_theme');
+            if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+            const savedFont = localStorage.getItem('gacha_fontsize');
+            if (savedFont) document.body.style.fontSize = savedFont + '%';
+            
+            document.getElementById('fontPlus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.min(150, size + 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            document.getElementById('fontMinus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.max(70, size - 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            
+            const themeBtn = document.getElementById('themeToggle');
+            if (document.documentElement.hasAttribute('data-theme')) themeBtn.textContent = '☀️ Modo claro';
+            themeBtn.onclick = () => {
+                const isDark = document.documentElement.hasAttribute('data-theme');
+                if (isDark) {
+                    document.documentElement.removeAttribute('data-theme');
+                    localStorage.setItem('gacha_theme', 'light');
+                    themeBtn.textContent = '🌙 Modo oscuro';
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('gacha_theme', 'dark');
+                    themeBtn.textContent = '☀️ Modo claro';
+                }
+            };
+            
+            document.getElementById('scrollToTop').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('scrollToBottom').onclick = () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+        
+        // ========== INICIALIZACIÓN ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            initControls();
+            setupNavigation();
+            markAsRead();
+            
+            kofiWidgetOverlay.draw('ocholobos', {
+                'type': 'floating-chat',
+                'floating-chat.donateButton.text': 'Apóyame',
+                'floating-chat.donateButton.background-color': '#1a4d5f',
+                'floating-chat.donateButton.text-color': '#ffffff'
+            });
+        });
+    </script>
+</body>
+</html>

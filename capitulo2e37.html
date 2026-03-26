@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¿Qué es la desesperación? | Gacha Infinita</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem;
+            line-height: 1.8;
+            background: #faf9f7;
+            color: #2c2b28;
+            transition: all 0.3s ease;
+        }
+        [data-theme="dark"] body {
+            background: #1a1a1a;
+            color: #e5e5e5;
+        }
+        
+        .options-bar {
+            position: sticky;
+            top: 0;
+            background: #faf9f7;
+            border-bottom: 1px solid #e5e0d8;
+            padding: 0.6rem 1rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.8rem;
+            z-index: 100;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        [data-theme="dark"] .options-bar {
+            background: #1a1a1a;
+            border-bottom-color: #404040;
+        }
+        .options-bar button, .options-bar a {
+            background: #eef2f0;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: #1a4d5f;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .options-bar button, [data-theme="dark"] .options-bar a {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .font-size-control {
+            display: flex;
+            gap: 0.3rem;
+            align-items: center;
+        }
+        .font-size-control button {
+            width: 32px;
+            padding: 0.2rem;
+        }
+        
+        .nav-container {
+            margin: 1rem 0;
+        }
+        .nav-center, .nav-bottom {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+        .nav-bottom {
+            margin-top: 1rem;
+        }
+        .nav-btn {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            color: #1a4d5f;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .nav-btn {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .nav-btn:hover {
+            background: #e5e0d8;
+        }
+        .nav-btn.disabled {
+            background: #e5e0d8;
+            color: #9ca3af;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .chapter-counter {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] .chapter-counter {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        .chapter-selector {
+            margin: 0.5rem 0;
+            text-align: center;
+        }
+        .chapter-selector select {
+            background: #eef2f0;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-family: inherit;
+            color: #1a4d5f;
+            cursor: pointer;
+            width: 300px;
+            max-width: 90%;
+        }
+        [data-theme="dark"] .chapter-selector select {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin: 1rem 0 0.25rem;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] h1 {
+            color: #5a9e8c;
+        }
+        .episode-number {
+            color: #6b6a68;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #e5e0d8;
+            padding-bottom: 0.5rem;
+        }
+        [data-theme="dark"] .episode-number {
+            color: #a0a0a0;
+            border-bottom-color: #404040;
+        }
+        .story-content {
+            margin: 1.5rem 0;
+        }
+        .story-content p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+        hr {
+            margin: 2rem 0;
+            border: none;
+            border-top: 1px solid #e5e0d8;
+        }
+        [data-theme="dark"] hr {
+            border-top-color: #404040;
+        }
+        
+        .floating-buttons {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+        .floating-btn {
+            background: #1a4d5f;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.8;
+        }
+        [data-theme="dark"] .floating-btn {
+            background: #5a9e8c;
+        }
+        .floating-btn:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        
+        .toast-message {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: #1a4d5f;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            z-index: 1000;
+            animation: fadeOut 3s ease forwards;
+        }
+        [data-theme="dark"] .toast-message {
+            background: #5a9e8c;
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            70% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+        
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            border-top: 1px solid #e5e0d8;
+            padding-top: 1.5rem;
+        }
+        [data-theme="dark"] footer {
+            border-top-color: #404040;
+        }
+        
+        @media (max-width: 600px) {
+            body { padding: 0.5rem; }
+            .nav-center, .nav-bottom { flex-direction: column; gap: 0.5rem; }
+            .floating-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                bottom: 70px;
+                right: 15px;
+            }
+        }
+    </style>
+    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+</head>
+<body>
+    <div class="options-bar">
+        <div class="font-size-control">
+            <button id="fontMinus">A-</button>
+            <button id="fontPlus">A+</button>
+        </div>
+        <a href="index.html">📚 Índice</a>
+        <button id="themeToggle">🌙 Modo oscuro</button>
+    </div>
+
+    <div class="nav-container">
+        <div class="nav-center">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo2e36.html" id="prevLinkTop" class="nav-btn ">← La segunda venganza</a>
+            <span class="chapter-counter" id="chapterCounterTop">Capítulo 2 - Episodio 37</span>
+            <a href="capitulo2e38.html" id="nextLinkTop" class="nav-btn ">Enterrador Divino Gungnir - Primera fase →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelect">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <h1>¿Qué es la desesperación?</h1>
+    <div class="episode-number">Capítulo 2 - Episodio 37</div>
+
+    <div class="story-content">
+        <p>—Aoyuki, Ellie, no intervengáis bajo ningún concepto.</p>
+<p>—Nya~</p>
+<p>—Como desee, Light-sama.</p>
+<p>Me levanté del trono en el cuarto piso de la torre, entregué la "SSR, Máscara del Bufón" a Ellie y les advertí. Al oír sus respuestas, bajé las escaleras con el bastón en la mano.</p>
+<p>—Bueno, comencemos la venganza…</p>
+<p>Michael, el subcomandante de la Orden de los Caballeros Blancos, se puso al frente con su escudo, y Sasha, detrás, levantó su ocarina. Sin inmutarme, me acerqué como si diera un paseo.</p>
+<p>—¡Muere ante nuestro amor, asqueroso humano inferior!</p>
+<p>Sasha gritó y sopló la ocarina.</p>
+<p><em>(¿Un ataque de ilusión? ¿O un ataque mental con sonido?)</em></p>
+<p>Lo supuse, pero me equivoqué. Un círculo mágico se desplegó alrededor de Sasha. A su alrededor aparecieron dos más, invocando a unos seres alados con forma humana: ángeles. Uno medía más de cuatro metros, de cuerpo fornido. Empuñaba una enorme maza. Iba en cueros, con el rostro cubierto por un yelmo. Si no fuera por las alas, parecería un monstruo. El otro también medía unos cuatro metros. Era de un material duro, como una escultura, con los brazos pegados al cuerpo. Llevaba un bastón incrustado, como un peón de ajedrez humanoide. También tenía alas. De no ser por ellas, parecería un gólem de nueva especie.</p>
+<p>—$%#'((&%KJYP!</p>
+<p>—LJ`*+PO)=~~%!</p>
+<p>Hablaban en un idioma incomprensible, quizás angelical. Sasha, orgullosa, gritó desde detrás de ellos.</p>
+<p>—¡Este es el arma secreta de la familia del conde, de nivel Fantasmal! ¡El poder de la "Ocarina de los Ángeles"! ¡Que estos divinos ángeles os maten como a insectos!</p>
+<p>Parecía que la ocarina invocaba a dos ángeles para que lucharan. Siguiendo las órdenes de Sasha, los dos ángeles atacaron. Se movían con rapidez, deslizándose por el aire sin batir las alas. Era una visión extraña.</p>
+<p>—%$HFP SM``*!</p>
+<p>—¡Ah!</p>
+<p>El ángel fornido se acercó a gran velocidad y blandió su enorme maza. Me agaché para esquivarlo. El ángel debía de querer romper el suelo y lanzarme las esquirlas, pero…</p>
+<p>—=~~$%#'!?</p>
+<p>El cuarto piso de la torre, fabricada por Ellie, era, según ella, la sala del trono, y la había reforzado más que otros pisos. Por sus misteriosas obsesiones. Como resultado, no pudo romper el suelo, solo agrietarlo. El ángel, confundido, quizás por no poder romperlo con su fuerza sobrehumana, o porque el suelo era más duro de lo esperado y le habían quedado dormidos los brazos.</p>
+<p>—¡No soy tan ingenuo como para dejar pasar esa oportunidad!</p>
+<p>Avancé y golpeé el estómago del ángel con mi bastón. La intención era atravesarlo, pero antes de llegar, una barrera de luz lo detuvo. Rompí varias capas de esa barrera y le clavé el bastón en el estómago.</p>
+<p>—¡Un golpe!</p>
+<p>El ángel salió despedido y su estómago se hundió. No había ido a fondo, pero las barreras de luz lo habían frenado, así que no lo derribé de un golpe. Entonces, se oyó la extraña voz del ángel.</p>
+<p>—)’&%&(&%$*+PL!</p>
+<p>—¿La herida se está curando?</p>
+<p>El ángel de piedra, quizás lanzando un hechizo, curó la herida del otro. El de piedra parecía ser un mago, y las barreras de antes y la curación probablemente eran obra suya. Debían tener alrededor de nivel 1500. Un ángel de ataque físico y otro mago. Una composición interesante. Si pueden curarse entre ellos, ¿qué tal esto?</p>
+<p>Ignorando a los ángeles, me dirigí a Sasha, la invocadora.</p>
+<p>—¡Muro de Fuego!</p>
+<p>—¡¿Un humano inferior usando magia de nivel táctico sin conjuro?!</p>
+<p>Levanté un "SR, Muro de Fuego" para detener a los ángeles mientras durara un poco. Por un breve momento, conseguí detenerlos. Mientras Sasha se sorprendía de que usara magia de nivel táctico sin conjuro, cargué contra ella y blandí mi bastón.</p>
+<p>—¡No toque a mi prometida con sus manos sucias, humano inferior!</p>
+<p>—¡Son bastones, no manos!</p>
+<p>Aunque frené a los ángeles, el subcomandante de la Orden de los Caballeros Blancos, que estaba a su lado, no dejó pasar mi ataque y lo bloqueó con su escudo.</p>
+<p>—Pensaba que un ataque tan directo no sería tan fácil… ¡Ooh!</p>
+<p>Mientras reflexionaba, salí despedido. Recuperé el equilibrio en el aire, apoyé la mano en el suelo y, con un chirrido, resbalé. Cuando conseguí ponerme de pie, me pregunté por aquel contraataque inesperado.</p>
+<p>—¿Un golpe con el escudo? Pero no hubo movimiento previo, y parecía magia. Sin embargo, no sentí que fuera magia…</p>
+<p>—No es de extrañar que esté sorprendido. Su propio ataque se ha vuelto contra usted.</p>
+<p>Michael, orgulloso, movió su escudo con arrogancia.</p>
+<p>—¡Este escudo de nivel Fantasmal, que me ha prestado el primer ministro, se llama "Bendición y Castigo"! Quien intenta rebelarse contra el cielo recibe su merecido. Y además…</p>
+<p>El escudo brilló. Al mismo tiempo, Michael, Sasha y los dos ángeles quedaron envueltos en luz.</p>
+<p>—¡Este escudo también aumenta las habilidades de aquellos a quienes su portador considera aliados! ¿Cuánto resistirá usted, humano inferior, contra estos ángeles ahora más poderosos?</p>
+<p>—¡Fufufu! ¡Ufufufu! ¡Además, los ángeles seguirán luchando hasta que yo ordene que se detengan, y pueden curarse! ¡Aunque los derrotes, puedo invocarlos de nuevo sin tiempo de espera!</p>
+<p>Si lo de poder invocarlos sin tiempo de espera no era un farol, la "Ocarina de los Ángeles" era más fuerte de lo que parecía. Era digna de un arma de nivel Fantasmal. Aunque intentara derrotar a Sasha, Michael la protegería. Y si atacaba a Michael, el escudo "Bendición y Castigo" devolvería el ataque. ¿Qué se siente? ¡Por ser un humano inferior, te atreves a enfrentarte a nosotros, los elfos superiores, y te vemos en esta situación! ¡Dímelo, basura, escoria, Light-kuuun!</p>
+<p>Sasha, escondida detrás de Michael, se burlaba. Michael, ante los ánimos de su prometida, se encogió de hombros, sonriendo levemente.</p>
+<p>—Como dice Sasha, deberías haber conocido tu lugar, humano inferior. Quizás no lo entiendas por tu baja inteligencia, pero la batalla estaba decidida de antemano. Cuando nos retaste, ya habías perdido.</p>
+<p>No solo Sasha, también Michael hablaba como si la batalla estuviera decidida. Con una sonrisa condescendiente, continuó:</p>
+<p>—Es imposible que un humano inferior como tú pueda romper esta defensa perfecta. Si me permites usar tus palabras: "si te rindes ahora, te mataré rápido". La verdad, no me gustaría que esas señoritas tuvieran que ver u oír cómo muere un humano inferior.</p>
+<p>—¿Por qué aparecen ahora Aoyuki y Ellie?</p>
+<p>Sin entender, le pregunté. Michael suspiró con impaciencia.</p>
+<p>—Ay, qué pesado es hablar con un mono de bajo coeficiente intelectual. Ellas solo han sido engañadas por ti. Es mi deber como subcomandante de la Orden de los Caballeros Blancos rescatarlas. Que no entiendas eso demuestra lo pesado que es tratar con humanos inferiores.</p>
+<p>Su explicación no explicaba nada. Seguía sin entenderlo e incliné la cabeza. Aoyuki y Ellie, que desde hacía rato estaban furiosas con los dos, solo se contenían porque les había dicho que no intervinieran. No iban a seguir sumisas a Michael. ¿De dónde sacaba tanta seguridad?</p>
+<p>Entonces, Michael tocó una fibra sensible.</p>
+<p>—Es imposible salir de esta situación desesperada. Lo más sensato es rendirse.</p>
+<p>—¿Desesperación…?</p>
+<p>¿A esto le llamaba desesperación? Me pareció tan ridículo que me eché a reír.</p>
+<p>—¡Jajaja! ¡Jajajajaja! ¡Ahahahahaha! ¡Ahahahahaha!</p>
+<p>Era tan, pero tan divertido que me agarré el estómago de risa. ¡Si esto es desesperación! ¿Cómo no iba a reírme? ¡Unos inmaduros que no saben lo que es la verdadera desesperación me hablan de "desesperación" con esas caras! ¡Si no me río, quién lo hará!</p>
+<p>—Q-qué asco…</p>
+<p>—…Es normal que la gente al borde del abismo pierda el control.</p>
+<p>Sasha me miraba con desprecio, como si viera algo repugnante. Michael, acostumbrado a estas situaciones, se mostró impasible. Cuando dejé de reírme, me enfrenté a ellos. Con una sonrisa tan amplia que parecía que se me iban a abrir las orejas.</p>
+<p>—Como agradecimiento por hacerme reír tanto, os enseñaré lo que es la verdadera desesperación.</p>
+<p>Empuñé el bastón con la mano derecha.</p>
+<p>—¡Nya!</p>
+<p>—¡L-Light-sama!</p>
+<p>Aoyuki y Ellie, que sabían lo que iba a hacer, no pudieron evitar exclamar.</p>
+<p>—¡Primera fase de liberación del Sello de Almas Selladas! ¡Código "9999"! ¡Cuatro nueves! ¡Enterrador Divino Gungnir!</p>
+    </div>
+
+    <hr>
+
+    <div class="nav-container">
+        <div class="nav-bottom">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo2e36.html" id="prevLinkBottom" class="nav-btn ">← La segunda venganza</a>
+            <span class="chapter-counter" id="chapterCounterBottom">Capítulo 2 - Episodio 37</span>
+            <a href="capitulo2e38.html" id="nextLinkBottom" class="nav-btn ">Enterrador Divino Gungnir - Primera fase →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelectBottom">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <div class="floating-buttons">
+        <button class="floating-btn" id="scrollToTop" title="Ir arriba">⬆</button>
+        <button class="floating-btn" id="scrollToBottom" title="Ir abajo">⬇</button>
+    </div>
+
+    <footer>
+        <p>Gacha Infinita © 明鏡シスイ (Meikyō Shisui) | Traducción: Ocholobos</p>
+        <p>Apoya al autor comprando los volúmenes oficiales</p>
+    </footer>
+
+    <script src="data.js"></script>
+    <script>
+        // ========== CONFIGURACIÓN DEL CAPÍTULO ==========
+        const CHAPTER_NUM = 2;
+        const EPISODE_NUM = 37;
+        
+        // ========== NAVEGACIÓN ==========
+        function setupNavigation() {
+            if (typeof GACHA_DATA !== 'undefined') {
+                const currentEpisode = GACHA_DATA.getEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const prevEpisode = GACHA_DATA.getPrevEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const nextEpisode = GACHA_DATA.getNextEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const allEpisodes = GACHA_DATA.getAllEpisodesOrdered();
+                
+                const prevLinks = [document.getElementById('prevLinkTop'), document.getElementById('prevLinkBottom')];
+                const nextLinks = [document.getElementById('nextLinkTop'), document.getElementById('nextLinkBottom')];
+                const counters = [document.getElementById('chapterCounterTop'), document.getElementById('chapterCounterBottom')];
+                
+                counters.forEach(c => { if(c) c.textContent = `${currentEpisode.chapterTitle} - Episodio ${currentEpisode.episodeNum}`; });
+                
+                if (prevEpisode) {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${prevEpisode.chapter}e${prevEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = prevEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `← ${shortTitle}`;
+                        }
+                    });
+                } else {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = '← Sin anterior';
+                        }
+                    });
+                }
+                
+                if (nextEpisode) {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${nextEpisode.chapter}e${nextEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = nextEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `${shortTitle} →`;
+                        }
+                    });
+                } else {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = 'Sin siguiente →';
+                        }
+                    });
+                }
+                
+                const selects = [document.getElementById('chapterSelect'), document.getElementById('chapterSelectBottom')];
+                selects.forEach(select => {
+                    if (!select) return;
+                    let options = '<option value="">📖 Seleccionar episodio...</option>';
+                    for (const ep of allEpisodes) {
+                        const selected = (ep.chapter == CHAPTER_NUM && ep.episodeNum == EPISODE_NUM) ? 'selected' : '';
+                        options += `<option value="capitulo${ep.chapter}e${ep.episodeNum}.html" ${selected}>${ep.chapterTitle} - Episodio ${ep.episodeNum}: ${ep.title}</option>`;
+                    }
+                    select.innerHTML = options;
+                    select.onchange = function() { if(this.value) window.location.href = this.value; };
+                });
+            }
+        }
+        
+        // ========== REGISTRAR LECTURA EN HISTORIAL ==========
+        function markAsRead() {
+            const user = localStorage.getItem('gacha_user');
+            if (!user) return;
+            
+            let history = localStorage.getItem(`gacha_history_${user}`);
+            let historyObj = history ? JSON.parse(history) : { chapters: [] };
+            
+            const readKey = { chapter: CHAPTER_NUM, episode: EPISODE_NUM };
+            historyObj.chapters = historyObj.chapters.filter(item => 
+                !(item.chapter == CHAPTER_NUM && item.episode == EPISODE_NUM)
+            );
+            historyObj.chapters.unshift(readKey);
+            if (historyObj.chapters.length > 20) historyObj.chapters.pop();
+            
+            localStorage.setItem(`gacha_history_${user}`, JSON.stringify(historyObj));
+        }
+        
+        // ========== CONTROLES ==========
+        function initControls() {
+            const savedTheme = localStorage.getItem('gacha_theme');
+            if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+            const savedFont = localStorage.getItem('gacha_fontsize');
+            if (savedFont) document.body.style.fontSize = savedFont + '%';
+            
+            document.getElementById('fontPlus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.min(150, size + 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            document.getElementById('fontMinus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.max(70, size - 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            
+            const themeBtn = document.getElementById('themeToggle');
+            if (document.documentElement.hasAttribute('data-theme')) themeBtn.textContent = '☀️ Modo claro';
+            themeBtn.onclick = () => {
+                const isDark = document.documentElement.hasAttribute('data-theme');
+                if (isDark) {
+                    document.documentElement.removeAttribute('data-theme');
+                    localStorage.setItem('gacha_theme', 'light');
+                    themeBtn.textContent = '🌙 Modo oscuro';
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('gacha_theme', 'dark');
+                    themeBtn.textContent = '☀️ Modo claro';
+                }
+            };
+            
+            document.getElementById('scrollToTop').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('scrollToBottom').onclick = () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+        
+        // ========== INICIALIZACIÓN ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            initControls();
+            setupNavigation();
+            markAsRead();
+            
+            kofiWidgetOverlay.draw('ocholobos', {
+                'type': 'floating-chat',
+                'floating-chat.donateButton.text': 'Apóyame',
+                'floating-chat.donateButton.background-color': '#1a4d5f',
+                'floating-chat.donateButton.text-color': '#ffffff'
+            });
+        });
+    </script>
+</body>
+</html>

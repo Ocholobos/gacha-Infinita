@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Light, nivel 3500 | Gacha Infinita</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem;
+            line-height: 1.8;
+            background: #faf9f7;
+            color: #2c2b28;
+            transition: all 0.3s ease;
+        }
+        [data-theme="dark"] body {
+            background: #1a1a1a;
+            color: #e5e5e5;
+        }
+        
+        .options-bar {
+            position: sticky;
+            top: 0;
+            background: #faf9f7;
+            border-bottom: 1px solid #e5e0d8;
+            padding: 0.6rem 1rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.8rem;
+            z-index: 100;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        [data-theme="dark"] .options-bar {
+            background: #1a1a1a;
+            border-bottom-color: #404040;
+        }
+        .options-bar button, .options-bar a {
+            background: #eef2f0;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: #1a4d5f;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .options-bar button, [data-theme="dark"] .options-bar a {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .font-size-control {
+            display: flex;
+            gap: 0.3rem;
+            align-items: center;
+        }
+        .font-size-control button {
+            width: 32px;
+            padding: 0.2rem;
+        }
+        
+        .nav-container {
+            margin: 1rem 0;
+        }
+        .nav-center, .nav-bottom {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+        .nav-bottom {
+            margin-top: 1rem;
+        }
+        .nav-btn {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            color: #1a4d5f;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .nav-btn {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .nav-btn:hover {
+            background: #e5e0d8;
+        }
+        .nav-btn.disabled {
+            background: #e5e0d8;
+            color: #9ca3af;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .chapter-counter {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] .chapter-counter {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        .chapter-selector {
+            margin: 0.5rem 0;
+            text-align: center;
+        }
+        .chapter-selector select {
+            background: #eef2f0;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-family: inherit;
+            color: #1a4d5f;
+            cursor: pointer;
+            width: 300px;
+            max-width: 90%;
+        }
+        [data-theme="dark"] .chapter-selector select {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin: 1rem 0 0.25rem;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] h1 {
+            color: #5a9e8c;
+        }
+        .episode-number {
+            color: #6b6a68;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #e5e0d8;
+            padding-bottom: 0.5rem;
+        }
+        [data-theme="dark"] .episode-number {
+            color: #a0a0a0;
+            border-bottom-color: #404040;
+        }
+        .story-content {
+            margin: 1.5rem 0;
+        }
+        .story-content p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+        hr {
+            margin: 2rem 0;
+            border: none;
+            border-top: 1px solid #e5e0d8;
+        }
+        [data-theme="dark"] hr {
+            border-top-color: #404040;
+        }
+        
+        .floating-buttons {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+        .floating-btn {
+            background: #1a4d5f;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.8;
+        }
+        [data-theme="dark"] .floating-btn {
+            background: #5a9e8c;
+        }
+        .floating-btn:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        
+        .toast-message {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: #1a4d5f;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            z-index: 1000;
+            animation: fadeOut 3s ease forwards;
+        }
+        [data-theme="dark"] .toast-message {
+            background: #5a9e8c;
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            70% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+        
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            border-top: 1px solid #e5e0d8;
+            padding-top: 1.5rem;
+        }
+        [data-theme="dark"] footer {
+            border-top-color: #404040;
+        }
+        
+        @media (max-width: 600px) {
+            body { padding: 0.5rem; }
+            .nav-center, .nav-bottom { flex-direction: column; gap: 0.5rem; }
+            .floating-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                bottom: 70px;
+                right: 15px;
+            }
+        }
+    </style>
+    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+</head>
+<body>
+    <div class="options-bar">
+        <div class="font-size-control">
+            <button id="fontMinus">A-</button>
+            <button id="fontPlus">A+</button>
+        </div>
+        <a href="index.html">📚 Índice</a>
+        <button id="themeToggle">🌙 Modo oscuro</button>
+    </div>
+
+    <div class="nav-container">
+        <div class="nav-center">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo3e6.html" id="prevLinkTop" class="nav-btn ">← vs Hydra</a>
+            <span class="chapter-counter" id="chapterCounterTop">Capítulo 3 - Episodio 7</span>
+            <a href="capitulo3e8.html" id="nextLinkTop" class="nav-btn ">Calabozo "Abismo" - Primer año →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelect">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <h1>Light, nivel 3500</h1>
+    <div class="episode-number">Capítulo 3 - Episodio 7</div>
+
+    <div class="story-content">
+        <p>—Así que este es el núcleo del calabozo… Es más grande de lo que pensaba.</p>
+<p>—Sí. Yo también lo imaginaba más pequeño.</p>
+<p>Ante la esfera flotante de más de un metro de diámetro, ambos comentamos. Horas antes, a pesar de estar envenenado, había conseguido arrancar dos cabezas de la hidra y destrozar su corazón. Luego, con el ataque de Mei, las cabezas restantes y el cuerpo quedaron hechos pedazos. Mei me dio un antídoto y una poción curativa. Agotado por el veneno y la fatiga, no podía moverme, y me apoyé en ella. Mientras esperaba a que desapareciera el entumecimiento, comprobé mi nivel: había superado los 3500. Me alegraba, pero no había monstruos más fuertes que la hidra. Tenía que pensar cómo seguir subiendo de nivel.</p>
+<p>—…Ya estoy bien. Vamos.</p>
+<p>—Sí, Light-sama.</p>
+<p>Cuando se me pasó el entumecimiento, nos adentramos más allá de donde había estado la hidra. Los restos de la hidra, hechos pedazos, eran difíciles de recoger, así que Mei los quemó con magia. Exploradora, maga, cocinera, cerrajera, tasadora… realmente, ella podía hacer de todo. Después de deshacernos del cadáver, avanzamos. Había una puerta que solo se abría tras derrotar a la hidra. Al otro lado, nos esperaba un amplio espacio. El techo tenía forma de cúpula, y era tan grande que podría albergar una mansión entera de algún noble. En el centro, sobre una plataforma, flotaba el núcleo del calabozo. Me acerqué y lo toqué. Brillaba tenuemente, pero no estaba ni caliente ni frío. Este era el núcleo del calabozo más grande, más fuerte y más peligroso del mundo, el "Abismo".</p>
+<p>—Light-sama.</p>
+<p>—Tranquila, no pienso destruirlo. Para mi propósito, no.</p>
+<p>Le respondí, girándome. Si destruía el núcleo, el "Abismo" dejaría de funcionar como calabozo. Los monstruos dejarían de aparecer, las trampas no se reactivarían, podría usar la carta "Teletransportación" y volver al lugar donde me traicionaron en un instante. Desde allí, sería fácil salir a la superficie. Pero no era eso lo que quería. Al contrario. Quería vengarme de los miembros de la Reunión de Razas, y saber qué era un "Maestro", por qué quisieron matarme. Para saber la verdad, probablemente tendría que enfrentarme a países. Solo un país puede enfrentarse a otro. Por eso, necesitaba construir mi propio país en el "Abismo" para hacer frente a los países de la superficie. Para eso, necesitaba mi "Gacha Infinita", que podía usarse infinitas veces y cuyas probabilidades de salida cambiaban con la concentración de poder mágico. Tenía que generar muchos aliados como Mei en el fondo del "Abismo", donde la concentración era máxima. Destruir el núcleo, fuente de ese poder mágico, sería contraproducente. Además, el fondo del calabozo más grande, más fuerte y más peligroso del mundo era un lugar perfecto para acumular fuerzas sin temor a invasiones externas.</p>
+<p>—No hay mejor lugar que el fondo del "Abismo" para mi Gacha Infinita. No voy a destruir el núcleo sin tener un ejército preparado. Pero tampoco voy a quedarme sin hacer nada.</p>
+<p>No iba a destruirlo, pero tampoco a dejarlo como estaba. Mientras existiera el núcleo, el calabozo se mantendría. Los monstruos seguirían apareciendo, las trampas se reactivarían. No podría construir mi país en el fondo del "Abismo" así. Para construir mi base, era necesario analizar y controlar el núcleo. Mei se puso a mi lado y observó el núcleo.</p>
+<p>—…Aunque me jacto de poder hacer casi cualquier cosa, analizar y controlar un núcleo de calabozo está fuera de mi alcance.</p>
+<p>Se volvió hacia mí.</p>
+<p>—Pero si de la Gacha Infinita de Light-sama sale alguien de nivel 9999, especializado en magia o en análisis, quizás podamos controlarlo.</p>
+<p>Asentí. Cierto, ni yo ni Mei podíamos controlarlo. Pero teníamos la Gacha Infinita. Por mucho que tardara en salir una carta con alguien capaz de analizar y controlar el núcleo, solo tenía que seguir usándola. Esa era la fuerza de la Gacha Infinita.</p>
+<p>—Por ahora, dejemos el análisis y control del núcleo para los compañeros que salgan en el futuro.</p>
+<p>—Creo que es lo mejor.</p>
+<p>—Y trasladémonos aquí. Parece que en los alrededores del núcleo no aparecen monstruos.</p>
+<p>El suelo no tenía un solo rasguño. Por muy duro que fuera el fondo del "Abismo", si los monstruos se movieran, dejarían marcas. Que no hubiera ninguna significaba que no aparecían cerca del núcleo. Donde estábamos viviendo no estaba mal, pero si podíamos evitar que aparecieran monstruos, mejor. Mei estuvo de acuerdo.</p>
+<p>—Es amplio, y que no aparezcan monstruos es una gran ventaja. Así podré enseñarle a Light-sama combate, estudios y buenos modales con tranquilidad.</p>
+<p>—…¿? Mei, ¿qué tiene que ver que no aparezcan monstruos con que estudie?</p>
+<p>—En una situación en la que un monstruo puede atacar en cualquier momento, es difícil concentrarse en los estudios. Así que, si en la sala del núcleo no aparecen, podremos hacer más combates de práctica y también empezar con sus estudios.</p>
+<p>Me molestó un poco.</p>
+<p>—Puede que no tenga tanta cultura como tú, pero algo sé. Puedo escribir mi nombre y, cuando compro en la ciudad, no me engañan con el cambio.</p>
+<p>Dije, hinchando el pecho. Era raro que un niño de familia campesina supiera tanto. Normalmente, ni siquiera saben escribir su nombre, no saben leer y, al no saber sumar ni restar, los engañan en las tiendas. Yo era, entre los hijos de campesinos, bastante listo. Ante mi orgullosa declaración, Mei se llevó la mano a la frente.</p>
+<p>—Light-sama… entiendo cómo se siente. Pero, por favor, confíe en mí y acéptelo. En el futuro, para su venganza y para conocer la verdad, será necesario. Le prometo que no se arrepentirá. Si lo hiciera, pagaría con mi vida.</p>
+<p>—¿? ¿Eh?</p>
+<p>No entendía lo que decía. Pero me llegó su determinación. A regañadientes, acepté.</p>
+<p>—Bueno… si tú lo dices, estudiaré. Pero… sé suave, ¿vale?</p>
+<p>—¡…! Por supuesto. Por mi camino de sirvienta, te enseñaré con todo el cariño, a solas.</p>
+<p>Mei desvió la mirada y se tapó la nariz. Aguantó unos segundos y luego, como siempre, me respondió. Así, tras derrotar a la hidra y llegar al núcleo, por alguna razón, además de los combates de práctica, empecé a estudiar a solas con ella.</p>
+    </div>
+
+    <hr>
+
+    <div class="nav-container">
+        <div class="nav-bottom">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo3e6.html" id="prevLinkBottom" class="nav-btn ">← vs Hydra</a>
+            <span class="chapter-counter" id="chapterCounterBottom">Capítulo 3 - Episodio 7</span>
+            <a href="capitulo3e8.html" id="nextLinkBottom" class="nav-btn ">Calabozo "Abismo" - Primer año →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelectBottom">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <div class="floating-buttons">
+        <button class="floating-btn" id="scrollToTop" title="Ir arriba">⬆</button>
+        <button class="floating-btn" id="scrollToBottom" title="Ir abajo">⬇</button>
+    </div>
+
+    <footer>
+        <p>Gacha Infinita © 明鏡シスイ (Meikyō Shisui) | Traducción: Ocholobos</p>
+        <p>Apoya al autor comprando los volúmenes oficiales</p>
+    </footer>
+
+    <script src="data.js"></script>
+    <script>
+        // ========== CONFIGURACIÓN DEL CAPÍTULO ==========
+        const CHAPTER_NUM = 3;
+        const EPISODE_NUM = 7;
+        
+        // ========== NAVEGACIÓN ==========
+        function setupNavigation() {
+            if (typeof GACHA_DATA !== 'undefined') {
+                const currentEpisode = GACHA_DATA.getEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const prevEpisode = GACHA_DATA.getPrevEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const nextEpisode = GACHA_DATA.getNextEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const allEpisodes = GACHA_DATA.getAllEpisodesOrdered();
+                
+                const prevLinks = [document.getElementById('prevLinkTop'), document.getElementById('prevLinkBottom')];
+                const nextLinks = [document.getElementById('nextLinkTop'), document.getElementById('nextLinkBottom')];
+                const counters = [document.getElementById('chapterCounterTop'), document.getElementById('chapterCounterBottom')];
+                
+                counters.forEach(c => { if(c) c.textContent = `${currentEpisode.chapterTitle} - Episodio ${currentEpisode.episodeNum}`; });
+                
+                if (prevEpisode) {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${prevEpisode.chapter}e${prevEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = prevEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `← ${shortTitle}`;
+                        }
+                    });
+                } else {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = '← Sin anterior';
+                        }
+                    });
+                }
+                
+                if (nextEpisode) {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${nextEpisode.chapter}e${nextEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = nextEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `${shortTitle} →`;
+                        }
+                    });
+                } else {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = 'Sin siguiente →';
+                        }
+                    });
+                }
+                
+                const selects = [document.getElementById('chapterSelect'), document.getElementById('chapterSelectBottom')];
+                selects.forEach(select => {
+                    if (!select) return;
+                    let options = '<option value="">📖 Seleccionar episodio...</option>';
+                    for (const ep of allEpisodes) {
+                        const selected = (ep.chapter == CHAPTER_NUM && ep.episodeNum == EPISODE_NUM) ? 'selected' : '';
+                        options += `<option value="capitulo${ep.chapter}e${ep.episodeNum}.html" ${selected}>${ep.chapterTitle} - Episodio ${ep.episodeNum}: ${ep.title}</option>`;
+                    }
+                    select.innerHTML = options;
+                    select.onchange = function() { if(this.value) window.location.href = this.value; };
+                });
+            }
+        }
+        
+        // ========== REGISTRAR LECTURA EN HISTORIAL ==========
+        function markAsRead() {
+            const user = localStorage.getItem('gacha_user');
+            if (!user) return;
+            
+            let history = localStorage.getItem(`gacha_history_${user}`);
+            let historyObj = history ? JSON.parse(history) : { chapters: [] };
+            
+            const readKey = { chapter: CHAPTER_NUM, episode: EPISODE_NUM };
+            historyObj.chapters = historyObj.chapters.filter(item => 
+                !(item.chapter == CHAPTER_NUM && item.episode == EPISODE_NUM)
+            );
+            historyObj.chapters.unshift(readKey);
+            if (historyObj.chapters.length > 20) historyObj.chapters.pop();
+            
+            localStorage.setItem(`gacha_history_${user}`, JSON.stringify(historyObj));
+        }
+        
+        // ========== CONTROLES ==========
+        function initControls() {
+            const savedTheme = localStorage.getItem('gacha_theme');
+            if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+            const savedFont = localStorage.getItem('gacha_fontsize');
+            if (savedFont) document.body.style.fontSize = savedFont + '%';
+            
+            document.getElementById('fontPlus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.min(150, size + 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            document.getElementById('fontMinus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.max(70, size - 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            
+            const themeBtn = document.getElementById('themeToggle');
+            if (document.documentElement.hasAttribute('data-theme')) themeBtn.textContent = '☀️ Modo claro';
+            themeBtn.onclick = () => {
+                const isDark = document.documentElement.hasAttribute('data-theme');
+                if (isDark) {
+                    document.documentElement.removeAttribute('data-theme');
+                    localStorage.setItem('gacha_theme', 'light');
+                    themeBtn.textContent = '🌙 Modo oscuro';
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('gacha_theme', 'dark');
+                    themeBtn.textContent = '☀️ Modo claro';
+                }
+            };
+            
+            document.getElementById('scrollToTop').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('scrollToBottom').onclick = () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+        
+        // ========== INICIALIZACIÓN ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            initControls();
+            setupNavigation();
+            markAsRead();
+            
+            kofiWidgetOverlay.draw('ocholobos', {
+                'type': 'floating-chat',
+                'floating-chat.donateButton.text': 'Apóyame',
+                'floating-chat.donateButton.background-color': '#1a4d5f',
+                'floating-chat.donateButton.text-color': '#ffffff'
+            });
+        });
+    </script>
+</body>
+</html>

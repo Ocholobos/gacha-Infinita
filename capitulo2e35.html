@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encuentro después de casi tres años | Gacha Infinita</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem;
+            line-height: 1.8;
+            background: #faf9f7;
+            color: #2c2b28;
+            transition: all 0.3s ease;
+        }
+        [data-theme="dark"] body {
+            background: #1a1a1a;
+            color: #e5e5e5;
+        }
+        
+        .options-bar {
+            position: sticky;
+            top: 0;
+            background: #faf9f7;
+            border-bottom: 1px solid #e5e0d8;
+            padding: 0.6rem 1rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.8rem;
+            z-index: 100;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        [data-theme="dark"] .options-bar {
+            background: #1a1a1a;
+            border-bottom-color: #404040;
+        }
+        .options-bar button, .options-bar a {
+            background: #eef2f0;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: #1a4d5f;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .options-bar button, [data-theme="dark"] .options-bar a {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .font-size-control {
+            display: flex;
+            gap: 0.3rem;
+            align-items: center;
+        }
+        .font-size-control button {
+            width: 32px;
+            padding: 0.2rem;
+        }
+        
+        .nav-container {
+            margin: 1rem 0;
+        }
+        .nav-center, .nav-bottom {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+        .nav-bottom {
+            margin-top: 1rem;
+        }
+        .nav-btn {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            color: #1a4d5f;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .nav-btn {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .nav-btn:hover {
+            background: #e5e0d8;
+        }
+        .nav-btn.disabled {
+            background: #e5e0d8;
+            color: #9ca3af;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .chapter-counter {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] .chapter-counter {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        .chapter-selector {
+            margin: 0.5rem 0;
+            text-align: center;
+        }
+        .chapter-selector select {
+            background: #eef2f0;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-family: inherit;
+            color: #1a4d5f;
+            cursor: pointer;
+            width: 300px;
+            max-width: 90%;
+        }
+        [data-theme="dark"] .chapter-selector select {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin: 1rem 0 0.25rem;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] h1 {
+            color: #5a9e8c;
+        }
+        .episode-number {
+            color: #6b6a68;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #e5e0d8;
+            padding-bottom: 0.5rem;
+        }
+        [data-theme="dark"] .episode-number {
+            color: #a0a0a0;
+            border-bottom-color: #404040;
+        }
+        .story-content {
+            margin: 1.5rem 0;
+        }
+        .story-content p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+        hr {
+            margin: 2rem 0;
+            border: none;
+            border-top: 1px solid #e5e0d8;
+        }
+        [data-theme="dark"] hr {
+            border-top-color: #404040;
+        }
+        
+        .floating-buttons {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+        .floating-btn {
+            background: #1a4d5f;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.8;
+        }
+        [data-theme="dark"] .floating-btn {
+            background: #5a9e8c;
+        }
+        .floating-btn:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        
+        .toast-message {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: #1a4d5f;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            z-index: 1000;
+            animation: fadeOut 3s ease forwards;
+        }
+        [data-theme="dark"] .toast-message {
+            background: #5a9e8c;
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            70% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+        
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            border-top: 1px solid #e5e0d8;
+            padding-top: 1.5rem;
+        }
+        [data-theme="dark"] footer {
+            border-top-color: #404040;
+        }
+        
+        @media (max-width: 600px) {
+            body { padding: 0.5rem; }
+            .nav-center, .nav-bottom { flex-direction: column; gap: 0.5rem; }
+            .floating-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                bottom: 70px;
+                right: 15px;
+            }
+        }
+    </style>
+    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+</head>
+<body>
+    <div class="options-bar">
+        <div class="font-size-control">
+            <button id="fontMinus">A-</button>
+            <button id="fontPlus">A+</button>
+        </div>
+        <a href="index.html">📚 Índice</a>
+        <button id="themeToggle">🌙 Modo oscuro</button>
+    </div>
+
+    <div class="nav-container">
+        <div class="nav-center">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo2e34.html" id="prevLinkTop" class="nav-btn ">← Reencuentro después de casi tres años</a>
+            <span class="chapter-counter" id="chapterCounterTop">Capítulo 2 - Episodio 35</span>
+            <a href="capitulo2e36.html" id="nextLinkTop" class="nav-btn ">La segunda venganza →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelect">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <h1>Encuentro después de casi tres años</h1>
+    <div class="episode-number">Capítulo 2 - Episodio 35</div>
+
+    <div class="story-content">
+        <p>—El tiempo retrocede un poco.</p>
+<p>Sasha y su prometido, Michael, se miraron a izquierda y derecha con cautela, para asegurarse de dónde habían sido teletransportados.</p>
+<p>—No me imaginaba que Sharphat no detectara una trampa…</p>
+<p>—¿Esto sigue siendo el interior de la torre?</p>
+<p>—…Sí. Por el material, sigue siendo el interior.</p>
+<p>Sasha había sido transportada junto con Michael porque él la llevaba en brazos. En realidad, Ellie había ajustado la trampa para que acabaran juntos aunque no se abrazaran. A pesar de haber sido separados por la trampa, el subcomandante de la Orden de los Caballeros Blancos y la antigua miembro de la Reunión de Razas conservaban la calma para observar el entorno. Como habían dicho, un pasillo del mismo material que la torre se extendía recto. Dibujaba una curva suave a la derecha, pero no había ningún obstáculo a la vista. Tenía el ancho suficiente para que dos personas caminaran con los brazos extendidos. En las paredes, no había ni puertas ni ventanas. Una luz, creada con magia incrustada en el techo, iluminaba el pasillo.</p>
+<p>—…No sirve de nada quedarse aquí. Avancemos.</p>
+<p>—Si hay que explorar, yo…</p>
+<p>—No, podría haber trampas, y no sabemos qué monstruos podrían atacar. Iré yo delante. No soy tan bueno como Sharphat, pero puedo hacer de explorador. Sasha, prepárate para usar el arma de nivel Fantasmal que te ha prestado la familia del conde en cualquier momento.</p>
+<p>—Entendido.</p>
+<p>La propuesta de Michael era la mejor opción, así que Sasha no se opuso. Con una mano sostenía el arma de nivel Fantasmal que le había prestado la familia del conde, una "ocarina". Con la otra, agarraba la capa de Michael para no separarse si caían en otra trampa de teletransportación. Michael también llevaba un escudo que le había prestado el primer ministro, también de nivel Fantasmal, con un dibujo de un monstruo con expresión de agonía y el aliento de la diosa. Más que un escudo, parecía un cuadro. Desenvainó la espada y echó a andar, golpeando el suelo con ella para comprobar que no había trampas.</p>
+<p>—Sasha, no pise donde yo no haya pisado.</p>
+<p>—Por supuesto, Michael-sama.</p>
+<p>Avanzaron por el pasillo con la misma seriedad que si se adentraran en un calabozo de extrema dificultad.</p>
+<p>En realidad, no había ni una trampa ni un monstruo hasta la sala del trono donde les esperaban Light y los demás. Podrían haberlos teletransportado directamente allí, pero los habían enviado a un largo pasillo a propósito. Solo para fastidiarlos. Nada más caer en la trampa, un pasillo aparentemente vacío se extendía ante ellos. Era natural que avanzaran con cautela, temiendo trampas. Era solo para fastidiar a Sasha. Sin saberlo, avanzaban con paso lento y decidido. Tras mucho tiempo, llegaron al final del pasillo. Solo había una entrada, una puerta enorme, tan grande que podría pasar un gólem de cuatro metros.</p>
+<p>Sasha murmuró.</p>
+<p>—Parece la sala del jefe final de un calabozo.</p>
+<p>—¿El jefe de la torre? Ojalá sea el dragón rojo, y que al derrotarlo podamos salir.</p>
+<p>Michael esbozó una leve sonrisa y se encogió de hombros. Sasha también sonrió. Cuando terminaron de reír, se pusieron serios.</p>
+<p>—No nos queda más remedio que entrar.</p>
+<p>—Michael-sama, estoy lista para usar la ocarina.</p>
+<p>—Si siente peligro, úsela enseguida.</p>
+<p>Acordaron unas cuantas medidas y Michael empujó suavemente la puerta. Al tocarla, la puerta se abrió sola, sin hacer ruido, despacio, como si un gigante la estuviera manejando.</p>
+<p>—…¿Por qué está ese humano inferior aquí?</p>
+<p>—¿Sasha?</p>
+<p>Al abrirse la puerta, se extendió ante ellos un espacio luminoso, muy distinto al pasillo oscuro. Las columnas eran más delgadas que las del primer piso, pero estaban dispuestas con regularidad. Una alfombra roja se extendía en línea recta hacia un trono. El espacio era tan grande como un gimnasio. El techo era alto, y aunque no había ventanas, no se sentía agobiante. Era una sala del trono muy simple, pero las dos hermosas jóvenes que había frente a él, una vestida de maga y otra con capucha de orejas de gato y el pelo azul, eran tan bellas que compensaban con creces cualquier falta de adorno. Su belleza superaba a la de cualquier elfo. Por mucho dinero que se gastara en artistas y diseño, no se podría superar la belleza que ellas dos aportaban al espacio. Daban la impresión de que eran una obra de arte que adornaba la sala del trono, con una elegancia que superaba los tesoros del palacio del Reino Elfo. El problema era que en ese trono estaba sentado un humano que Sasha reconocía. Lo reconoció enseguida, aunque estuviera lejos. La máscara de bufón, la capa negra, el bastón. Era el niño humano al que había confundido con Light el primer día de la investigación y al que había hablado.</p>
+<p>Aunque Sasha menospreciaba a los humanos, su imagen estaba muy grabada en su memoria. Bajo la máscara tenía unas quemaduras tan horribles que ella había apartado la mirada. Ella misma le había pedido que se quitara la máscara y lo había visto. Por eso lo recordaba tan bien.</p>
+<p>—Sasha, ¿conoces al del trono?</p>
+<p>—No es que lo conozca… Solo es un aventurero que vi el día que empecé a investigar la torre.</p>
+<p>—…………</p>
+<p>Ellos los habían visto, pero no se movían. Parecía que esperaban a que entraran en la sala. Michael y Sasha miraron a su alrededor, pero no había nadie más en la sala, ni espacio para esconder al dragón rojo.</p>
+<p>—…No parece que tengamos más remedio que entrar. Vamos, Sasha.</p>
+<p>—Sí, Michael-sama.</p>
+<p>En cuanto entraron, la puerta se cerró. Lo esperaban, así que no se inmutaron y siguieron avanzando. Cuando se acercaron, el muchacho del trono les habló.</p>
+<p>—Cuánto tiempo, Sasha.</p>
+<p>—¿? Desde aquel día, no te he vuelto a ver. No somos tan amigos para que me hables así. Además, no me hables con tanta confianza, humano inferior. Me das asco.</p>
+<p>Escupió Sasha. Las dos jóvenes que estaban frente al trono pusieron cara de enfado, pero con esos rostros perfectos, hasta el enfado les favorecía. Como estaban delante de Sasha, Michael pudo mirarlas sin que su prometida se diera cuenta. El muchacho enmascarado se rió con una risa que heló la sangre de Sasha.</p>
+<p>—Jajaja, qué cruel. Antes éramos compañeros de equipo y explorábamos calabozos juntos.</p>
+<p>—¿Eh? ¿Te has confundido con otro elfo? ¿Por qué iba yo a explorar calabozos con un humano inferior…?</p>
+<p>Al principio, Sasha se enfadó por lo que parecía un disparate, pero mientras lo decía, se dio cuenta. Era cierto que había explorado calabozos con un humano. Al recordarlo, su voz se fue apagando. Ya había visto la cara del muchacho. No era él. Pero la nota que decía "Te espero en la Torre Gigante" la había traído hasta allí, arriesgando su vida. Si la nota era cierta, solo podía ser ese humano. El muchacho del trono se llevó la mano a la máscara. Sasha sabía que debajo había una horrible quemadura, algo que odiaba, pero no podía apartar la mirada. En ese momento, olvidó por completo la presencia de su prometido, que era su futuro, y se quedó embobada mirando. El muchacho se quitó la máscara.</p>
+<p>—¡Aaaah!</p>
+<p>Sasha soltó un grito agudo.</p>
+<p>—Te lo repito. Cuánto tiempo, Sasha.</p>
+<p>Light sonrió. Una sonrisa feroz. Como una bestia salvaje a punto de abalanzarse, sonrió con alegría.</p>
+<p>—He venido a vengarme de lo de hace tres años, Sasha.</p>
+    </div>
+
+    <hr>
+
+    <div class="nav-container">
+        <div class="nav-bottom">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo2e34.html" id="prevLinkBottom" class="nav-btn ">← Reencuentro después de casi tres años</a>
+            <span class="chapter-counter" id="chapterCounterBottom">Capítulo 2 - Episodio 35</span>
+            <a href="capitulo2e36.html" id="nextLinkBottom" class="nav-btn ">La segunda venganza →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelectBottom">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <div class="floating-buttons">
+        <button class="floating-btn" id="scrollToTop" title="Ir arriba">⬆</button>
+        <button class="floating-btn" id="scrollToBottom" title="Ir abajo">⬇</button>
+    </div>
+
+    <footer>
+        <p>Gacha Infinita © 明鏡シスイ (Meikyō Shisui) | Traducción: Ocholobos</p>
+        <p>Apoya al autor comprando los volúmenes oficiales</p>
+    </footer>
+
+    <script src="data.js"></script>
+    <script>
+        // ========== CONFIGURACIÓN DEL CAPÍTULO ==========
+        const CHAPTER_NUM = 2;
+        const EPISODE_NUM = 35;
+        
+        // ========== NAVEGACIÓN ==========
+        function setupNavigation() {
+            if (typeof GACHA_DATA !== 'undefined') {
+                const currentEpisode = GACHA_DATA.getEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const prevEpisode = GACHA_DATA.getPrevEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const nextEpisode = GACHA_DATA.getNextEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const allEpisodes = GACHA_DATA.getAllEpisodesOrdered();
+                
+                const prevLinks = [document.getElementById('prevLinkTop'), document.getElementById('prevLinkBottom')];
+                const nextLinks = [document.getElementById('nextLinkTop'), document.getElementById('nextLinkBottom')];
+                const counters = [document.getElementById('chapterCounterTop'), document.getElementById('chapterCounterBottom')];
+                
+                counters.forEach(c => { if(c) c.textContent = `${currentEpisode.chapterTitle} - Episodio ${currentEpisode.episodeNum}`; });
+                
+                if (prevEpisode) {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${prevEpisode.chapter}e${prevEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = prevEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `← ${shortTitle}`;
+                        }
+                    });
+                } else {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = '← Sin anterior';
+                        }
+                    });
+                }
+                
+                if (nextEpisode) {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${nextEpisode.chapter}e${nextEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = nextEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `${shortTitle} →`;
+                        }
+                    });
+                } else {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = 'Sin siguiente →';
+                        }
+                    });
+                }
+                
+                const selects = [document.getElementById('chapterSelect'), document.getElementById('chapterSelectBottom')];
+                selects.forEach(select => {
+                    if (!select) return;
+                    let options = '<option value="">📖 Seleccionar episodio...</option>';
+                    for (const ep of allEpisodes) {
+                        const selected = (ep.chapter == CHAPTER_NUM && ep.episodeNum == EPISODE_NUM) ? 'selected' : '';
+                        options += `<option value="capitulo${ep.chapter}e${ep.episodeNum}.html" ${selected}>${ep.chapterTitle} - Episodio ${ep.episodeNum}: ${ep.title}</option>`;
+                    }
+                    select.innerHTML = options;
+                    select.onchange = function() { if(this.value) window.location.href = this.value; };
+                });
+            }
+        }
+        
+        // ========== REGISTRAR LECTURA EN HISTORIAL ==========
+        function markAsRead() {
+            const user = localStorage.getItem('gacha_user');
+            if (!user) return;
+            
+            let history = localStorage.getItem(`gacha_history_${user}`);
+            let historyObj = history ? JSON.parse(history) : { chapters: [] };
+            
+            const readKey = { chapter: CHAPTER_NUM, episode: EPISODE_NUM };
+            historyObj.chapters = historyObj.chapters.filter(item => 
+                !(item.chapter == CHAPTER_NUM && item.episode == EPISODE_NUM)
+            );
+            historyObj.chapters.unshift(readKey);
+            if (historyObj.chapters.length > 20) historyObj.chapters.pop();
+            
+            localStorage.setItem(`gacha_history_${user}`, JSON.stringify(historyObj));
+        }
+        
+        // ========== CONTROLES ==========
+        function initControls() {
+            const savedTheme = localStorage.getItem('gacha_theme');
+            if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+            const savedFont = localStorage.getItem('gacha_fontsize');
+            if (savedFont) document.body.style.fontSize = savedFont + '%';
+            
+            document.getElementById('fontPlus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.min(150, size + 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            document.getElementById('fontMinus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.max(70, size - 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            
+            const themeBtn = document.getElementById('themeToggle');
+            if (document.documentElement.hasAttribute('data-theme')) themeBtn.textContent = '☀️ Modo claro';
+            themeBtn.onclick = () => {
+                const isDark = document.documentElement.hasAttribute('data-theme');
+                if (isDark) {
+                    document.documentElement.removeAttribute('data-theme');
+                    localStorage.setItem('gacha_theme', 'light');
+                    themeBtn.textContent = '🌙 Modo oscuro';
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('gacha_theme', 'dark');
+                    themeBtn.textContent = '☀️ Modo claro';
+                }
+            };
+            
+            document.getElementById('scrollToTop').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('scrollToBottom').onclick = () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+        
+        // ========== INICIALIZACIÓN ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            initControls();
+            setupNavigation();
+            markAsRead();
+            
+            kofiWidgetOverlay.draw('ocholobos', {
+                'type': 'floating-chat',
+                'floating-chat.donateButton.text': 'Apóyame',
+                'floating-chat.donateButton.background-color': '#1a4d5f',
+                'floating-chat.donateButton.text-color': '#ffffff'
+            });
+        });
+    </script>
+</body>
+</html>

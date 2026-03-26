@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preparativos de cada uno para la entrada | Gacha Infinita</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem;
+            line-height: 1.8;
+            background: #faf9f7;
+            color: #2c2b28;
+            transition: all 0.3s ease;
+        }
+        [data-theme="dark"] body {
+            background: #1a1a1a;
+            color: #e5e5e5;
+        }
+        
+        .options-bar {
+            position: sticky;
+            top: 0;
+            background: #faf9f7;
+            border-bottom: 1px solid #e5e0d8;
+            padding: 0.6rem 1rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.8rem;
+            z-index: 100;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        [data-theme="dark"] .options-bar {
+            background: #1a1a1a;
+            border-bottom-color: #404040;
+        }
+        .options-bar button, .options-bar a {
+            background: #eef2f0;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: #1a4d5f;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .options-bar button, [data-theme="dark"] .options-bar a {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .font-size-control {
+            display: flex;
+            gap: 0.3rem;
+            align-items: center;
+        }
+        .font-size-control button {
+            width: 32px;
+            padding: 0.2rem;
+        }
+        
+        .nav-container {
+            margin: 1rem 0;
+        }
+        .nav-center, .nav-bottom {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+        .nav-bottom {
+            margin-top: 1rem;
+        }
+        .nav-btn {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            color: #1a4d5f;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .nav-btn {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .nav-btn:hover {
+            background: #e5e0d8;
+        }
+        .nav-btn.disabled {
+            background: #e5e0d8;
+            color: #9ca3af;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .chapter-counter {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] .chapter-counter {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        .chapter-selector {
+            margin: 0.5rem 0;
+            text-align: center;
+        }
+        .chapter-selector select {
+            background: #eef2f0;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-family: inherit;
+            color: #1a4d5f;
+            cursor: pointer;
+            width: 300px;
+            max-width: 90%;
+        }
+        [data-theme="dark"] .chapter-selector select {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin: 1rem 0 0.25rem;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] h1 {
+            color: #5a9e8c;
+        }
+        .episode-number {
+            color: #6b6a68;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #e5e0d8;
+            padding-bottom: 0.5rem;
+        }
+        [data-theme="dark"] .episode-number {
+            color: #a0a0a0;
+            border-bottom-color: #404040;
+        }
+        .story-content {
+            margin: 1.5rem 0;
+        }
+        .story-content p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+        hr {
+            margin: 2rem 0;
+            border: none;
+            border-top: 1px solid #e5e0d8;
+        }
+        [data-theme="dark"] hr {
+            border-top-color: #404040;
+        }
+        
+        .floating-buttons {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+        .floating-btn {
+            background: #1a4d5f;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.8;
+        }
+        [data-theme="dark"] .floating-btn {
+            background: #5a9e8c;
+        }
+        .floating-btn:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        
+        .toast-message {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: #1a4d5f;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            z-index: 1000;
+            animation: fadeOut 3s ease forwards;
+        }
+        [data-theme="dark"] .toast-message {
+            background: #5a9e8c;
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            70% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+        
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            border-top: 1px solid #e5e0d8;
+            padding-top: 1.5rem;
+        }
+        [data-theme="dark"] footer {
+            border-top-color: #404040;
+        }
+        
+        @media (max-width: 600px) {
+            body { padding: 0.5rem; }
+            .nav-center, .nav-bottom { flex-direction: column; gap: 0.5rem; }
+            .floating-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                bottom: 70px;
+                right: 15px;
+            }
+        }
+    </style>
+    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+</head>
+<body>
+    <div class="options-bar">
+        <div class="font-size-control">
+            <button id="fontMinus">A-</button>
+            <button id="fontPlus">A+</button>
+        </div>
+        <a href="index.html">📚 Índice</a>
+        <button id="themeToggle">🌙 Modo oscuro</button>
+    </div>
+
+    <div class="nav-container">
+        <div class="nav-center">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo2e23.html" id="prevLinkTop" class="nav-btn ">← Reunión de estrategia</a>
+            <span class="chapter-counter" id="chapterCounterTop">Capítulo 2 - Episodio 24</span>
+            <a href="capitulo2e25.html" id="nextLinkTop" class="nav-btn ">Entrada a la torre gigante →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelect">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <h1>Preparativos de cada uno para la entrada</h1>
+    <div class="episode-number">Capítulo 2 - Episodio 24</div>
+
+    <div class="story-content">
+        <p>—Sasha, se ha decidido que nos acompañe.</p>
+<p>—¡De verdad! ¡Qué alegría!</p>
+<p>Después de la reunión, el subcomandante de la "Orden de los Caballeros Blancos", Michael, salió de los aposentos particulares y se reunió con Sasha en un reservado del mejor restaurante de la capital del Reino Elfo. Además de la calidad de la cocina, la discreción de sus reservados era uno de los puntos fuertes del local. Sentados frente a frente, disfrutaron de la comida y de la conversación. Sasha, en su interior, hizo un gesto de triunfo.</p>
+<p><em>(¡Así podré entrar en la torre donde está Light! ¡Esta vez lo mataré yo misma!)</em></p>
+<p>—El primer ministro también nos apoya de corazón. Como prueba, nos dejará armaduras de nivel Fantasmal, que han pasado de generación en generación en su familia. También la familia del conde, ¿verdad?</p>
+<p>—¡S-sí! Mi suegro también nos dejará armas de nivel Fantasmal, que han pasado de generación en generación en la familia del conde. Dice que es para que nos protejamos.</p>
+<p>—Qué tranquilidad.</p>
+<p>Por supuesto, no era por buena voluntad que el primer ministro y la familia del conde les prestaban armaduras de nivel Fantasmal. Lo hacían por sus propios intereses. Sasha, aunque fue después de los aventureros humanos, había sido la segunda en traer información importante sobre la torre. Eso era un punto a su favor. Además, si los dos prometidos participaban en la crisis nacional y tenían éxito, su influencia aumentaría inevitablemente. Si la fama de ambos crecía, el primer ministro y la facción de la familia del conde, que buscaban "acabar con el matriarcado e instaurar una sociedad favorable a los hombres", podrían apoyar a la hija de ambos como candidata principal al trono. Con un poco de suerte, podría llegar a ser reina, y entonces podrían acabar con el matriarcado. Por eso, para que triunfaran, el primer ministro y la familia del conde no dudaron en prestarles sus preciadas armaduras de nivel Fantasmal. Eso demostraba cuánto esperaban de ellos. Para Sasha, bastaba con matar a Light y asegurar su futuro feliz. Para Michael, bastaba con vencer a Hardy, su eterna espina, y aumentar su influencia. Así, los intereses de las cuatro partes coincidían a la perfección.</p>
+<p><em>(Con la Orden de los Caballeros Blancos y las armas de nivel Fantasmal del primer ministro y de la familia del conde… es una fuerza capaz de conquistar un país. No puede fallar. Pero nunca está de más tener un seguro.)</em></p>
+<p>Michael, de naturaleza precavida, se llevó la mano al bolsillo sin pensar. Él era de una rama secundaria, pero era de sangre real. Tenía sus propias reliquias familiares. Acarició inconscientemente ese seguro. Sasha, al ver ese gesto, inclinó la cabeza con curiosidad. Antes de que ella pudiera preguntar, Michael, forzando una sonrisa, cogió una copa de vino.</p>
+<p>—Sasha, ¿brindamos por nuestro brillante futuro?</p>
+<p>—Buena idea. Entonces…</p>
+<p>Sasha, sin darle más vueltas, cogió su copa. Ya contenía un vino rojo como la sangre. Con sus mejores sonrisas de prometidos felices, chocaron las copas.</p>
+<p>—Por nuestro brillante futuro…</p>
+<p>—¡Salud!</p>
+<p>El tintineo de las copas resonó con claridad. Mientras escuchaban el sonido, soñaron con un futuro de color de rosa mientras humedecían sus labios con el vino.</p>
+<p>***</p>
+<p>—Ha llegado una solicitud del gremio de aventureros de la capital del Reino Elfo para que colaboremos con ellos en una misión.</p>
+<p>En la sala del trono del cuarto piso de la torre, sentado en el trono, anuncié ante nuestra máxima fuerza reunida.</p>
+<p>—El Reino Elfo ha adoptado el plan que Ellie predijo. Han decidido usar al nuevo grupo de aventureros humanos que trajeron información de la torre, el "Bufón Negro", es decir, nosotros, como señuelo, mientras la "Orden de los Caballeros Blancos" ataca la torre por sorpresa.</p>
+<p>—Me alegra que mis predicciones se cumplan, pero que se cumplan tan exactamente resulta un poco aburrido. Había pensado en contramedidas por si actuaban de otra manera, pero ha sido en vano.</p>
+<p>Ellie, que estaba frente a mí, soltó una risa fría. Yo también esbocé una sonrisa fría, y me dirigí a la máxima fuerza del "Abismo" que podíamos movilizar en ese momento.</p>
+<p>—Por fin tenemos el escenario listo para vengarme de Sasha. ¿Qué cara pondrá en este escenario? Imaginarlo me emociona.</p>
+<p>La sonrisa se me ensanchó. Con esa misma sonrisa, fui llamando a cada uno.</p>
+<p>—Ellie, encárgate del mando general y de que no escapen una vez dentro de la torre.</p>
+<p>—Juro no defraudar las expectativas de Light-sama.</p>
+<p>Ellie sonrió.</p>
+<p>—Aoyuki, maneja a los monstruos para que no haya interferencias de nadie más que Sasha y la Orden de los Caballeros Blancos. Y haz que Gold y Nemumu, que harán de señuelo, ganen fama y reputación como aventureros. El día de la operación, un suplente mío se unirá al equipo, así que ten cuidado con las proporciones.</p>
+<p>—…Como mi señor desee.</p>
+<p>Aoyuki respondió, ocultándose los ojos con la capucha.</p>
+<p>—Nazuna, tu oponente es el comandante de la Orden de los Caballeros Blancos, que se dice es el elfo más fuerte. Para ti, la más fuerte del "Abismo", será un rival pequeño, pero te servirá para calibrar tu poder en la superficie.</p>
+<p>—¡Entendido! ¡Por mi señor, daré lo mejor de mí!</p>
+<p>Nazuna respondió con energía.</p>
+<p>—Suz, tu oponente es un arquero, de los de mayor alcance entre los elfos. Te enfrentarás a él, para que puedas comparar sus habilidades con las tuyas. Que te sirva para calibrar tu propio poder. Pero, como todos, parece que es un elfo típico que no duda en usar a los humanos como carne de cañón. Me da asco. No lo mates, que necesitamos la información, pero destrúyelo sin piedad.</p>
+<p>—…………</p>
+<p>—Mi compañera dice que cumplirá su deseo con el mayor esmero.</p>
+<p>Rock, su "mosquete", habló por ella.</p>
+<p>—Heathel, Mera, vuestros oponentes son los gemelos. Al parecer, estos dos también disfrutan torturando y matando humanos. Es repugnante. Haced que sufran lo mismo, destrozad sus corazones y luego aplastadlos. ¿Podéis?</p>
+<p>—Heathel cumplirá con las expectativas de mi señor.</p>
+<p>—¡Je je je je! Es mi especialidad. Cuenta con ello, amo.</p>
+<p>Terminé de dar las órdenes. Por último, hablé de mi presa.</p>
+<p>—Sasha y el subcomandante son míos. Nadie intervenga, ¿entendido?</p>
+<p>Al oír sus respuestas, asentí con satisfacción, sonriendo de oreja a oreja.</p>
+<p>—Bueno, empecemos este divertido, divertido aquelarre de venganza.</p>
+<p>Ante mi risa alegre, Ellie y las demás pusieron una expresión de alegría y cariño. Los preparativos para recibir a Sasha y los demás estaban listos.</p>
+    </div>
+
+    <hr>
+
+    <div class="nav-container">
+        <div class="nav-bottom">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo2e23.html" id="prevLinkBottom" class="nav-btn ">← Reunión de estrategia</a>
+            <span class="chapter-counter" id="chapterCounterBottom">Capítulo 2 - Episodio 24</span>
+            <a href="capitulo2e25.html" id="nextLinkBottom" class="nav-btn ">Entrada a la torre gigante →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelectBottom">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <div class="floating-buttons">
+        <button class="floating-btn" id="scrollToTop" title="Ir arriba">⬆</button>
+        <button class="floating-btn" id="scrollToBottom" title="Ir abajo">⬇</button>
+    </div>
+
+    <footer>
+        <p>Gacha Infinita © 明鏡シスイ (Meikyō Shisui) | Traducción: Ocholobos</p>
+        <p>Apoya al autor comprando los volúmenes oficiales</p>
+    </footer>
+
+    <script src="data.js"></script>
+    <script>
+        // ========== CONFIGURACIÓN DEL CAPÍTULO ==========
+        const CHAPTER_NUM = 2;
+        const EPISODE_NUM = 24;
+        
+        // ========== NAVEGACIÓN ==========
+        function setupNavigation() {
+            if (typeof GACHA_DATA !== 'undefined') {
+                const currentEpisode = GACHA_DATA.getEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const prevEpisode = GACHA_DATA.getPrevEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const nextEpisode = GACHA_DATA.getNextEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const allEpisodes = GACHA_DATA.getAllEpisodesOrdered();
+                
+                const prevLinks = [document.getElementById('prevLinkTop'), document.getElementById('prevLinkBottom')];
+                const nextLinks = [document.getElementById('nextLinkTop'), document.getElementById('nextLinkBottom')];
+                const counters = [document.getElementById('chapterCounterTop'), document.getElementById('chapterCounterBottom')];
+                
+                counters.forEach(c => { if(c) c.textContent = `${currentEpisode.chapterTitle} - Episodio ${currentEpisode.episodeNum}`; });
+                
+                if (prevEpisode) {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${prevEpisode.chapter}e${prevEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = prevEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `← ${shortTitle}`;
+                        }
+                    });
+                } else {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = '← Sin anterior';
+                        }
+                    });
+                }
+                
+                if (nextEpisode) {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${nextEpisode.chapter}e${nextEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = nextEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `${shortTitle} →`;
+                        }
+                    });
+                } else {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = 'Sin siguiente →';
+                        }
+                    });
+                }
+                
+                const selects = [document.getElementById('chapterSelect'), document.getElementById('chapterSelectBottom')];
+                selects.forEach(select => {
+                    if (!select) return;
+                    let options = '<option value="">📖 Seleccionar episodio...</option>';
+                    for (const ep of allEpisodes) {
+                        const selected = (ep.chapter == CHAPTER_NUM && ep.episodeNum == EPISODE_NUM) ? 'selected' : '';
+                        options += `<option value="capitulo${ep.chapter}e${ep.episodeNum}.html" ${selected}>${ep.chapterTitle} - Episodio ${ep.episodeNum}: ${ep.title}</option>`;
+                    }
+                    select.innerHTML = options;
+                    select.onchange = function() { if(this.value) window.location.href = this.value; };
+                });
+            }
+        }
+        
+        // ========== REGISTRAR LECTURA EN HISTORIAL ==========
+        function markAsRead() {
+            const user = localStorage.getItem('gacha_user');
+            if (!user) return;
+            
+            let history = localStorage.getItem(`gacha_history_${user}`);
+            let historyObj = history ? JSON.parse(history) : { chapters: [] };
+            
+            const readKey = { chapter: CHAPTER_NUM, episode: EPISODE_NUM };
+            historyObj.chapters = historyObj.chapters.filter(item => 
+                !(item.chapter == CHAPTER_NUM && item.episode == EPISODE_NUM)
+            );
+            historyObj.chapters.unshift(readKey);
+            if (historyObj.chapters.length > 20) historyObj.chapters.pop();
+            
+            localStorage.setItem(`gacha_history_${user}`, JSON.stringify(historyObj));
+        }
+        
+        // ========== CONTROLES ==========
+        function initControls() {
+            const savedTheme = localStorage.getItem('gacha_theme');
+            if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+            const savedFont = localStorage.getItem('gacha_fontsize');
+            if (savedFont) document.body.style.fontSize = savedFont + '%';
+            
+            document.getElementById('fontPlus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.min(150, size + 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            document.getElementById('fontMinus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.max(70, size - 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            
+            const themeBtn = document.getElementById('themeToggle');
+            if (document.documentElement.hasAttribute('data-theme')) themeBtn.textContent = '☀️ Modo claro';
+            themeBtn.onclick = () => {
+                const isDark = document.documentElement.hasAttribute('data-theme');
+                if (isDark) {
+                    document.documentElement.removeAttribute('data-theme');
+                    localStorage.setItem('gacha_theme', 'light');
+                    themeBtn.textContent = '🌙 Modo oscuro';
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('gacha_theme', 'dark');
+                    themeBtn.textContent = '☀️ Modo claro';
+                }
+            };
+            
+            document.getElementById('scrollToTop').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('scrollToBottom').onclick = () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+        
+        // ========== INICIALIZACIÓN ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            initControls();
+            setupNavigation();
+            markAsRead();
+            
+            kofiWidgetOverlay.draw('ocholobos', {
+                'type': 'floating-chat',
+                'floating-chat.donateButton.text': 'Apóyame',
+                'floating-chat.donateButton.background-color': '#1a4d5f',
+                'floating-chat.donateButton.text-color': '#ffffff'
+            });
+        });
+    </script>
+</body>
+</html>

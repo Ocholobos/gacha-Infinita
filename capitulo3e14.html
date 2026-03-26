@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extra 2 | Gacha Infinita</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem;
+            line-height: 1.8;
+            background: #faf9f7;
+            color: #2c2b28;
+            transition: all 0.3s ease;
+        }
+        [data-theme="dark"] body {
+            background: #1a1a1a;
+            color: #e5e5e5;
+        }
+        
+        .options-bar {
+            position: sticky;
+            top: 0;
+            background: #faf9f7;
+            border-bottom: 1px solid #e5e0d8;
+            padding: 0.6rem 1rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.8rem;
+            z-index: 100;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        [data-theme="dark"] .options-bar {
+            background: #1a1a1a;
+            border-bottom-color: #404040;
+        }
+        .options-bar button, .options-bar a {
+            background: #eef2f0;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: #1a4d5f;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .options-bar button, [data-theme="dark"] .options-bar a {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .font-size-control {
+            display: flex;
+            gap: 0.3rem;
+            align-items: center;
+        }
+        .font-size-control button {
+            width: 32px;
+            padding: 0.2rem;
+        }
+        
+        .nav-container {
+            margin: 1rem 0;
+        }
+        .nav-center, .nav-bottom {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+        .nav-bottom {
+            margin-top: 1rem;
+        }
+        .nav-btn {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            color: #1a4d5f;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .nav-btn {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .nav-btn:hover {
+            background: #e5e0d8;
+        }
+        .nav-btn.disabled {
+            background: #e5e0d8;
+            color: #9ca3af;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .chapter-counter {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] .chapter-counter {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        .chapter-selector {
+            margin: 0.5rem 0;
+            text-align: center;
+        }
+        .chapter-selector select {
+            background: #eef2f0;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-family: inherit;
+            color: #1a4d5f;
+            cursor: pointer;
+            width: 300px;
+            max-width: 90%;
+        }
+        [data-theme="dark"] .chapter-selector select {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin: 1rem 0 0.25rem;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] h1 {
+            color: #5a9e8c;
+        }
+        .episode-number {
+            color: #6b6a68;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #e5e0d8;
+            padding-bottom: 0.5rem;
+        }
+        [data-theme="dark"] .episode-number {
+            color: #a0a0a0;
+            border-bottom-color: #404040;
+        }
+        .story-content {
+            margin: 1.5rem 0;
+        }
+        .story-content p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+        hr {
+            margin: 2rem 0;
+            border: none;
+            border-top: 1px solid #e5e0d8;
+        }
+        [data-theme="dark"] hr {
+            border-top-color: #404040;
+        }
+        
+        .floating-buttons {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+        .floating-btn {
+            background: #1a4d5f;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.8;
+        }
+        [data-theme="dark"] .floating-btn {
+            background: #5a9e8c;
+        }
+        .floating-btn:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        
+        .toast-message {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: #1a4d5f;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            z-index: 1000;
+            animation: fadeOut 3s ease forwards;
+        }
+        [data-theme="dark"] .toast-message {
+            background: #5a9e8c;
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            70% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+        
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            border-top: 1px solid #e5e0d8;
+            padding-top: 1.5rem;
+        }
+        [data-theme="dark"] footer {
+            border-top-color: #404040;
+        }
+        
+        @media (max-width: 600px) {
+            body { padding: 0.5rem; }
+            .nav-center, .nav-bottom { flex-direction: column; gap: 0.5rem; }
+            .floating-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                bottom: 70px;
+                right: 15px;
+            }
+        }
+    </style>
+    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+</head>
+<body>
+    <div class="options-bar">
+        <div class="font-size-control">
+            <button id="fontMinus">A-</button>
+            <button id="fontPlus">A+</button>
+        </div>
+        <a href="index.html">📚 Índice</a>
+        <button id="themeToggle">🌙 Modo oscuro</button>
+    </div>
+
+    <div class="nav-container">
+        <div class="nav-center">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo3e13.html" id="prevLinkTop" class="nav-btn ">← Extra 1</a>
+            <span class="chapter-counter" id="chapterCounterTop">Capítulo 3 - Episodio 14</span>
+            <a href="capitulo4e1.html" id="nextLinkTop" class="nav-btn ">Justicia azul →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelect">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <h1>Extra 2</h1>
+    <div class="episode-number">Capítulo 3 - Episodio 14</div>
+
+    <div class="story-content">
+        <p>Sin inmutarse por la sorpresa de Silica y las demás, la hada sirvienta entró en la casa prefabricada. A los pocos segundos, volvió a salir.</p>
+<p>—He puesto lo mínimo para vivir. Si falta algo, dímelo a mí o a las otras hadas. Según qué cosa, puede que no os lo demos o que tardemos. Bueno, entrad y ved. Ah, y no se puede entrar con zapatos.</p>
+<p>—S-sí… con permiso.</p>
+<p>La hada sirvienta flotaba todo el tiempo, así que no se ensuciaba los pies. Silica y las demás se quitaron los zapatos y entraron. La habitación medía unos ocho tatamis. Había dos literas de madera a los lados, una alfombra en el suelo, un armario al fondo, y en el centro, una mesa baja con galletas de mantequilla y botellas de plástico de té.</p>
+<p><em>(¡Ha hecho una habitación digna de una posada de categoría media en un instante! ¡Es imposible!)</em></p>
+<p>Mientras ellas se quedaban boquiabiertas, la hada sirvienta les habló.</p>
+<p>—Decidid quién se queda arriba y quién abajo. En el armario hay ropa y ropa interior para todas, repartíosla. El baño está fuera, en un retrete provisional. El pozo lo veréis. Y mientras, antes de cenar, podéis tomar las galletas de mantequilla y el té de la mesa.</p>
+<p>—¿Podemos comerlas?</p>
+<p>La más pequeña de las esclavas preguntó con los ojos brillantes. La hada, que parecía algo desganada, sonrió y le acarició la cabeza.</p>
+<p>—Claro, para eso están. Para abrir la botella, gira la tapa. Bueno, yo tengo que seguir trabajando. Cuando sea la hora de cenar, os avisaré.</p>
+<p>Salió de la casa. Las chicas se sentaron en la alfombra y empezaron a tomar las galletas y el té. La más pequeña se alegró.</p>
+<p>—¡Están buenísimas!</p>
+<p>—El té está bueno, dulce pero no empalagoso…</p>
+<p>—Que nosotras, que fuimos esclavas, comamos algo tan rico…</p>
+<p>—…………</p>
+<p>Mientras las otras se maravillaban, Silica, la hija del comerciante, estaba estupefacta.</p>
+<p><em>(¡Estas galletas son demasiado buenas! No es solo que tengan mucho azúcar, están hechas pensando en el sabor, la textura, el tacto… ¡Y todas son iguales! Las debe haber hecho un pastelero de primera. Si las vendiera, podría sacar una moneda de plata por cada una.)</em></p>
+<p>Las chicas comían con fruición unas galletas que, en un buen sitio, podrían costar una moneda de plata cada una. Una o dos galletas costarían lo mismo que ellas. Y no eran solo las galletas.</p>
+<p><em>(El té también tiene azúcar de buena calidad, y estas botellas transparentes son muy prácticas. Por el envase, la gente pagaría unas cuantas monedas de plata.)</em></p>
+<p>La casa, los muebles… todo era increíble, pero solo la hija del comerciante se daba cuenta de que hasta las golosinas que les daban con tanta ligereza valían una fortuna. Pero su asombro no había hecho más que empezar.</p>
+<p>***</p>
+<p>Cuando se puso el sol, las hadas sirvientas crearon esferas de luz con magia para iluminar el lugar. Era tan brillante como de día. La cena era un buffet con guiso, carnes a la parrilla, frituras, pescados a la parrilla o guisados, pan, ensalada… cada uno escogía lo que quería y se sentaba en las mesas y sillas del exterior. Cuando terminaban, tenían que dejar los platos en un lugar señalado.</p>
+<p>—En una fila, por favor. Hay para todos.</p>
+<p>—¡Y podéis repetir!</p>
+<p>Una hada sirvienta con gafas removía el guiso en una gran olla. La otaku, a su lado, animaba a repetir, y otra la pegaba en la nuca. Las hadas sirvientas, todas guapísimas, iban y venían de la torre como abejas. Silica, en la fila, las observaba.</p>
+<p><em>(Quizás tengan magia para crear mujeres tan guapas.)</em></p>
+<p>Salían de la torre mujeres de todo tipo, todas bellísimas. Cogieron la cena y se sentaron donde pudieron. Empezaron a comer.</p>
+<p>—¡Este guiso está buenísimo!</p>
+<p>—¡Tiene mucha verdura y carne!</p>
+<p>—¡La carne y el pescado están buenísimos!</p>
+<p>—¡El pan es blanco y esponjoso, como el que comen los nobles!</p>
+<p>Las chicas de su habitación disfrutaban como niños. Silica también estaba impresionada por el guiso, la carne, la ensalada, pero sobre todo por el pan.</p>
+<p><em>(Este pan, es tan suave que parece nube. ¡Y el trigo! ¡Nunca había probado nada igual!)</em></p>
+<p>El trigo se cultivaba en varios países, pero sobre todo en el Reino Humano, que era el granero del continente. Exportaba a los otros cinco países. En el mejor de los casos, era el granero del mundo; en el peor, un país débil del que se aprovechaban por su debilidad. Por eso, el sabor del trigo en este mundo era básicamente el del Reino Humano. En otros lugares podía variar, pero no demasiado. Sin embargo, el trigo que Silica estaba probando era más dulce que cualquier otro. Con las galletas, el azúcar había enmascarado el sabor, pero en el pan se notaba. Era un trigo dulce y aromático que nunca había visto ni oído.</p>
+<p><em>(Entonces, la comida que estamos comiendo no es de este mundo.)</em></p>
+<p>¿Era un sueño? Ya no sabía dónde estaba.</p>
+<p>—¿No te gusta? ¿O te encuentras mal?</p>
+<p>—¡¿!?</p>
+<p>Levantó la vista y tenía delante a una de las hadas, de una belleza excepcional. Era tan bella que parecía no tener personalidad. Silica tragó saliva y negó.</p>
+<p>—E-estoy bien. Está todo buenísimo.</p>
+<p>—Ah, menos mal.</p>
+<p>La bella hada sonrió. Su sonrisa era encantadora. Con esa sonrisa, le dijo:</p>
+<p>—Tranquila, os han salvado.</p>
+<p>—¿Qué…?</p>
+<p>La hada, con una mirada que lo veía todo, le aseguró.</p>
+<p>—Nuestro señor ha proclamado la "Independencia Absoluta de la Raza Humana". Desde que os ha acogido, ya no tendréis que pasar hambre, ni frío, ni miedo a los enemigos, ni sufrir discriminación. Si nuestro señor os protege, vuestra felicidad está asegurada.</p>
+<p>Sonrió y continuó.</p>
+<p>—Todo el mundo tiene derecho a ser feliz. No hay razas superiores ni inferiores. Mientras estéis aquí, nadie os comprará ni os mandará morir. Habéis obtenido la libertad de valeros por vosotras mismas. Os enseñaremos a pescar, a cultivar, y os valdréis por vosotras mismas. Incluso podréis iros si queréis. Vuestra felicidad, vuestra libertad, está garantizada.</p>
+<p>Sus ojos eran bellísimos, sin el fanatismo de la religión. No era fanatismo. Como el cielo es azul, como el viento sopla, ella creía que su libertad estaba garantizada.</p>
+<p>—Así que no te preocupes por nada, ¿vale?</p>
+<p>—S-sí.</p>
+<p>Silica asintió, y la hada se fue con una amplia sonrisa. Silica se dio cuenta de su situación.</p>
+<p><em>(La Bruja de la Torre nos ha liberado. Podemos vivir como queramos.)</em></p>
+<p>Cuando su padre y su madre murieron, lo había perdido todo. Ella también se había rendido, y pensaba que pronto se reuniría con ellos.</p>
+<p><em>(¿Puedo seguir viviendo?)</em></p>
+<p>La Bruja de la Torre tenía tanto poder que talar árboles y expandir la tierra sería fácil para ella. Por muchos humanos que se reunieran, no pasarían hambre, ni frío, ni miedo, ni serían discriminados. Como en un mundo de cuento de hadas.</p>
+<p><em>(Sin darnos cuenta, hemos entrado en un mundo de fantasía.)</em></p>
+<p>Silica probó el guiso. Estaba un poco frío, pero seguía estando delicioso.</p>
+    </div>
+
+    <hr>
+
+    <div class="nav-container">
+        <div class="nav-bottom">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo3e13.html" id="prevLinkBottom" class="nav-btn ">← Extra 1</a>
+            <span class="chapter-counter" id="chapterCounterBottom">Capítulo 3 - Episodio 14</span>
+            <a href="capitulo4e1.html" id="nextLinkBottom" class="nav-btn ">Justicia azul →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelectBottom">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <div class="floating-buttons">
+        <button class="floating-btn" id="scrollToTop" title="Ir arriba">⬆</button>
+        <button class="floating-btn" id="scrollToBottom" title="Ir abajo">⬇</button>
+    </div>
+
+    <footer>
+        <p>Gacha Infinita © 明鏡シスイ (Meikyō Shisui) | Traducción: Ocholobos</p>
+        <p>Apoya al autor comprando los volúmenes oficiales</p>
+    </footer>
+
+    <script src="data.js"></script>
+    <script>
+        // ========== CONFIGURACIÓN DEL CAPÍTULO ==========
+        const CHAPTER_NUM = 3;
+        const EPISODE_NUM = 14;
+        
+        // ========== NAVEGACIÓN ==========
+        function setupNavigation() {
+            if (typeof GACHA_DATA !== 'undefined') {
+                const currentEpisode = GACHA_DATA.getEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const prevEpisode = GACHA_DATA.getPrevEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const nextEpisode = GACHA_DATA.getNextEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const allEpisodes = GACHA_DATA.getAllEpisodesOrdered();
+                
+                const prevLinks = [document.getElementById('prevLinkTop'), document.getElementById('prevLinkBottom')];
+                const nextLinks = [document.getElementById('nextLinkTop'), document.getElementById('nextLinkBottom')];
+                const counters = [document.getElementById('chapterCounterTop'), document.getElementById('chapterCounterBottom')];
+                
+                counters.forEach(c => { if(c) c.textContent = `${currentEpisode.chapterTitle} - Episodio ${currentEpisode.episodeNum}`; });
+                
+                if (prevEpisode) {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${prevEpisode.chapter}e${prevEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = prevEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `← ${shortTitle}`;
+                        }
+                    });
+                } else {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = '← Sin anterior';
+                        }
+                    });
+                }
+                
+                if (nextEpisode) {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${nextEpisode.chapter}e${nextEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = nextEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `${shortTitle} →`;
+                        }
+                    });
+                } else {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = 'Sin siguiente →';
+                        }
+                    });
+                }
+                
+                const selects = [document.getElementById('chapterSelect'), document.getElementById('chapterSelectBottom')];
+                selects.forEach(select => {
+                    if (!select) return;
+                    let options = '<option value="">📖 Seleccionar episodio...</option>';
+                    for (const ep of allEpisodes) {
+                        const selected = (ep.chapter == CHAPTER_NUM && ep.episodeNum == EPISODE_NUM) ? 'selected' : '';
+                        options += `<option value="capitulo${ep.chapter}e${ep.episodeNum}.html" ${selected}>${ep.chapterTitle} - Episodio ${ep.episodeNum}: ${ep.title}</option>`;
+                    }
+                    select.innerHTML = options;
+                    select.onchange = function() { if(this.value) window.location.href = this.value; };
+                });
+            }
+        }
+        
+        // ========== REGISTRAR LECTURA EN HISTORIAL ==========
+        function markAsRead() {
+            const user = localStorage.getItem('gacha_user');
+            if (!user) return;
+            
+            let history = localStorage.getItem(`gacha_history_${user}`);
+            let historyObj = history ? JSON.parse(history) : { chapters: [] };
+            
+            const readKey = { chapter: CHAPTER_NUM, episode: EPISODE_NUM };
+            historyObj.chapters = historyObj.chapters.filter(item => 
+                !(item.chapter == CHAPTER_NUM && item.episode == EPISODE_NUM)
+            );
+            historyObj.chapters.unshift(readKey);
+            if (historyObj.chapters.length > 20) historyObj.chapters.pop();
+            
+            localStorage.setItem(`gacha_history_${user}`, JSON.stringify(historyObj));
+        }
+        
+        // ========== CONTROLES ==========
+        function initControls() {
+            const savedTheme = localStorage.getItem('gacha_theme');
+            if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+            const savedFont = localStorage.getItem('gacha_fontsize');
+            if (savedFont) document.body.style.fontSize = savedFont + '%';
+            
+            document.getElementById('fontPlus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.min(150, size + 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            document.getElementById('fontMinus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.max(70, size - 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            
+            const themeBtn = document.getElementById('themeToggle');
+            if (document.documentElement.hasAttribute('data-theme')) themeBtn.textContent = '☀️ Modo claro';
+            themeBtn.onclick = () => {
+                const isDark = document.documentElement.hasAttribute('data-theme');
+                if (isDark) {
+                    document.documentElement.removeAttribute('data-theme');
+                    localStorage.setItem('gacha_theme', 'light');
+                    themeBtn.textContent = '🌙 Modo oscuro';
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('gacha_theme', 'dark');
+                    themeBtn.textContent = '☀️ Modo claro';
+                }
+            };
+            
+            document.getElementById('scrollToTop').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('scrollToBottom').onclick = () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+        
+        // ========== INICIALIZACIÓN ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            initControls();
+            setupNavigation();
+            markAsRead();
+            
+            kofiWidgetOverlay.draw('ocholobos', {
+                'type': 'floating-chat',
+                'floating-chat.donateButton.text': 'Apóyame',
+                'floating-chat.donateButton.background-color': '#1a4d5f',
+                'floating-chat.donateButton.text-color': '#ffffff'
+            });
+        });
+    </script>
+</body>
+</html>

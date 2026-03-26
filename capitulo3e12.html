@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regreso a casa 2 | Gacha Infinita</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem;
+            line-height: 1.8;
+            background: #faf9f7;
+            color: #2c2b28;
+            transition: all 0.3s ease;
+        }
+        [data-theme="dark"] body {
+            background: #1a1a1a;
+            color: #e5e5e5;
+        }
+        
+        .options-bar {
+            position: sticky;
+            top: 0;
+            background: #faf9f7;
+            border-bottom: 1px solid #e5e0d8;
+            padding: 0.6rem 1rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.8rem;
+            z-index: 100;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        [data-theme="dark"] .options-bar {
+            background: #1a1a1a;
+            border-bottom-color: #404040;
+        }
+        .options-bar button, .options-bar a {
+            background: #eef2f0;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: #1a4d5f;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .options-bar button, [data-theme="dark"] .options-bar a {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .font-size-control {
+            display: flex;
+            gap: 0.3rem;
+            align-items: center;
+        }
+        .font-size-control button {
+            width: 32px;
+            padding: 0.2rem;
+        }
+        
+        .nav-container {
+            margin: 1rem 0;
+        }
+        .nav-center, .nav-bottom {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+        .nav-bottom {
+            margin-top: 1rem;
+        }
+        .nav-btn {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            color: #1a4d5f;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .nav-btn {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .nav-btn:hover {
+            background: #e5e0d8;
+        }
+        .nav-btn.disabled {
+            background: #e5e0d8;
+            color: #9ca3af;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .chapter-counter {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] .chapter-counter {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        .chapter-selector {
+            margin: 0.5rem 0;
+            text-align: center;
+        }
+        .chapter-selector select {
+            background: #eef2f0;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-family: inherit;
+            color: #1a4d5f;
+            cursor: pointer;
+            width: 300px;
+            max-width: 90%;
+        }
+        [data-theme="dark"] .chapter-selector select {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin: 1rem 0 0.25rem;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] h1 {
+            color: #5a9e8c;
+        }
+        .episode-number {
+            color: #6b6a68;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #e5e0d8;
+            padding-bottom: 0.5rem;
+        }
+        [data-theme="dark"] .episode-number {
+            color: #a0a0a0;
+            border-bottom-color: #404040;
+        }
+        .story-content {
+            margin: 1.5rem 0;
+        }
+        .story-content p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+        hr {
+            margin: 2rem 0;
+            border: none;
+            border-top: 1px solid #e5e0d8;
+        }
+        [data-theme="dark"] hr {
+            border-top-color: #404040;
+        }
+        
+        .floating-buttons {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+        .floating-btn {
+            background: #1a4d5f;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.8;
+        }
+        [data-theme="dark"] .floating-btn {
+            background: #5a9e8c;
+        }
+        .floating-btn:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        
+        .toast-message {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: #1a4d5f;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            z-index: 1000;
+            animation: fadeOut 3s ease forwards;
+        }
+        [data-theme="dark"] .toast-message {
+            background: #5a9e8c;
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            70% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+        
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            border-top: 1px solid #e5e0d8;
+            padding-top: 1.5rem;
+        }
+        [data-theme="dark"] footer {
+            border-top-color: #404040;
+        }
+        
+        @media (max-width: 600px) {
+            body { padding: 0.5rem; }
+            .nav-center, .nav-bottom { flex-direction: column; gap: 0.5rem; }
+            .floating-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                bottom: 70px;
+                right: 15px;
+            }
+        }
+    </style>
+    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+</head>
+<body>
+    <div class="options-bar">
+        <div class="font-size-control">
+            <button id="fontMinus">A-</button>
+            <button id="fontPlus">A+</button>
+        </div>
+        <a href="index.html">📚 Índice</a>
+        <button id="themeToggle">🌙 Modo oscuro</button>
+    </div>
+
+    <div class="nav-container">
+        <div class="nav-center">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo3e11.html" id="prevLinkTop" class="nav-btn ">← Regreso a casa 1</a>
+            <span class="chapter-counter" id="chapterCounterTop">Capítulo 3 - Episodio 12</span>
+            <a href="capitulo3e13.html" id="nextLinkTop" class="nav-btn ">Extra 1 →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelect">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <h1>Regreso a casa 2</h1>
+    <div class="episode-number">Capítulo 3 - Episodio 12</div>
+
+    <div class="story-content">
+        <p>—¿Qué es esto? ¿Qué ha pasado?</p>
+<p>Habíamos conseguido anular el bloqueo de teletransportación del "Abismo" y por fin salir a la superficie. Nos dirigimos a mi pueblo natal, pero estaba arrasado, convertido en un pueblo fantasma. Los campos estaban baldíos, las casas destruidas, con restos de incendios. Y al acercarme, vi muchos cadáveres. Habían sido devorados por animales y el viento, y solo quedaban los huesos. Pero por la ropa y la complexión, pude reconocer a algunos. Meme-chan, la amiga de Yume; el viejo que, aunque de aspecto rudo, era bueno con los niños; las señoras que hacían el pan en los días de hornada… Sin darme cuenta, dejé de volar, aterricé en el pueblo y eché a correr. No con la cabeza, sino con el cuerpo, seguí el camino hasta mi casa, donde me esperaba mi familia.</p>
+<p>—Aaah…</p>
+<p>No había nada. Ni una viga en pie, estaba arrasada como si la hubiera pisado un gigante. Cerca, dos esqueletos. Por la ropa, un hombre y una mujer, el hombre protegiendo a la mujer. Reconocía esa ropa. La había visto cada día.</p>
+<p>—¿Papá? ¿Mamá?</p>
+<p>La muerte de mis padres. No podía creerlo. ¿Me habría equivocado de lugar? ¿O aún estaba dormido, soñando?</p>
+<p>—Light-sama. ¡Light-sama, reaccione!</p>
+<p>—¿Mei…?</p>
+<p>Me agarró el hombro. Al girarme, Mei, Aoyuki, Ellie y Nazuna me miraban con preocupación. Al dirigirnos al pueblo, me había adelantado, dejándolas atrás. Todo esto era real.</p>
+<p>—¡Ah…!</p>
+<p>—¡Light-sama!</p>
+<p>No pude resistir el impacto y me derrumbé. Mei me sostuvo, me acarició la espalda y me secó el rostro sin importarle mancharse el pañuelo. Ellie creó agua con magia para que me limpiara la boca. Aoyuki se puso delante para taparme la vista. Nazuna, sin saber qué hacer, iba de un lado a otro.</p>
+<p>—Es una broma.</p>
+<p>Después de vomitar, vomité mis sentimientos. Me levanté como un fantasma y grité con todas mis fuerzas.</p>
+<p>—¡Es una broma! ¿Por qué ha sido destruido el pueblo? ¿Por qué tuvieron que morir mi padre, mi madre y todos los demás? ¡¿Por qué?! ¡Dios! ¿Acaso he cometido un crimen tan grande para merecer esto?</p>
+<p>Lo intuía. ¿Por qué fue destruido el pueblo, por qué mataron a mis padres y a los demás? Porque yo era un candidato a "Maestro". Podía ser un monstruo o unos bandidos, pero ¿era casualidad que después de estar a punto de morir en el "Abismo" por ser candidato a "Maestro", ahora mi pueblo fuera destruido? Pensándolo bien, era imposible. Lo más probable es que lo hubieran destruido los países que intentaron matarme, o alguno de ellos. No podía contener la rabia. Grité al cielo.</p>
+<p>—¡Os mataré! ¡A los que destruyeron mi pueblo! ¡Os mataré! ¡A los que mataron a mi familia, jamás os perdonaré! Aunque tenga que remover el suelo con mis manos, os encontraré y os mataré. ¡Os haré pagar!</p>
+<p>Mi grito, de alguien de nivel 9999, fue tan poderoso que incluso Mei y las demás se quedaron inmóviles. Las aves volaron del bosque, y las bestias huyeron despavoridas. Mi percepción agudizada me lo decía, pero no me consolaba en absoluto. Seguí gritando hasta quedarme afónico.</p>
+<p>***</p>
+<p>Después de calmarme, me puse en acción. Regresamos al "Abismo" con la teletransportación y organicé un equipo para investigar el pueblo. Quería encontrar alguna pista de los que lo destruyeron y mataron a mi familia. Pero, con el tiempo transcurrido, la información fue escasa. El pueblo fue destruido hace años. Las casas, los campos, los establos, el pozo, todo estaba completamente arrasado. Los aldeanos habían huido, pero casi todos fueron asesinados. Fue una destrucción total, como si odiaran al pueblo o quisieran borrar su existencia. Pero con el tiempo, no se podía saber si fue obra de monstruos o de otras razas. Lo único bueno fue que no se habían encontrado los cadáveres de mi hermano y de Yume. Después de la investigación, recogimos los restos de mis padres y los aldeanos para enterrarlos. Trajimos a las hadas sirvientas con la teletransportación para que ayudaran. Por la ropa y la complexión, no había rastro de mi hermano ni de Yume. Buscamos en los alrededores, incluso en el bosque, pero no encontramos nada. Podría ser que huyeran al bosque y fueran devorados por monstruos, sin dejar restos. Pero la ausencia de cadáveres significaba que podrían haber escapado y estar vivos en algún lugar. Sabía que era casi imposible. Llamé a Mei a la sala de trabajo.</p>
+<p>—Diles a los comerciantes y aventureros que vamos a enviar a la superficie que recaben información sobre mi hermano y Yume.</p>
+<p>—¿Qué prioridad le damos?</p>
+<p>—Ya…</p>
+<p>Los recursos eran limitados, no podíamos investigarlo todo. Dar prioridad era necesario. No podía olvidar la venganza por el pueblo y mis padres, pero tampoco podía descuidar mi venganza personal y la búsqueda de la verdad. Sin dudar, respondí.</p>
+<p>—Que den prioridad a la venganza y a la información sobre los "Maestros" y los países.</p>
+<p>—Entendido. Así lo haré.</p>
+<p>Mei hizo una reverencia. Era solo una intuición, pero sentía que la destrucción de mi pueblo y el asesinato de mis padres tenían que ver con que yo fuera candidato a "Maestro". Por eso, si daba prioridad a la venganza y a la información sobre los "Maestros", quizás encontraría pistas sobre la destrucción del pueblo. Era solo una corazonada, pero…</p>
+<p>Mei salió de la sala. Me quedé solo, reclinado en la silla. Al cerrar los ojos, veía el pueblo destruido, los aldeanos masacrados, a mis padres. Apreté los dientes sin querer.</p>
+<p>—Papá, mamá, todos… me vengaré.</p>
+<p>Mi voz resonó en la sala vacía.</p>
+<p>***</p>
+<p>Unos seis meses después, me vengué de Garou. Por su reacción, supe que nuestro poder era suficiente en la superficie. Lo supe. Por fin estaba listo para la venganza. Y así, desde el "Abismo", nos extendimos por la superficie.</p>
+    </div>
+
+    <hr>
+
+    <div class="nav-container">
+        <div class="nav-bottom">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo3e11.html" id="prevLinkBottom" class="nav-btn ">← Regreso a casa 1</a>
+            <span class="chapter-counter" id="chapterCounterBottom">Capítulo 3 - Episodio 12</span>
+            <a href="capitulo3e13.html" id="nextLinkBottom" class="nav-btn ">Extra 1 →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelectBottom">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <div class="floating-buttons">
+        <button class="floating-btn" id="scrollToTop" title="Ir arriba">⬆</button>
+        <button class="floating-btn" id="scrollToBottom" title="Ir abajo">⬇</button>
+    </div>
+
+    <footer>
+        <p>Gacha Infinita © 明鏡シスイ (Meikyō Shisui) | Traducción: Ocholobos</p>
+        <p>Apoya al autor comprando los volúmenes oficiales</p>
+    </footer>
+
+    <script src="data.js"></script>
+    <script>
+        // ========== CONFIGURACIÓN DEL CAPÍTULO ==========
+        const CHAPTER_NUM = 3;
+        const EPISODE_NUM = 12;
+        
+        // ========== NAVEGACIÓN ==========
+        function setupNavigation() {
+            if (typeof GACHA_DATA !== 'undefined') {
+                const currentEpisode = GACHA_DATA.getEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const prevEpisode = GACHA_DATA.getPrevEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const nextEpisode = GACHA_DATA.getNextEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const allEpisodes = GACHA_DATA.getAllEpisodesOrdered();
+                
+                const prevLinks = [document.getElementById('prevLinkTop'), document.getElementById('prevLinkBottom')];
+                const nextLinks = [document.getElementById('nextLinkTop'), document.getElementById('nextLinkBottom')];
+                const counters = [document.getElementById('chapterCounterTop'), document.getElementById('chapterCounterBottom')];
+                
+                counters.forEach(c => { if(c) c.textContent = `${currentEpisode.chapterTitle} - Episodio ${currentEpisode.episodeNum}`; });
+                
+                if (prevEpisode) {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${prevEpisode.chapter}e${prevEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = prevEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `← ${shortTitle}`;
+                        }
+                    });
+                } else {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = '← Sin anterior';
+                        }
+                    });
+                }
+                
+                if (nextEpisode) {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${nextEpisode.chapter}e${nextEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = nextEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `${shortTitle} →`;
+                        }
+                    });
+                } else {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = 'Sin siguiente →';
+                        }
+                    });
+                }
+                
+                const selects = [document.getElementById('chapterSelect'), document.getElementById('chapterSelectBottom')];
+                selects.forEach(select => {
+                    if (!select) return;
+                    let options = '<option value="">📖 Seleccionar episodio...</option>';
+                    for (const ep of allEpisodes) {
+                        const selected = (ep.chapter == CHAPTER_NUM && ep.episodeNum == EPISODE_NUM) ? 'selected' : '';
+                        options += `<option value="capitulo${ep.chapter}e${ep.episodeNum}.html" ${selected}>${ep.chapterTitle} - Episodio ${ep.episodeNum}: ${ep.title}</option>`;
+                    }
+                    select.innerHTML = options;
+                    select.onchange = function() { if(this.value) window.location.href = this.value; };
+                });
+            }
+        }
+        
+        // ========== REGISTRAR LECTURA EN HISTORIAL ==========
+        function markAsRead() {
+            const user = localStorage.getItem('gacha_user');
+            if (!user) return;
+            
+            let history = localStorage.getItem(`gacha_history_${user}`);
+            let historyObj = history ? JSON.parse(history) : { chapters: [] };
+            
+            const readKey = { chapter: CHAPTER_NUM, episode: EPISODE_NUM };
+            historyObj.chapters = historyObj.chapters.filter(item => 
+                !(item.chapter == CHAPTER_NUM && item.episode == EPISODE_NUM)
+            );
+            historyObj.chapters.unshift(readKey);
+            if (historyObj.chapters.length > 20) historyObj.chapters.pop();
+            
+            localStorage.setItem(`gacha_history_${user}`, JSON.stringify(historyObj));
+        }
+        
+        // ========== CONTROLES ==========
+        function initControls() {
+            const savedTheme = localStorage.getItem('gacha_theme');
+            if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+            const savedFont = localStorage.getItem('gacha_fontsize');
+            if (savedFont) document.body.style.fontSize = savedFont + '%';
+            
+            document.getElementById('fontPlus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.min(150, size + 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            document.getElementById('fontMinus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.max(70, size - 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            
+            const themeBtn = document.getElementById('themeToggle');
+            if (document.documentElement.hasAttribute('data-theme')) themeBtn.textContent = '☀️ Modo claro';
+            themeBtn.onclick = () => {
+                const isDark = document.documentElement.hasAttribute('data-theme');
+                if (isDark) {
+                    document.documentElement.removeAttribute('data-theme');
+                    localStorage.setItem('gacha_theme', 'light');
+                    themeBtn.textContent = '🌙 Modo oscuro';
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('gacha_theme', 'dark');
+                    themeBtn.textContent = '☀️ Modo claro';
+                }
+            };
+            
+            document.getElementById('scrollToTop').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('scrollToBottom').onclick = () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+        
+        // ========== INICIALIZACIÓN ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            initControls();
+            setupNavigation();
+            markAsRead();
+            
+            kofiWidgetOverlay.draw('ocholobos', {
+                'type': 'floating-chat',
+                'floating-chat.donateButton.text': 'Apóyame',
+                'floating-chat.donateButton.background-color': '#1a4d5f',
+                'floating-chat.donateButton.text-color': '#ffffff'
+            });
+        });
+    </script>
+</body>
+</html>

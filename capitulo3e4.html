@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Light, nivel alrededor de 3000 | Gacha Infinita</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem;
+            line-height: 1.8;
+            background: #faf9f7;
+            color: #2c2b28;
+            transition: all 0.3s ease;
+        }
+        [data-theme="dark"] body {
+            background: #1a1a1a;
+            color: #e5e5e5;
+        }
+        
+        .options-bar {
+            position: sticky;
+            top: 0;
+            background: #faf9f7;
+            border-bottom: 1px solid #e5e0d8;
+            padding: 0.6rem 1rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.8rem;
+            z-index: 100;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        [data-theme="dark"] .options-bar {
+            background: #1a1a1a;
+            border-bottom-color: #404040;
+        }
+        .options-bar button, .options-bar a {
+            background: #eef2f0;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: #1a4d5f;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .options-bar button, [data-theme="dark"] .options-bar a {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .font-size-control {
+            display: flex;
+            gap: 0.3rem;
+            align-items: center;
+        }
+        .font-size-control button {
+            width: 32px;
+            padding: 0.2rem;
+        }
+        
+        .nav-container {
+            margin: 1rem 0;
+        }
+        .nav-center, .nav-bottom {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+        .nav-bottom {
+            margin-top: 1rem;
+        }
+        .nav-btn {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            color: #1a4d5f;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .nav-btn {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .nav-btn:hover {
+            background: #e5e0d8;
+        }
+        .nav-btn.disabled {
+            background: #e5e0d8;
+            color: #9ca3af;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .chapter-counter {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] .chapter-counter {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        .chapter-selector {
+            margin: 0.5rem 0;
+            text-align: center;
+        }
+        .chapter-selector select {
+            background: #eef2f0;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-family: inherit;
+            color: #1a4d5f;
+            cursor: pointer;
+            width: 300px;
+            max-width: 90%;
+        }
+        [data-theme="dark"] .chapter-selector select {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin: 1rem 0 0.25rem;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] h1 {
+            color: #5a9e8c;
+        }
+        .episode-number {
+            color: #6b6a68;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #e5e0d8;
+            padding-bottom: 0.5rem;
+        }
+        [data-theme="dark"] .episode-number {
+            color: #a0a0a0;
+            border-bottom-color: #404040;
+        }
+        .story-content {
+            margin: 1.5rem 0;
+        }
+        .story-content p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+        hr {
+            margin: 2rem 0;
+            border: none;
+            border-top: 1px solid #e5e0d8;
+        }
+        [data-theme="dark"] hr {
+            border-top-color: #404040;
+        }
+        
+        .floating-buttons {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+        .floating-btn {
+            background: #1a4d5f;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.8;
+        }
+        [data-theme="dark"] .floating-btn {
+            background: #5a9e8c;
+        }
+        .floating-btn:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        
+        .toast-message {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: #1a4d5f;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            z-index: 1000;
+            animation: fadeOut 3s ease forwards;
+        }
+        [data-theme="dark"] .toast-message {
+            background: #5a9e8c;
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            70% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+        
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            border-top: 1px solid #e5e0d8;
+            padding-top: 1.5rem;
+        }
+        [data-theme="dark"] footer {
+            border-top-color: #404040;
+        }
+        
+        @media (max-width: 600px) {
+            body { padding: 0.5rem; }
+            .nav-center, .nav-bottom { flex-direction: column; gap: 0.5rem; }
+            .floating-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                bottom: 70px;
+                right: 15px;
+            }
+        }
+    </style>
+    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+</head>
+<body>
+    <div class="options-bar">
+        <div class="font-size-control">
+            <button id="fontMinus">A-</button>
+            <button id="fontPlus">A+</button>
+        </div>
+        <a href="index.html">📚 Índice</a>
+        <button id="themeToggle">🌙 Modo oscuro</button>
+    </div>
+
+    <div class="nav-container">
+        <div class="nav-center">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo3e3.html" id="prevLinkTop" class="nav-btn ">← Capítulo del baño</a>
+            <span class="chapter-counter" id="chapterCounterTop">Capítulo 3 - Episodio 4</span>
+            <a href="capitulo3e5.html" id="nextLinkTop" class="nav-btn ">Light, nivel alrededor de 3000 (2) →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelect">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <h1>Light, nivel alrededor de 3000</h1>
+    <div class="episode-number">Capítulo 3 - Episodio 4</div>
+
+    <div class="story-content">
+        <p>Había pasado un mes desde que caí al fondo del "Abismo". Los monstruos del "Abismo" tenían niveles entre 1000 y 3000. Con la ayuda de Mei, yo también había superado el nivel 3000. Pero había un problema: mi nivel ya no subía tan rápido. Habíamos acondicionado el amplio espacio donde nos habíamos teletransportado como dormitorio, y colocamos los muebles que salían de la Gacha Infinita: camas, mesas, sillas... No nos instalábamos en un lugar pequeño para poder enfrentarnos a los monstruos a distancia. Bloqueábamos la entrada con el hilo de Mei y nos preparábamos para que los monstruos pudieran aparecer en cualquier momento. Ya acostumbrado a esta vida, me senté en una silla y, mientras tomaba el té que me había servido Mei, le dije:</p>
+<p>—Los monstruos del fondo del "Abismo" son de nivel 1000 a 3000, y mi nivel ya no sube, como temías.</p>
+<p>—Lo único bueno es que, gracias a su Gacha Infinita, mantenemos un alto nivel de vida y de equipamiento.</p>
+<p>—Quién iba a decir que, estando en el fondo del calabozo más grande, más fuerte y más peligroso del mundo, podríamos vivir mejor que en la superficie. Yo tampoco me lo esperaba.</p>
+<p>En la época de la "Reunión de Razas", me dieron una habitación individual muy pequeña. La cama era estrecha y no había espacio para nada más. Las mantas eran finas y la almohada dura. Para un humano que, como yo, había salido del campo para probar suerte en la ciudad, lo normal era dormir en un callejón, en una cuadra o, si tenía dinero, en un albergue compartido. Por muy pequeña que fuera, una habitación individual era un lujo. Y ahora, aunque estábamos en un calabozo donde los monstruos podían atacar en cualquier momento, tenía a Mei, una sirvienta, una cama grande y mantas mullidas. Mei cocinaba con los alimentos que salían de las cartas, muchos más ricos y variados que los de la superficie. También había muchos dulces, salados y de otros sabores extraños. Teníamos baño y mucha ropa; hasta cambiaba de ropa interior cada día. La vida en el "Abismo" era incomparablemente mejor que en la superficie.</p>
+<p>—No solo la vida cotidiana. Que un niño humano como yo tenga una lanza de nivel Fantasmal… en la superficie sería impensable.</p>
+<p>El arma que usaba ahora era la lanza "UR, Uragan", de nivel Fantasmal. Estaba imbuida con el atributo de viento, lo que aumentaba mi velocidad. Además, si la clavaba en el enemigo y le infundía poder mágico, liberaba el poder del viento, abriendo la herida y dañando el interior. Era muy letal y me resultaba muy útil. La usaba porque podía mantener la distancia, lo que era más seguro. En la época de la "Reunión de Razas", había aprendido a usar varias armas. La que mejor se me daba era la lanza. Luego el arco, y la que peor se me daba era la espada. Mei también lo confirmó. Tenía más talento para la lanza, luego el arco, luego la espada. Me hubiera gustado usar la espada, pero estaba en juego mi vida. No iba a arriesgarme por un capricho. Según los aventureros del gremio, las armas de nivel Fantasmal eran tesoros nacionales. Que algo así me saliera de la Gacha Infinita era increíble.</p>
+<p>—Todo es mérito de Light-sama. Como su sirvienta, me siento orgullosa.</p>
+<p>Mei, que me servía el té, me alabó. Por cierto, para la armadura, usaba la ropa que hacía Mei con su hilo, más ligera y resistente.</p>
+<p>—El nivel de vida, las armas y la armadura están bien, pero ¿qué hacemos con subir de nivel? Me gustaría llegar a nivel 9999 como tú, pero así parece imposible.</p>
+<p>No era necesario llegar a nivel 9999. Pero para vengarme de los de la "Reunión de Razas" y saber qué es un "Maestro" y por qué quisieron matarme, tendría que enfrentarme a países de todo el mundo. Para vengarme y conocer la verdad, necesitaba mucho poder. Por eso quería llegar a nivel 9999, pero…</p>
+<p>Mei me habló con voz seria.</p>
+<p>—…Light-sama, tengo una idea para subir de nivel. ¿Puedo proponerla?</p>
+<p>—¡Ah! ¡Como era de esperar de ti! ¡Claro que sí! ¿De qué se trata?</p>
+<p>—De las cartas con seres como yo o monstruos que salen de la Gacha Infinita.</p>
+<p>Me asaltó un mal presentimiento. Como ella decía, siempre que podía, usaba la Gacha Infinita. Habían salido muchas cartas: alimentos, artículos de primera necesidad, bebidas, lujos, armas, armaduras, y también cartas con hadas sirvientas, mohicanos, comerciantes y otros humanos, y monstruos de varios niveles, desde 10 hasta 5000. Las guardaba en la caja de ítems, que había aprendido con la carta "SSSR, Caja de ítems". Las cartas de conjuros de la Gacha Infinita desaparecían al usarlas, pero algunas, como la "SSSR, Caja de ítems", podían ser aprendidas. No había invocado a los humanos o monstruos de las cartas, y seguía viviendo solo con Mei, porque si invocaba a los de nivel bajo, sería difícil que sobrevivieran en el "Abismo" sin que los protegiéramos. Además, Mei decía que "no tenemos tiempo para ocuparnos de ellos. Es mejor estar solos". Por eso, vivíamos solo los dos. Habíamos acordado que si salía una carta "SÚR" como Mei, la invocaríamos. ¿Por qué sacaba ahora este tema?</p>
+<p>Mei, con su expresión y tono habituales, dijo:</p>
+<p>—Si invoca a los de nivel más alto y les da su mano, quizás suba de nivel. Ellos, como yo, estarán encantados de servir de alimento a Light-sama.</p>
+<p>—¡Mei!</p>
+<p>Por primera vez, la llamé con una mezcla de ira y tristeza en la voz.</p>
+<p>—¿Me estás pidiendo que haga lo mismo que ellos? ¿Que traicione a mis compañeros como me traicionaron a mí?</p>
+<p>—…Lo siento. He sido imprudente. Perdóneme.</p>
+<p>Mei inclinó la cabeza profundamente. Me levanté y me acerqué a ella. Le hice levantar la cabeza y la abracé con fuerza. Como ella era más alta, mi cara se hundió en su pecho. Ocultando mis ojos, humedecidos por la traición pasada y por sus palabras, le dije:</p>
+<p>—Mei… No vuelvas a decir que sacrifiques a los compañeros. Si tú también te fueras, yo no podría soportarlo.</p>
+<p>—Sí. Yo estaré siempre a su lado. Todo por mi adorable señor. Mi cuerpo y mi alma le pertenecen. Por mi camino de sirvienta, juro lealtad absoluta. En el cielo, aves de alas entrelazadas; en la tierra, ramas enlazadas. Estaré siempre a su lado. Por favor, déjeme quedarme.</p>
+<p>—Sí… Gracias, Mei.</p>
+<p>La abracé un rato, y ella me acarició la cabeza y la espalda. Yo también la abracé con más fuerza. Unos minutos después, me sequé las mejillas sonrojadas con la manga.</p>
+<p>—No voy a hacer lo que has dicho de sacrificar a los compañeros. Pero quiero subir de nivel. Por eso, creo que deberíamos derrotar a eso.</p>
+<p>—Al monstruo guardián del calabozo, en el fondo del "Abismo".</p>
+<p>—Sí. Para subir de nivel, derrotemos al monstruo guardián del calabozo.</p>
+<p>Así, decidimos acabar con el monstruo guardián del fondo del "Abismo", de nivel estimado 5000.</p>
+    </div>
+
+    <hr>
+
+    <div class="nav-container">
+        <div class="nav-bottom">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo3e3.html" id="prevLinkBottom" class="nav-btn ">← Capítulo del baño</a>
+            <span class="chapter-counter" id="chapterCounterBottom">Capítulo 3 - Episodio 4</span>
+            <a href="capitulo3e5.html" id="nextLinkBottom" class="nav-btn ">Light, nivel alrededor de 3000 (2) →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelectBottom">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <div class="floating-buttons">
+        <button class="floating-btn" id="scrollToTop" title="Ir arriba">⬆</button>
+        <button class="floating-btn" id="scrollToBottom" title="Ir abajo">⬇</button>
+    </div>
+
+    <footer>
+        <p>Gacha Infinita © 明鏡シスイ (Meikyō Shisui) | Traducción: Ocholobos</p>
+        <p>Apoya al autor comprando los volúmenes oficiales</p>
+    </footer>
+
+    <script src="data.js"></script>
+    <script>
+        // ========== CONFIGURACIÓN DEL CAPÍTULO ==========
+        const CHAPTER_NUM = 3;
+        const EPISODE_NUM = 4;
+        
+        // ========== NAVEGACIÓN ==========
+        function setupNavigation() {
+            if (typeof GACHA_DATA !== 'undefined') {
+                const currentEpisode = GACHA_DATA.getEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const prevEpisode = GACHA_DATA.getPrevEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const nextEpisode = GACHA_DATA.getNextEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const allEpisodes = GACHA_DATA.getAllEpisodesOrdered();
+                
+                const prevLinks = [document.getElementById('prevLinkTop'), document.getElementById('prevLinkBottom')];
+                const nextLinks = [document.getElementById('nextLinkTop'), document.getElementById('nextLinkBottom')];
+                const counters = [document.getElementById('chapterCounterTop'), document.getElementById('chapterCounterBottom')];
+                
+                counters.forEach(c => { if(c) c.textContent = `${currentEpisode.chapterTitle} - Episodio ${currentEpisode.episodeNum}`; });
+                
+                if (prevEpisode) {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${prevEpisode.chapter}e${prevEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = prevEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `← ${shortTitle}`;
+                        }
+                    });
+                } else {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = '← Sin anterior';
+                        }
+                    });
+                }
+                
+                if (nextEpisode) {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${nextEpisode.chapter}e${nextEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = nextEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `${shortTitle} →`;
+                        }
+                    });
+                } else {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = 'Sin siguiente →';
+                        }
+                    });
+                }
+                
+                const selects = [document.getElementById('chapterSelect'), document.getElementById('chapterSelectBottom')];
+                selects.forEach(select => {
+                    if (!select) return;
+                    let options = '<option value="">📖 Seleccionar episodio...</option>';
+                    for (const ep of allEpisodes) {
+                        const selected = (ep.chapter == CHAPTER_NUM && ep.episodeNum == EPISODE_NUM) ? 'selected' : '';
+                        options += `<option value="capitulo${ep.chapter}e${ep.episodeNum}.html" ${selected}>${ep.chapterTitle} - Episodio ${ep.episodeNum}: ${ep.title}</option>`;
+                    }
+                    select.innerHTML = options;
+                    select.onchange = function() { if(this.value) window.location.href = this.value; };
+                });
+            }
+        }
+        
+        // ========== REGISTRAR LECTURA EN HISTORIAL ==========
+        function markAsRead() {
+            const user = localStorage.getItem('gacha_user');
+            if (!user) return;
+            
+            let history = localStorage.getItem(`gacha_history_${user}`);
+            let historyObj = history ? JSON.parse(history) : { chapters: [] };
+            
+            const readKey = { chapter: CHAPTER_NUM, episode: EPISODE_NUM };
+            historyObj.chapters = historyObj.chapters.filter(item => 
+                !(item.chapter == CHAPTER_NUM && item.episode == EPISODE_NUM)
+            );
+            historyObj.chapters.unshift(readKey);
+            if (historyObj.chapters.length > 20) historyObj.chapters.pop();
+            
+            localStorage.setItem(`gacha_history_${user}`, JSON.stringify(historyObj));
+        }
+        
+        // ========== CONTROLES ==========
+        function initControls() {
+            const savedTheme = localStorage.getItem('gacha_theme');
+            if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+            const savedFont = localStorage.getItem('gacha_fontsize');
+            if (savedFont) document.body.style.fontSize = savedFont + '%';
+            
+            document.getElementById('fontPlus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.min(150, size + 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            document.getElementById('fontMinus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.max(70, size - 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            
+            const themeBtn = document.getElementById('themeToggle');
+            if (document.documentElement.hasAttribute('data-theme')) themeBtn.textContent = '☀️ Modo claro';
+            themeBtn.onclick = () => {
+                const isDark = document.documentElement.hasAttribute('data-theme');
+                if (isDark) {
+                    document.documentElement.removeAttribute('data-theme');
+                    localStorage.setItem('gacha_theme', 'light');
+                    themeBtn.textContent = '🌙 Modo oscuro';
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('gacha_theme', 'dark');
+                    themeBtn.textContent = '☀️ Modo claro';
+                }
+            };
+            
+            document.getElementById('scrollToTop').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('scrollToBottom').onclick = () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+        
+        // ========== INICIALIZACIÓN ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            initControls();
+            setupNavigation();
+            markAsRead();
+            
+            kofiWidgetOverlay.draw('ocholobos', {
+                'type': 'floating-chat',
+                'floating-chat.donateButton.text': 'Apóyame',
+                'floating-chat.donateButton.background-color': '#1a4d5f',
+                'floating-chat.donateButton.text-color': '#ffffff'
+            });
+        });
+    </script>
+</body>
+</html>

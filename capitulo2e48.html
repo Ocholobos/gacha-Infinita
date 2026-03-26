@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extra: Pasta de frijol dulce o con grano | Gacha Infinita</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem;
+            line-height: 1.8;
+            background: #faf9f7;
+            color: #2c2b28;
+            transition: all 0.3s ease;
+        }
+        [data-theme="dark"] body {
+            background: #1a1a1a;
+            color: #e5e5e5;
+        }
+        
+        .options-bar {
+            position: sticky;
+            top: 0;
+            background: #faf9f7;
+            border-bottom: 1px solid #e5e0d8;
+            padding: 0.6rem 1rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.8rem;
+            z-index: 100;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        [data-theme="dark"] .options-bar {
+            background: #1a1a1a;
+            border-bottom-color: #404040;
+        }
+        .options-bar button, .options-bar a {
+            background: #eef2f0;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: #1a4d5f;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .options-bar button, [data-theme="dark"] .options-bar a {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .font-size-control {
+            display: flex;
+            gap: 0.3rem;
+            align-items: center;
+        }
+        .font-size-control button {
+            width: 32px;
+            padding: 0.2rem;
+        }
+        
+        .nav-container {
+            margin: 1rem 0;
+        }
+        .nav-center, .nav-bottom {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+        .nav-bottom {
+            margin-top: 1rem;
+        }
+        .nav-btn {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            color: #1a4d5f;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .nav-btn {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .nav-btn:hover {
+            background: #e5e0d8;
+        }
+        .nav-btn.disabled {
+            background: #e5e0d8;
+            color: #9ca3af;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .chapter-counter {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] .chapter-counter {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        .chapter-selector {
+            margin: 0.5rem 0;
+            text-align: center;
+        }
+        .chapter-selector select {
+            background: #eef2f0;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-family: inherit;
+            color: #1a4d5f;
+            cursor: pointer;
+            width: 300px;
+            max-width: 90%;
+        }
+        [data-theme="dark"] .chapter-selector select {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin: 1rem 0 0.25rem;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] h1 {
+            color: #5a9e8c;
+        }
+        .episode-number {
+            color: #6b6a68;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #e5e0d8;
+            padding-bottom: 0.5rem;
+        }
+        [data-theme="dark"] .episode-number {
+            color: #a0a0a0;
+            border-bottom-color: #404040;
+        }
+        .story-content {
+            margin: 1.5rem 0;
+        }
+        .story-content p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+        hr {
+            margin: 2rem 0;
+            border: none;
+            border-top: 1px solid #e5e0d8;
+        }
+        [data-theme="dark"] hr {
+            border-top-color: #404040;
+        }
+        
+        .floating-buttons {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+        .floating-btn {
+            background: #1a4d5f;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.8;
+        }
+        [data-theme="dark"] .floating-btn {
+            background: #5a9e8c;
+        }
+        .floating-btn:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        
+        .toast-message {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: #1a4d5f;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            z-index: 1000;
+            animation: fadeOut 3s ease forwards;
+        }
+        [data-theme="dark"] .toast-message {
+            background: #5a9e8c;
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            70% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+        
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            border-top: 1px solid #e5e0d8;
+            padding-top: 1.5rem;
+        }
+        [data-theme="dark"] footer {
+            border-top-color: #404040;
+        }
+        
+        @media (max-width: 600px) {
+            body { padding: 0.5rem; }
+            .nav-center, .nav-bottom { flex-direction: column; gap: 0.5rem; }
+            .floating-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                bottom: 70px;
+                right: 15px;
+            }
+        }
+    </style>
+    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+</head>
+<body>
+    <div class="options-bar">
+        <div class="font-size-control">
+            <button id="fontMinus">A-</button>
+            <button id="fontPlus">A+</button>
+        </div>
+        <a href="index.html">📚 Índice</a>
+        <button id="themeToggle">🌙 Modo oscuro</button>
+    </div>
+
+    <div class="nav-container">
+        <div class="nav-center">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo2e47.html" id="prevLinkTop" class="nav-btn ">← Nueva información y --</a>
+            <span class="chapter-counter" id="chapterCounterTop">Capítulo 2 - Episodio 48</span>
+            <a href="capitulo2e49.html" id="nextLinkTop" class="nav-btn ">Extra: El baño y el secreto →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelect">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <h1>Extra: Pasta de frijol dulce o con grano</h1>
+    <div class="episode-number">Capítulo 2 - Episodio 48</div>
+
+    <div class="story-content">
+        <p>—El tiempo retrocede un poco. Poco antes de que Light y los demás salieran a la superficie.</p>
+<p>—El anko es de pasta de frijol!</p>
+<p>—¡Imposible! ¡El anko solo puede ser con grano!</p>
+<p>En la habitación de las hadas sirvientas subterráneas del "Abismo", se habían reunido las cuatro hadas sirvientas que habitaban allí. Las hadas sirvientas normalmente comparten habitaciones de cuatro personas, y cada habitación tiene asignado un turno de trabajo. Hoy era su día libre. Normalmente, les encantaría trabajar hasta morir por Light, pero él mismo les había dado el día libre. Para pasar el tiempo, compraban dulces en la tienda y charlaban, pero esta vez, el "anko" de los dulces que habían comprado había provocado una disputa.</p>
+<p>—¡El "anko con grano" tiene la piel, por eso la textura es peor! ¡Por eso, el "anko de pasta" es superior!</p>
+<p>Una hada sirvienta, que a pesar de ser increíblemente hermosa quizás por eso parecía carecer de personalidad, lo planteó. La hada sirvienta de gafas se ajustó la montura y la contradijo.</p>
+<p>—No. Precisamente porque conserva la piel, el "anko con grano" es mejor. ¿Acaso no es esa textura lo mejor? Además, al conservar la piel, tiene más valor nutricional que el "anko de pasta".</p>
+<p>—Yo soy más del "anko de pasta". El "anko con grano" deja la piel en la boca al final.</p>
+<p>—Y-yo soy del "anko con grano". Es más contundente.</p>
+<p>La hada sirvienta de aspecto juvenil y la de aspecto más otaku dieron su opinión. Se dividieron en dos bandos.</p>
+<p>—¡Ya que estamos, preguntemos a los demás cuál es mejor, si el de pasta o el de grano!</p>
+<p>—Sí. Preguntemos cuál es mejor.</p>
+<p>La hada sirvienta de gafas repitió cambiando el orden de las palabras. Así, una discusión sin importancia estalló en el "Abismo".</p>
+<p>***</p>
+<p>Las hadas sirvientas salieron volando de la habitación para hacer una encuesta sobre cuál era mejor. La primera a la que preguntaron fue a Aoyuki. Justo estaba en el pasillo, así que la llamaron.</p>
+<p>—Aoyuki-sama, ¿cuál cree que es mejor, el "anko de pasta" o el "anko con grano"?</p>
+<p>—S-seguro que el "anko con grano", ¿verdad?</p>
+<p>—…………</p>
+<p>Las hadas sirvientas eran más altas que Aoyuki. A pesar de que la acosaban, Aoyuki no parecía especialmente intimidada. Las hadas tenían nivel 500. Aoyuki, nivel 9999. Era, literalmente, otro nivel. No tenía por qué temerlas. Y su conclusión fue…</p>
+<p>—Nya~</p>
+<p>—…Aoyuki-sama~</p>
+<p>—E-era sobre si el "anko con grano" o el "anko de pasta" es mejor…</p>
+<p>—Nya~</p>
+<p>—Ah, sí.</p>
+<p>Ante su actitud de solo emitir maullidos, la hada sirvienta más común desistió. Aoyuki, dando por terminado el asunto, los dejó atrás. No les quedó más remedio que verla alejarse en silencio.</p>
+<p>—…Quizás fue mala idea preguntarle.</p>
+<p>—Sí, Aoyuki-sama es especial.</p>
+<p>La más común y la de gafas se miraron. Sin desanimarse, se dirigieron a preguntar a otro.</p>
+<p>***</p>
+<p>Se trasladaron al campo de entrenamiento. Encontraron a Ellie, que quizás estaba haciendo algún experimento. Le preguntaron enseguida cuál era mejor, pero…</p>
+<p>—¿Cuál es mejor? A mí no me gusta ninguna de las dos. Me da reparo que los frijoles estén tan dulces.</p>
+<p>—¡E-esa opción no se nos había ocurrido!</p>
+<p>—¡Quién iba a decir que hubiera alguien a quien no le gustara el anko!</p>
+<p>—Bueno, son gustos. ¡Pero me encantan los dulces como tartas, galletas o pasteles!</p>
+<p>Ante el asombro de las hadas, Ellie se sonrojó con vergüenza. Como una adulta a la que descubren que tiene algo que no le gusta comer. Las hadas, resignadas, se fueron.</p>
+<p>***</p>
+<p>Luego se dirigieron al comedor. Pensaron que allí encontrarían a otras hadas sirvientas descansando. Pero por mala suerte, no había ninguna. Solo Nazuna, que comía un dorayaki en silencio. Aunque no podían hacer la encuesta a las otras hadas, tenían a Nazuna, que estaba comiendo. Se acercaron enseguida.</p>
+<p>—Nazuna-sama, Nazuna-sama, ¿qué le gusta más, el "anko de pasta" o el "anko con grano"?</p>
+<p>—¡Seguro que el "anko con grano", verdad?</p>
+<p>La más común llamaba a Nazuna, y la de gafas, ajustándose las gafas, le daba su opinión. Nazuna, que estaba merendando, no se molestó y respondió.</p>
+<p>—¿? ¿Qué es eso del "anko de pasta" y el "anko con grano"?</p>
+<p>—¡Nazuna-sama, se refiere a lo que está comiendo!</p>
+<p>—¡S-seguro que es el de grano!</p>
+<p>—¿?</p>
+<p>Nazuna, mientras masticaba, inclinó la cabeza. Por fin entendió la pregunta. Tras tragar, respondió con energía.</p>
+<p>—¡Ah, eso era!</p>
+<p>—¡Sí, eso era!</p>
+<p>—¡Nazuna-sama, seguro que le gusta el de grano, verdad!</p>
+<p>—Jajaja, no, no es el de grano.</p>
+<p>—¿Entonces es el de pasta?</p>
+<p>—Tampoco es de pasta.</p>
+<p>Nazuna, bebiendo leche para quitarse el dulzor, respondió con una amplia sonrisa.</p>
+<p>—¡Lo que he comido es un "dorayaki"! ¿Nunca habéis comido uno? ¡Está buenísimo!</p>
+<p>Ante su sonrisa tan radiante, las hadas no pudieron decir nada. Nazuna, diciendo "os lo recomiendo mucho, probadlo alguna vez", se fue del comedor. Las hadas la vieron marcharse.</p>
+<p>—N-Nazuna-sama, en cierto sentido, es increíble…</p>
+<p>La otaku dijo, y las otras tres asintieron profundamente.</p>
+<p>***</p>
+<p>Al final, no pudieron hacer la encuesta a nadie. Derrotadas por la respuesta de Nazuna, las cuatro volvían a su habitación. Al doblar un pasillo, se encontraron con Light, acompañado de Heathel como guardaespaldas. Las cuatro hadas se apartaron al instante. Con los ojos brillando, se encontraron por casualidad con Light. Él se detuvo y les habló.</p>
+<p>—¿Eh? ¿Hoy no descansabais?</p>
+<p>—¡¿Se acuerda de nosotras!?</p>
+<p>La más común se sorprendió. Había muchas hadas sirvientas. Si tuvieran nivel alto, como Mei, las verían a menudo, pero ellas solo se cruzaban con él en los pasillos o cuando les tocaba ayudarle a vestirse. Por eso creían que "no se acordaría de nosotras". Pero Light se acordaba de todas y no las trataba como a cualquiera. Con una sonrisa, les dio las gracias.</p>
+<p>—Gracias por limpiar, lavar y hacer las tareas. No he podido agradecéroslo antes, con tanto lío. Cuando tenga tiempo, podremos charlar.</p>
+<p>—¡S-sí! ¡Encantadas!</p>
+<p>—¡E-entonces, prepararemos los mejores dulces!</p>
+<p>—¡D-daremos lo mejor de nosotras!</p>
+<p>—¡L-Light-sama, cuídese!</p>
+<p>—Sí. Bueno, tengo trabajo, me voy. Vamos, Heathel.</p>
+<p>—Sí.</p>
+<p>Heathel, con su pelo recogido en dos coletas, mitad rojo fuego, mitad azul hielo, siguió a Light. Las cuatro hadas se quedaron embobadas hasta que desapareció.</p>
+<p>—Ahhh, no solo ver a mi señor, sino que nos haya hablado…</p>
+<p>—Hoy hemos gastado toda la suerte de nuestra vida.</p>
+<p>—Más que una vida, la de las reencarnaciones futuras.</p>
+<p>—P-por cierto, ¿qué hacíamos aquí en nuestro día libre?</p>
+<p>—¿? ¿Qué era? Me he olvidado.</p>
+<p>—Lo importante es que mi señor es adorable.</p>
+<p>—Sí, lo es.</p>
+<p>—Es que sí.</p>
+<p>—¿Y si volvemos a la habitación a hablar de lo adorable que es mi señor?</p>
+<p>—¡De acuerdo!</p>
+<p>De sus cabezas había desaparecido por completo la disputa sobre el anko. Regresaron a su habitación y hablaron toda la noche de lo "adorable" que era Light.</p>
+    </div>
+
+    <hr>
+
+    <div class="nav-container">
+        <div class="nav-bottom">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo2e47.html" id="prevLinkBottom" class="nav-btn ">← Nueva información y --</a>
+            <span class="chapter-counter" id="chapterCounterBottom">Capítulo 2 - Episodio 48</span>
+            <a href="capitulo2e49.html" id="nextLinkBottom" class="nav-btn ">Extra: El baño y el secreto →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelectBottom">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <div class="floating-buttons">
+        <button class="floating-btn" id="scrollToTop" title="Ir arriba">⬆</button>
+        <button class="floating-btn" id="scrollToBottom" title="Ir abajo">⬇</button>
+    </div>
+
+    <footer>
+        <p>Gacha Infinita © 明鏡シスイ (Meikyō Shisui) | Traducción: Ocholobos</p>
+        <p>Apoya al autor comprando los volúmenes oficiales</p>
+    </footer>
+
+    <script src="data.js"></script>
+    <script>
+        // ========== CONFIGURACIÓN DEL CAPÍTULO ==========
+        const CHAPTER_NUM = 2;
+        const EPISODE_NUM = 48;
+        
+        // ========== NAVEGACIÓN ==========
+        function setupNavigation() {
+            if (typeof GACHA_DATA !== 'undefined') {
+                const currentEpisode = GACHA_DATA.getEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const prevEpisode = GACHA_DATA.getPrevEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const nextEpisode = GACHA_DATA.getNextEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const allEpisodes = GACHA_DATA.getAllEpisodesOrdered();
+                
+                const prevLinks = [document.getElementById('prevLinkTop'), document.getElementById('prevLinkBottom')];
+                const nextLinks = [document.getElementById('nextLinkTop'), document.getElementById('nextLinkBottom')];
+                const counters = [document.getElementById('chapterCounterTop'), document.getElementById('chapterCounterBottom')];
+                
+                counters.forEach(c => { if(c) c.textContent = `${currentEpisode.chapterTitle} - Episodio ${currentEpisode.episodeNum}`; });
+                
+                if (prevEpisode) {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${prevEpisode.chapter}e${prevEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = prevEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `← ${shortTitle}`;
+                        }
+                    });
+                } else {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = '← Sin anterior';
+                        }
+                    });
+                }
+                
+                if (nextEpisode) {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${nextEpisode.chapter}e${nextEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = nextEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `${shortTitle} →`;
+                        }
+                    });
+                } else {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = 'Sin siguiente →';
+                        }
+                    });
+                }
+                
+                const selects = [document.getElementById('chapterSelect'), document.getElementById('chapterSelectBottom')];
+                selects.forEach(select => {
+                    if (!select) return;
+                    let options = '<option value="">📖 Seleccionar episodio...</option>';
+                    for (const ep of allEpisodes) {
+                        const selected = (ep.chapter == CHAPTER_NUM && ep.episodeNum == EPISODE_NUM) ? 'selected' : '';
+                        options += `<option value="capitulo${ep.chapter}e${ep.episodeNum}.html" ${selected}>${ep.chapterTitle} - Episodio ${ep.episodeNum}: ${ep.title}</option>`;
+                    }
+                    select.innerHTML = options;
+                    select.onchange = function() { if(this.value) window.location.href = this.value; };
+                });
+            }
+        }
+        
+        // ========== REGISTRAR LECTURA EN HISTORIAL ==========
+        function markAsRead() {
+            const user = localStorage.getItem('gacha_user');
+            if (!user) return;
+            
+            let history = localStorage.getItem(`gacha_history_${user}`);
+            let historyObj = history ? JSON.parse(history) : { chapters: [] };
+            
+            const readKey = { chapter: CHAPTER_NUM, episode: EPISODE_NUM };
+            historyObj.chapters = historyObj.chapters.filter(item => 
+                !(item.chapter == CHAPTER_NUM && item.episode == EPISODE_NUM)
+            );
+            historyObj.chapters.unshift(readKey);
+            if (historyObj.chapters.length > 20) historyObj.chapters.pop();
+            
+            localStorage.setItem(`gacha_history_${user}`, JSON.stringify(historyObj));
+        }
+        
+        // ========== CONTROLES ==========
+        function initControls() {
+            const savedTheme = localStorage.getItem('gacha_theme');
+            if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+            const savedFont = localStorage.getItem('gacha_fontsize');
+            if (savedFont) document.body.style.fontSize = savedFont + '%';
+            
+            document.getElementById('fontPlus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.min(150, size + 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            document.getElementById('fontMinus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.max(70, size - 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            
+            const themeBtn = document.getElementById('themeToggle');
+            if (document.documentElement.hasAttribute('data-theme')) themeBtn.textContent = '☀️ Modo claro';
+            themeBtn.onclick = () => {
+                const isDark = document.documentElement.hasAttribute('data-theme');
+                if (isDark) {
+                    document.documentElement.removeAttribute('data-theme');
+                    localStorage.setItem('gacha_theme', 'light');
+                    themeBtn.textContent = '🌙 Modo oscuro';
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('gacha_theme', 'dark');
+                    themeBtn.textContent = '☀️ Modo claro';
+                }
+            };
+            
+            document.getElementById('scrollToTop').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('scrollToBottom').onclick = () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+        
+        // ========== INICIALIZACIÓN ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            initControls();
+            setupNavigation();
+            markAsRead();
+            
+            kofiWidgetOverlay.draw('ocholobos', {
+                'type': 'floating-chat',
+                'floating-chat.donateButton.text': 'Apóyame',
+                'floating-chat.donateButton.background-color': '#1a4d5f',
+                'floating-chat.donateButton.text-color': '#ffffff'
+            });
+        });
+    </script>
+</body>
+</html>

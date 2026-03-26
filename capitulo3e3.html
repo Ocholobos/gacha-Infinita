@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capítulo del baño | Gacha Infinita</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem;
+            line-height: 1.8;
+            background: #faf9f7;
+            color: #2c2b28;
+            transition: all 0.3s ease;
+        }
+        [data-theme="dark"] body {
+            background: #1a1a1a;
+            color: #e5e5e5;
+        }
+        
+        .options-bar {
+            position: sticky;
+            top: 0;
+            background: #faf9f7;
+            border-bottom: 1px solid #e5e0d8;
+            padding: 0.6rem 1rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.8rem;
+            z-index: 100;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        [data-theme="dark"] .options-bar {
+            background: #1a1a1a;
+            border-bottom-color: #404040;
+        }
+        .options-bar button, .options-bar a {
+            background: #eef2f0;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: #1a4d5f;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .options-bar button, [data-theme="dark"] .options-bar a {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .font-size-control {
+            display: flex;
+            gap: 0.3rem;
+            align-items: center;
+        }
+        .font-size-control button {
+            width: 32px;
+            padding: 0.2rem;
+        }
+        
+        .nav-container {
+            margin: 1rem 0;
+        }
+        .nav-center, .nav-bottom {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+        .nav-bottom {
+            margin-top: 1rem;
+        }
+        .nav-btn {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            color: #1a4d5f;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .nav-btn {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .nav-btn:hover {
+            background: #e5e0d8;
+        }
+        .nav-btn.disabled {
+            background: #e5e0d8;
+            color: #9ca3af;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .chapter-counter {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] .chapter-counter {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        .chapter-selector {
+            margin: 0.5rem 0;
+            text-align: center;
+        }
+        .chapter-selector select {
+            background: #eef2f0;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-family: inherit;
+            color: #1a4d5f;
+            cursor: pointer;
+            width: 300px;
+            max-width: 90%;
+        }
+        [data-theme="dark"] .chapter-selector select {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin: 1rem 0 0.25rem;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] h1 {
+            color: #5a9e8c;
+        }
+        .episode-number {
+            color: #6b6a68;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #e5e0d8;
+            padding-bottom: 0.5rem;
+        }
+        [data-theme="dark"] .episode-number {
+            color: #a0a0a0;
+            border-bottom-color: #404040;
+        }
+        .story-content {
+            margin: 1.5rem 0;
+        }
+        .story-content p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+        hr {
+            margin: 2rem 0;
+            border: none;
+            border-top: 1px solid #e5e0d8;
+        }
+        [data-theme="dark"] hr {
+            border-top-color: #404040;
+        }
+        
+        .floating-buttons {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+        .floating-btn {
+            background: #1a4d5f;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.8;
+        }
+        [data-theme="dark"] .floating-btn {
+            background: #5a9e8c;
+        }
+        .floating-btn:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        
+        .toast-message {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: #1a4d5f;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            z-index: 1000;
+            animation: fadeOut 3s ease forwards;
+        }
+        [data-theme="dark"] .toast-message {
+            background: #5a9e8c;
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            70% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+        
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            border-top: 1px solid #e5e0d8;
+            padding-top: 1.5rem;
+        }
+        [data-theme="dark"] footer {
+            border-top-color: #404040;
+        }
+        
+        @media (max-width: 600px) {
+            body { padding: 0.5rem; }
+            .nav-center, .nav-bottom { flex-direction: column; gap: 0.5rem; }
+            .floating-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                bottom: 70px;
+                right: 15px;
+            }
+        }
+    </style>
+    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+</head>
+<body>
+    <div class="options-bar">
+        <div class="font-size-control">
+            <button id="fontMinus">A-</button>
+            <button id="fontPlus">A+</button>
+        </div>
+        <a href="index.html">📚 Índice</a>
+        <button id="themeToggle">🌙 Modo oscuro</button>
+    </div>
+
+    <div class="nav-container">
+        <div class="nav-center">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo3e2.html" id="prevLinkTop" class="nav-btn ">← Light, nivel 1000</a>
+            <span class="chapter-counter" id="chapterCounterTop">Capítulo 3 - Episodio 3</span>
+            <a href="capitulo3e4.html" id="nextLinkTop" class="nav-btn ">Light, nivel alrededor de 3000 →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelect">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <h1>Capítulo del baño</h1>
+    <div class="episode-number">Capítulo 3 - Episodio 3</div>
+
+    <div class="story-content">
+        <p>Tras caer al fondo del "Abismo", llegó por fin el primer descanso en condiciones. Gracias a Mei, mi nivel había llegado a 1000. Entonces, ella me dijo:</p>
+<p>—Bueno, Light-sama, dejémoslo aquí. Antes de comer, vamos a bañarnos para quitarnos el sudor y la suciedad.</p>
+<p>—¿Bañarnos? ¿Eso de meterse en agua caliente que hacen los nobles y los reyes?</p>
+<p>Sabía por teoría que existía algo llamado "baño", sumergirse en agua caliente, pero nunca lo había hecho. Normalmente, en mi habitación de la "Reunión de Razas", me limpiaba con un paño húmedo, con agua fría o caliente en invierno. Cuando acampábamos cerca de un río, los hombres nos bañábamos juntos.</p>
+<p>—Sí, un baño. Es muy agradable y relajante.</p>
+<p>—…Mei, por mucho que digas, es imposible. Para bañarse, hay que calentar mucha agua y meterla en una bañera. Es complicado en la superficie, ¿cómo vamos a hacerlo en un calabozo?</p>
+<p>—No se preocupe. Yo me encargaré de todo.</p>
+<p>—¿?</p>
+<p>Dicho y hecho, se puso a prepararlo. Primero, hizo una bañera del tamaño de una persona con su "Hilo Mágico".</p>
+<p>—Magia, manifiéstate, crea agua, Agua.</p>
+<p>Lanzó el conjuro, creó agua en el aire y llenó la bañera. Al poco, empezó a salir vapor. ¡Se había convertido en agua caliente!</p>
+<p>—¡E-es increíble, Mei! ¡Has hecho un baño en un instante! ¿Cómo has calentado el agua?</p>
+<p>—No es difícil. La bañera la hice con mi hilo, solo tuve que convertir el poder mágico en calor para calentar el agua.</p>
+<p>No entendía bien lo de "convertir el poder mágico en calor", pero comprendí que había hecho algo increíble. ¡Nunca pensé que llegaría el día en que me bañaría como los nobles y los reyes!</p>
+<p>—Entonces, bañémonos. Antes de meternos, hay que lavarse bien para no ensuciar el agua. Yo le ayudaré, Light-sama.</p>
+<p>—¡Es-espera, Mei! ¡¿Vas a bañarte conmigo!?</p>
+<p>De repente, Mei empezó a quitarse el uniforme. En realidad, el uniforme estaba hecho con su hilo, y en un instante se quedó en ropa interior. Su abundante pecho, su cintura tan fina que parecía que se iba a romper, sus muslos redondeados… la piel de Mei quedó al descubierto. Me dio tanta vergüenza que me di la vuelta.</p>
+<p>—¿No es normal?</p>
+<p>Mei, en ropa interior, me abrazó por detrás. Me estremecí al sentir la suavidad de su piel.</p>
+<p>—Una sirvienta que lava y se baña con su señor es algo natural. Servir a Light-sama en el baño es mi deber como sirvienta. Es tan natural como que el agua fluya de lo alto a lo bajo, como que los pájaros vuelen. Así que no tiene por qué avergonzarse. Quitarle la ropa así, abrazándole, es para hacerlo con más cuidado. Es algo completamente normal para una sirvienta.</p>
+<p>Mei, con la voz un poco acelerada, siguió hablando. Yo era un niño de doce años de una familia de campesinos pobres, no sabía nada de la alta sociedad. Si Mei, que es tan culta, lo dice, será normal.</p>
+<p>—Si Mei lo dice… será normal, ¿no?</p>
+<p>—Sí, lo juro por mi camino de sirvienta.</p>
+<p>Lo dijo con una expresión tan seria que me convenció. Entonces, acepté bañarme con ella.</p>
+<p>—¡Mei! ¡Puedo quitarme la ropa yo solo!</p>
+<p>—No, también es mi deber. No puedo relajarme hasta el final.</p>
+<p>Ella se quitó la ropa interior, se envolvió en una toalla que había hecho con su hilo y me ayudó a quitarme la ropa. Con la diferencia de nivel, no podía resistirme. Me senté en su regazo, cubierto con una toalla.</p>
+<p>—Como es la primera vez que se baña, le explicaré mientras lo hago. ¿No tiene frío? Le calentaré un poco.</p>
+<p>Dicho esto, Mei me abrazó suavemente. Su calor me envolvía. Era muy agradable.</p>
+<p>—Mei… está muy caliente. Me siento muy seguro.</p>
+<p>—Yo también, al abrazarle, me siento segura. Mi señor está aquí, puedo protegerle con todo mi ser, y me alegra mucho. Que la primera persona que conocí al llegar a este mundo sea un señor tan adorable y obediente… es el destino. Mi razón de ser está aquí. Todo es por Light-sama. Mi vida entera es suya.</p>
+<p>Me abrazó con más fuerza. El contacto de su piel suave y cálida hizo que mi corazón diera un vuelco.</p>
+<p><em>(¿Qué es este sentimiento? Nunca me habían abrazado así…)</em></p>
+<p>—Light-sama, ¿se ha acostumbrado? Primero, con agua del baño, le quitaré la suciedad superficial.</p>
+<p>Mei cogió agua con un cubo, duro como si no fuera de hilo, y me la echó por encima.</p>
+<p><em>(Qué calor… y qué bien se siente…)</em></p>
+<p>El agua, a la temperatura perfecta, me hizo sonrojar. Pero más que el calor del agua, el de su piel y sus muslos, al abrazarme, era mayor.</p>
+<p>—Cierre los ojos… Otra vez. Así, muy bien… qué adorable.</p>
+<p>Me volvió a echar agua, despacio, para que me llegara a todo el cuerpo. Al final, me abrazó y me acarició la espalda con sus delicados dedos.</p>
+<p><em>(Qué caliente…)</em></p>
+<p>El calor de sus dedos se extendía por mi piel. Me trataba con tanto cuidado, como si fuera un tesoro. Me acariciaba con la punta de los dedos, me rozaba con la mejilla, me calentaba poco a poco. Mientras sentía su calor, ella continuó explicando.</p>
+<p>—Ya hemos acabado con el agua. Ahora voy a lavarle el pelo y el cuerpo. Por suerte, han salido champú y jabón de su Gacha Infinita. Primero le lavaré el pelo. Cierre los ojos, que el jabón pica.</p>
+<p>—S-sí.</p>
+<p>Cerré los ojos. Sus dedos se movían por mi cabeza, produciendo una sensación agradable. Al aclarar el jabón, se dispuso a lavarme el cuerpo.</p>
+<p>—¡Mei, yo puedo lavarme solo!</p>
+<p>—No, también es mi deber.</p>
+<p>—Ugh…</p>
+<p>Con una toalla de su hilo, hizo espuma y me lavó la espalda. Dijo que era su deber y una recompensa por mi esfuerzo, así que no pude negarme. El contacto de la espuma y sus manos hacía que mi cuerpo se calentara, y cerraba los ojos, dejándome hacer. Lavarme la espalda era una cosa, pero que me lavara el pecho era muy embarazoso.</p>
+<p>—Ya está. Ya puede meterse en la bañera. Cuente hasta cien mientras se sumerge.</p>
+<p>—…………</p>
+<p>Me metí en la bañera, abrazado por detrás. Su pecho me rozaba la nuca, y su voz sonaba en mi oído. Entre el calor del agua y la vergüenza, no podía pensar con claridad.</p>
+<p>—Cuando salgamos, comeremos. De ahora en adelante, para prevenir enfermedades y mantener la salud, nos bañaremos juntos todos los días.</p>
+<p>—S-sí, de acuerdo.</p>
+<p>Mei apretó los puños bajo el agua. ¿Se habría preparado para atacar a algún monstruo? Pero no vi nada. Entre la vergüenza y el calor, solo pude asentir.</p>
+<p>Así, durante un mes, Mei y yo nos bañamos juntos todos los días.</p>
+<p>***</p>
+<p>Un mes después de caer al fondo del "Abismo", mi nivel superó los 3000.</p>
+    </div>
+
+    <hr>
+
+    <div class="nav-container">
+        <div class="nav-bottom">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo3e2.html" id="prevLinkBottom" class="nav-btn ">← Light, nivel 1000</a>
+            <span class="chapter-counter" id="chapterCounterBottom">Capítulo 3 - Episodio 3</span>
+            <a href="capitulo3e4.html" id="nextLinkBottom" class="nav-btn ">Light, nivel alrededor de 3000 →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelectBottom">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <div class="floating-buttons">
+        <button class="floating-btn" id="scrollToTop" title="Ir arriba">⬆</button>
+        <button class="floating-btn" id="scrollToBottom" title="Ir abajo">⬇</button>
+    </div>
+
+    <footer>
+        <p>Gacha Infinita © 明鏡シスイ (Meikyō Shisui) | Traducción: Ocholobos</p>
+        <p>Apoya al autor comprando los volúmenes oficiales</p>
+    </footer>
+
+    <script src="data.js"></script>
+    <script>
+        // ========== CONFIGURACIÓN DEL CAPÍTULO ==========
+        const CHAPTER_NUM = 3;
+        const EPISODE_NUM = 3;
+        
+        // ========== NAVEGACIÓN ==========
+        function setupNavigation() {
+            if (typeof GACHA_DATA !== 'undefined') {
+                const currentEpisode = GACHA_DATA.getEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const prevEpisode = GACHA_DATA.getPrevEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const nextEpisode = GACHA_DATA.getNextEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const allEpisodes = GACHA_DATA.getAllEpisodesOrdered();
+                
+                const prevLinks = [document.getElementById('prevLinkTop'), document.getElementById('prevLinkBottom')];
+                const nextLinks = [document.getElementById('nextLinkTop'), document.getElementById('nextLinkBottom')];
+                const counters = [document.getElementById('chapterCounterTop'), document.getElementById('chapterCounterBottom')];
+                
+                counters.forEach(c => { if(c) c.textContent = `${currentEpisode.chapterTitle} - Episodio ${currentEpisode.episodeNum}`; });
+                
+                if (prevEpisode) {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${prevEpisode.chapter}e${prevEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = prevEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `← ${shortTitle}`;
+                        }
+                    });
+                } else {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = '← Sin anterior';
+                        }
+                    });
+                }
+                
+                if (nextEpisode) {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${nextEpisode.chapter}e${nextEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = nextEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `${shortTitle} →`;
+                        }
+                    });
+                } else {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = 'Sin siguiente →';
+                        }
+                    });
+                }
+                
+                const selects = [document.getElementById('chapterSelect'), document.getElementById('chapterSelectBottom')];
+                selects.forEach(select => {
+                    if (!select) return;
+                    let options = '<option value="">📖 Seleccionar episodio...</option>';
+                    for (const ep of allEpisodes) {
+                        const selected = (ep.chapter == CHAPTER_NUM && ep.episodeNum == EPISODE_NUM) ? 'selected' : '';
+                        options += `<option value="capitulo${ep.chapter}e${ep.episodeNum}.html" ${selected}>${ep.chapterTitle} - Episodio ${ep.episodeNum}: ${ep.title}</option>`;
+                    }
+                    select.innerHTML = options;
+                    select.onchange = function() { if(this.value) window.location.href = this.value; };
+                });
+            }
+        }
+        
+        // ========== REGISTRAR LECTURA EN HISTORIAL ==========
+        function markAsRead() {
+            const user = localStorage.getItem('gacha_user');
+            if (!user) return;
+            
+            let history = localStorage.getItem(`gacha_history_${user}`);
+            let historyObj = history ? JSON.parse(history) : { chapters: [] };
+            
+            const readKey = { chapter: CHAPTER_NUM, episode: EPISODE_NUM };
+            historyObj.chapters = historyObj.chapters.filter(item => 
+                !(item.chapter == CHAPTER_NUM && item.episode == EPISODE_NUM)
+            );
+            historyObj.chapters.unshift(readKey);
+            if (historyObj.chapters.length > 20) historyObj.chapters.pop();
+            
+            localStorage.setItem(`gacha_history_${user}`, JSON.stringify(historyObj));
+        }
+        
+        // ========== CONTROLES ==========
+        function initControls() {
+            const savedTheme = localStorage.getItem('gacha_theme');
+            if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+            const savedFont = localStorage.getItem('gacha_fontsize');
+            if (savedFont) document.body.style.fontSize = savedFont + '%';
+            
+            document.getElementById('fontPlus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.min(150, size + 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            document.getElementById('fontMinus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.max(70, size - 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            
+            const themeBtn = document.getElementById('themeToggle');
+            if (document.documentElement.hasAttribute('data-theme')) themeBtn.textContent = '☀️ Modo claro';
+            themeBtn.onclick = () => {
+                const isDark = document.documentElement.hasAttribute('data-theme');
+                if (isDark) {
+                    document.documentElement.removeAttribute('data-theme');
+                    localStorage.setItem('gacha_theme', 'light');
+                    themeBtn.textContent = '🌙 Modo oscuro';
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('gacha_theme', 'dark');
+                    themeBtn.textContent = '☀️ Modo claro';
+                }
+            };
+            
+            document.getElementById('scrollToTop').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('scrollToBottom').onclick = () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+        
+        // ========== INICIALIZACIÓN ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            initControls();
+            setupNavigation();
+            markAsRead();
+            
+            kofiWidgetOverlay.draw('ocholobos', {
+                'type': 'floating-chat',
+                'floating-chat.donateButton.text': 'Apóyame',
+                'floating-chat.donateButton.background-color': '#1a4d5f',
+                'floating-chat.donateButton.text-color': '#ffffff'
+            });
+        });
+    </script>
+</body>
+</html>

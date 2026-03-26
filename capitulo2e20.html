@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sasha, hacia el bosque | Gacha Infinita</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem;
+            line-height: 1.8;
+            background: #faf9f7;
+            color: #2c2b28;
+            transition: all 0.3s ease;
+        }
+        [data-theme="dark"] body {
+            background: #1a1a1a;
+            color: #e5e5e5;
+        }
+        
+        .options-bar {
+            position: sticky;
+            top: 0;
+            background: #faf9f7;
+            border-bottom: 1px solid #e5e0d8;
+            padding: 0.6rem 1rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.8rem;
+            z-index: 100;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        [data-theme="dark"] .options-bar {
+            background: #1a1a1a;
+            border-bottom-color: #404040;
+        }
+        .options-bar button, .options-bar a {
+            background: #eef2f0;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: #1a4d5f;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .options-bar button, [data-theme="dark"] .options-bar a {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .font-size-control {
+            display: flex;
+            gap: 0.3rem;
+            align-items: center;
+        }
+        .font-size-control button {
+            width: 32px;
+            padding: 0.2rem;
+        }
+        
+        .nav-container {
+            margin: 1rem 0;
+        }
+        .nav-center, .nav-bottom {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+        .nav-bottom {
+            margin-top: 1rem;
+        }
+        .nav-btn {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            color: #1a4d5f;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        [data-theme="dark"] .nav-btn {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        .nav-btn:hover {
+            background: #e5e0d8;
+        }
+        .nav-btn.disabled {
+            background: #e5e0d8;
+            color: #9ca3af;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .chapter-counter {
+            background: #eef2f0;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] .chapter-counter {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        .chapter-selector {
+            margin: 0.5rem 0;
+            text-align: center;
+        }
+        .chapter-selector select {
+            background: #eef2f0;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-family: inherit;
+            color: #1a4d5f;
+            cursor: pointer;
+            width: 300px;
+            max-width: 90%;
+        }
+        [data-theme="dark"] .chapter-selector select {
+            background: #2a3a35;
+            color: #5a9e8c;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin: 1rem 0 0.25rem;
+            color: #1a4d5f;
+        }
+        [data-theme="dark"] h1 {
+            color: #5a9e8c;
+        }
+        .episode-number {
+            color: #6b6a68;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #e5e0d8;
+            padding-bottom: 0.5rem;
+        }
+        [data-theme="dark"] .episode-number {
+            color: #a0a0a0;
+            border-bottom-color: #404040;
+        }
+        .story-content {
+            margin: 1.5rem 0;
+        }
+        .story-content p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+        hr {
+            margin: 2rem 0;
+            border: none;
+            border-top: 1px solid #e5e0d8;
+        }
+        [data-theme="dark"] hr {
+            border-top-color: #404040;
+        }
+        
+        .floating-buttons {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+        .floating-btn {
+            background: #1a4d5f;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.8;
+        }
+        [data-theme="dark"] .floating-btn {
+            background: #5a9e8c;
+        }
+        .floating-btn:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        
+        .toast-message {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: #1a4d5f;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            z-index: 1000;
+            animation: fadeOut 3s ease forwards;
+        }
+        [data-theme="dark"] .toast-message {
+            background: #5a9e8c;
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            70% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+        
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            border-top: 1px solid #e5e0d8;
+            padding-top: 1.5rem;
+        }
+        [data-theme="dark"] footer {
+            border-top-color: #404040;
+        }
+        
+        @media (max-width: 600px) {
+            body { padding: 0.5rem; }
+            .nav-center, .nav-bottom { flex-direction: column; gap: 0.5rem; }
+            .floating-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                bottom: 70px;
+                right: 15px;
+            }
+        }
+    </style>
+    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+</head>
+<body>
+    <div class="options-bar">
+        <div class="font-size-control">
+            <button id="fontMinus">A-</button>
+            <button id="fontPlus">A+</button>
+        </div>
+        <a href="index.html">📚 Índice</a>
+        <button id="themeToggle">🌙 Modo oscuro</button>
+    </div>
+
+    <div class="nav-container">
+        <div class="nav-center">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo2e19.html" id="prevLinkTop" class="nav-btn ">← Nivel 7777</a>
+            <span class="chapter-counter" id="chapterCounterTop">Capítulo 2 - Episodio 20</span>
+            <a href="capitulo2e21.html" id="nextLinkTop" class="nav-btn ">Sasha, de reconocimiento →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelect">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <h1>Sasha, hacia el bosque</h1>
+    <div class="episode-number">Capítulo 2 - Episodio 20</div>
+
+    <div class="story-content">
+        <p>—El tiempo retrocede un poco.</p>
+<p>Después de obtener el permiso de su prometido, el subcomandante de la "Orden de los Caballeros Blancos", Sasha comenzó inmediatamente los preparativos para adentrarse en la "Torre Gigante". Con el dinero de la recompensa que había obtenido por matar al candidato a "Maestro", Light, compró armas y armaduras. Al mismo tiempo, a través del gremio de aventureros, contrató a aventureros elfos de alto nivel y habilidad demostrada, es decir, escoltas que, en el peor de los casos, servirían de cebo.</p>
+<p>—El nivel mínimo debe ser 300. Y tienen que ser elfos varones y guapos, si no es así no quiero.</p>
+<p>Sasha odiaba las cosas feas. Por eso, aunque hubiera peligro de muerte, le resultaba insoportable tener que estar con hombres feos, y tampoco quería tener a otras mujeres a su lado. Como ella era quien pagaba, no debería ser castigada por darse el gusto.</p>
+<p>Como resultado, consiguió contratar a dos elfos varones de buen aspecto, de nivel alrededor de 300. Pero se había gastado una cuarta parte de la recompensa en estos preparativos. Sasha se mordía la uña del pulgar mientras se decía a sí misma:</p>
+<p>—Ojalá hubiera podido contratar a un elfo tan guapo y de nivel tan alto como Michael-sama… pero supongo que esto es lo máximo que se puede conseguir.</p>
+<p>Aunque era lo que quería, conocía a gente mejor, por lo que no podía evitar sentirse insatisfecha. En realidad, un elfo de nivel 300 es bastante bueno. Se cree que el nivel medio que alcanza un aventurero elfo está entre 300 y 400. En teoría, el nivel máximo de un elfo es de alrededor de 1000, pero se alcanza tras toda una vida dedicada a matar monstruos peligrosos. Más bien, los niveles de Michael y los demás, que habían despertado como "Sub-Maestros" por su sangre de "Maestro", son anormales. Que Sasha, que no era una "Sub-Maestra", hubiera alcanzado el nivel 300 en tan poco tiempo como miembro de la "Reunión de Razas" demuestra lo excepcional que fue. Y se puede entender lo peligroso y difícil que fue subir al nivel 500 en tres años para estar a la altura del subcomandante Michael.</p>
+<p>—Pensémoslo de otra manera. Al tener un nivel más bajo que yo, podré controlarlos. Si tuvieran un nivel más alto que yo, podrían usarme a mí de cebo. Además, mi cuerpo ya es de Michael-sama. Me da miedo que si tienen un nivel más alto que yo, intenten violarme. Como prometida fiel, no puedo entregarme a nadie que no sea Michael-sama.</p>
+<p>Se alisó el largo cabello dorado con una sonrisa triunfante. Sasha era tan guapa que el país la había reclutado para asegurar a los "Maestros". Ella confiaba en su propio aspecto. "En belleza no le gano a mis medias hermanas" era uno de los pilares de su orgullo durante su estancia en la mansión donde la maltrataban.</p>
+<p>Cuando terminó los preparativos, se dirigió en carruaje al bosque virgen. En el carruaje también viajaban los dos aventureros que había contratado, uno de pelo dorado y otro de pelo plateado. Como eran elfos, tenían buen aspecto y se comportaban con caballerosidad con Sasha, su empleadora. Sasha, que era mujer y su empleadora, disfrutaba de que la trataran como a una princesa. No podía ocultar su emoción.</p>
+<p><em>(La elegancia de Michael-sama está bien, pero que estos aventureros de tipo rudo me adulen es lo máximo. Con el estrés del problema de Light, esto es una ventaja del puesto.)</em></p>
+<p>Emocionada por dentro con los dos elfos, se dirigió al bosque virgen entre sacudidas. Al llegar, ellos la ayudaron a bajar del carruaje.</p>
+<p>—Si no he vuelto para la tarde, id a la mansión. Y volved a recogerme a la mañana siguiente.</p>
+<p>—Entendido, señorita.</p>
+<p>Como hija adoptiva del conde, dio instrucciones al cochero. Luego, con los dos elfos a su lado, cambió al modo aventurera. Mientras caminaba con ellos, empezó a planificar.</p>
+<p>—Yo iré delante como exploradora, seguidme. Intentaré no separarme demasiado, pero si nos perdemos, salid del bosque y reuníos de nuevo.</p>
+<p>—Sasha-sama, ¿va a ir directamente a la torre?</p>
+<p>—No. Primero quiero tantear el bosque, ver cómo está. Ya he estado en este bosque antes, así que conozco la geografía general. He subido bastante de nivel desde entonces, así que no tardaré en reacostumbrarme. Si aparece un monstruo, os lo dejo a vosotros. Quiero concentrarme en la exploración.</p>
+<p>—Déjelo en nuestras manos, para eso estamos.</p>
+<p>Los dos aventureros eran de rango C, con reputación de que "pronto ascenderían a B". Por eso, la conversación fue muy fluida. A Sasha le gustaba charlar así, como una auténtica aventurera.</p>
+<p><em>(Está bien ser la hija adoptiva de un conde, pero tampoco me desagrada este tipo de conversaciones entre aventureros.)</em></p>
+<p>Mientras recordaba el pasado y se dejaba llevar por la emoción, algo que no podía pasar por alto se movió en su campo de visión.</p>
+<p>—¡!</p>
+<p>—¡Señorita Sasha!</p>
+<p>Giró la cabeza con tanta brusquedad que parecía que se le iba a romper el cuello. Su mirada se fijó en un niño humano que estaba conversando con un caballero de armadura dorada y una joven de piel morena. Sin saber cómo, se dirigió hacia él. Los dos elfos la siguieron alarmados.</p>
+<p><em>(¡Mentira! ¡Mentira! ¡No puede ser! ¿¡Light está aquí!?)</em></p>
+<p>Cada vez que se acercaba, el niño que hablaba con los aventureros humanos se parecía más a Light. La misma estatura, el cabello negro, el mismo aire… el corazón de Sasha latía con fuerza.</p>
+<p>—¡Oigan, ustedes, los humanos!</p>
+<p>—…¿Sí?</p>
+<p>El niño se giró, con voz molesta. Llevaba una máscara, no se le veía la cara. Cada vez más impaciente, Sasha le ordenó:</p>
+<p>—Tú, niño, quítate esa máscara y enséñame la cara.</p>
+<p>El niño enmascarado, el caballero dorado y la joven morena irradiaban un aire de evidente molestia. Pero a Sasha no le importó e insistió. Como era de esperar, la joven morena que estaba a su lado protestó.</p>
+<p>—¿No nos has oído? Estamos en medio de una reunión importante para adentrarnos en el bosque. Presentarte de repente y exigir cosas sin más, ¿no tienes modales?</p>
+<p>—¡No te estaba hablando a ti! ¡Por tener un poco de buena cara, no te creas superior, humana inferior!</p>
+<p>—No es que me crea superior. Conozco a muchas personas más hermosas y encantadoras que yo, así que no tendría por qué creérmelo… Al contrario, ¿podrías no culparme a mí de tu falta de confianza en tu propio aspecto?</p>
+<p>—¡E-esta humana inferior…!</p>
+<p>Como había dicho la joven morena, Sasha reconocía en su fuero interno que era más guapa que ella. Una elfa como ella había perdido en belleza contra una mujer humana. Su orgullo sufrió un duro golpe. Además, los dos aventureros que había contratado, y los demás hombres que había por allí, miraban a la joven morena y se sonrojaban, lo cual le molestaba sobremanera. Su alegría de antes se esfumó, y sus sentimientos hervían como un volcán a punto de estallar. El niño, al notar la histeria de Sasha, suspiró y le dijo:</p>
+<p>—De acuerdo, me quito la máscara. Pero tengo el rostro muy quemado por un incendio, por eso me la pongo. No es algo que se pueda enseñar a la gente, pero aún así, ¿quiere verlo?</p>
+<p>—¡Soy la prometida del subcomandante de la "Orden de los Caballeros Blancos" y te estoy dando una orden! ¡Deja de protestar y quítatela!</p>
+<p>—…Entiendo.</p>
+<p>—¡Hii! ¡Qué asco!</p>
+<p>Cuando intentó ver la cara del niño, pensando que era Light, las quemaduras eran tan horribles que Sasha, que odiaba las cosas feas, no pudo soportarlo y apartó la cara. No tuvo tiempo de confirmar si era Light. Gritó por reflejo.</p>
+<p>—¡Date prisa y vuelve a taparte esa cara tan repugnante!</p>
+<p>—…………</p>
+<p>Ante la actitud reacia de los enmascarados, Sasha, para disimular lo que acababa de decir, alzó la voz y se alejó.</p>
+<p>—¡No me enseñes cosas tan asquerosas! ¡Por eso odio a los humanos inferiores!</p>
+<p>—¡S-Sasha-sama, espere!</p>
+<p>Los dos aventureros, nerviosos, la siguieron, pero ella siguió caminando sin hacerles caso. Mientras andaba, respiraba hondo para calmar su cabeza ardiente.</p>
+<p>—Pensándolo bien, no puede ser Light. Han pasado casi tres años… Si fuera un humano, habría crecido más, ¿no?</p>
+<p>Entonces Light tenía doce años. Han pasado tres años. En tres años, un humano crece mucho. El niño de la máscara aparentaba doce o trece años. Tenía el mismo color de pelo, la misma estatura, el mismo aire, pero eso era todo. La voz era diferente, y no aparentaba quince años. Debió ser un error… Pero sus instintos de exploradora le avisaban. Tenía la nuca fría, como si la estuviera acechando un animal peligroso.</p>
+<p><em>(Desde que recibí esa nota, esa que decía "Te espero en la Torre Blanca", todo se ha vuelto extraño…)</em></p>
+<p>Sasha se mordió el labio.</p>
+<p><em>(Mi posición es inestable… ¿Cómo he llegado a esto? ¿Por qué me persigue el pasado? ¿Por qué Light puede seguir vivo? ¿Será que quiere vengarse porque yo intenté matarlo? ¿Por qué… por qué ha pasado esto?)</em></p>
+<p>Mascullando "yo no tengo la culpa", Sasha siguió caminando, conteniendo su inquietud.</p>
+    </div>
+
+    <hr>
+
+    <div class="nav-container">
+        <div class="nav-bottom">
+            <a href="index.html" class="nav-btn">📚 Índice</a>
+            <a href="capitulo2e19.html" id="prevLinkBottom" class="nav-btn ">← Nivel 7777</a>
+            <span class="chapter-counter" id="chapterCounterBottom">Capítulo 2 - Episodio 20</span>
+            <a href="capitulo2e21.html" id="nextLinkBottom" class="nav-btn ">Sasha, de reconocimiento →</a>
+        </div>
+    </div>
+
+    <div class="chapter-selector">
+        <select id="chapterSelectBottom">
+            <option value="">📖 Ir a episodio...</option>
+        </select>
+    </div>
+
+    <div class="floating-buttons">
+        <button class="floating-btn" id="scrollToTop" title="Ir arriba">⬆</button>
+        <button class="floating-btn" id="scrollToBottom" title="Ir abajo">⬇</button>
+    </div>
+
+    <footer>
+        <p>Gacha Infinita © 明鏡シスイ (Meikyō Shisui) | Traducción: Ocholobos</p>
+        <p>Apoya al autor comprando los volúmenes oficiales</p>
+    </footer>
+
+    <script src="data.js"></script>
+    <script>
+        // ========== CONFIGURACIÓN DEL CAPÍTULO ==========
+        const CHAPTER_NUM = 2;
+        const EPISODE_NUM = 20;
+        
+        // ========== NAVEGACIÓN ==========
+        function setupNavigation() {
+            if (typeof GACHA_DATA !== 'undefined') {
+                const currentEpisode = GACHA_DATA.getEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const prevEpisode = GACHA_DATA.getPrevEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const nextEpisode = GACHA_DATA.getNextEpisode(CHAPTER_NUM, EPISODE_NUM);
+                const allEpisodes = GACHA_DATA.getAllEpisodesOrdered();
+                
+                const prevLinks = [document.getElementById('prevLinkTop'), document.getElementById('prevLinkBottom')];
+                const nextLinks = [document.getElementById('nextLinkTop'), document.getElementById('nextLinkBottom')];
+                const counters = [document.getElementById('chapterCounterTop'), document.getElementById('chapterCounterBottom')];
+                
+                counters.forEach(c => { if(c) c.textContent = `${currentEpisode.chapterTitle} - Episodio ${currentEpisode.episodeNum}`; });
+                
+                if (prevEpisode) {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${prevEpisode.chapter}e${prevEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = prevEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `← ${shortTitle}`;
+                        }
+                    });
+                } else {
+                    prevLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = '← Sin anterior';
+                        }
+                    });
+                }
+                
+                if (nextEpisode) {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.href = `capitulo${nextEpisode.chapter}e${nextEpisode.episodeNum}.html`;
+                            l.classList.remove('disabled');
+                            let shortTitle = nextEpisode.title;
+                            if (shortTitle.length > 25) shortTitle = shortTitle.substring(0, 22) + '...';
+                            l.textContent = `${shortTitle} →`;
+                        }
+                    });
+                } else {
+                    nextLinks.forEach(l => {
+                        if(l) {
+                            l.classList.add('disabled');
+                            l.removeAttribute('href');
+                            l.textContent = 'Sin siguiente →';
+                        }
+                    });
+                }
+                
+                const selects = [document.getElementById('chapterSelect'), document.getElementById('chapterSelectBottom')];
+                selects.forEach(select => {
+                    if (!select) return;
+                    let options = '<option value="">📖 Seleccionar episodio...</option>';
+                    for (const ep of allEpisodes) {
+                        const selected = (ep.chapter == CHAPTER_NUM && ep.episodeNum == EPISODE_NUM) ? 'selected' : '';
+                        options += `<option value="capitulo${ep.chapter}e${ep.episodeNum}.html" ${selected}>${ep.chapterTitle} - Episodio ${ep.episodeNum}: ${ep.title}</option>`;
+                    }
+                    select.innerHTML = options;
+                    select.onchange = function() { if(this.value) window.location.href = this.value; };
+                });
+            }
+        }
+        
+        // ========== REGISTRAR LECTURA EN HISTORIAL ==========
+        function markAsRead() {
+            const user = localStorage.getItem('gacha_user');
+            if (!user) return;
+            
+            let history = localStorage.getItem(`gacha_history_${user}`);
+            let historyObj = history ? JSON.parse(history) : { chapters: [] };
+            
+            const readKey = { chapter: CHAPTER_NUM, episode: EPISODE_NUM };
+            historyObj.chapters = historyObj.chapters.filter(item => 
+                !(item.chapter == CHAPTER_NUM && item.episode == EPISODE_NUM)
+            );
+            historyObj.chapters.unshift(readKey);
+            if (historyObj.chapters.length > 20) historyObj.chapters.pop();
+            
+            localStorage.setItem(`gacha_history_${user}`, JSON.stringify(historyObj));
+        }
+        
+        // ========== CONTROLES ==========
+        function initControls() {
+            const savedTheme = localStorage.getItem('gacha_theme');
+            if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+            const savedFont = localStorage.getItem('gacha_fontsize');
+            if (savedFont) document.body.style.fontSize = savedFont + '%';
+            
+            document.getElementById('fontPlus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.min(150, size + 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            document.getElementById('fontMinus').onclick = () => {
+                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
+                size = Math.max(70, size - 10);
+                document.body.style.fontSize = size + '%';
+                localStorage.setItem('gacha_fontsize', size);
+            };
+            
+            const themeBtn = document.getElementById('themeToggle');
+            if (document.documentElement.hasAttribute('data-theme')) themeBtn.textContent = '☀️ Modo claro';
+            themeBtn.onclick = () => {
+                const isDark = document.documentElement.hasAttribute('data-theme');
+                if (isDark) {
+                    document.documentElement.removeAttribute('data-theme');
+                    localStorage.setItem('gacha_theme', 'light');
+                    themeBtn.textContent = '🌙 Modo oscuro';
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('gacha_theme', 'dark');
+                    themeBtn.textContent = '☀️ Modo claro';
+                }
+            };
+            
+            document.getElementById('scrollToTop').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('scrollToBottom').onclick = () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+        
+        // ========== INICIALIZACIÓN ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            initControls();
+            setupNavigation();
+            markAsRead();
+            
+            kofiWidgetOverlay.draw('ocholobos', {
+                'type': 'floating-chat',
+                'floating-chat.donateButton.text': 'Apóyame',
+                'floating-chat.donateButton.background-color': '#1a4d5f',
+                'floating-chat.donateButton.text-color': '#ffffff'
+            });
+        });
+    </script>
+</body>
+</html>
