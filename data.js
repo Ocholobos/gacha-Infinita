@@ -1,6 +1,6 @@
 // ============================================================
 // DATOS CENTRALIZADOS DE EPISODIOS TRADUCIDOS
-// Última actualización: 25/03/2026 21:42
+// Última actualización: 19/04/2026
 // ============================================================
 
 const GACHA_DATA = {
@@ -102,7 +102,7 @@ const GACHA_DATA = {
             },
             {
                 'num': 15,
-                'title': 'El nuevo grupo \'Bufón Negro\'',
+                'title': 'El nuevo grupo "Bufón Negro"',
                 'date': '2020/04/24 12:00'
             },
             {
@@ -142,32 +142,32 @@ const GACHA_DATA = {
             },
             {
                 'num': 23,
-                'title': 'Cacería del \'Asesino de aventureros\' 1',
+                'title': 'Cacería del "Asesino de aventureros" 1',
                 'date': '2020/04/28 12:00'
             },
             {
                 'num': 24,
-                'title': 'Cacería del \'Asesino de aventureros\' 2',
+                'title': 'Cacería del "Asesino de aventureros" 2',
                 'date': '2020/04/28 17:00'
             },
             {
                 'num': 25,
-                'title': 'Cacería del \'Asesino de aventureros\' 3',
+                'title': 'Cacería del "Asesino de aventureros" 3',
                 'date': '2020/04/29 12:00'
             },
             {
                 'num': 26,
-                'title': 'Cacería del \'Asesino de aventureros\' 4',
+                'title': 'Cacería del "Asesino de aventureros" 4',
                 'date': '2020/04/29 17:00'
             },
             {
                 'num': 27,
-                'title': 'Cacería del \'Asesino de aventureros\' 5',
+                'title': 'Cacería del "Asesino de aventureros" 5',
                 'date': '2020/04/30 12:00'
             },
             {
                 'num': 28,
-                'title': 'El fin del \'Asesino de aventureros\'',
+                'title': 'El fin del "Asesino de aventureros"',
                 'date': '2020/04/30 17:00'
             },
             {
@@ -489,7 +489,7 @@ const GACHA_DATA = {
             },
             {
                 'num': 8,
-                'title': 'Calabozo \'Abismo\' - Primer año',
+                'title': 'Calabozo "Abismo" - Primer año',
                 'date': '2020/05/31 17:00'
             },
             {
@@ -499,7 +499,7 @@ const GACHA_DATA = {
             },
             {
                 'num': 10,
-                'title': 'Calabozo \'Abismo\' - Segundo año',
+                'title': 'Calabozo "Abismo" - Segundo año',
                 'date': '2020/06/01 17:00'
             },
             {
@@ -547,6 +547,87 @@ const GACHA_DATA = {
                 'num': 4,
                 'title': 'Emoción del reencuentro',
                 'date': '2020/06/05 17:00'
+            },
+            {
+                'num': 5,
+                'title': 'Saludos con todos',
+                'date': '2020/06/06 12:00'
+            },
+            {
+                'num': 6,
+                'title': 'Tarta de queso',
+                'date': '2020/06/06 17:00'
+            },
+            {
+                'num': 7,
+                'title': 'El amo de la "Bruja de la Torre Gigante"',
+                'date': '2020/06/07 12:00'
+            },
+            {
+                'num': 8,
+                'title': 'Audiencia secreta',
+                'date': '2020/06/07 17:00'
+            },
+            {
+                'num': 9,
+                'title': '¿La esperanza de la raza humana?',
+                'date': '2020/06/08 12:00'
+            },
+            {
+                'num': 10,
+                'title': 'Discusión sobre el futuro de la raza humana',
+                'date': '2020/06/08 17:00'
+            },
+            {
+                'num': 11,
+                'title': 'Matanza silenciosa',
+                'date': '2020/06/09 12:00'
+            },
+            {
+                'num': 12,
+                'title': 'Investigación de los recuerdos de Yume',
+                'date': '2020/06/09 17:00'
+            },
+            {
+                'num': 13,
+                'title': 'Muchos puntos de duda',
+                'date': '2020/06/10 12:00'
+            },
+            {
+                'num': 14,
+                'title': 'Extra: El mohicano y el hombre bestia',
+                'date': '2020/06/10 17:00'
+            }
+        ]
+    },
+    {
+        'num': 5,
+        'title': 'Venganza contra el enano Nano',
+        'episodes': [
+            {
+                'num': 1,
+                'title': 'El sueño de Nano',
+                'date': '2020/06/11 12:00'
+            },
+            {
+                'num': 2,
+                'title': 'Nano y la espada prohibida 1',
+                'date': '2020/06/12 12:00'
+            },
+            {
+                'num': 3,
+                'title': 'Nano y la espada prohibida 2',
+                'date': '2020/06/13 12:00'
+            },
+            {
+                'num': 4,
+                'title': 'La actitud de las distintas razas hacia los humanos',
+                'date': '2020/06/13 17:00'
+            },
+            {
+                'num': 5,
+                'title': 'Rey Enano Dagan',
+                'date': '2020/06/14 12:00'
             }
         ]
     }
