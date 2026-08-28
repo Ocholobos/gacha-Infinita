@@ -135,6 +135,16 @@
             text-decoration: none;
         }
         .clear-history:hover { color: var(--accent); }
+
+        .library-tools { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; margin: 1rem 0; }
+        .search-control { flex: 1 1 18rem; }
+        .search-control input { width: 100%; padding: 0.65rem 0.8rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--card-bg); color: var(--text-color); font: inherit; }
+        .favorites-toggle { background: var(--accent-light); border: 1px solid var(--border-color); border-radius: 8px; color: var(--accent); cursor: pointer; padding: 0.65rem 0.8rem; }
+        .favorites-toggle.active { background: var(--accent); color: white; }
+        .favorite-btn { background: transparent; border: 0; color: var(--secondary-text); cursor: pointer; font-size: 1.15rem; line-height: 1; min-height: 2.25rem; padding: 0.35rem; }
+        .favorite-btn.active { color: #b86f2c; }
+        .episode-progress { display: block; width: 100%; height: 0.25rem; margin-top: 0.35rem; background: var(--border-color); border-radius: 999px; overflow: hidden; }
+        .episode-progress span { display: block; height: 100%; background: var(--accent); }
         
         .chapter-group { margin: 1.5rem 0 0; }
         .chapter-title {
@@ -367,6 +377,12 @@
         </div>
 
         <h2 style="margin: 1rem 0 0.5rem; color: var(--accent);">📑 Índice de episodios</h2>
+        <div class="library-tools">
+            <label class="search-control" for="episodeSearch">
+                <input type="search" id="episodeSearch" placeholder="Buscar episodio, capítulo o título..." autocomplete="off">
+            </label>
+            <button type="button" id="favoritesToggle" class="favorites-toggle">☆ Solo favoritos</button>
+        </div>
         <div id="chapterIndex"></div>
         
         <!-- Paginación -->
@@ -391,6 +407,9 @@
         const ITEMS_PER_PAGE = 20;
         let currentPage = 1;
         let totalPages = 1;
+        let searchTerm = '';
+        let favoritesOnly = false;
+        let favoriteEpisodes = new Set();
         
         // ========== TÍTULOS DE CAPÍTULOS ==========
         const chapterTitles = {
@@ -446,19 +465,7 @@
                 document.getElementById('chapterIndex').innerHTML = '<div class="error-message">❌ Error: No se pudo cargar el archivo data.js.</div>';
                 return false;
             }
-            allEpisodes = [];
-            for (const chapter of GACHA_DATA.chapters) {
-                for (const ep of chapter.episodes) {
-                    allEpisodes.push({
-                        chapter: chapter.num,
-                        chapterTitle: chapter.title,
-                        episodeNum: ep.num,
-                        title: ep.title,
-                        date: ep.date,
-                        file: `capitulo${chapter.num}e${ep.num}.html`
-                    });
-                }
-            }
+            allEpisodes = GACHA_DATA.getAllEpisodesOrdered();
             totalEpisodes = allEpisodes.length;
             totalPages = Math.ceil(totalEpisodes / ITEMS_PER_PAGE);
             document.getElementById('totalChapters').textContent = totalEpisodes;
@@ -468,13 +475,16 @@
         
         // ========== RENDERIZAR ÍNDICE ==========
         function renderIndex() {
-            if (allEpisodes.length === 0) {
+            const visibleEpisodes = getFilteredEpisodes();
+            totalPages = Math.max(1, Math.ceil(visibleEpisodes.length / ITEMS_PER_PAGE));
+            if (currentPage > totalPages) currentPage = 1;
+            if (visibleEpisodes.length === 0) {
                 document.getElementById('chapterIndex').innerHTML = '<div class="error-message">⚠️ No hay episodios disponibles.</div>';
                 return;
             }
             const start = (currentPage - 1) * ITEMS_PER_PAGE;
-            const end = Math.min(start + ITEMS_PER_PAGE, totalEpisodes);
-            const pageEpisodes = allEpisodes.slice(start, end);
+            const end = Math.min(start + ITEMS_PER_PAGE, visibleEpisodes.length);
+            const pageEpisodes = visibleEpisodes.slice(start, end);
             
             const chaptersMap = new Map();
             for (const ep of pageEpisodes) {
@@ -504,12 +514,16 @@
                     else if (tipo === 'interludio') { badgeText = '🎭 Interludio'; badgeClass = 'interludio'; linkClass = 'interludio'; }
                     else { badgeText = '📖'; badgeClass = 'capitulo'; linkClass = 'capitulo'; }
                     const fileName = `capitulo${ep.chapter}e${ep.episodeNum}.html`;
+                    const favoriteKey = `${ep.chapter}-${ep.episodeNum}`;
+                    const progress = getEpisodeProgress(ep.chapter, ep.episodeNum);
                     html += `
                         <li class="episode-item">
                             <a href="${fileName}" class="episode-link ${linkClass}" onclick="marcarLectura(event, ${ep.chapter}, ${ep.episodeNum})">
                                 <span class="episode-badge ${badgeClass}">${badgeText}</span>
                                 Episodio ${ep.episodeNum}: ${escapeHtml(ep.title)}
                             </a>
+                            ${progress > 0 && progress < 100 ? `<span class="episode-progress" aria-label="${progress}% leído"><span style="width:${progress}%"></span></span>` : ''}
+                            <button type="button" class="favorite-btn ${favoriteEpisodes.has(favoriteKey) ? 'active' : ''}" onclick="toggleFavorite(event, ${ep.chapter}, ${ep.episodeNum})" aria-label="Favorito">${favoriteEpisodes.has(favoriteKey) ? '★' : '☆'}</button>
                             <span class="episode-date">${ep.date || ''}</span>
                         </li>
                     `;
@@ -517,6 +531,53 @@
                 html += `</ul></div>`;
             }
             document.getElementById('chapterIndex').innerHTML = html;
+        }
+
+        function getFilteredEpisodes() {
+            const normalized = searchTerm.toLowerCase();
+            return allEpisodes.filter(ep => {
+                const matchesSearch = !normalized || `${ep.chapterTitle} ${ep.title} ${ep.chapter} ${ep.episodeNum}`.toLowerCase().includes(normalized);
+                const matchesFavorites = !favoritesOnly || favoriteEpisodes.has(`${ep.chapter}-${ep.episodeNum}`);
+                return matchesSearch && matchesFavorites;
+            });
+        }
+
+        function loadFavorites() {
+            try {
+                const saved = JSON.parse(localStorage.getItem('gacha_favorites') || '[]');
+                favoriteEpisodes = new Set(saved.map(item => `${item.chapter}-${item.episodeNum}`));
+            } catch (error) {
+                favoriteEpisodes = new Set();
+            }
+        }
+
+        function saveFavorites() {
+            const favorites = [...favoriteEpisodes].map(key => {
+                const [chapter, episodeNum] = key.split('-').map(Number);
+                return { chapter, episodeNum };
+            });
+            localStorage.setItem('gacha_favorites', JSON.stringify(favorites));
+        }
+
+        function toggleFavorite(event, chapter, episodeNum) {
+            event.preventDefault();
+            event.stopPropagation();
+            const key = `${chapter}-${episodeNum}`;
+            if (favoriteEpisodes.has(key)) favoriteEpisodes.delete(key);
+            else favoriteEpisodes.add(key);
+            saveFavorites();
+            renderIndex();
+            renderPagination();
+        }
+
+        function getEpisodeProgress(chapter, episodeNum) {
+            if (!currentUser) return 0;
+            try {
+                const progress = JSON.parse(localStorage.getItem(`gacha_progress_${currentUser}`) || '{}');
+                return Math.round(Number(progress[`${chapter}-${episodeNum}`]) || 0);
+            } catch (error) {
+                return 0;
+            }
         }
         
         function escapeHtml(str) {
@@ -704,12 +765,13 @@
         
         // ========== INICIALIZACIÓN ==========
         document.addEventListener('DOMContentLoaded', () => {
+            initControls();
+            loadUser();
             if (loadData()) {
+                loadFavorites();
                 renderIndex();
                 renderPagination();
             }
-            initControls();
-            loadUser();
             
             document.getElementById('loginBtn').onclick = () => {
                 const name = document.getElementById('usernameInput').value.trim();
@@ -731,8 +793,24 @@
                     updateHistoryDisplay();
                 }
             };
+
+            document.getElementById('episodeSearch').addEventListener('input', (event) => {
+                searchTerm = event.target.value.trim();
+                currentPage = 1;
+                renderIndex();
+                renderPagination();
+            });
+            document.getElementById('favoritesToggle').onclick = () => {
+                favoritesOnly = !favoritesOnly;
+                document.getElementById('favoritesToggle').classList.toggle('active', favoritesOnly);
+                document.getElementById('favoritesToggle').textContent = favoritesOnly ? '★ Mostrando favoritos' : '☆ Solo favoritos';
+                currentPage = 1;
+                renderIndex();
+                renderPagination();
+            };
             
             window.marcarLectura = marcarLectura;
+            window.toggleFavorite = toggleFavorite;
             
             if (typeof kofiWidgetOverlay !== 'undefined') {
                 kofiWidgetOverlay.draw('ocholobos', {

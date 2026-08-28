@@ -4,6 +4,7 @@
 // ============================================================
 
 const GACHA_DATA = {
+    _allEpisodesCache: null,
     chapters: [
     {
         'num': 0,
@@ -544,11 +545,6 @@ const GACHA_DATA = {
                 'date': '2020/06/05 12:00'
             },
             {
-                'num': 4,
-                'title': 'Emoción del reencuentro',
-                'date': '2020/06/05 17:00'
-            },
-            {
                 'num': 5,
                 'title': 'Saludos con todos',
                 'date': '2020/06/06 12:00'
@@ -668,6 +664,7 @@ const GACHA_DATA = {
     },
     
     getAllEpisodesOrdered: function() {
+        if (this._allEpisodesCache) return this._allEpisodesCache;
         const all = [];
         for (const chapter of this.chapters) {
             for (const ep of chapter.episodes) {
@@ -681,6 +678,7 @@ const GACHA_DATA = {
                 });
             }
         }
+        this._allEpisodesCache = all;
         return all;
     },
     
@@ -703,3 +701,140 @@ const GACHA_DATA = {
         return null;
     }
 };
+
+// Responsive layout shared by the index and every chapter page.
+(function addResponsiveStyles() {
+    const style = document.createElement('style');
+    style.id = 'gacha-responsive-styles';
+    style.textContent = `
+        html { min-width: 320px; }
+        body {
+            width: 100%;
+            overflow-x: hidden;
+        }
+        button, a, select, input { min-height: 2.75rem; }
+        .options-bar,
+        .nav-container,
+        .chapter-selector,
+        .story-content,
+        .container,
+        .series-header,
+        .other-titles,
+        .synopsis,
+        .user-panel,
+        .stats,
+        footer {
+            min-width: 0;
+        }
+        .nav-btn,
+        .chapter-counter,
+        .episode-link,
+        .episode-item,
+        .history-item,
+        .other-titles p,
+        .story-content p {
+            overflow-wrap: anywhere;
+            word-break: normal;
+        }
+        .nav-btn { min-width: 0; }
+        .story-content p { text-align: left; }
+        .floating-buttons {
+            bottom: max(1rem, env(safe-area-inset-bottom));
+            right: max(1rem, env(safe-area-inset-right));
+        }
+
+        @media (min-width: 901px) {
+            body { max-width: 900px; }
+            .container { max-width: 1120px; }
+        }
+
+        @media (max-width: 600px) {
+            body { padding: 0.75rem; }
+            .container { padding: 0.5rem 0.75rem 1.5rem; }
+            .options-bar {
+                align-items: stretch;
+                gap: 0.5rem;
+                padding: 0.5rem 0;
+            }
+            .logo-area { justify-content: center; }
+            .controls-area,
+            .font-size-control {
+                justify-content: center;
+                width: 100%;
+            }
+            .options-bar button,
+            .options-bar a,
+            .nav-btn,
+            .chapter-counter,
+            .chapter-selector select {
+                width: 100%;
+                justify-content: center;
+                text-align: center;
+            }
+            .options-bar button,
+            .options-bar a { flex: 1 1 auto; }
+            .font-size-control button { width: auto; flex: 1; }
+            h1 { font-size: 1.5rem; line-height: 1.25; }
+            .series-header { padding: 1rem 0; }
+            .info-badges { gap: 0.35rem; }
+            .badge { padding: 0.35rem 0.55rem; }
+            .other-titles,
+            .synopsis,
+            .user-panel { padding: 0.85rem; }
+            .synopsis { padding: 1rem; }
+            .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.5rem; }
+            .stat-card { padding: 0.75rem 0.4rem; }
+            .login-form { flex-direction: column; }
+            .login-form input,
+            .login-form button,
+            .logout-btn { width: 100%; }
+            .episode-list { padding-left: 0; }
+            .episode-item { align-items: stretch; }
+            .episode-date { align-self: flex-start; }
+            .nav-center,
+            .nav-bottom { flex-direction: column; gap: 0.5rem; }
+            .pagination button,
+            .pagination a { min-width: 2.75rem; }
+            .floating-buttons { gap: 0.5rem; }
+            .floating-btn { width: 2.75rem; height: 2.75rem; }
+            footer { padding-bottom: 1rem; }
+        }
+
+        @media (min-width: 601px) {
+            .nav-btn { max-width: 42%; }
+        }
+    `;
+    document.head.appendChild(style);
+})();
+
+(function trackReadingProgress() {
+    document.addEventListener('DOMContentLoaded', () => {
+        if (typeof CHAPTER_NUM === 'undefined' || typeof EPISODE_NUM === 'undefined') return;
+
+        const user = localStorage.getItem('gacha_user');
+        if (!user) return;
+        const storageKey = `gacha_progress_${user}`;
+        const episodeKey = `${CHAPTER_NUM}-${EPISODE_NUM}`;
+
+        const persistProgress = () => {
+            const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const percent = scrollableHeight > 0 ? Math.min(100, Math.round((window.scrollY / scrollableHeight) * 100)) : 100;
+            let progress = {};
+            try { progress = JSON.parse(localStorage.getItem(storageKey) || '{}'); } catch (error) { progress = {}; }
+            progress[episodeKey] = Math.max(Number(progress[episodeKey]) || 0, percent);
+            localStorage.setItem(storageKey, JSON.stringify(progress));
+        };
+
+        let progressFrame = null;
+        const saveProgress = () => {
+            if (progressFrame !== null) return;
+            progressFrame = window.requestAnimationFrame(() => {
+                progressFrame = null;
+                persistProgress();
+            });
+        };
+
+        window.addEventListener('scroll', saveProgress, { passive: true });
+        persistProgress();
+    });
+})();
