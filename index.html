@@ -32,110 +32,35 @@
             --extra-color: #e08e3a;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Georgia', 'Times New Roman', serif;
-            background: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.6;
-            transition: all 0.3s ease;
-        }
+        body { font-family: 'Georgia', 'Times New Roman', serif; background: var(--bg-color); color: var(--text-color); line-height: 1.6; transition: all 0.3s ease; }
         .container { max-width: 1000px; margin: 0 auto; padding: 1rem 1.5rem 2rem; }
-        
-        .options-bar {
-            position: sticky;
-            top: 0;
-            background: var(--bg-color);
-            border-bottom: 1px solid var(--border-color);
-            padding: 0.6rem 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-            z-index: 100;
-        }
+        .options-bar { position: sticky; top: 0; background: var(--bg-color); border-bottom: 1px solid var(--border-color); padding: 0.6rem 1rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; z-index: 100; }
         .logo-area { display: flex; align-items: center; gap: 0.5rem; font-size: 1.1rem; font-weight: bold; color: var(--accent); }
         .controls-area { display: flex; gap: 0.8rem; align-items: center; flex-wrap: wrap; }
-        .options-bar button {
-            background: var(--accent-light);
-            border: none;
-            padding: 0.4rem 0.8rem;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            color: var(--accent);
-        }
+        .options-bar button { background: var(--accent-light); border: none; padding: 0.4rem 0.8rem; border-radius: 20px; cursor: pointer; font-size: 0.8rem; color: var(--accent); }
         .font-size-control { display: flex; gap: 0.3rem; align-items: center; }
         .font-size-control button { width: 32px; padding: 0.2rem; }
-        
         .series-header { text-align: center; padding: 1.5rem 0; border-bottom: 3px solid var(--border-color); margin-bottom: 1.5rem; }
         h1 { font-size: 2rem; color: var(--accent); margin-bottom: 0.5rem; }
         .author { font-size: 0.9rem; color: var(--secondary-text); }
         .info-badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin: 1rem 0; }
         .badge { background: var(--accent-light); padding: 0.3rem 0.8rem; border-radius: 30px; font-size: 0.75rem; color: var(--accent); }
-        
-        .other-titles, .synopsis, .user-panel {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 1rem;
-            margin: 1.5rem 0;
-        }
+        .other-titles, .synopsis, .user-panel { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 1rem; margin: 1.5rem 0; }
         .synopsis { padding: 1.5rem; }
         .synopsis h2 { font-size: 1.2rem; color: var(--accent); margin-bottom: 1rem; border-left: 4px solid var(--accent); padding-left: 1rem; }
-        
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1rem;
-            margin: 1.5rem 0;
-        }
-        .stat-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 1rem;
-            text-align: center;
-        }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+        .stat-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 1rem; text-align: center; }
         .stat-number { font-size: 1.5rem; font-weight: bold; color: var(--accent); }
         .stat-label { font-size: 0.7rem; color: var(--secondary-text); }
-        
         .login-form { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-        .login-form input {
-            padding: 0.5rem;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            background: var(--bg-color);
-            color: var(--text-color);
-            flex: 1;
-        }
-        .login-form button, .logout-btn {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            cursor: pointer;
-        }
+        .login-form input { padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-color); color: var(--text-color); flex: 1; }
+        .login-form button, .logout-btn { background: var(--accent); color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; }
         .history-list { margin-top: 1rem; padding-top: 0.5rem; border-top: 1px solid var(--border-color); }
-        .history-item { 
-            padding: 0.75rem; 
-            font-size: 0.9rem; 
-            background: var(--accent-light);
-            border-radius: 10px;
-            margin-top: 0.5rem;
-        }
+        .history-item { padding: 0.75rem; font-size: 0.9rem; background: var(--accent-light); border-radius: 10px; margin-top: 0.5rem; }
         .history-item a { color: var(--accent); text-decoration: none; font-weight: 500; display: block; }
         .history-date { font-size: 0.7rem; color: var(--secondary-text); margin-top: 0.3rem; }
-        .clear-history {
-            display: inline-block;
-            font-size: 0.7rem;
-            color: var(--secondary-text);
-            margin-top: 0.5rem;
-            text-decoration: none;
-        }
+        .clear-history { display: inline-block; font-size: 0.7rem; color: var(--secondary-text); margin-top: 0.5rem; text-decoration: none; }
         .clear-history:hover { color: var(--accent); }
-
         .library-tools { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; margin: 1rem 0; }
         .search-control { flex: 1 1 18rem; }
         .search-control input { width: 100%; padding: 0.65rem 0.8rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--card-bg); color: var(--text-color); font: inherit; }
@@ -145,55 +70,22 @@
         .favorite-btn.active { color: #b86f2c; }
         .episode-progress { display: block; width: 100%; height: 0.25rem; margin-top: 0.35rem; background: var(--border-color); border-radius: 999px; overflow: hidden; }
         .episode-progress span { display: block; height: 100%; background: var(--accent); }
-        
         .chapter-group { margin: 1.5rem 0 0; }
-        .chapter-title {
-            font-size: 1.2rem;
-            font-weight: bold;
-            border-left: 4px solid var(--accent);
-            padding-left: 1rem;
-            margin-bottom: 0.8rem;
-        }
+        .chapter-title { font-size: 1.2rem; font-weight: bold; border-left: 4px solid var(--accent); padding-left: 1rem; margin-bottom: 0.8rem; }
         .chapter-title.prologo { color: var(--prologue-color); border-left-color: var(--prologue-color); }
         .chapter-title.capitulo { color: var(--accent); border-left-color: var(--accent); }
         .chapter-title.interludio { color: var(--interlude-color); border-left-color: var(--interlude-color); }
         .chapter-title.extra { color: var(--extra-color); border-left-color: var(--extra-color); }
-        
         .episode-list { list-style: none; padding-left: 1rem; }
-        .episode-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            flex-wrap: wrap;
-            padding: 0.5rem 0;
-            border-bottom: 1px solid var(--border-color);
-            gap: 0.5rem;
-        }
-        .episode-link {
-            text-decoration: none;
-            font-weight: 500;
-            flex: 1;
-        }
+        .episode-item { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; padding: 0.5rem 0; border-bottom: 1px solid var(--border-color); gap: 0.5rem; }
+        .episode-link { text-decoration: none; font-weight: 500; flex: 1; }
         .episode-link.prologo { color: var(--prologue-color); }
         .episode-link.capitulo { color: var(--accent); }
         .episode-link.interludio { color: var(--interlude-color); }
         .episode-link.extra { color: var(--extra-color); }
         .episode-link:hover { text-decoration: underline; }
-        .episode-date {
-            font-size: 0.7rem;
-            color: var(--secondary-text);
-            font-family: monospace;
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-        .episode-badge {
-            font-size: 0.65rem;
-            padding: 0.1rem 0.4rem;
-            border-radius: 12px;
-            margin-right: 0.5rem;
-            font-weight: normal;
-            display: inline-block;
-        }
+        .episode-date { font-size: 0.7rem; color: var(--secondary-text); font-family: monospace; white-space: nowrap; flex-shrink: 0; }
+        .episode-badge { font-size: 0.65rem; padding: 0.1rem 0.4rem; border-radius: 12px; margin-right: 0.5rem; font-weight: normal; display: inline-block; }
         .episode-badge.prologo { background: #f0e4d0; color: var(--prologue-color); }
         .episode-badge.capitulo { background: var(--accent-light); color: var(--accent); }
         .episode-badge.interludio { background: #d0f0e8; color: var(--interlude-color); }
@@ -201,114 +93,20 @@
         [data-theme="dark"] .episode-badge.prologo { background: #3a2a1a; }
         [data-theme="dark"] .episode-badge.interludio { background: #1a3a2a; }
         [data-theme="dark"] .episode-badge.extra { background: #3a2a1a; }
-        
-        .pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin: 2rem 0;
-        }
-        .pagination button, .pagination a {
-            background: var(--accent-light);
-            border: none;
-            padding: 0.4rem 0.8rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 500;
-        }
+        .pagination { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin: 2rem 0; }
+        .pagination button, .pagination a { background: var(--accent-light); border: none; padding: 0.4rem 0.8rem; border-radius: 8px; cursor: pointer; font-size: 0.85rem; color: var(--accent); text-decoration: none; font-weight: 500; }
         .pagination button:hover, .pagination a:hover { background: var(--border-color); }
-        .pagination .active {
-            background: var(--accent);
-            color: white;
-        }
-        .pagination .disabled {
-            background: var(--border-color);
-            color: #9ca3af;
-            cursor: not-allowed;
-        }
-        .page-input {
-            display: inline-flex;
-            gap: 0.3rem;
-            align-items: center;
-            background: var(--accent-light);
-            padding: 0.2rem 0.6rem;
-            border-radius: 20px;
-        }
-        .page-input input {
-            width: 55px;
-            padding: 0.2rem;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            background: var(--bg-color);
-            color: var(--text-color);
-            text-align: center;
-        }
-        
-        .floating-buttons {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            z-index: 1000;
-        }
-        .floating-btn {
-            background: var(--accent);
-            color: white;
-            border: none;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            font-size: 1.2rem;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0.8;
-        }
+        .pagination .active { background: var(--accent); color: white; }
+        .pagination .disabled { background: var(--border-color); color: #9ca3af; cursor: not-allowed; }
+        .page-input { display: inline-flex; gap: 0.3rem; align-items: center; background: var(--accent-light); padding: 0.2rem 0.6rem; border-radius: 20px; }
+        .page-input input { width: 55px; padding: 0.2rem; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-color); color: var(--text-color); text-align: center; }
+        .floating-buttons { position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 1000; }
+        .floating-btn { background: var(--accent); color: white; border: none; width: 45px; height: 45px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; opacity: 0.8; }
         .floating-btn:hover { opacity: 1; transform: scale(1.05); }
-        
-        .error-message {
-            background: #ffe0e0;
-            color: #c00;
-            padding: 1rem;
-            border-radius: 8px;
-            margin: 1rem 0;
-            text-align: center;
-            border: 1px solid #c00;
-        }
-        [data-theme="dark"] .error-message {
-            background: #2a1a1a;
-            color: #ff8888;
-            border-color: #ff8888;
-        }
-        
-        footer {
-            margin-top: 2rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--border-color);
-            text-align: center;
-            font-size: 0.7rem;
-            color: var(--secondary-text);
-        }
-        
-        @media (max-width: 600px) {
-            .container { padding: 0.5rem 1rem; }
-            .options-bar { flex-direction: column; align-items: stretch; }
-            .controls-area { justify-content: center; }
-            .episode-item { flex-direction: column; align-items: flex-start; }
-            .episode-date { align-self: flex-end; }
-            .floating-btn { width: 38px; height: 38px; font-size: 1rem; }
-            .pagination { gap: 0.3rem; }
-            .pagination button, .pagination a { padding: 0.3rem 0.6rem; font-size: 0.75rem; }
-        }
+        .error-message { background: #ffe0e0; color: #c00; padding: 1rem; border-radius: 8px; margin: 1rem 0; text-align: center; border: 1px solid #c00; }
+        [data-theme="dark"] .error-message { background: #2a1a1a; color: #ff8888; border-color: #ff8888; }
+        footer { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color); text-align: center; font-size: 0.7rem; color: var(--secondary-text); }
+        @media (max-width: 600px) { .container { padding: 0.5rem 1rem; } .options-bar { flex-direction: column; align-items: stretch; } .controls-area { justify-content: center; } .episode-item { flex-direction: column; align-items: flex-start; } .episode-date { align-self: flex-end; } .floating-btn { width: 38px; height: 38px; font-size: 1rem; } .pagination { gap: 0.3rem; } .pagination button, .pagination a { padding: 0.3rem 0.6rem; font-size: 0.75rem; } }
     </style>
     <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
 </head>
@@ -320,13 +118,12 @@
         </div>
         <div class="controls-area">
             <div class="font-size-control">
-                <button id="fontMinus">A-</button>
-                <button id="fontPlus">A+</button>
+                <button type="button" id="fontMinus">A-</button>
+                <button type="button" id="fontPlus">A+</button>
             </div>
-            <button id="themeToggle">🌙 Modo oscuro</button>
+            <button type="button" id="themeToggle">🌙 Modo oscuro</button>
         </div>
     </div>
-
     <div class="container">
         <div class="series-header">
             <h1>Gacha Infinita</h1>
@@ -339,43 +136,37 @@
                 <span class="badge">📺 Anime adaptado</span>
             </div>
         </div>
-
         <div class="other-titles">
             <h3>📌 También conocido como</h3>
             <p><strong>日本語:</strong> 【連載版】信じていた仲間達にダンジョン奥地で殺されかけたがギフト『無限ガチャ』でレベル９９９９の仲間達を手に入れて元パーティーメンバーと世界に復讐＆『ざまぁ！』します！</p>
             <p><strong>English:</strong> <em>Backstabbed in a Backwater Dungeon: My Trusted Companions Tried to Kill Me, But Thanks to the Gift of an Unlimited Gacha I Got Lvl 9999 Friends and Am Out for Revenge on My Former Party Members and the World</em></p>
         </div>
-
         <div class="synopsis">
             <h2>📖 Sinopsis</h2>
             <p>Light, un humano, es expulsado del grupo <strong>"Reunión de Razas"</strong> en lo profundo de un <strong>calabozo</strong>. En este mundo existen seis razas: humana, bestia, dragón, elfo, enano y demonio. Los humanos son discriminados por las demás razas.</p>
             <p>Tras ser traicionado, Light activa su habilidad <strong>Gacha Infinita</strong>, obteniendo a <strong>Mei</strong>, una luchadora de nivel 9999. Tres años después, Light ha creado su propio reino en el calabozo y planea vengarse de sus traidores.</p>
         </div>
-
         <div class="stats">
             <div class="stat-card"><div class="stat-number" id="totalChapters">0</div><div class="stat-label">Episodios totales</div></div>
             <div class="stat-card"><div class="stat-number">14</div><div class="stat-label">LN Volúmenes</div></div>
             <div class="stat-card"><div class="stat-number">21</div><div class="stat-label">Manga Volúmenes</div></div>
             <div class="stat-card"><div class="stat-number" id="translatedCount">0</div><div class="stat-label">Traducidos</div></div>
         </div>
-
-        <!-- Panel de usuario con historial (solo último episodio) -->
         <div class="user-panel" id="userPanel">
             <h3>📚 Último episodio leído</h3>
             <div id="loginSection">
                 <div class="login-form">
                     <input type="text" id="usernameInput" placeholder="Tu nombre o seudónimo">
-                    <button id="loginBtn">Comenzar a leer</button>
+                    <button type="button" id="loginBtn">Comenzar a leer</button>
                 </div>
                 <p style="font-size: 0.7rem; margin-top: 0.5rem;">✅ Solo se guarda en tu navegador.</p>
             </div>
             <div id="historySection" style="display: none;">
-                <p>👤 <strong id="displayName"></strong> <button id="logoutBtn" class="logout-btn" style="margin-left: 1rem;">Cerrar sesión</button></p>
+                <p>👤 <strong id="displayName"></strong> <button type="button" id="logoutBtn" class="logout-btn" style="margin-left: 1rem;">Cerrar sesión</button></p>
                 <div class="history-list" id="historyList"></div>
                 <a href="#" id="clearHistoryBtn" class="clear-history">🗑️ Limpiar historial</a>
             </div>
         </div>
-
         <h2 style="margin: 1rem 0 0.5rem; color: var(--accent);">📑 Índice de episodios</h2>
         <div class="library-tools">
             <label class="search-control" for="episodeSearch">
@@ -384,24 +175,18 @@
             <button type="button" id="favoritesToggle" class="favorites-toggle">☆ Solo favoritos</button>
         </div>
         <div id="chapterIndex"></div>
-        
-        <!-- Paginación -->
         <div class="pagination" id="pagination"></div>
-
         <footer>
             <p>Gacha Infinita © 明鏡シスイ (Meikyō Shisui)</p>
             <p>Traducción: Ocholobos | Apoya al autor comprando los volúmenes oficiales</p>
         </footer>
     </div>
-
     <div class="floating-buttons">
-        <button class="floating-btn" id="scrollToTop" title="Ir arriba">⬆</button>
-        <button class="floating-btn" id="scrollToBottom" title="Ir abajo">⬇</button>
+        <button type="button" class="floating-btn" id="scrollToTop" title="Ir arriba">⬆</button>
+        <button type="button" class="floating-btn" id="scrollToBottom" title="Ir abajo">⬇</button>
     </div>
-
     <script src="data.js"></script>
     <script>
-        // ========== CONFIGURACIÓN ==========
         let allEpisodes = [];
         let totalEpisodes = 0;
         const ITEMS_PER_PAGE = 20;
@@ -410,56 +195,24 @@
         let searchTerm = '';
         let favoritesOnly = false;
         let favoriteEpisodes = new Set();
-        
-        // ========== TÍTULOS DE CAPÍTULOS ==========
-        const chapterTitles = {
-            0: "Prólogo: Gacha Infinita",
-            1: "Comienzo de la venganza",
-            2: "Venganza contra la elfa Sasha",
-            3: "El pasado de Light",
-            4: "El reino humano",
-            5: "Venganza contra el enano Nano",
-            6: "Masacre de hombres bestia",
-            7: "Reino Demonio",
-            8: "Conferencia del Ducado de Six",
-            9: "Reino Demonio - Primera parte",
-            10: "Reino Demonio - Segunda parte",
-            11: "Reino Demonio - Tercera parte",
-            12: "Festival de coronación de la Reina Lilith",
-            13: "Religión de la Diosa",
-            14: "Imperio Dragón",
-            15: "Castillo flotante",
-            16: "Contra los \"Maestros\" del Imperio Dragón",
-            17: "Contra el Dios Maligno"
-        };
-        
-        // ========== DETECTAR TIPO DE EPISODIO ==========
-        function detectarTipoEpisodio(titulo, chapterNum) {
-            if (chapterNum === 0) return 'prologo';
-            const tituloLower = titulo.toLowerCase();
-            if (tituloLower.includes('extra:') || tituloLower.includes('interludio') || 
-                tituloLower.includes('día de nazuna') || 
-                tituloLower.includes('las demandas de las sirvientas') ||
-                tituloLower.includes('pasta de frijol') || tituloLower.includes('el baño y el secreto') ||
-                tituloLower.includes('la historia de nemumu') || tituloLower.includes('cielo e infierno') ||
-                tituloLower.includes('reflexión de ellie') || tituloLower.includes('miedo y alegría de suz') ||
-                tituloLower.includes('¿malestar de yume?')) {
-                return 'interludio';
+        function getChapterTitle(chapterNum) {
+            if (typeof GACHA_DATA !== 'undefined' && GACHA_DATA.chapters) {
+                const chapter = GACHA_DATA.chapters.find(c => c.num == chapterNum);
+                if (chapter) return chapter.title;
             }
-            return 'capitulo';
+            return `Capítulo ${chapterNum}`;
         }
-        
-        // ========== FORMATEAR TÍTULO DE SECCIÓN ==========
+        function detectarTipoEpisodio(chapterData, episodeData) {
+            return episodeData.type || chapterData.type || 'capitulo';
+        }
         function formatSectionTitle(chapterNum, tipo) {
-            const tituloBase = chapterTitles[chapterNum] || `Capítulo ${chapterNum}`;
+            const tituloBase = getChapterTitle(chapterNum);
             const tituloConNumero = `Capítulo ${chapterNum}: ${tituloBase}`;
             if (tipo === 'prologo') return `📜 ${tituloConNumero}`;
             if (tipo === 'interludio') return `🎭 ${tituloConNumero}`;
             if (tipo === 'extra') return `✨ ${tituloConNumero}`;
             return `📖 ${tituloConNumero}`;
         }
-        
-        // ========== CARGAR DATOS ==========
         function loadData() {
             if (typeof GACHA_DATA === 'undefined') {
                 document.getElementById('chapterIndex').innerHTML = '<div class="error-message">❌ Error: No se pudo cargar el archivo data.js.</div>';
@@ -472,8 +225,6 @@
             document.getElementById('translatedCount').textContent = totalEpisodes;
             return true;
         }
-        
-        // ========== RENDERIZAR ÍNDICE ==========
         function renderIndex() {
             const visibleEpisodes = getFilteredEpisodes();
             totalPages = Math.max(1, Math.ceil(visibleEpisodes.length / ITEMS_PER_PAGE));
@@ -485,10 +236,11 @@
             const start = (currentPage - 1) * ITEMS_PER_PAGE;
             const end = Math.min(start + ITEMS_PER_PAGE, visibleEpisodes.length);
             const pageEpisodes = visibleEpisodes.slice(start, end);
-            
             const chaptersMap = new Map();
             for (const ep of pageEpisodes) {
-                const tipo = detectarTipoEpisodio(ep.title, ep.chapter);
+                const chapterData = GACHA_DATA.chapters.find(c => c.num === ep.chapter);
+                const episodeData = chapterData.episodes.find(e => e.num === ep.episodeNum);
+                const tipo = detectarTipoEpisodio(chapterData, episodeData);
                 if (!chaptersMap.has(ep.chapter)) {
                     chaptersMap.set(ep.chapter, {
                         chapter: ep.chapter,
@@ -499,19 +251,21 @@
                 }
                 chaptersMap.get(ep.chapter).episodes.push(ep);
             }
-            
             const chapters = Array.from(chaptersMap.values()).sort((a, b) => a.chapter - b.chapter);
             let html = '';
             for (const chapter of chapters) {
-                const chapterClass = chapter.tipo === 'prologo' ? 'prologo' : (chapter.tipo === 'interludio' ? 'interludio' : 'capitulo');
+                const chapterClass = chapter.tipo === 'prologo' ? 'prologo' : (chapter.tipo === 'interludio' ? 'interludio' : (chapter.tipo === 'extra' ? 'extra' : 'capitulo'));
                 html += `<div class="chapter-group">`;
                 html += `<div class="chapter-title ${chapterClass}">${escapeHtml(chapter.title)}</div>`;
                 html += `<ul class="episode-list">`;
                 for (const ep of chapter.episodes) {
-                    const tipo = detectarTipoEpisodio(ep.title, ep.chapter);
+                    const chapterData = GACHA_DATA.chapters.find(c => c.num === ep.chapter);
+                    const episodeData = chapterData.episodes.find(e => e.num === ep.episodeNum);
+                    const tipo = detectarTipoEpisodio(chapterData, episodeData);
                     let badgeText = '', badgeClass = '', linkClass = '';
                     if (tipo === 'prologo') { badgeText = '📜 Prólogo'; badgeClass = 'prologo'; linkClass = 'prologo'; }
                     else if (tipo === 'interludio') { badgeText = '🎭 Interludio'; badgeClass = 'interludio'; linkClass = 'interludio'; }
+                    else if (tipo === 'extra') { badgeText = '✨ Extra'; badgeClass = 'extra'; linkClass = 'extra'; }
                     else { badgeText = '📖'; badgeClass = 'capitulo'; linkClass = 'capitulo'; }
                     const fileName = `capitulo${ep.chapter}e${ep.episodeNum}.html`;
                     const favoriteKey = `${ep.chapter}-${ep.episodeNum}`;
@@ -523,7 +277,7 @@
                                 Episodio ${ep.episodeNum}: ${escapeHtml(ep.title)}
                             </a>
                             ${progress > 0 && progress < 100 ? `<span class="episode-progress" aria-label="${progress}% leído"><span style="width:${progress}%"></span></span>` : ''}
-                            <button type="button" class="favorite-btn ${favoriteEpisodes.has(favoriteKey) ? 'active' : ''}" onclick="toggleFavorite(event, ${ep.chapter}, ${ep.episodeNum})" aria-label="Favorito">${favoriteEpisodes.has(favoriteKey) ? '★' : '☆'}</button>
+                            <button type="button" class="favorite-btn ${favoriteEpisodes.has(favoriteKey) ? 'active' : ''}" onclick="toggleFavorite(event, ${ep.chapter}, ${ep.episodeNum})" aria-pressed="${favoriteEpisodes.has(favoriteKey)}" aria-label="${favoriteEpisodes.has(favoriteKey) ? 'Quitar de favoritos' : 'Marcar como favorito'}">${favoriteEpisodes.has(favoriteKey) ? '★' : '☆'}</button>
                             <span class="episode-date">${ep.date || ''}</span>
                         </li>
                     `;
@@ -532,7 +286,6 @@
             }
             document.getElementById('chapterIndex').innerHTML = html;
         }
-
         function getFilteredEpisodes() {
             const normalized = searchTerm.toLowerCase();
             return allEpisodes.filter(ep => {
@@ -541,16 +294,12 @@
                 return matchesSearch && matchesFavorites;
             });
         }
-
         function loadFavorites() {
             try {
                 const saved = JSON.parse(localStorage.getItem('gacha_favorites') || '[]');
                 favoriteEpisodes = new Set(saved.map(item => `${item.chapter}-${item.episodeNum}`));
-            } catch (error) {
-                favoriteEpisodes = new Set();
-            }
+            } catch (error) { favoriteEpisodes = new Set(); }
         }
-
         function saveFavorites() {
             const favorites = [...favoriteEpisodes].map(key => {
                 const [chapter, episodeNum] = key.split('-').map(Number);
@@ -558,28 +307,20 @@
             });
             localStorage.setItem('gacha_favorites', JSON.stringify(favorites));
         }
-
         function toggleFavorite(event, chapter, episodeNum) {
-            event.preventDefault();
-            event.stopPropagation();
+            event.preventDefault(); event.stopPropagation();
             const key = `${chapter}-${episodeNum}`;
             if (favoriteEpisodes.has(key)) favoriteEpisodes.delete(key);
             else favoriteEpisodes.add(key);
-            saveFavorites();
-            renderIndex();
-            renderPagination();
+            saveFavorites(); renderIndex(); renderPagination();
         }
-
         function getEpisodeProgress(chapter, episodeNum) {
             if (!currentUser) return 0;
             try {
                 const progress = JSON.parse(localStorage.getItem(`gacha_progress_${currentUser}`) || '{}');
                 return Math.round(Number(progress[`${chapter}-${episodeNum}`]) || 0);
-            } catch (error) {
-                return 0;
-            }
+            } catch (error) { return 0; }
         }
-        
         function escapeHtml(str) {
             if (!str) return '';
             return str.replace(/[&<>]/g, function(m) {
@@ -589,8 +330,6 @@
                 return m;
             });
         }
-        
-        // ========== PAGINACIÓN ==========
         function renderPagination() {
             const container = document.getElementById('pagination');
             if (totalPages <= 1) { container.innerHTML = ''; return; }
@@ -598,10 +337,7 @@
             if (currentPage > 1) {
                 html += `<a href="#" data-page="1">« Primero</a>`;
                 html += `<a href="#" data-page="${currentPage - 1}">‹ Anterior</a>`;
-            } else {
-                html += `<span class="disabled">« Primero</span>`;
-                html += `<span class="disabled">‹ Anterior</span>`;
-            }
+            } else { html += `<span class="disabled">« Primero</span><span class="disabled">‹ Anterior</span>`; }
             let startPage = Math.max(1, currentPage - 2);
             let endPage = Math.min(totalPages, startPage + 4);
             if (endPage - startPage < 4) startPage = Math.max(1, endPage - 4);
@@ -612,20 +348,12 @@
             if (currentPage < totalPages) {
                 html += `<a href="#" data-page="${currentPage + 1}">Siguiente ›</a>`;
                 html += `<a href="#" data-page="${totalPages}">Último »</a>`;
-            } else {
-                html += `<span class="disabled">Siguiente ›</span>`;
-                html += `<span class="disabled">Último »</span>`;
-            }
-            html += `<div class="page-input">
-                        <span>Ir a:</span>
-                        <input type="number" id="pageInput" min="1" max="${totalPages}" value="${currentPage}">
-                        <button id="goToPageBtn">Ir</button>
-                     </div>`;
+            } else { html += `<span class="disabled">Siguiente ›</span><span class="disabled">Último »</span>`; }
+            html += `<div class="page-input"><span>Ir a:</span><input type="number" id="pageInput" min="1" max="${totalPages}" value="${currentPage}"><button type="button" id="goToPageBtn">Ir</button></div>`;
             container.innerHTML = html;
             document.querySelectorAll('#pagination a[data-page]').forEach(link => {
                 link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const page = parseInt(link.dataset.page);
+                    e.preventDefault(); const page = parseInt(link.dataset.page);
                     if (!isNaN(page) && page >= 1 && page <= totalPages) goToPage(page);
                 });
             });
@@ -642,184 +370,73 @@
                 }
             });
         }
-        
         function goToPage(page) {
-            currentPage = page;
-            renderIndex();
-            renderPagination();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            currentPage = page; renderIndex(); renderPagination(); window.scrollTo({ top: 0, behavior: 'smooth' });
         }
-        
-        // ========== HISTORIAL (SOLO ÚLTIMO EPISODIO) ==========
         let currentUser = null;
-        let lastEpisode = null; // { chapter, episodeNum, title, date }
-        
+        let lastEpisode = null;
         function formatearFechaHora() {
             const ahora = new Date();
-            const dia = String(ahora.getDate()).padStart(2, '0');
-            const mes = String(ahora.getMonth() + 1).padStart(2, '0');
-            const año = ahora.getFullYear();
-            const horas = String(ahora.getHours()).padStart(2, '0');
-            const minutos = String(ahora.getMinutes()).padStart(2, '0');
-            return `${dia}/${mes}/${año} ${horas}:${minutos}`;
+            return `${String(ahora.getDate()).padStart(2, '0')}/${String(ahora.getMonth() + 1).padStart(2, '0')}/${ahora.getFullYear()} ${String(ahora.getHours()).padStart(2, '0')}:${String(ahora.getMinutes()).padStart(2, '0')}`;
         }
-        
         function loadUser() {
             const saved = localStorage.getItem('gacha_user');
             if (saved) {
                 currentUser = saved;
                 const savedLast = localStorage.getItem(`gacha_last_${currentUser}`);
-                if (savedLast) {
-                    try {
-                        lastEpisode = JSON.parse(savedLast);
-                    } catch(e) { lastEpisode = null; }
-                }
+                if (savedLast) { try { lastEpisode = JSON.parse(savedLast); } catch(e) { lastEpisode = null; } }
                 document.getElementById('loginSection').style.display = 'none';
                 document.getElementById('historySection').style.display = 'block';
                 document.getElementById('displayName').textContent = currentUser;
                 updateHistoryDisplay();
             }
         }
-        
         function updateHistoryDisplay() {
             const div = document.getElementById('historyList');
-            if (!lastEpisode) {
-                div.innerHTML = '<p style="color:var(--secondary-text);">No has leído nada aún.</p>';
-                return;
-            }
-            const tipo = detectarTipoEpisodio(lastEpisode.title, lastEpisode.chapter);
+            if (!lastEpisode) { div.innerHTML = '<p style="color:var(--secondary-text);">No has leído nada aún.</p>'; return; }
+            const chapterData = GACHA_DATA.chapters.find(c => c.num == lastEpisode.chapter);
+            const episodeData = chapterData.episodes.find(e => e.num == lastEpisode.episodeNum);
+            const tipo = detectarTipoEpisodio(chapterData, episodeData);
             let badge = '';
-            if (tipo === 'prologo') badge = '📜';
-            else if (tipo === 'interludio') badge = '🎭';
-            else badge = '📖';
+            if (tipo === 'prologo') badge = '📜'; else if (tipo === 'interludio') badge = '🎭'; else if (tipo === 'extra') badge = '✨'; else badge = '📖';
             const chapterDisplay = formatSectionTitle(lastEpisode.chapter, tipo);
-            html = `
-                <div class="history-item">
-                    <div>${badge} <a href="capitulo${lastEpisode.chapter}e${lastEpisode.episodeNum}.html">${escapeHtml(chapterDisplay)} - Episodio ${lastEpisode.episodeNum}: ${escapeHtml(lastEpisode.title)}</a></div>
-                    <div class="history-date">📅 Leído: ${lastEpisode.fecha || 'fecha desconocida'}</div>
-                </div>
-            `;
-            div.innerHTML = html;
+            div.innerHTML = `<div class="history-item"><div>${badge} <a href="capitulo${lastEpisode.chapter}e${lastEpisode.episodeNum}.html">${escapeHtml(chapterDisplay)} - Episodio ${lastEpisode.episodeNum}: ${escapeHtml(lastEpisode.title)}</a></div><div class="history-date">📅 Leído: ${lastEpisode.fecha || 'fecha desconocida'}</div></div>`;
         }
-        
         function marcarLectura(event, chapter, episodeNum) {
-            if (!currentUser) {
-                event.preventDefault();
-                alert('Inicia sesión para guardar tu historial de lectura.');
-                return false;
-            }
-            // Buscar el episodio en allEpisodes para obtener el título
+            if (!currentUser) { event.preventDefault(); alert('Inicia sesión para guardar tu historial de lectura.'); return false; }
             const episode = allEpisodes.find(ep => ep.chapter == chapter && ep.episodeNum == episodeNum);
             if (!episode) return true;
-            
-            const ahora = formatearFechaHora();
-            lastEpisode = {
-                chapter: chapter,
-                episodeNum: episodeNum,
-                title: episode.title,
-                fecha: ahora
-            };
+            lastEpisode = { chapter: chapter, episodeNum: episodeNum, title: episode.title, fecha: formatearFechaHora() };
             localStorage.setItem(`gacha_last_${currentUser}`, JSON.stringify(lastEpisode));
-            updateHistoryDisplay();
-            return true;
+            updateHistoryDisplay(); return true;
         }
-        
-        // ========== CONTROLES ==========
         function initControls() {
             const savedTheme = localStorage.getItem('gacha_theme');
             if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
             const savedFont = localStorage.getItem('gacha_fontsize');
             if (savedFont) document.body.style.fontSize = savedFont + '%';
-            
-            document.getElementById('fontPlus').onclick = () => {
-                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
-                size = Math.min(150, size + 10);
-                document.body.style.fontSize = size + '%';
-                localStorage.setItem('gacha_fontsize', size);
-            };
-            document.getElementById('fontMinus').onclick = () => {
-                let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100;
-                size = Math.max(70, size - 10);
-                document.body.style.fontSize = size + '%';
-                localStorage.setItem('gacha_fontsize', size);
-            };
-            
+            document.getElementById('fontPlus').onclick = () => { let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100; size = Math.min(150, size + 10); document.body.style.fontSize = size + '%'; localStorage.setItem('gacha_fontsize', size); };
+            document.getElementById('fontMinus').onclick = () => { let size = parseInt(localStorage.getItem('gacha_fontsize')) || 100; size = Math.max(70, size - 10); document.body.style.fontSize = size + '%'; localStorage.setItem('gacha_fontsize', size); };
             const themeBtn = document.getElementById('themeToggle');
             if (document.documentElement.hasAttribute('data-theme')) themeBtn.textContent = '☀️ Modo claro';
             themeBtn.onclick = () => {
                 const isDark = document.documentElement.hasAttribute('data-theme');
-                if (isDark) {
-                    document.documentElement.removeAttribute('data-theme');
-                    localStorage.setItem('gacha_theme', 'light');
-                    themeBtn.textContent = '🌙 Modo oscuro';
-                } else {
-                    document.documentElement.setAttribute('data-theme', 'dark');
-                    localStorage.setItem('gacha_theme', 'dark');
-                    themeBtn.textContent = '☀️ Modo claro';
-                }
+                if (isDark) { document.documentElement.removeAttribute('data-theme'); localStorage.setItem('gacha_theme', 'light'); themeBtn.textContent = '🌙 Modo oscuro'; }
+                else { document.documentElement.setAttribute('data-theme', 'dark'); localStorage.setItem('gacha_theme', 'dark'); themeBtn.textContent = '☀️ Modo claro'; }
             };
-            
             document.getElementById('scrollToTop').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
             document.getElementById('scrollToBottom').onclick = () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
         }
-        
-        // ========== INICIALIZACIÓN ==========
         document.addEventListener('DOMContentLoaded', () => {
-            initControls();
-            loadUser();
-            if (loadData()) {
-                loadFavorites();
-                renderIndex();
-                renderPagination();
-            }
-            
-            document.getElementById('loginBtn').onclick = () => {
-                const name = document.getElementById('usernameInput').value.trim();
-                if (name) {
-                    localStorage.setItem('gacha_user', name);
-                    loadUser();
-                }
-            };
-            document.getElementById('logoutBtn').onclick = () => {
-                localStorage.removeItem('gacha_user');
-                localStorage.removeItem(`gacha_last_${currentUser}`);
-                location.reload();
-            };
-            document.getElementById('clearHistoryBtn').onclick = (e) => {
-                e.preventDefault();
-                if (confirm('¿Borrar tu último episodio leído?')) {
-                    lastEpisode = null;
-                    localStorage.removeItem(`gacha_last_${currentUser}`);
-                    updateHistoryDisplay();
-                }
-            };
-
-            document.getElementById('episodeSearch').addEventListener('input', (event) => {
-                searchTerm = event.target.value.trim();
-                currentPage = 1;
-                renderIndex();
-                renderPagination();
-            });
-            document.getElementById('favoritesToggle').onclick = () => {
-                favoritesOnly = !favoritesOnly;
-                document.getElementById('favoritesToggle').classList.toggle('active', favoritesOnly);
-                document.getElementById('favoritesToggle').textContent = favoritesOnly ? '★ Mostrando favoritos' : '☆ Solo favoritos';
-                currentPage = 1;
-                renderIndex();
-                renderPagination();
-            };
-            
-            window.marcarLectura = marcarLectura;
-            window.toggleFavorite = toggleFavorite;
-            
-            if (typeof kofiWidgetOverlay !== 'undefined') {
-                kofiWidgetOverlay.draw('ocholobos', {
-                    'type': 'floating-chat',
-                    'floating-chat.donateButton.text': 'Apóyame',
-                    'floating-chat.donateButton.background-color': '#1a4d5f',
-                    'floating-chat.donateButton.text-color': '#ffffff'
-                });
-            }
+            initControls(); loadUser();
+            if (loadData()) { loadFavorites(); renderIndex(); renderPagination(); }
+            document.getElementById('loginBtn').onclick = () => { const name = document.getElementById('usernameInput').value.trim(); if (name) { localStorage.setItem('gacha_user', name); loadUser(); } };
+            document.getElementById('logoutBtn').onclick = () => { localStorage.removeItem('gacha_user'); localStorage.removeItem(`gacha_last_${currentUser}`); location.reload(); };
+            document.getElementById('clearHistoryBtn').onclick = (e) => { e.preventDefault(); if (confirm('¿Borrar tu último episodio leído?')) { lastEpisode = null; localStorage.removeItem(`gacha_last_${currentUser}`); updateHistoryDisplay(); } };
+            document.getElementById('episodeSearch').addEventListener('input', (event) => { searchTerm = event.target.value.trim(); currentPage = 1; renderIndex(); renderPagination(); });
+            document.getElementById('favoritesToggle').onclick = () => { favoritesOnly = !favoritesOnly; document.getElementById('favoritesToggle').classList.toggle('active', favoritesOnly); document.getElementById('favoritesToggle').textContent = favoritesOnly ? '★ Mostrando favoritos' : '☆ Solo favoritos'; currentPage = 1; renderIndex(); renderPagination(); };
+            window.marcarLectura = marcarLectura; window.toggleFavorite = toggleFavorite;
+            if (typeof kofiWidgetOverlay !== 'undefined') { kofiWidgetOverlay.draw('ocholobos', { 'type': 'floating-chat', 'floating-chat.donateButton.text': 'Apóyame', 'floating-chat.donateButton.background-color': '#1a4d5f', 'floating-chat.donateButton.text-color': '#ffffff' }); }
         });
     </script>
 </body>
